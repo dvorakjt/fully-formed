@@ -9,7 +9,7 @@ export default defineConfig({
     coverage: {
       enabled: true,
       thresholds: {
-        100: true
+        100: true,
       },
       exclude: [
         'src/__test__/**',

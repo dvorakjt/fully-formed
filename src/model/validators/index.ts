@@ -4,6 +4,6 @@ export {
   AbstractCombinedValidatorSuite,
   AbstractValidatorSuite,
   AbstractValidator,
-  Validator
+  Validator,
 } from './classes';
 export type { CombinedValidatorSuiteResult, ValidatorResult } from './types';

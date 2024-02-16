@@ -5,6 +5,4 @@ export {
   AbstractValidatorSuite,
   AbstractValidator,
 } from './abstract';
-export {
-  Validator
-} from './concrete';
+export { Validator } from './concrete';
