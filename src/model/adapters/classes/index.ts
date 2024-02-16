@@ -1,0 +1,1 @@
+export { AbstractAdapter } from './abstract';
