@@ -20,7 +20,7 @@ describe('Validator', () => {
     });
   });
 
-  test('When validate() is called and the predicate returns true, it returns an object with a message property whose text is the validMessage passed into its constructor and whose validity is Validity.Valid.', () => {
+  test('When validate() is called and the predicate returns true, it returns an object with a message property whose text is the validMessage passed into the constructor and whose validity is Validity.Valid.', () => {
     const validMessage = 'Value is not an empty string.';
     const validator = new Validator({ predicate: required, validMessage });
     expect(validator.validate('test')).toStrictEqual({
@@ -32,7 +32,7 @@ describe('Validator', () => {
     });
   });
 
-  test('When validate() is called and the predicate returns false, it returns an object with a message property whose text is the invalidMessage passed into its constructor and whose validity is Validity.Invalid.', () => {
+  test('When validate() is called and the predicate returns false, it returns an object with a message property whose text is the invalidMessage passed into the constructor and whose validity is Validity.Invalid.', () => {
     const invalidMessage = 'Value must not be an empty string.';
     const validator = new Validator({ predicate: required, invalidMessage });
     expect(validator.validate('')).toStrictEqual({

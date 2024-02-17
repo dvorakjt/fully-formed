@@ -62,11 +62,15 @@ export {
   AbstractCombinedValidatorSuite,
   AbstractValidatorSuite,
   AbstractValidator,
+  AsyncValidator,
   ValidatorSuite,
   Validator,
   StringValidators,
 } from './validators';
 export type {
+  AsyncPredicate,
+  AsyncValidatorConstructorArgs,
+  AsyncValidatorTemplate,
   CombinedValidatorSuiteResult,
   Predicate,
   ValidatorConstructorArgs,

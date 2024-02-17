@@ -18,7 +18,7 @@ export class Validator<Value> extends AbstractValidator<Value> {
 
   /**
    * @typeParam Value - The type of value that the validator is expected to validate.
-   * @param argsObject - {@link ValidatorConstructorArgs}. An object containing a {@link Predicate} and, optionally, a validMessage and/or invalidMessage.
+   * @param argsObject - {@link ValidatorConstructorArgs}. An object containing a {@link Predicate} and, optionally, a `validMessage` and/or `invalidMessage`.
    */
   public constructor({
     predicate,
