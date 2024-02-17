@@ -1,5 +1,6 @@
-import type { Message, State } from '../../state';
+import type { Message, Validity } from '../../state';
 
-export type ValidatorResult<Value> = State<Value> & {
+export type ValidatorResult = {
+  validity: Validity;
   message?: Message;
 };

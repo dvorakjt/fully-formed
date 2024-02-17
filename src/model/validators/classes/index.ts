@@ -5,4 +5,5 @@ export {
   AbstractValidatorSuite,
   AbstractValidator,
 } from './abstract';
-export { Validator } from './concrete';
+export { ValidatorSuite, Validator } from './concrete';
+export { StringValidators } from './static';

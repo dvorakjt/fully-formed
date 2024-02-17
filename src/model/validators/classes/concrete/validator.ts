@@ -1,18 +1,25 @@
 import { AbstractValidator } from '../abstract';
-import type { ValidatorResult } from '../../types';
 import { Validity } from '../../../state';
+import type {
+  ValidatorResult,
+  ValidatorConstructorArgs,
+  Predicate,
+} from '../../types';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Message } from '../../../state';
 
-type ValidatorConstructorArgs<Value> = {
-  predicate: (value: Value) => boolean;
-  invalidMessage?: string;
-  validMessage?: string;
-};
-
+/**
+ * Provides synchronous validation of a given type of value.
+ */
 export class Validator<Value> extends AbstractValidator<Value> {
-  private predicate: (value: Value) => boolean;
+  private predicate: Predicate<Value>;
   private invalidMessage?: string;
   private validMessage?: string;
 
+  /**
+   * @typeParam Value - The type of value that the validator is expected to validate.
+   * @param ValidatorConstructorArgs - An object containing the required property `predicate` and the optional properties `validMessage` and `invalidMessage`.
+   */
   public constructor({
     predicate,
     invalidMessage,
@@ -24,9 +31,14 @@ export class Validator<Value> extends AbstractValidator<Value> {
     this.validMessage = validMessage;
   }
 
-  public validate(value: Value): ValidatorResult<Value> {
-    const result: ValidatorResult<Value> = {
-      value,
+  /**
+   * Validates the provided value and returns a {@link ValidatorResult} object.
+   *
+   * @param value - The value to be validated.
+   * @returns A {@link ValidatorResult} object representing the validity of the value and, optionally, an associated {@link Message}.
+   */
+  public validate(value: Value): ValidatorResult {
+    const result: ValidatorResult = {
       validity: this.predicate(value) ? Validity.Valid : Validity.Invalid,
     };
     if (result.validity === Validity.Valid && this.validMessage) {
