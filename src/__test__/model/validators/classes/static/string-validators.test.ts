@@ -59,16 +59,16 @@ describe('StringValidators', () => {
     });
   });
 
-  describe('StringValidators.containsUpper()', () => {
+  describe('StringValidators.includesUpper()', () => {
     test('It returns a Validator that returns a result object with a validity property of Validity.Valid when it receives a string containing an uppercase letter.', () => {
-      expect(StringValidators.containsUpper().validate('A').validity).toBe(
+      expect(StringValidators.includesUpper().validate('A').validity).toBe(
         Validity.Valid,
       );
     });
 
     test('It returns a Validator that returns a result object with a validity property of Validity.Valid when it receives a string containing an uppercase letter.', () => {
       expect(
-        StringValidators.containsUpper().validate(
+        StringValidators.includesUpper().validate(
           'abcdefghijklmnopqrstuvwxyz123456789!@#$%^&*()_+ \n\t',
         ).validity,
       ).toBe(Validity.Invalid);
@@ -77,7 +77,7 @@ describe('StringValidators', () => {
     test('When called with an object containing a validMessage property, it returns a Validator that returns a result containing that message when its validate() method returns a valid result.', () => {
       const message = 'The provided value contains an uppercase character.';
       expect(
-        StringValidators.containsUpper({ validMessage: message }).validate('A')
+        StringValidators.includesUpper({ validMessage: message }).validate('A')
           .message,
       ).toStrictEqual({
         text: message,
@@ -89,7 +89,7 @@ describe('StringValidators', () => {
       const message =
         'The provided value does not contain an uppercase character.';
       expect(
-        StringValidators.containsUpper({ invalidMessage: message }).validate('')
+        StringValidators.includesUpper({ invalidMessage: message }).validate('')
           .message,
       ).toStrictEqual({
         text: message,

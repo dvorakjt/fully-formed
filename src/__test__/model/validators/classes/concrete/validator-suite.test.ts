@@ -22,7 +22,7 @@ describe('ValidatorSuite', () => {
     const validatorSuite = new ValidatorSuite<string>({
       validators: [
         StringValidators.required(),
-        StringValidators.containsUpper(),
+        StringValidators.includesUpper(),
       ],
     });
     expect(validatorSuite.validate('A').validity).toBe(Validity.Valid);
@@ -32,7 +32,7 @@ describe('ValidatorSuite', () => {
     const validatorSuite = new ValidatorSuite<string>({
       validators: [
         StringValidators.required(),
-        StringValidators.containsUpper(),
+        StringValidators.includesUpper(),
       ],
     });
     expect(validatorSuite.validate('a').validity).toBe(Validity.Invalid);
@@ -45,7 +45,7 @@ describe('ValidatorSuite', () => {
     const validatorSuite = new ValidatorSuite<string>({
       validators: [
         StringValidators.required({ validMessage: isNotEmptyStringMessage }),
-        StringValidators.containsUpper({
+        StringValidators.includesUpper({
           invalidMessage: doesNotContainUpperMessage,
         }),
       ],

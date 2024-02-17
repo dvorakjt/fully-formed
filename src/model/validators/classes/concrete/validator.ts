@@ -9,7 +9,7 @@ import type {
 import type { Message } from '../../../state';
 
 /**
- * Provides synchronous validation of a given type of value.
+ * Provides synchronous validation for a given type of value.
  */
 export class Validator<Value> extends AbstractValidator<Value> {
   private predicate: Predicate<Value>;
@@ -18,7 +18,7 @@ export class Validator<Value> extends AbstractValidator<Value> {
 
   /**
    * @typeParam Value - The type of value that the validator is expected to validate.
-   * @param ValidatorConstructorArgs - An object containing the required property `predicate` and the optional properties `validMessage` and `invalidMessage`.
+   * @param argsObject - {@link ValidatorConstructorArgs}. An object containing a {@link Predicate} and, optionally, a validMessage and/or invalidMessage.
    */
   public constructor({
     predicate,
@@ -32,7 +32,7 @@ export class Validator<Value> extends AbstractValidator<Value> {
   }
 
   /**
-   * Validates the provided value and returns a {@link ValidatorResult} object.
+   * Validates the provided value.
    *
    * @param value - The value to be validated.
    * @returns A {@link ValidatorResult} object representing the validity of the value and, optionally, an associated {@link Message}.
