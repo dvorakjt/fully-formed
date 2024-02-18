@@ -70,6 +70,7 @@ export {
 export type {
   AsyncPredicate,
   AsyncValidatorConstructorArgs,
+  AsyncValidatorSuiteConstructorArgs,
   AsyncValidatorTemplate,
   CombinedValidatorSuiteResult,
   Predicate,

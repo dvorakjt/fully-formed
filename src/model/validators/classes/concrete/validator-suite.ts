@@ -26,6 +26,8 @@ export class ValidatorSuite<Value> extends AbstractValidatorSuite<Value> {
    * code editor.
    *
    * Alternatively, instances of {@link AbstractValidator} can be provided. This can be useful if you want to reuse the same validator throughout your project.
+   *
+   * If neither validators nor templates are provided, the validator suite will always emit an object with a validity property of {@link Validity.Valid} and an empty messages array.
    */
   public constructor({
     validators = [],
