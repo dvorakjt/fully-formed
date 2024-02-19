@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { AsyncValidatorSuite } from '../../../../../model/validators/classes/concrete/async-validator-suite';
 import {
+  AsyncValidatorSuite,
   AsyncValidator,
   Validity,
   type AsyncValidatorTemplate,
@@ -8,7 +8,7 @@ import {
 import {
   AsyncValidatorSuiteContainer,
   PromiseScheduler,
-} from '../../../../../testing-utils';
+} from '../../../../../testing/classes/concrete';
 
 describe('AsyncValidatorSuite', () => {
   test('When validate() is called and the returned Observable emits a ValidatorSuiteResult, that object contains the provided value.', () => {
@@ -132,10 +132,12 @@ describe('AsyncValidatorSuite', () => {
     });
   });
 
+  // To see this test fail, comment out the call to unsubscribeAll() in the validate() method of AsyncValidatorSuite.
   test('When validate() is called a second time before the first returned Observable has emitted a result, the results of any in-progress validators are ignored.', () => {
-    //To see this test fail, comment out the call to unsubscribeAll() in the validate() method of AsyncValidatorSuite.
-    //Instantiate a new PromiseScheduler and use it to create an AsyncValidator whose predicate will return on demand. In this case,
-    //the result of the predicate is determined by whether or not it receives an empty string.
+    /*
+      Instantiate a new PromiseScheduler and use it to create an AsyncValidator whose predicate will return on demand. In this case,
+      the result of the predicate is determined by whether or not it receives an empty string.
+    */
     const promiseScheduler = new PromiseScheduler();
     const triggeredRequiredValidator = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> => {
@@ -143,7 +145,7 @@ describe('AsyncValidatorSuite', () => {
       },
     });
 
-    //Instantiate a new AsyncValidatorSuite and an AsyncValidatorSuiteContainer. The container emits any results it receives from its AsyncValidatorSuite.
+    // Instantiate a new AsyncValidatorSuite and an AsyncValidatorSuiteContainer. The container emits any results it receives from its AsyncValidatorSuite.
     const asyncValidatorSuite = new AsyncValidatorSuite<string>({
       asyncValidators: [triggeredRequiredValidator],
     });
@@ -151,12 +153,16 @@ describe('AsyncValidatorSuite', () => {
       asyncValidatorSuite,
     });
 
-    //Initialize an array of values to pass into the container. The first value would cause the AsyncValidator to return a validity of
-    //Validity.Invalid, while the second would be considered valid.
+    /*
+      Initialize an array of values to pass into the container. The first value would cause the AsyncValidator to return a validity of
+      Validity.Invalid, while the second would be considered valid.
+    */
     const values = ['', 'test'];
 
-    //In this test, the second value will be set before the resolution of the promise created by the first invocation of the
-    //AsyncValidatorSuite. Therefore, the test expects that only the second value and its associated validity will ever emitted by the container.
+    /*
+      In this test, the second value will be set before the resolution of the promise created by the first invocation of the
+      AsyncValidatorSuite. Therefore, the test expects that only the second value and its associated validity will ever emitted by the container.
+    */
     validatorSuiteContainer.subscribe(state => {
       expect(state).toStrictEqual({
         value: values[1],
@@ -166,12 +172,10 @@ describe('AsyncValidatorSuite', () => {
     });
 
     for (const value of values) {
-      validatorSuiteContainer.setValue(value);
+      validatorSuiteContainer.validate(value);
     }
 
-    //Resolve the promises in reverse order.
-    while (promiseScheduler.scheduledPromises > 0) {
-      promiseScheduler.resolveLast();
-    }
+    // Resolve the promises in order.
+    promiseScheduler.resolveAll();
   });
 });

@@ -2,9 +2,9 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
     // These settings prevent errors when running typedoc:
-    // "module": "ESNext",
-    // "moduleResolution": "Bundler"
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   }
 }

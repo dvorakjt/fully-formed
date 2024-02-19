@@ -18,7 +18,7 @@ export class AsyncValidator<Value> extends AbstractAsyncValidator<Value> {
 
   /**
    * @typeParam Value - The type of value that the validator is expected to validate.
-   * @param argsObject - {@link AsyncValidatorConstructorArgs}. An object containing an {@link AsyncPredicate} and, optionally, a `validMessage` and/or `invalidMessage`.
+   * @param argsObject - An object containing an {@link AsyncPredicate} and the optional properties `validMessage` and `invalidMessage`
    */
   public constructor({
     predicate,
@@ -35,7 +35,7 @@ export class AsyncValidator<Value> extends AbstractAsyncValidator<Value> {
    * Asynchronously validates the provided value.
    *
    * @param value - The value to be validated.
-   * @returns An {@link Observable}`<`{@link ValidatorResult}`>`. The object it emits to subscribers represents the validity of the value and, optionally, an associated {@link Message}.
+   * @returns An {@link Observable} which emits an object representing the validity of the value and, optionally, an associated {@link Message}.
    */
   public validate(value: Value): Observable<ValidatorResult> {
     return new Observable<ValidatorResult>(subscriber => {

@@ -5,6 +5,7 @@ export {
   AbstractValidatorSuite,
   AbstractValidator,
   AsyncValidator,
+  AsyncValidatorSuite,
   ValidatorSuite,
   Validator,
   StringValidators,

@@ -62,6 +62,7 @@ export {
   AbstractCombinedValidatorSuite,
   AbstractValidatorSuite,
   AbstractValidator,
+  AsyncValidatorSuite,
   AsyncValidator,
   ValidatorSuite,
   Validator,

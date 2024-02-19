@@ -9,7 +9,7 @@ import type {
 } from '../../types';
 
 /**
- * Manages the validation of a value of a given type against a sequence of {@link AbstractValidator}s.
+ * Manages the validation of a value of a given type against a collection of {@link AbstractValidator}s.
  */
 export class ValidatorSuite<Value> extends AbstractValidatorSuite<Value> {
   private validators: Array<AbstractValidator<Value>>;
@@ -27,7 +27,7 @@ export class ValidatorSuite<Value> extends AbstractValidatorSuite<Value> {
    *
    * Alternatively, instances of {@link AbstractValidator} can be provided. This can be useful if you want to reuse the same validator throughout your project.
    *
-   * If neither validators nor templates are provided, the validator suite will always emit an object with a validity property of {@link Validity.Valid} and an empty messages array.
+   * If neither validators nor templates are provided, the validator suite will always produce an object with a validity property of {@link Validity.Valid} and an empty messages array.
    */
   public constructor({
     validators = [],
@@ -40,10 +40,10 @@ export class ValidatorSuite<Value> extends AbstractValidatorSuite<Value> {
   }
 
   /**
-   * Validates the provided value against a series of validators.
+   * Validates the provided value against a collection of validators.
    *
    * @param value - The value to be validated.
-   * @returns A {@link StateWithMessages} object containing the value, its {@link Validity}, and an array of associated {@link Message}s.
+   * @returns An object containing the value, its {@link Validity}, and an array of associated {@link Message}s.
    */
   public validate(value: Value): StateWithMessages<Value> {
     const suiteResult: StateWithMessages<Value> = {
