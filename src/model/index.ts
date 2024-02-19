@@ -54,7 +54,7 @@ export type {
   NameableObject,
   UniquelyNamed,
 } from './shared';
-export { AbstractStateManager, Validity } from './state';
+export { AbstractStateManager, StateManager, Validity } from './state';
 export type { Message, StateWithMessages, State } from './state';
 export {
   AbstractAsyncValidatorSuite,
