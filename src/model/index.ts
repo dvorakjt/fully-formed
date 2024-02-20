@@ -35,10 +35,12 @@ export {
   AbstractFieldGroupReducer,
   AbstractFormReducer,
   AbstractStatefulArrayReducer,
+  StatefulArrayReducer
 } from './reducers';
 export type {
   FieldGroupReducerState,
   FormReducerState,
+  StatefulArrayConstructorArgs,
   StatefulArrayStates,
 } from './reducers';
 export type {
