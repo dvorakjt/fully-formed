@@ -2,7 +2,7 @@ export {
   AbstractFieldGroupReducer,
   AbstractFormReducer,
   AbstractStatefulArrayReducer,
-  StatefulArrayReducer
+  StatefulArrayReducer,
 } from './classes';
 export type {
   FieldGroupReducerState,

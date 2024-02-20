@@ -1,5 +1,7 @@
-import type { Stateful } from "../../shared";
+import type { Stateful } from '../../shared';
 
-export type StatefulArrayConstructorArgs<T extends ReadonlyArray<Stateful<unknown>>> = {
-  members : T;
-}
+export type StatefulArrayConstructorArgs<
+  T extends ReadonlyArray<Stateful<unknown>>,
+> = {
+  members: T;
+};

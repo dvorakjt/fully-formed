@@ -1,5 +1,6 @@
 export { AbstractAdapter, type AdapterState } from './adapters';
-export { AbstractDerivedValue } from './derived-values';
+export { AbstractDerivedValue, DerivedValue } from './derived-values';
+export type { Derive, DerivedValueConstructorArgs } from './derived-values';
 export type {
   FormClassFactory,
   AllowedInitFormReturnType,
@@ -35,7 +36,7 @@ export {
   AbstractFieldGroupReducer,
   AbstractFormReducer,
   AbstractStatefulArrayReducer,
-  StatefulArrayReducer
+  StatefulArrayReducer,
 } from './reducers';
 export type {
   FieldGroupReducerState,
