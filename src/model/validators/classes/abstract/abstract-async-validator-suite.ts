@@ -6,7 +6,6 @@ import type { StateWithMessages, Validity, Message } from '../../../state';
  * Manages the validation of a value of a given type against a collection of async validators.
  */
 export abstract class AbstractAsyncValidatorSuite<T> {
-
   /**
    * Validates the provided value against a collection of validators.
    *

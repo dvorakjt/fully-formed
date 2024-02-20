@@ -1,4 +1,1 @@
-export {
-  AsyncValidatorSuiteContainer,
-  PromiseScheduler
-} from './classes';
+export { AsyncValidatorSuiteContainer, PromiseScheduler } from './classes';

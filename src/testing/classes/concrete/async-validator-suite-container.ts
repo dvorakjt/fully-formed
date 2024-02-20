@@ -28,7 +28,7 @@ export class AsyncValidatorSuiteContainer<T> {
 
   /**
    * Validates a value against its {@link AbstractAsyncValidatorSuite} and emits the result to any subscribers.
-   * 
+   *
    * @param value - The value to be validated.
    */
   public validate(value: T): void {
@@ -39,7 +39,7 @@ export class AsyncValidatorSuiteContainer<T> {
 
   /**
    * Calls the provided callback function in response to any new results produced by the validate() method of its {@link AbstractAsyncValidatorSuite}.
-   * 
+   *
    * @param cb - The callback function to be called in response to new validation results.
    * @returns A {@link Subscription}.
    */

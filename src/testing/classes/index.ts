@@ -1,4 +1,1 @@
-export { 
-  AsyncValidatorSuiteContainer,
-  PromiseScheduler
- } from './concrete';
+export { AsyncValidatorSuiteContainer, PromiseScheduler } from './concrete';

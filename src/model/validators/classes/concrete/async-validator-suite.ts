@@ -6,8 +6,11 @@ import {
 import { AsyncValidator } from './async-validator';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Validity, type StateWithMessages, type Message } from '../../../state';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { AsyncValidatorSuiteConstructorArgs, AsyncValidatorTemplate } from '../../types';
+import type {
+  AsyncValidatorSuiteConstructorArgs,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  AsyncValidatorTemplate,
+} from '../../types';
 
 /**
  * Manages the validation of a value of a given type against a collection of {@link AbstractAsyncValidator}s.

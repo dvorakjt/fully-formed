@@ -15,7 +15,7 @@ type ExcludableAdapterValues<
   >,
 > = {
   [A in Adapters[number] as A['excludable'] extends true ? A['name']
-  : never]+?: A['state']['value'];
+  : never]+?: NonNullable<A['state']['value']>;
 };
 
 type NonExcludableAdapterValues<
@@ -29,7 +29,7 @@ type NonExcludableAdapterValues<
   >,
 > = {
   [A in Adapters[number] as A['excludable'] extends false ? A['name']
-  : never]: A['state']['value'];
+  : never]: NonNullable<A['state']['value']>;
 };
 
 export type ConfirmedFormValue<

@@ -27,7 +27,7 @@ export class StateManager<T> extends AbstractStateManager<T> {
 
   /**
    * Calls the provided callback function in response to any changes to `state`.
-   * 
+   *
    * @param cb - The function to be called when `state` has changed.
    * @returns - A {@link Subscription}.
    */
