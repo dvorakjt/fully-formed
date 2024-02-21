@@ -3,21 +3,23 @@ import {
   AsyncValidator,
   Field,
   StringValidators,
+  ValidatorTemplate,
   Validity,
 } from '../../../../../model';
+import { PromiseScheduler } from '../../../../../testing';
 
 describe('Field', () => {
   test('After instantiation, its value is set to the default value passed into its constructor.', () => {
     const defaultValue = 'test';
-    const field = new Field({ name: 'myField', defaultValue });
+    const field = new Field({ name: 'testField', defaultValue });
     expect(field.state.value).toBe(defaultValue);
   });
 
   test('After instantiation, if no async validators were passed into the constructor, its validity and messages properties are set according to the results of any sync validators passed into its constructor.', () => {
     const defaultValue = 'test';
-    const validMessage = 'myField is valid.';
+    const validMessage = 'testField is valid.';
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue,
       validators: [StringValidators.required({ validMessage })],
     });
@@ -44,9 +46,9 @@ describe('Field', () => {
 
   test('After instantiation, if async validators were passed into the constructor but its sync validators returned an invalid result, its validity and messages properties are set according to the results of the sync validators.', () => {
     const defaultValue = '';
-    const invalidMessage = 'myField must not be an empty string.';
+    const invalidMessage = 'testField must not be an empty string.';
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue,
       validators: [StringValidators.required({ invalidMessage })],
       asyncValidators: [asyncIncludesUpper],
@@ -69,7 +71,7 @@ describe('Field', () => {
 
   test('After instantiation, if async validators have been passed into the constructor and sync validators return a valid result, the validity of the field is set to Validity.Pending until the async validators return.', () => {
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue: 'test',
       validators: [StringValidators.required()],
       asyncValidators: [asyncIncludesUpper],
@@ -80,7 +82,7 @@ describe('Field', () => {
   test('After instantiation, if both async validators and a pending message were passed into the constructor and sync validators return a valid result, the messages property of the state of the Field includes the pending message.', () => {
     const pendingMessage = 'Performing async validation...';
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue: 'test',
       validators: [StringValidators.required()],
       asyncValidators: [asyncIncludesUpper],
@@ -103,7 +105,7 @@ describe('Field', () => {
     });
     const defaultValue = 'A';
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue,
       asyncValidators: [asyncIncludesUpperWithValidMessage],
     });
@@ -137,7 +139,7 @@ describe('Field', () => {
     });
     const defaultValue = 'A';
     const field = new Field({
-      name: 'myField',
+      name: 'testField',
       defaultValue,
       validators: [
         StringValidators.required({ validMessage: syncValidMessage }),
@@ -258,36 +260,36 @@ describe('Field', () => {
   });
 
   test('When setValue() is called, the value property of the state of the Field is set.', () => {
-    const field = new Field({ name : 'myField', defaultValue : 'test' });
+    const field = new Field({ name: 'testField', defaultValue: 'test' });
     const updatedValue = field.state.value.toUpperCase();
     field.setValue(updatedValue);
     expect(field.state.value).toBe(updatedValue);
   });
-  
+
   test('When setValue() is called, the modified property of the state of the Field is set to true.', () => {
-    const field = new Field({ name : 'myField', defaultValue : '' });
+    const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.modified).toBe(false);
     field.setValue('test');
     expect(field.state.modified).toBe(true);
   });
-  
+
   test('When setValue() is called, if no async validators were passed into the constructor, its validity and messages properties are set according to the results of any sync validators passed into its constructor.', () => {
     const defaultValue = '';
-    const invalidMessage = 'myField must not be an empty string.';
-    const validMessage = 'myField is valid.';
+    const invalidMessage = 'testField must not be an empty string.';
+    const validMessage = 'testField is valid.';
     const field = new Field({
-      name : 'myField',
+      name: 'testField',
       defaultValue,
-      validators : [StringValidators.required({ validMessage, invalidMessage })]
+      validators: [StringValidators.required({ validMessage, invalidMessage })],
     });
     expect(field.state).toStrictEqual({
-      value : defaultValue,
-      validity : Validity.Invalid,
-      messages : [
+      value: defaultValue,
+      validity: Validity.Invalid,
+      messages: [
         {
-          text : invalidMessage,
-          validity : Validity.Invalid
-        }
+          text: invalidMessage,
+          validity: Validity.Invalid,
+        },
       ],
       focused: false,
       visited: false,
@@ -297,32 +299,230 @@ describe('Field', () => {
     const updatedValue = 'test';
     field.setValue(updatedValue);
     expect(field.state).toStrictEqual({
-      value : updatedValue,
-      validity : Validity.Valid,
-      messages : [
+      value: updatedValue,
+      validity: Validity.Valid,
+      messages: [
         {
-          text : validMessage,
-          validity : Validity.Valid
-        }
+          text: validMessage,
+          validity: Validity.Valid,
+        },
       ],
-      modified : true,
+      modified: true,
       focused: false,
       visited: false,
       exclude: false,
     });
   });
-  
-  /*
-  test('When setValue() is called, if async validators were passed into the constructor but its sync validators returned an invalid result, its validity and messages properties are set according to the results of the sync validators.', () => {});
-  test('When setValue() is called, if async validators have been passed into the constructor and sync validators return a valid result, the validity of the field is set to Validity.Pending until the async validators return.', () => {});
-  test('When setValue() is called, if both async validators and a pending message were passed into the constructor and sync validators return a valid result, the messages property of the state of the Field includes the pending message.', () => {});
-  test('When setValue() is called, if async validators have been passed into the constructor, the value, validity and messages properties of the field are set according to the results of those validators once they resolve.', () => {});
-  test("When setValue() is called, if both async validators and a pending message were passed into the constructor, the pending message is removed from the Field state's messages array when the async validators resolve.", () => {});
-  test('When setValue() is called while there are still pending async validators, the results of those validators are ignored.', () => {});
 
-  test("When validator templates were passed into its constructor, those templates are used to instantiate Validators which validate the Field's value.", () => {});
+  test('When setValue() is called, if async validators were passed into the constructor but its sync validators returned an invalid result, its validity and messages properties are set according to the results of the sync validators.', () => {
+    const invalidMessage = 'testField must not be an empty string.';
+    const field = new Field({
+      name: 'testField',
+      defaultValue: 'test',
+      validators: [StringValidators.required({ invalidMessage })],
+      asyncValidators: [asyncIncludesUpper],
+    });
+    const updatedValue = '';
+    field.setValue(updatedValue);
+    expect(field.state).toStrictEqual({
+      value: updatedValue,
+      validity: Validity.Invalid,
+      messages: [
+        {
+          text: invalidMessage,
+          validity: Validity.Invalid,
+        },
+      ],
+      modified: true,
+      focused: false,
+      visited: false,
+      exclude: false,
+    });
+  });
+
+  test('When setValue() is called, if async validators have been passed into the constructor and sync validators return a valid result, the validity of the field is set to Validity.Pending until the async validators return.', () => {
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [asyncIncludesUpper],
+    });
+    field.setValue('test');
+    expect(field.state.validity).toBe(Validity.Pending);
+  });
+
+  test('When setValue() is called, if both async validators and a pending message were passed into the constructor and sync validators return a valid result, the messages property of the state of the Field includes the pending message.', () => {
+    const pendingMessage = 'Performing async validation...';
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [asyncIncludesUpper],
+      pendingMessage,
+    });
+    field.setValue('test');
+    expect(field.state.messages).toStrictEqual([
+      {
+        text: pendingMessage,
+        validity: Validity.Pending,
+      },
+    ]);
+  });
+
+  test('When setValue() is called, if async validators have been passed into the constructor, the value, validity and messages properties of the field are set according to the results of those validators once they resolve.', () => {
+    const invalidMessage = 'testField must contain an uppercase letter.';
+    const asyncIncludesUpperWithInvalidMessage = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> =>
+        Promise.resolve(/[A-Z]/.test(value)),
+      invalidMessage,
+    });
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [asyncIncludesUpperWithInvalidMessage],
+      pendingMessage: 'Performing async validation...',
+    });
+    const updatedValue = 'test';
+    field.setValue(updatedValue);
+    field.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: updatedValue,
+        validity: Validity.Invalid,
+        messages: [
+          {
+            text: invalidMessage,
+            validity: Validity.Invalid,
+          },
+        ],
+        modified: true,
+        focused: false,
+        visited: false,
+        exclude: false,
+      });
+    });
+  });
+
+  test("When setValue() is called, if both async validators and a pending message were passed into the constructor, the pending message is removed from the Field state's messages array when the async validators resolve.", () => {
+    const pendingMessage = 'Performing async validation...';
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [asyncIncludesUpper],
+      pendingMessage,
+    });
+    field.setValue('test');
+    expect(field.state.messages).toStrictEqual([
+      {
+        text: pendingMessage,
+        validity: Validity.Pending,
+      },
+    ]);
+    field.subscribeToState(state => {
+      expect(state.messages).toStrictEqual([]);
+    });
+  });
+
+  test('When setValue() is called while there are still pending async validators, the results of those validators are ignored.', () => {
+    const promiseScheduler = new PromiseScheduler();
+    const scheduledAsyncIncludesUpper = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(/[A-Z]/.test(value));
+      },
+    });
+    const invalidMessage = 'testField is required.';
+    const field = new Field({
+      name: 'testField',
+      defaultValue: 'TEST',
+      validators: [StringValidators.required({ invalidMessage })],
+      asyncValidators: [scheduledAsyncIncludesUpper],
+    });
+    const updatedValue = '';
+    field.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: updatedValue,
+        validity: Validity.Invalid,
+        messages: [
+          {
+            text: invalidMessage,
+            validity: Validity.Invalid,
+          },
+        ],
+        modified: true,
+        focused: false,
+        visited: false,
+        exclude: false,
+      });
+    });
+    field.setValue(updatedValue);
+    promiseScheduler.resolveAll();
+  });
+
+  test("When validator templates were passed into its constructor, those templates are used to instantiate Validators which validate the Field's value.", () => {
+    const defaultValue = 'test';
+    const requiredTemplate: ValidatorTemplate<string> = {
+      predicate: value => {
+        return value.length > 0;
+      },
+      invalidMessage: 'testField must not be an empty string',
+      validMessage: 'testField is not an empty string.',
+    };
+    const containsUpperTemplate: ValidatorTemplate<string> = {
+      predicate: value => {
+        return /[A-Z]/.test(value);
+      },
+      invalidMessage: 'testField does not contain an uppercase letter.',
+      validMessage: 'testField includes an uppercase letter.',
+    };
+    const field = new Field({
+      name: 'testField',
+      defaultValue,
+      validatorTemplates: [requiredTemplate, containsUpperTemplate],
+    });
+    expect(field.state).toStrictEqual({
+      value: defaultValue,
+      validity: Validity.Invalid,
+      messages: [
+        {
+          text: requiredTemplate.validMessage,
+          validity: Validity.Valid,
+        },
+        {
+          text: containsUpperTemplate.invalidMessage,
+          validity: Validity.Invalid,
+        },
+      ],
+      focused: false,
+      visited: false,
+      modified: false,
+      exclude: false,
+    });
+    const updatedValue = defaultValue.toUpperCase();
+    field.setValue(updatedValue);
+    expect(field.state).toStrictEqual({
+      value: updatedValue,
+      validity: Validity.Valid,
+      messages: [
+        {
+          text: requiredTemplate.validMessage,
+          validity: Validity.Valid,
+        },
+        {
+          text: containsUpperTemplate.validMessage,
+          validity: Validity.Valid,
+        },
+      ],
+      modified: true,
+      focused: false,
+      visited: false,
+      exclude: false,
+    });
+  });
+
   test("When async validator templates were passed into its constructor, those templates are used to instantiate AsyncValidators which validate the Field's value.", () => {});
 
+  /*
   test('When focus() is called, the focused property of the state of the Field is set to true.', () => {});
   test('When visit() is called, the visited property of the state of the Field is set to true.', () => {});
 
