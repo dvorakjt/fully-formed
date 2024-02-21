@@ -1,8 +1,12 @@
-export { AbstractField, AbstractForm, AbstractSubForm } from './classes';
+export { AbstractField, AbstractForm, AbstractSubForm, Field } from './classes';
 export type {
+  ControlledFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
   ExcludableFormElementValues,
+  FieldConstructorArgs,
+  FieldControlFn,
+  FieldControllersAndControlFn,
   FieldState,
   FirstNonValidFormElement,
   FirstNonValidField,

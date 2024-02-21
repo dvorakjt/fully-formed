@@ -7,6 +7,7 @@ import type {
   PossiblyTransient,
   Exclude,
   Resettable,
+  Interactable,
 } from '../../../shared';
 import type { FieldState } from '../../types';
 
@@ -22,6 +23,7 @@ export abstract class AbstractField<
     Stateful<FieldState<Value, Excludable>>,
     PossiblyTransient<Transient>,
     PossiblyExcludable<Excludable>,
+    Interactable,
     Resettable
 {
   public abstract name: Name;
@@ -30,7 +32,6 @@ export abstract class AbstractField<
   public abstract excludable: Excludable;
   public abstract exclude: Exclude<Excludable>;
   public abstract transient: Transient;
-  public abstract Excludable: Excludable;
   public abstract setValue(value: Value): void;
   public abstract subscribeToState(
     cb: (state: FieldState<Value, Excludable>) => void,

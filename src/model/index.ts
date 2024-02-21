@@ -16,11 +16,20 @@ export type {
   FieldGroupState,
   FieldGroupValue,
 } from './field-groups';
-export { AbstractField, AbstractForm, AbstractSubForm } from './form-elements';
+export {
+  AbstractField,
+  AbstractForm,
+  AbstractSubForm,
+  Field,
+} from './form-elements';
 export type {
+  ControlledFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
   ExcludableFormElementValues,
+  FieldConstructorArgs,
+  FieldControlFn,
+  FieldControllersAndControlFn,
   FieldState,
   FirstNonValidField,
   FirstNonValidFormElement,
@@ -46,6 +55,7 @@ export type {
 } from './reducers';
 export type {
   Identifiable,
+  Interactable,
   Nameable,
   PossiblyExcludable,
   PossiblyTransient,
@@ -54,6 +64,7 @@ export type {
   DisjointlyNamed,
   ExcludableState,
   Exclude,
+  InteractableState,
   NameableObject,
   UniquelyNamed,
 } from './shared';

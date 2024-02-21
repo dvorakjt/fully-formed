@@ -1,4 +1,5 @@
 export type { Identifiable } from './identifiable.interface';
+export type { Interactable } from './interactable.interface';
 export type { Nameable } from './nameable.interface';
 export type { PossiblyExcludable } from './possibly-excludable.interface';
 export type { PossiblyTransient } from './possibly-transient.interface';

@@ -3,9 +3,7 @@ import type { Stateful } from '../../shared';
 
 export type DerivedValueConstructorArgs<
   Name extends string,
-  Sources extends ReadonlyArray<
-    Stateful<unknown>
-  >,
+  Sources extends ReadonlyArray<Stateful<unknown>>,
   V,
 > = {
   name: Name;

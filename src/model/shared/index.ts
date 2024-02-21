@@ -1,5 +1,6 @@
 export type {
   Identifiable,
+  Interactable,
   Nameable,
   PossiblyExcludable,
   PossiblyTransient,
@@ -10,6 +11,7 @@ export type {
   DisjointlyNamed,
   Exclude,
   ExcludableState,
+  InteractableState,
   NameableObject,
   UniquelyNamed,
 } from './types';
