@@ -13,4 +13,4 @@ export type FieldControlFn<
 > = (
   controllerStates: StatefulArrayStates<Controllers>,
   ownState: FieldState<Value, Excludable>,
-) => ControlledFieldState<Value, Excludable>;
+) => ControlledFieldState<Value, Excludable> | undefined;

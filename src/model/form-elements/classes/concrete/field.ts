@@ -200,8 +200,9 @@ export class Field<
   }
 
   private applyControlledState(
-    partialState: ControlledFieldState<Value, Excludable>,
+    partialState: ControlledFieldState<Value, Excludable> | undefined,
   ): void {
+    if (!partialState) return;
     if ('value' in partialState) {
       this.validatorSuiteSubscription?.unsubscribe();
     }
