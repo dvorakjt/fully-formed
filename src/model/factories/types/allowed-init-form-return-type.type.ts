@@ -1,7 +1,7 @@
 import type { AbstractAdapter } from '../../adapters';
 import type { AbstractDerivedValue } from '../../derived-values';
 import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
-import type { FormElement } from '../../form-elements';
+import type { FormElement, AutoTrim } from '../../form-elements';
 import type {
   UniquelyNamed,
   DisjointlyNamed,
@@ -125,4 +125,7 @@ export type AllowedInitFormReturnType<T extends InitFormReturnType> =
       ReadonlyArray<AbstractDerivedValue<string, unknown>>
     ) ?
       DerivedValueNamesAreUnique<T['derivedValues']>
-    : object);
+    : object) &
+    {
+      autoTrim? : AutoTrim<T['formElements']>
+    }

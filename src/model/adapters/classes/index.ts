@@ -1,1 +1,1 @@
-export { AbstractAdapter } from './abstract';
+export { AbstractAdapter, AbstractExcludableAdapter } from './abstract';

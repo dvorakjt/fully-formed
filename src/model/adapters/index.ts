@@ -1,1 +1,1 @@
-export { AbstractAdapter } from './classes';
+export { AbstractAdapter, AbstractExcludableAdapter } from './classes';

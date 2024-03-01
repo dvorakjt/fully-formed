@@ -1,9 +1,11 @@
-export { AbstractAdapter } from './adapters';
+export { AbstractAdapter, AbstractExcludableAdapter } from './adapters';
 export { AbstractDerivedValue, DerivedValue } from './derived-values';
 export type { Derive, DerivedValueConstructorArgs } from './derived-values';
 export type {
   FormClassFactory,
   AllowedInitFormReturnType,
+  InitExcludableSubFormReturnType,
+  InitExcludableSubForm,
   InitFormReturnTypeToFormConstituents,
   InitFormReturnType,
   InitForm,
@@ -17,19 +19,25 @@ export type {
   FieldGroupValue,
 } from './field-groups';
 export {
+  AbstractExcludableField,
+  AbstractExcludableSubForm,
   AbstractField,
   AbstractForm,
   AbstractSubForm,
   Field,
 } from './form-elements';
 export type {
+  AutoTrim,
   ControlledFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
+  ExcludableFormElement,
   ExcludableFormElementValues,
+  ExcludableSubFormControlFn,
+  ExcludableSubFormControlTemplate,
   FieldConstructorArgs,
   FieldControlFn,
-  FieldControllersAndControlFn,
+  FieldControlTemplate,
   FieldState,
   FirstNonValidField,
   FirstNonValidFormElement,

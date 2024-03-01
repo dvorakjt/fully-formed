@@ -4,7 +4,7 @@ import type {
   AsyncValidatorTemplate,
   ValidatorTemplate,
 } from '../../validators';
-import type { FieldControllersAndControlFn } from './field-controllers-and-control-fn.type';
+import type { FieldControlTemplate } from './field-control-template.type';
 import type { FormElement } from './form-element.type';
 import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
 
@@ -25,7 +25,7 @@ export type FieldConstructorArgs<
   asyncValidators?: Array<AbstractAsyncValidator<Value>>;
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<Value>>;
   pendingMessage?: string;
-  controlledBy?: FieldControllersAndControlFn<Controllers, Value>;
+  controlledBy?: FieldControlTemplate<Controllers, Value>;
   focusedByDefault?: boolean;
   visitedByDefault?: boolean;
   modifiedByDefault?: boolean;

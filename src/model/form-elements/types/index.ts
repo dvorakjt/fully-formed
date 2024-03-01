@@ -1,10 +1,13 @@
+export type { AutoTrim } from './auto-trim.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
 export type { ConfirmedFormValue } from './confirmed-form-value.type';
 export type { ControlledFieldState } from './controlled-field-state.type';
 export type { ExcludableFormElementValues } from './excludable-form-element-values.type';
+export type { ExcludableSubFormControlFn } from './excludable-subform-control-fn.type';
+export type { ExcludableSubFormControlTemplate } from './excludable-subform-control-template.type';
 export type { FieldConstructorArgs } from './field-constructor-args.type';
 export type { FieldControlFn } from './field-control-fn.type';
-export type { FieldControllersAndControlFn } from './field-controllers-and-control-fn.type';
+export type { FieldControlTemplate } from './field-control-template.type';
 export type { FieldState } from './field-state.type';
 export type { FirstNonValidFormElement } from './first-non-valid-form-element.type';
 export type { FirstNonValidField } from './first-non-valid-field.type';

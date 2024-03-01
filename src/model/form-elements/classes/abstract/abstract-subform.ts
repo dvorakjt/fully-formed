@@ -1,7 +1,6 @@
-import type { Subscription } from 'rxjs';
-import type { PossiblyTransient } from '../../../shared';
-import type { FormConstituents, FormState } from '../../types';
 import { AbstractForm } from './abstract-form';
+import type { PossiblyTransient } from '../../../shared';
+import type { FormConstituents } from '../../types';
 
 export abstract class AbstractSubForm<
     Name extends string,
@@ -12,13 +11,4 @@ export abstract class AbstractSubForm<
   implements PossiblyTransient<Transient>
 {
   public abstract transient: Transient;
-  public abstract state: FormState<
-    Constituents['formElements'],
-    Constituents['adapters']
-  >;
-  public abstract subscribeToState(
-    cb: (
-      state: FormState<Constituents['formElements'], Constituents['adapters']>,
-    ) => void,
-  ): Subscription;
 }

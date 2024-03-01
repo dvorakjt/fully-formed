@@ -1,12 +1,23 @@
-export { AbstractField, AbstractForm, AbstractSubForm, Field } from './classes';
+export {
+  AbstractExcludableField,
+  AbstractExcludableSubForm,
+  AbstractField,
+  AbstractForm,
+  AbstractSubForm,
+  Field,
+} from './classes';
+export type { ExcludableFormElement } from './interfaces';
 export type {
+  AutoTrim,
   ControlledFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
   ExcludableFormElementValues,
+  ExcludableSubFormControlFn,
+  ExcludableSubFormControlTemplate,
   FieldConstructorArgs,
   FieldControlFn,
-  FieldControllersAndControlFn,
+  FieldControlTemplate,
   FieldState,
   FirstNonValidFormElement,
   FirstNonValidField,

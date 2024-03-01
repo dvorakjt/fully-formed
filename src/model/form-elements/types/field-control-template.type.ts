@@ -2,7 +2,7 @@ import type { FormElement } from './form-element.type';
 import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
 import type { FieldControlFn } from './field-control-fn.type';
 
-export type FieldControllersAndControlFn<
+export type FieldControlTemplate<
   Controllers extends ReadonlyArray<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   >,
