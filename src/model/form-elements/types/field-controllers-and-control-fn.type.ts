@@ -7,8 +7,7 @@ export type FieldControllersAndControlFn<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   >,
   Value,
-  Excludable extends boolean,
 > = {
   controllers: Controllers;
-  controlFn: FieldControlFn<Controllers, Value, Excludable>;
+  controlFn: FieldControlFn<Controllers, Value>;
 };

@@ -1,4 +1,4 @@
-export { AbstractAdapter, type AdapterState } from './adapters';
+export { AbstractAdapter } from './adapters';
 export { AbstractDerivedValue, DerivedValue } from './derived-values';
 export type { Derive, DerivedValueConstructorArgs } from './derived-values';
 export type {
@@ -38,7 +38,6 @@ export type {
   FormState,
   FormValue,
   NonExcludableFormElementValues,
-  NonTransientFormElement,
 } from './form-elements';
 export { AbstractFormElementAndGroupHeap } from './heaps';
 export {
@@ -57,13 +56,12 @@ export type {
   Identifiable,
   Interactable,
   Nameable,
-  PossiblyExcludable,
+  Excludable,
   PossiblyTransient,
   Resettable,
   Stateful,
   DisjointlyNamed,
   ExcludableState,
-  Exclude,
   InteractableState,
   NameableObject,
   UniquelyNamed,

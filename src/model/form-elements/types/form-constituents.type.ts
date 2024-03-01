@@ -10,8 +10,7 @@ export type FormConstituents = {
     AbstractAdapter<
       string,
       FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      unknown
     >
   >;
   derivedValues: ReadonlyArray<AbstractDerivedValue<string, unknown>>;

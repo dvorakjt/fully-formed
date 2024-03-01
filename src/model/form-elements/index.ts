@@ -15,5 +15,4 @@ export type {
   FormState,
   FormValue,
   NonExcludableFormElementValues,
-  NonTransientFormElement,
 } from './types';

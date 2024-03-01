@@ -23,7 +23,6 @@ export interface FormClassFactory {
   ): AbstractSubForm<
     T['name'],
     InitFormReturnTypeToFormConstituents<T>,
-    T['transient'] extends boolean ? T['transient'] : false,
-    T['excludable'] extends boolean ? T['excludable'] : false
+    T['transient'] extends boolean ? T['transient'] : false
   >;
 }

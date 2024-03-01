@@ -2,14 +2,13 @@ export type {
   Identifiable,
   Interactable,
   Nameable,
-  PossiblyExcludable,
+  Excludable,
   PossiblyTransient,
   Resettable,
   Stateful,
 } from './interfaces';
 export type {
   DisjointlyNamed,
-  Exclude,
   ExcludableState,
   InteractableState,
   NameableObject,

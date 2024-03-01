@@ -12,8 +12,7 @@ export type FormState<
     AbstractAdapter<
       string,
       FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      unknown
     >
   >,
 > = StateWithMessages<FormValue<FormElements, Adapters>> & {

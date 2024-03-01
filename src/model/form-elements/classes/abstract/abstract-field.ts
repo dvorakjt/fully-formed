@@ -3,9 +3,7 @@ import type {
   Identifiable,
   Nameable,
   Stateful,
-  PossiblyExcludable,
   PossiblyTransient,
-  Exclude,
   Resettable,
   Interactable,
 } from '../../../shared';
@@ -15,26 +13,22 @@ export abstract class AbstractField<
     Name extends string,
     Value,
     Transient extends boolean,
-    Excludable extends boolean,
   >
   implements
     Nameable<Name>,
     Identifiable,
-    Stateful<FieldState<Value, Excludable>>,
+    Stateful<FieldState<Value>>,
     PossiblyTransient<Transient>,
-    PossiblyExcludable<Excludable>,
     Interactable,
     Resettable
 {
   public abstract name: Name;
   public abstract id: string;
-  public abstract state: FieldState<Value, Excludable>;
-  public abstract excludable: Excludable;
-  public abstract exclude: Exclude<Excludable>;
+  public abstract state: FieldState<Value>;
   public abstract transient: Transient;
   public abstract setValue(value: Value): void;
   public abstract subscribeToState(
-    cb: (state: FieldState<Value, Excludable>) => void,
+    cb: (state: FieldState<Value>) => void,
   ): Subscription;
   public abstract focus(): void;
   public abstract visit(): void;

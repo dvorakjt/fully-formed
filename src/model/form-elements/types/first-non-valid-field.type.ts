@@ -15,7 +15,6 @@ type FieldNamesFromFormElementsObject<
         string,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         any,
-        boolean,
         boolean
       >
     ) ?
@@ -31,7 +30,6 @@ type FieldNamesFromFormElementsArray<
       string,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       any,
-      boolean,
       boolean
     >
   ) ?

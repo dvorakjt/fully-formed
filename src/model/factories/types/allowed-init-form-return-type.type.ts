@@ -1,8 +1,12 @@
 import type { AbstractAdapter } from '../../adapters';
 import type { AbstractDerivedValue } from '../../derived-values';
 import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
-import type { FormElement, NonTransientFormElement } from '../../form-elements';
-import type { UniquelyNamed, DisjointlyNamed } from '../../shared';
+import type { FormElement } from '../../form-elements';
+import type {
+  UniquelyNamed,
+  DisjointlyNamed,
+  PossiblyTransient,
+} from '../../shared';
 import type { InitFormReturnType } from './init-form-return-type.type';
 
 type FormElementNamesAreUnique<FormElements extends readonly FormElement[]> = {
@@ -42,8 +46,7 @@ type AdapterNamesAreUnique<
     AbstractAdapter<
       string,
       FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      unknown
     >
   >,
 > = {
@@ -55,15 +58,14 @@ export type AdapterNamesAreNotNonTransientFormElementNames<
     AbstractAdapter<
       string,
       FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      unknown
     >
   >,
   FormElements extends readonly FormElement[],
 > = {
   adapters: DisjointlyNamed<
     Adapters,
-    ReadonlyArray<Extract<FormElements[number], NonTransientFormElement>>
+    ReadonlyArray<Extract<FormElements[number], PossiblyTransient<false>>>
   >;
 };
 
@@ -74,12 +76,7 @@ export type AdapterSourcesOccurInForm<
   >,
 > = {
   adapters: ReadonlyArray<
-    AbstractAdapter<
-      string,
-      FormElements[number] | FieldGroups[number],
-      unknown,
-      boolean
-    >
+    AbstractAdapter<string, FormElements[number] | FieldGroups[number], unknown>
   >;
 };
 
@@ -106,8 +103,7 @@ export type AllowedInitFormReturnType<T extends InitFormReturnType> =
         AbstractAdapter<
           string,
           FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-          unknown,
-          boolean
+          unknown
         >
       >
     ) ?

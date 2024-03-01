@@ -1,7 +1,6 @@
 import type {
   Identifiable,
   Nameable,
-  PossiblyExcludable,
   PossiblyTransient,
   Resettable,
   Stateful,
@@ -12,5 +11,4 @@ export type FormElement = Nameable<string> &
   Identifiable &
   Stateful<StateWithMessages<unknown>> &
   PossiblyTransient<boolean> &
-  PossiblyExcludable<boolean> &
   Resettable;
