@@ -13,7 +13,7 @@ export type {
   ExcludableAdapterState,
 } from './adapters';
 export { AbstractDerivedValue, DerivedValue } from './derived-values';
-export type { Derive, DerivedValueConstructorArgs } from './derived-values';
+export type { DeriveFn, DerivedValueConstructorArgs } from './derived-values';
 export type {
   FormClassFactory,
   AllowedInitFormReturnType,

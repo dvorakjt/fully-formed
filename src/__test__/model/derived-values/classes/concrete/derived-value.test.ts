@@ -24,7 +24,7 @@ describe('DerivedValue', () => {
     const derivedValue = new DerivedValue({
       name: 'areComplementary',
       sources,
-      derive: ([color1, color2]): string => {
+      deriveFn: ([color1, color2]): string => {
         if (
           !(color1 in complementaryColors) ||
           !(color2 in complementaryColors)
@@ -50,7 +50,7 @@ describe('DerivedValue', () => {
     const derivedValue = new DerivedValue({
       name: 'areComplementary',
       sources,
-      derive: ([color1, color2]): string => {
+      deriveFn: ([color1, color2]): string => {
         if (
           !(color1 in complementaryColors) ||
           !(color2 in complementaryColors)
@@ -79,7 +79,7 @@ describe('DerivedValue', () => {
     const derivedValue = new DerivedValue({
       name: 'areComplementary',
       sources,
-      derive: ([color1, color2]): string => {
+      deriveFn: ([color1, color2]): string => {
         if (
           !(color1 in complementaryColors) ||
           !(color2 in complementaryColors)

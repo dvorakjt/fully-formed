@@ -1,4 +1,4 @@
-import type { Derive } from './derive.type';
+import type { DeriveFn } from './derive-fn.type';
 import type { Stateful } from '../../shared';
 
 export type DerivedValueConstructorArgs<
@@ -8,5 +8,5 @@ export type DerivedValueConstructorArgs<
 > = {
   name: Name;
   sources: Sources;
-  derive: Derive<Sources, V>;
+  deriveFn: DeriveFn<Sources, V>;
 };

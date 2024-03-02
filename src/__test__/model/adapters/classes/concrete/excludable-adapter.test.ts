@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { 
-  ExcludableAdapter, 
+import {
+  ExcludableAdapter,
   ExcludableField,
   StringValidators,
   Validity,
@@ -10,16 +10,19 @@ import {
 describe('ExcludableAdapter', () => {
   test('Its value defaults to the result of applying its adaptFn to the value of its source.', () => {
     const sourceDefaultValue = 'test';
-    const source = new ExcludableField({ name : 'testField', defaultValue : sourceDefaultValue });
+    const source = new ExcludableField({
+      name: 'testField',
+      defaultValue: sourceDefaultValue,
+    });
     const adapter = new ExcludableAdapter({
-      name : 'testAdapter',
+      name: 'testAdapter',
       source,
-      adaptFn : (sourceState) : ExcludableAdaptFnReturnType<string> => {
+      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.value).toBe(sourceDefaultValue.toUpperCase());
   });
@@ -35,10 +38,10 @@ describe('ExcludableAdapter', () => {
       source,
       adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.validity).toBe(Validity.Invalid);
   });
@@ -48,33 +51,36 @@ describe('ExcludableAdapter', () => {
       name: 'testField',
       defaultValue: '',
       validators: [StringValidators.required()],
-      excludeByDefault : true
+      excludeByDefault: true,
     });
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
       adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.exclude).toBe(true);
   });
 
   test('When the value of its source changes, its value is updated.', () => {
     const sourceDefaultValue = '';
-    const source = new ExcludableField({ name : 'testField', defaultValue : sourceDefaultValue });
+    const source = new ExcludableField({
+      name: 'testField',
+      defaultValue: sourceDefaultValue,
+    });
     const adapter = new ExcludableAdapter({
-      name : 'testAdapter',
+      name: 'testAdapter',
       source,
-      adaptFn : (sourceState) : ExcludableAdaptFnReturnType<string> => {
+      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.value).toBe(sourceDefaultValue.toUpperCase());
 
@@ -94,10 +100,10 @@ describe('ExcludableAdapter', () => {
       source,
       adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.validity).toBe(Validity.Invalid);
 
@@ -110,17 +116,17 @@ describe('ExcludableAdapter', () => {
       name: 'testField',
       defaultValue: '',
       validators: [StringValidators.required()],
-      excludeByDefault : true
+      excludeByDefault: true,
     });
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
       adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     expect(adapter.state.exclude).toBe(true);
 
@@ -139,17 +145,17 @@ describe('ExcludableAdapter', () => {
       source,
       adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
         return {
-          value  : sourceState.value.toUpperCase(),
-          exclude : sourceState.exclude
-        }
-      }
+          value: sourceState.value.toUpperCase(),
+          exclude: sourceState.exclude,
+        };
+      },
     });
     const updatedValue = 'test';
     adapter.subscribeToState(state => {
       expect(state).toStrictEqual({
         value: updatedValue.toUpperCase(),
         validity: Validity.Valid,
-        exclude : false
+        exclude: false,
       });
     });
     source.setValue(updatedValue);

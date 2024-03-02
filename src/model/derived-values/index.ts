@@ -1,2 +1,2 @@
 export { AbstractDerivedValue, DerivedValue } from './classes';
-export type { Derive, DerivedValueConstructorArgs } from './types';
+export type { DeriveFn, DerivedValueConstructorArgs } from './types';

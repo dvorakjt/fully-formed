@@ -5,7 +5,7 @@ import {
 } from '../../../reducers';
 import { StateManager, type AbstractStateManager } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type { Derive, DerivedValueConstructorArgs } from '../../types';
+import type { DeriveFn, DerivedValueConstructorArgs } from '../../types';
 import type { Stateful } from '../../../shared';
 
 export class DerivedValue<
@@ -15,7 +15,7 @@ export class DerivedValue<
 > extends AbstractDerivedValue<Name, V> {
   public readonly name: Name;
   private sourcesReducer: AbstractStatefulArrayReducer<Sources>;
-  private derive: Derive<Sources, V>;
+  private deriveFn: DeriveFn<Sources, V>;
   private stateManager: AbstractStateManager<V>;
 
   public get value(): V {
@@ -29,14 +29,14 @@ export class DerivedValue<
   public constructor({
     name,
     sources,
-    derive,
+    deriveFn,
   }: DerivedValueConstructorArgs<Name, Sources, V>) {
     super();
     this.name = name;
     this.sourcesReducer = new StatefulArrayReducer<Sources>({
       members: sources,
     });
-    this.derive = derive;
+    this.deriveFn = deriveFn;
     this.stateManager = new StateManager<V>(this.getInitialValue());
     this.subscribeToReducer();
   }
@@ -46,12 +46,12 @@ export class DerivedValue<
   }
 
   private getInitialValue(): V {
-    return this.derive(this.sourcesReducer.state);
+    return this.deriveFn(this.sourcesReducer.state);
   }
 
   private subscribeToReducer(): void {
     this.sourcesReducer.subscribeToState(state => {
-      this.value = this.derive(state);
+      this.value = this.deriveFn(state);
     });
   }
 }

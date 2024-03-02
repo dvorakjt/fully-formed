@@ -1,4 +1,4 @@
 export type ExcludableAdaptFnReturnType<Value> = {
-  value : Value;
-  exclude : boolean;
-}
+  value: Value;
+  exclude: boolean;
+};
