@@ -1,9 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { 
-  AsyncValidator, 
-  ExcludableField, 
-  StringValidators, 
-  Validity, 
+import {
+  AsyncValidator,
+  ExcludableField,
+  StringValidators,
+  Validity,
   Validator,
   type ControlledExcludableFieldState,
   type AsyncValidatorTemplate,
@@ -38,7 +38,7 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
   });
 
@@ -68,7 +68,7 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
   });
 
@@ -125,7 +125,7 @@ describe('ExcludableField', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false
+        exclude: false,
       });
     });
   });
@@ -175,7 +175,7 @@ describe('ExcludableField', () => {
   });
 
   test('After instantiation, the focused property of the state of the field is set to false by default.', () => {
-    const field = new ExcludableField({ name : 'testField', defaultValue : ''});
+    const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.focused).toBe(false);
   });
 
@@ -195,7 +195,7 @@ describe('ExcludableField', () => {
   });
 
   test('After instantiation, the visited property of the state of the field is set to false by default.', () => {
-    const field = new ExcludableField({ name : 'testField', defaultValue : '' });
+    const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.visited).toBe(false);
   });
 
@@ -215,7 +215,7 @@ describe('ExcludableField', () => {
   });
 
   test('After instantiation, the modified property of the state of the field is set to false by default.', () => {
-    const field = new ExcludableField({ name : 'testField', defaultValue : '' });
+    const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.modified).toBe(false);
   });
 
@@ -235,27 +235,30 @@ describe('ExcludableField', () => {
   });
 
   test('After instantiation, the exclude property of the state of the field is set to false by default.', () => {
-    const field = new ExcludableField({ name : 'testField', defaultValue : '' });
+    const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.exclude).toBe(false);
   });
 
   test('After instantiation, the exclude property of the state of the field is set to excludeByDefault.', () => {
     const exclude = new ExcludableField({
-      name : 'exclude',
-      defaultValue : '',
-      excludeByDefault : true
+      name: 'exclude',
+      defaultValue: '',
+      excludeByDefault: true,
     });
     const include = new ExcludableField({
-      name : 'include',
-      defaultValue : '',
-      excludeByDefault : false
+      name: 'include',
+      defaultValue: '',
+      excludeByDefault: false,
     });
     expect(exclude.state.exclude).toBe(true);
     expect(include.state.exclude).toBe(false);
   });
 
   test('When setValue() is called, the value property of the state of the field is set.', () => {
-    const field = new ExcludableField({ name: 'testField', defaultValue: 'test' });
+    const field = new ExcludableField({
+      name: 'testField',
+      defaultValue: 'test',
+    });
     const updatedValue = field.state.value.toUpperCase();
     field.setValue(updatedValue);
     expect(field.state.value).toBe(updatedValue);
@@ -289,7 +292,7 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
     const updatedValue = 'test';
     field.setValue(updatedValue);
@@ -305,10 +308,10 @@ describe('ExcludableField', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false
+      exclude: false,
     });
   });
-  
+
   test('When setValue() is called, if async validators were passed into the constructor but its sync validators returned an invalid result, its validity and messages properties are set according to the results of the sync validators.', () => {
     const invalidMessage = 'testField must not be an empty string.';
     const field = new ExcludableField({
@@ -331,10 +334,10 @@ describe('ExcludableField', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false
+      exclude: false,
     });
   });
-  
+
   test('When setValue() is called, if async validators have been passed into the constructor and sync validators return a valid result, the validity of the field is set to Validity.Pending until the async validators return.', () => {
     const field = new ExcludableField({
       name: 'testField',
@@ -345,7 +348,7 @@ describe('ExcludableField', () => {
     field.setValue('test');
     expect(field.state.validity).toBe(Validity.Pending);
   });
-  
+
   test('When setValue() is called, if both async validators and a pending message were passed into the constructor and sync validators return a valid result, the messages property of the state of the Field includes the pending message.', () => {
     const pendingMessage = 'Performing async validation...';
     const field = new ExcludableField({
@@ -363,7 +366,7 @@ describe('ExcludableField', () => {
       },
     ]);
   });
-  
+
   test('When setValue() is called, if async validators have been passed into the constructor, the value, validity and messages properties of the field are set according to the results of those validators once they resolve.', () => {
     const invalidMessage = 'testField must contain an uppercase letter.';
     const asyncIncludesUpperWithInvalidMessage = new AsyncValidator<string>({
@@ -393,11 +396,11 @@ describe('ExcludableField', () => {
         modified: true,
         focused: false,
         visited: false,
-        exclude: false
+        exclude: false,
       });
     });
   });
-  
+
   test("When setValue() is called, if both async validators and a pending message were passed into the constructor, the pending message is removed from the Field state's messages array when the async validators resolve.", () => {
     const pendingMessage = 'Performing async validation...';
     const field = new ExcludableField({
@@ -418,7 +421,7 @@ describe('ExcludableField', () => {
       expect(state.messages).toStrictEqual([]);
     });
   });
-  
+
   test('When setValue() is called while there are still pending async validators, the results of those validators are ignored.', () => {
     const promiseScheduler = new PromiseScheduler();
     const scheduledAsyncIncludesUpper = new AsyncValidator<string>({
@@ -447,7 +450,7 @@ describe('ExcludableField', () => {
         modified: true,
         focused: false,
         visited: false,
-        exclude: false
+        exclude: false,
       });
     });
     field.setValue(updatedValue);
@@ -455,7 +458,7 @@ describe('ExcludableField', () => {
   });
 
   test('When setExclude() is called, the exclude property of the state of the field is set.', () => {
-    const field = new ExcludableField({ name : 'testField', defaultValue : '' });
+    const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.exclude).toBe(false);
     field.setExclude(true);
     expect(field.state.exclude).toBe(true);
@@ -500,7 +503,7 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
     const updatedValue = defaultValue.toUpperCase();
     field.setValue(updatedValue);
@@ -520,10 +523,10 @@ describe('ExcludableField', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false
+      exclude: false,
     });
   });
-  
+
   test("When async validator templates were passed into its constructor, those templates are used to instantiate AsyncValidators which validate the field's value.", () => {
     const asyncRequiredTemplate: AsyncValidatorTemplate<string> = {
       predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
@@ -561,18 +564,18 @@ describe('ExcludableField', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false
+        exclude: false,
       });
     });
   });
-  
+
   test('When focus() is called, the focused property of the state of the field is set to true.', () => {
     const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.focused).toBe(false);
     field.focus();
     expect(field.state.focused).toBe(true);
   });
-  
+
   test('When visit() is called, the visited property of the state of the field is set to true.', () => {
     const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.visited).toBe(false);
@@ -591,7 +594,7 @@ describe('ExcludableField', () => {
           },
         }),
       ],
-      excludeByDefault : true
+      excludeByDefault: true,
     });
     const age = new ExcludableField({
       name: 'age',
@@ -604,10 +607,10 @@ describe('ExcludableField', () => {
         ): ControlledExcludableFieldState<number> => {
           const updatedOwnState = {
             ...ownState,
-            exclude : birthdayState.exclude
+            exclude: birthdayState.exclude,
           };
 
-          if(birthday.state.validity !== Validity.Valid) {
+          if (birthday.state.validity !== Validity.Valid) {
             return updatedOwnState;
           }
 
@@ -618,19 +621,19 @@ describe('ExcludableField', () => {
             value: difference,
             validity: Validity.Valid,
             messages: [],
-            exclude : birthday.state.exclude
+            exclude: birthday.state.exclude,
           };
         },
       },
     });
     expect(age.state).toStrictEqual({
-      value : 34,
-      validity : Validity.Valid,
-      messages : [],
-      focused : false,
-      visited : false,
-      modified : false,
-      exclude : true
+      value: 34,
+      validity: Validity.Valid,
+      messages: [],
+      focused: false,
+      visited: false,
+      modified: false,
+      exclude: true,
     });
   });
 
@@ -657,10 +660,10 @@ describe('ExcludableField', () => {
         ): ControlledExcludableFieldState<number> => {
           const updatedOwnState = {
             ...ownState,
-            exclude : birthdayState.exclude
+            exclude: birthdayState.exclude,
           };
 
-          if(birthday.state.validity !== Validity.Valid) {
+          if (birthday.state.validity !== Validity.Valid) {
             return updatedOwnState;
           }
 
@@ -671,7 +674,7 @@ describe('ExcludableField', () => {
             value: difference,
             validity: Validity.Valid,
             messages: [],
-            exclude : birthday.state.exclude
+            exclude: birthday.state.exclude,
           };
         },
       },
@@ -679,16 +682,16 @@ describe('ExcludableField', () => {
     birthday.setValue('1984-01-01');
     birthday.setExclude(true);
     expect(age.state).toStrictEqual({
-      value : 40,
-      validity : Validity.Valid,
-      messages : [],
-      focused : false,
-      visited : false,
-      modified : false,
-      exclude : true
+      value: 40,
+      validity: Validity.Valid,
+      messages: [],
+      focused: false,
+      visited: false,
+      modified: false,
+      exclude: true,
     });
   });
-  
+
   test('When reset() is called, its value is set to the default value passed into its constructor.', () => {
     const defaultValue = '';
     const field = new ExcludableField({ name: 'testField', defaultValue });
@@ -722,7 +725,7 @@ describe('ExcludableField', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false
+      exclude: false,
     });
     field.reset();
     expect(field.state).toStrictEqual({
@@ -737,10 +740,10 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
   });
-  
+
   test('When reset() is called, if async validators were passed into the constructor but its sync validators returned an invalid result, its validity and messages properties are set according to the results of the sync validators.', () => {
     const defaultValue = '';
     const invalidMessage = 'testField must not be an empty string.';
@@ -764,7 +767,7 @@ describe('ExcludableField', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false
+      exclude: false,
     });
   });
 
@@ -780,7 +783,7 @@ describe('ExcludableField', () => {
     field.reset();
     expect(field.state.validity).toBe(Validity.Pending);
   });
-  
+
   test('When reset() is called, if both async validators and a pending message were passed into the constructor and sync validators return a valid result, the messages property of the state of the field includes the pending message.', () => {
     const pendingMessage = 'Performing async validation...';
     const field = new ExcludableField({
@@ -800,7 +803,7 @@ describe('ExcludableField', () => {
       },
     ]);
   });
-  
+
   test('When reset() is called, if async validators have been passed into the constructor, the value, validity and messages properties of the field are set according to the results of those validators once they resolve.', () => {
     const validMessage = 'The provided value includes an uppercase letter.';
     const asyncIncludesUpperWithValidMessage = new AsyncValidator<string>({
@@ -830,11 +833,11 @@ describe('ExcludableField', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false
+        exclude: false,
       });
     });
   });
-  
+
   test("When reset() is called, if both async validators and a pending message were passed into the constructor, the pending message is removed from the field state's messages array when the async validators resolve.", () => {
     const pendingMessage = 'Performing async validation...';
     const syncValidMessage = 'The provided value is not an empty string.';
@@ -880,7 +883,7 @@ describe('ExcludableField', () => {
       ]);
     });
   });
-  
+
   test('When reset() is called, the focused property of the state of the field is set to focusedByDefault.', () => {
     const field = new ExcludableField({ name: 'testField', defaultValue: '' });
     expect(field.state.focused).toBe(false);
@@ -907,11 +910,11 @@ describe('ExcludableField', () => {
     field.reset();
     expect(field.state.modified).toBe(false);
   });
-  
+
   test('When reset() is called, the exclude property of the state of the field is set to excludeByDefault.', () => {
     const field = new ExcludableField({
-      name : 'testField',
-      defaultValue : ''
+      name: 'testField',
+      defaultValue: '',
     });
     expect(field.state.exclude).toBe(false);
     field.setExclude(true);
@@ -959,7 +962,7 @@ describe('ExcludableField', () => {
     age.reset();
     expect(age.state.value).toBe(34);
   });
-  
+
   test('When the controlFn returns an object that contains a value, if there is a pending async validator suite, it is ignored.', () => {
     const promiseScheduler = new PromiseScheduler();
     const complementaryColors = {
@@ -988,7 +991,9 @@ describe('ExcludableField', () => {
       asyncValidators: [isValidColorAsync],
       controlledBy: {
         controllers: [color],
-        controlFn: ([colorState]): ControlledExcludableFieldState<string> | undefined => {
+        controlFn: ([colorState]):
+          | ControlledExcludableFieldState<string>
+          | undefined => {
           if (!(colorState.value in complementaryColors)) return;
           return {
             value:

@@ -1,4 +1,9 @@
-export { AbstractAdapter, AbstractExcludableAdapter } from './adapters';
+export {
+  AbstractAdapter,
+  AbstractExcludableAdapter,
+  Adapter,
+} from './adapters';
+export type { AdaptFn, AdapterConstructorArgs } from './adapters';
 export { AbstractDerivedValue, DerivedValue } from './derived-values';
 export type { Derive, DerivedValueConstructorArgs } from './derived-values';
 export type {

@@ -172,7 +172,7 @@ describe('Field', () => {
   });
 
   test('After instantiation, the focused property of the state of the field is set to false by default.', () => {
-    const field = new Field({ name : 'testField', defaultValue : ''});
+    const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.focused).toBe(false);
   });
 
@@ -192,7 +192,7 @@ describe('Field', () => {
   });
 
   test('After instantiation, the visited property of the state of the field is set to false by default.', () => {
-    const field = new Field({ name : 'testField', defaultValue : '' });
+    const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.visited).toBe(false);
   });
 
@@ -212,7 +212,7 @@ describe('Field', () => {
   });
 
   test('After instantiation, the modified property of the state of the field is set to false by default.', () => {
-    const field = new Field({ name : 'testField', defaultValue : '' });
+    const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.modified).toBe(false);
   });
 
