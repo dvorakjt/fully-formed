@@ -38,7 +38,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
   });
 
@@ -68,7 +67,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
   });
 
@@ -125,7 +123,6 @@ describe('Field', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false,
       });
     });
   });
@@ -234,34 +231,6 @@ describe('Field', () => {
     expect(implicitlyUnmodified.state.modified).toBe(false);
   });
 
-  test('After instantiation, the exclude property of the Field is set to excludeByDefault.', () => {
-    const excluded = new Field({
-      name: 'excluded',
-      excludable: true,
-      defaultValue: '',
-      excludedByDefault: true,
-    });
-    const explicitlyIncluded = new Field({
-      name: 'explicitlyIncluded',
-      excludable: true,
-      defaultValue: '',
-      excludedByDefault: false,
-    });
-    const implicitlyIncluded = new Field({
-      name: 'implicitlyIncluded',
-      excludable: true,
-      defaultValue: '',
-    });
-    const nonExcludable = new Field({
-      name: 'nonExcludable',
-      defaultValue: '',
-    });
-    expect(excluded.exclude).toBe(true);
-    expect(explicitlyIncluded.exclude).toBe(false);
-    expect(implicitlyIncluded.exclude).toBe(false);
-    expect(nonExcludable.exclude).toBe(false);
-  });
-
   test('When setValue() is called, the value property of the state of the Field is set.', () => {
     const field = new Field({ name: 'testField', defaultValue: 'test' });
     const updatedValue = field.state.value.toUpperCase();
@@ -297,7 +266,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
     const updatedValue = 'test';
     field.setValue(updatedValue);
@@ -313,7 +281,6 @@ describe('Field', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false,
     });
   });
 
@@ -339,7 +306,6 @@ describe('Field', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false,
     });
   });
 
@@ -401,7 +367,6 @@ describe('Field', () => {
         modified: true,
         focused: false,
         visited: false,
-        exclude: false,
       });
     });
   });
@@ -455,7 +420,6 @@ describe('Field', () => {
         modified: true,
         focused: false,
         visited: false,
-        exclude: false,
       });
     });
     field.setValue(updatedValue);
@@ -499,7 +463,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
     const updatedValue = defaultValue.toUpperCase();
     field.setValue(updatedValue);
@@ -519,7 +482,6 @@ describe('Field', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false,
     });
   });
 
@@ -560,7 +522,6 @@ describe('Field', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false,
       });
     });
   });
@@ -577,30 +538,6 @@ describe('Field', () => {
     expect(field.state.visited).toBe(false);
     field.visit();
     expect(field.state.visited).toBe(true);
-  });
-
-  test("When exclude is set, the Field's exclude property is updated.", () => {
-    const field = new Field({
-      name: 'testField',
-      defaultValue: '',
-      excludable: true,
-      excludedByDefault: false,
-    });
-    expect(field.exclude).toBe(false);
-    field.exclude = true;
-    expect(field.exclude).toBe(true);
-  });
-
-  test('When exclude is set, the exclude property of the state of the Field is set.', () => {
-    const field = new Field({
-      name: 'testField',
-      defaultValue: '',
-      excludable: true,
-      excludedByDefault: false,
-    });
-    expect(field.state.exclude).toBe(false);
-    field.exclude = true;
-    expect(field.state.exclude).toBe(true);
   });
 
   test('When controllers and a control function were passed into its constructor, that function is called after setting the default value of the Field.', () => {
@@ -623,7 +560,7 @@ describe('Field', () => {
         controlFn: (
           [birthdayState],
           ownState,
-        ): ControlledFieldState<number, false> => {
+        ): ControlledFieldState<number> => {
           if (birthdayState.validity !== Validity.Valid) {
             return ownState;
           }
@@ -661,7 +598,7 @@ describe('Field', () => {
         controlFn: (
           [birthdayState],
           ownState,
-        ): ControlledFieldState<number, false> => {
+        ): ControlledFieldState<number> => {
           if (birthdayState.validity !== Validity.Valid) {
             return ownState;
           }
@@ -713,7 +650,6 @@ describe('Field', () => {
       modified: true,
       focused: false,
       visited: false,
-      exclude: false,
     });
     field.reset();
     expect(field.state).toStrictEqual({
@@ -728,7 +664,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
   });
 
@@ -755,7 +690,6 @@ describe('Field', () => {
       focused: false,
       visited: false,
       modified: false,
-      exclude: false,
     });
   });
 
@@ -821,7 +755,6 @@ describe('Field', () => {
         focused: false,
         visited: false,
         modified: false,
-        exclude: false,
       });
     });
   });
@@ -899,20 +832,6 @@ describe('Field', () => {
     expect(field.state.modified).toBe(false);
   });
 
-  test('When reset() is called, the exclude property of the Field is set to excludeByDefault.', () => {
-    const field = new Field({
-      name: 'testField',
-      defaultValue: '',
-      excludable: true,
-      excludedByDefault: true,
-    });
-    expect(field.exclude).toBe(true);
-    field.exclude = false;
-    expect(field.exclude).toBe(false);
-    field.reset();
-    expect(field.exclude).toBe(true);
-  });
-
   test("When reset() is called and controllers and a control function were passed into the constructor, the control function is called after setting the Field's value to its default value.", () => {
     const birthday = new Field({
       name: 'birthday',
@@ -933,7 +852,7 @@ describe('Field', () => {
         controlFn: (
           [birthdayState],
           ownState,
-        ): ControlledFieldState<number, false> => {
+        ): ControlledFieldState<number> => {
           if (birthdayState.validity !== Validity.Valid) {
             return ownState;
           }
@@ -981,9 +900,7 @@ describe('Field', () => {
       asyncValidators: [isValidColorAsync],
       controlledBy: {
         controllers: [color],
-        controlFn: ([colorState]):
-          | ControlledFieldState<string, false>
-          | undefined => {
+        controlFn: ([colorState]): ControlledFieldState<string> | undefined => {
           if (!(colorState.value in complementaryColors)) return;
           return {
             value:

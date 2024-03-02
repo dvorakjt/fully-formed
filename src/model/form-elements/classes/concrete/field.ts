@@ -17,7 +17,6 @@ import type {
   FieldGroupMembers,
 } from '../../../field-groups';
 import type { Subscription } from 'rxjs';
-import type { Exclude } from '../../../shared';
 import {
   CombinedValidatorSuite,
   type AbstractCombinedValidatorSuite,
@@ -31,69 +30,54 @@ export class Field<
   Name extends string,
   Value,
   Transient extends boolean = false,
-  Excludable extends boolean = false,
   Controllers extends ReadonlyArray<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   > = [],
-> extends AbstractField<Name, Value, Transient, Excludable> {
+> extends AbstractField<Name, Value, Transient> {
   public readonly name: Name;
   public readonly id: string;
   public readonly transient: Transient;
-  public readonly excludable: Excludable;
   private defaultValue: Value;
   private focusedByDefault: boolean;
   private visitedByDefault: boolean;
   private modifiedByDefault: boolean;
-  private excludedByDefault: Exclude<Excludable>;
-  private controlFn?: FieldControlFn<Controllers, Value, Excludable>;
+  private controlFn?: FieldControlFn<Controllers, Value>;
   private validatorSuite: AbstractCombinedValidatorSuite<Value>;
-  private stateManager: AbstractStateManager<FieldState<Value, Excludable>>;
+  private stateManager: AbstractStateManager<FieldState<Value>>;
   private controllerReducer?: AbstractStatefulArrayReducer<Controllers>;
   private validatorSuiteSubscription?: Subscription;
 
-  public get state(): FieldState<Value, Excludable> {
+  public get state(): FieldState<Value> {
     return this.stateManager.state;
   }
 
-  private set state(state: FieldState<Value, Excludable>) {
+  private set state(state: FieldState<Value>) {
     this.stateManager.state = state;
-  }
-
-  public get exclude(): Exclude<Excludable> {
-    return this.stateManager.state.exclude;
-  }
-
-  public set exclude(exclude: Exclude<Excludable>) {
-    this.setPartialState({ exclude });
   }
 
   public constructor({
     name,
     id,
     transient,
-    excludable,
     defaultValue,
     focusedByDefault,
     visitedByDefault,
     modifiedByDefault,
-    excludedByDefault,
     validators,
     validatorTemplates,
     asyncValidators,
     asyncValidatorTemplates,
     pendingMessage,
     controlledBy,
-  }: FieldConstructorArgs<Name, Value, Transient, Excludable, Controllers>) {
+  }: FieldConstructorArgs<Name, Value, Transient, Controllers>) {
     super();
     this.name = name;
     this.id = id ?? this.name;
     this.transient = !!transient as Transient;
-    this.excludable = !!excludable as Excludable;
     (this.defaultValue = defaultValue),
       (this.focusedByDefault = !!focusedByDefault);
     this.visitedByDefault = !!visitedByDefault;
     this.modifiedByDefault = !!modifiedByDefault;
-    this.excludedByDefault = !!excludedByDefault as Exclude<Excludable>;
     this.validatorSuite = new CombinedValidatorSuite<Value>({
       validators,
       validatorTemplates,
@@ -104,16 +88,13 @@ export class Field<
     const { syncResult, observableResult } = this.validatorSuite.validate(
       this.defaultValue,
     );
-    const initialState: FieldState<Value, Excludable> = {
+    const initialState: FieldState<Value> = {
       ...syncResult,
       focused: this.focusedByDefault,
       visited: this.visitedByDefault,
       modified: this.modifiedByDefault,
-      exclude: this.excludedByDefault,
     };
-    this.stateManager = new StateManager<FieldState<Value, Excludable>>(
-      initialState,
-    );
+    this.stateManager = new StateManager<FieldState<Value>>(initialState);
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
       this.setPartialState({
         ...result,
@@ -149,7 +130,7 @@ export class Field<
   }
 
   public subscribeToState(
-    cb: (state: FieldState<Value, Excludable>) => void,
+    cb: (state: FieldState<Value>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
@@ -166,12 +147,11 @@ export class Field<
     const { syncResult, observableResult } = this.validatorSuite.validate(
       this.defaultValue,
     );
-    const initialState: FieldState<Value, Excludable> = {
+    const initialState: FieldState<Value> = {
       ...syncResult,
       focused: this.focusedByDefault,
       visited: this.visitedByDefault,
       modified: this.modifiedByDefault,
-      exclude: this.excludedByDefault,
     };
     this.state = initialState;
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
@@ -193,14 +173,12 @@ export class Field<
     );
   }
 
-  private setPartialState(
-    partialState: Partial<FieldState<Value, Excludable>>,
-  ): void {
+  private setPartialState(partialState: Partial<FieldState<Value>>): void {
     this.state = { ...this.state, ...partialState };
   }
 
   private applyControlledState(
-    partialState: ControlledFieldState<Value, Excludable> | undefined,
+    partialState: ControlledFieldState<Value> | undefined,
   ): void {
     if (!partialState) return;
     if ('value' in partialState) {

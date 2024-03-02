@@ -19,8 +19,7 @@ export type InitFormReturnTypeToFormConstituents<
       AbstractAdapter<
         string,
         FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-        unknown,
-        boolean
+        unknown
       >
     >
   ) ?

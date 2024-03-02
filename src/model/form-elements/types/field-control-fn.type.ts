@@ -9,8 +9,7 @@ export type FieldControlFn<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   >,
   Value,
-  Excludable extends boolean,
 > = (
   controllerStates: StatefulArrayStates<Controllers>,
-  ownState: FieldState<Value, Excludable>,
-) => ControlledFieldState<Value, Excludable> | undefined;
+  ownState: FieldState<Value>,
+) => ControlledFieldState<Value> | undefined;
