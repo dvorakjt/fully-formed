@@ -10,12 +10,12 @@ export abstract class AbstractAdapter<
     Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
     Value,
   >
-  implements Nameable<Name>, Stateful<State<Value | null>>
+  implements Nameable<Name>, Stateful<State<Value>>
 {
   public abstract name: Name;
   public abstract source: Source;
-  public abstract state: State<Value | null>;
+  public abstract state: State<Value>;
   public abstract subscribeToState(
-    cb: (state: State<Value | null>) => void,
+    cb: (state: State<Value>) => void,
   ): Subscription;
 }

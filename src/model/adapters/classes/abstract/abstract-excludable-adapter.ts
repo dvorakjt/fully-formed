@@ -16,8 +16,8 @@ export abstract class AbstractExcludableAdapter<
   extends AbstractAdapter<Name, Source, Value>
   implements Excludable
 {
-  public abstract state: State<Value | null> & ExcludableState;
+  public abstract state: State<Value> & ExcludableState;
   public abstract subscribeToState(
-    cb: (state: State<Value | null> & ExcludableState) => void,
+    cb: (state: State<Value> & ExcludableState) => void,
   ): Subscription;
 }

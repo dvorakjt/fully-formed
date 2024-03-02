@@ -13,7 +13,6 @@ export type {
   ControlledExcludableFieldState,
   ControlledFieldState,
   ConfirmMethodArgs,
-  ConfirmedFormValue,
   ExcludableFieldConstructorArgs,
   ExcludableFieldControlFn,
   ExcludableFieldControlTemplate,

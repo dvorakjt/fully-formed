@@ -8,7 +8,7 @@ import type {
 } from '../../../shared';
 import type {
   ConfirmMethodArgs,
-  ConfirmedFormValue,
+  FormValue,
   FormConstituents,
   FormState,
 } from '../../types';
@@ -45,7 +45,7 @@ export abstract class AbstractForm<
   public abstract setMessages(messages: Message[]): void;
   public abstract confirm(
     args: ConfirmMethodArgs<
-      ConfirmedFormValue<Constituents['formElements'], Constituents['adapters']>
+      FormValue<Constituents['formElements'], Constituents['adapters']>
     >,
   ): void;
   public abstract reset(): void;

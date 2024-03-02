@@ -1,6 +1,5 @@
 export type { AutoTrim } from './auto-trim.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
-export type { ConfirmedFormValue } from './confirmed-form-value.type';
 export type { ControlledExcludableFieldState } from './controlled-excludable-field-state.type';
 export type { ControlledFieldState } from './controlled-field-state.type';
 export type { ExcludableFieldConstructorArgs } from './excludable-field-constructor-args.type';

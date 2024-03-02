@@ -32,7 +32,6 @@ export type {
   ControlledFieldState,
   ControlledExcludableFieldState,
   ConfirmMethodArgs,
-  ConfirmedFormValue,
   ExcludableFieldConstructorArgs,
   ExcludableFieldControlFn,
   ExcludableFieldControlTemplate,
