@@ -1,2 +1,2 @@
 export { AbstractAdapter, AbstractExcludableAdapter } from './abstract';
-export { Adapter } from './concrete';
+export { Adapter, ExcludableAdapter } from './concrete';

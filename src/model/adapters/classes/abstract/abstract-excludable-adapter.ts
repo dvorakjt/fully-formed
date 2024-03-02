@@ -5,8 +5,8 @@ import type {
   FieldGroupMembers,
 } from '../../../field-groups';
 import type { FormElement } from '../../../form-elements';
-import type { Excludable, ExcludableState } from '../../../shared';
-import type { State } from '../../../state';
+import type { Excludable } from '../../../shared';
+import type { ExcludableAdapterState } from '../../types';
 
 export abstract class AbstractExcludableAdapter<
     Name extends string,
@@ -16,8 +16,8 @@ export abstract class AbstractExcludableAdapter<
   extends AbstractAdapter<Name, Source, Value>
   implements Excludable
 {
-  public abstract state: State<Value> & ExcludableState;
+  public abstract state: ExcludableAdapterState<Value>;
   public abstract subscribeToState(
-    cb: (state: State<Value> & ExcludableState) => void,
+    cb: (state: ExcludableAdapterState<Value>) => void,
   ): Subscription;
 }

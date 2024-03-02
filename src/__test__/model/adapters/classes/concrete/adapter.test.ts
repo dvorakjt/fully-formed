@@ -30,7 +30,7 @@ describe('Adapter', () => {
     const adapter = new Adapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): string => sourceState.value,
+      adaptFn: (sourceState): string => sourceState.value.toUpperCase(),
     });
     expect(adapter.state.validity).toBe(Validity.Invalid);
   });

@@ -1,2 +1,14 @@
-export { AbstractAdapter, AbstractExcludableAdapter, Adapter } from './classes';
-export type { AdaptFn, AdapterConstructorArgs } from './types';
+export {
+  AbstractAdapter,
+  AbstractExcludableAdapter,
+  Adapter,
+  ExcludableAdapter,
+} from './classes';
+export type {
+  AdaptFn,
+  AdapterConstructorArgs,
+  ExcludableAdaptFnReturnType,
+  ExcludableAdaptFn,
+  ExcludableAdapterConstructorArgs,
+  ExcludableAdapterState,
+} from './types';
