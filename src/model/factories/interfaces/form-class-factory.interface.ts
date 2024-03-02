@@ -1,4 +1,8 @@
-import type { AbstractExcludableSubForm, AbstractForm, AbstractSubForm } from '../../form-elements';
+import type {
+  AbstractExcludableSubForm,
+  AbstractForm,
+  AbstractSubForm,
+} from '../../form-elements';
 import type {
   InitFormReturnType,
   AllowedInitFormReturnType,
@@ -7,7 +11,7 @@ import type {
   InitSubFormReturnType,
   InitSubForm,
   InitExcludableSubFormReturnType,
-  InitExcludableSubForm
+  InitExcludableSubForm,
 } from '../types';
 
 export interface FormClassFactory {
@@ -29,10 +33,10 @@ export interface FormClassFactory {
   >;
   extendExcludableSubForm<
     Args extends unknown[],
-    T extends InitExcludableSubFormReturnType & AllowedInitFormReturnType<T>
+    T extends InitExcludableSubFormReturnType & AllowedInitFormReturnType<T>,
   >(
-    init : InitExcludableSubForm<Args, T>
-  ) : AbstractExcludableSubForm<
+    init: InitExcludableSubForm<Args, T>,
+  ): AbstractExcludableSubForm<
     T['name'],
     InitFormReturnTypeToFormConstituents<T>,
     T['transient'] extends boolean ? T['transient'] : false

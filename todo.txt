@@ -1,0 +1,9 @@
+rename adapt and derive to adaptFn and deriveFn
+write tests for ExcludableField
+implement ExcludableField
+write tests for DefaultAdapter
+implement DefaultAdapter
+write tests for Adapter
+implement Adapter
+write tests for ExcludableAdapter
+implement ExcludableAdapter

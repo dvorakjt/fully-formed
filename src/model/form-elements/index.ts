@@ -5,13 +5,19 @@ export {
   AbstractForm,
   AbstractSubForm,
   Field,
+  ExcludableField,
 } from './classes';
 export type { ExcludableFormElement } from './interfaces';
 export type {
   AutoTrim,
+  ControlledExcludableFieldState,
   ControlledFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
+  ExcludableFieldConstructorArgs,
+  ExcludableFieldControlFn,
+  ExcludableFieldControlTemplate,
+  ExcludableFieldState,
   ExcludableFormElementValues,
   ExcludableSubFormControlFn,
   ExcludableSubFormControlTemplate,

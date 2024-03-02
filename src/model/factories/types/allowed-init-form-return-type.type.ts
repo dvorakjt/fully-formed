@@ -125,7 +125,6 @@ export type AllowedInitFormReturnType<T extends InitFormReturnType> =
       ReadonlyArray<AbstractDerivedValue<string, unknown>>
     ) ?
       DerivedValueNamesAreUnique<T['derivedValues']>
-    : object) &
-    {
-      autoTrim? : AutoTrim<T['formElements']>
-    }
+    : object) & {
+      autoTrim?: AutoTrim<T['formElements']>;
+    };

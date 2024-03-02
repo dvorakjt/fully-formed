@@ -25,12 +25,18 @@ export {
   AbstractForm,
   AbstractSubForm,
   Field,
+  ExcludableField,
 } from './form-elements';
 export type {
   AutoTrim,
   ControlledFieldState,
+  ControlledExcludableFieldState,
   ConfirmMethodArgs,
   ConfirmedFormValue,
+  ExcludableFieldConstructorArgs,
+  ExcludableFieldControlFn,
+  ExcludableFieldControlTemplate,
+  ExcludableFieldState,
   ExcludableFormElement,
   ExcludableFormElementValues,
   ExcludableSubFormControlFn,
