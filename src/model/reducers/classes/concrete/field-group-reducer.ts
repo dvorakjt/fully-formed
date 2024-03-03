@@ -91,7 +91,7 @@ export class FieldGroupReducer<
     return {
       value: this.getInitialValue(),
       validity: this.determineValidity(),
-      includedMemberNames: this.includedMemberNames,
+      includedMemberNames: Array.from(this.includedMemberNames),
     };
   }
 
@@ -112,7 +112,7 @@ export class FieldGroupReducer<
         this.state = {
           value: this.getUpdatedValue(member.name, state),
           validity: this.determineValidity(),
-          includedMemberNames: this.includedMemberNames,
+          includedMemberNames: Array.from(this.includedMemberNames),
         };
       });
     }
@@ -123,13 +123,13 @@ export class FieldGroupReducer<
     memberState: Members[number]['state'],
   ): void {
     if (this.isIncludedMember(memberState)) {
-      this.updateSetsWithIncludedMember(memberName, memberState);
+      this.updateSetsWithIncludedMemberName(memberName, memberState);
     } else {
       this.removeExcludedMemberNameFromSets(memberName);
     }
   }
 
-  private updateSetsWithIncludedMember(
+  private updateSetsWithIncludedMemberName(
     memberName: Members[number]['name'],
     memberState: Members[number]['state'],
   ): void {

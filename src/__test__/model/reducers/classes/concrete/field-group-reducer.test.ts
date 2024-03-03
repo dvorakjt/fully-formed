@@ -195,17 +195,21 @@ describe('FieldGroupReducer', () => {
     const nameGroupReducer = new FieldGroupReducer({
       members: [firstName, lastName, previousName],
     });
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual(
-      new Set(['firstName', 'lastName']),
-    );
+    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
+      'firstName',
+      'lastName',
+    ]);
     previousName.setExclude(false);
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual(
-      new Set(['firstName', 'lastName', 'previousName']),
-    );
+    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
+      'firstName',
+      'lastName',
+      'previousName',
+    ]);
     previousName.setExclude(true);
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual(
-      new Set(['firstName', 'lastName']),
-    );
+    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
+      'firstName',
+      'lastName',
+    ]);
   });
 
   test('When the validity of one of its members changes, its validity is updated.', () => {
@@ -272,7 +276,7 @@ describe('FieldGroupReducer', () => {
         lastName: 'Strauss',
       },
       validity: Validity.Valid,
-      includedMemberNames: new Set(['firstName', 'lastName']),
+      includedMemberNames: ['firstName', 'lastName'],
     });
   });
 });

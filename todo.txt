@@ -1,2 +1,3 @@
 add string validators
 test and implement FieldGroup
+implement deep copy

@@ -14,8 +14,7 @@ export type FormReducerState<
     AbstractAdapter<
       string,
       FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      unknown
     >
   >,
 > = {
