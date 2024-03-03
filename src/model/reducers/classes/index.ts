@@ -3,4 +3,4 @@ export {
   AbstractFormReducer,
   AbstractStatefulArrayReducer,
 } from './abstract';
-export { StatefulArrayReducer } from './concrete';
+export { FieldGroupReducer, StatefulArrayReducer } from './concrete';

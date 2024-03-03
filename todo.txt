@@ -1,2 +1,2 @@
-write tests for DefaultAdapter
-implement DefaultAdapter
+add string validators
+test and implement FieldGroup
