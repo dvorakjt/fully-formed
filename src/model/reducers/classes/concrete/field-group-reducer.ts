@@ -12,7 +12,7 @@ import type {
 } from '../../types';
 
 export class FieldGroupReducer<
-  Members extends FieldGroupMembers,
+  const Members extends FieldGroupMembers,
 > extends AbstractFieldGroupReducer<Members> {
   public readonly members: Members;
   private stateManager: AbstractStateManager<FieldGroupReducerState<Members>>;

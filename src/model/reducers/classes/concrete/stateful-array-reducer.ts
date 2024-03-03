@@ -11,7 +11,7 @@ import type {
  * Groups the state of a collection of {@link Stateful} items into an array and emits a new array when the state of any members changes.
  */
 export class StatefulArrayReducer<
-  T extends ReadonlyArray<Stateful<unknown>>,
+  const T extends ReadonlyArray<Stateful<unknown>>,
 > extends AbstractStatefulArrayReducer<T> {
   private members: T;
   private stateManager: AbstractStateManager<StatefulArrayStates<T>>;

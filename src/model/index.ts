@@ -28,8 +28,13 @@ export type {
   InitSubFormReturnType,
   InitSubForm,
 } from './factories';
-export { AbstractFieldGroup, FieldGroupValiditySource } from './field-groups';
+export {
+  AbstractFieldGroup,
+  FieldGroup,
+  FieldGroupValiditySource,
+} from './field-groups';
 export type {
+  FieldGroupConstructorArgs,
   FieldGroupMembers,
   FieldGroupState,
   FieldGroupValue,

@@ -30,7 +30,7 @@ export class Field<
   Name extends string,
   Value,
   Transient extends boolean = false,
-  Controllers extends ReadonlyArray<
+  const Controllers extends ReadonlyArray<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   > = [],
 > extends AbstractField<Name, Value, Transient> {

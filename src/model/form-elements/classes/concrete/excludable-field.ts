@@ -30,7 +30,7 @@ export class ExcludableField<
   Name extends string,
   Value,
   Transient extends boolean,
-  Controllers extends ReadonlyArray<
+  const Controllers extends ReadonlyArray<
     FormElement | AbstractFieldGroup<string, FieldGroupMembers>
   > = [],
 > extends AbstractExcludableField<Name, Value, Transient> {

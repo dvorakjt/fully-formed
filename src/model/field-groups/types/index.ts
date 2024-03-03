@@ -1,3 +1,4 @@
+export type { FieldGroupConstructorArgs } from './field-group-constructor-args.type';
 export type {
   FieldGroupMember,
   FieldGroupMembers,
