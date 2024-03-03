@@ -14,9 +14,9 @@ export class DefaultAdapter<Source extends FormElement> extends Adapter<
     super({
       name: source.name,
       source,
-      adaptFn:
-        adaptFn ??
-        ((sourceState): Source['state']['value'] => sourceState.value),
+      adaptFn: (sourceState): Source['state']['value'] => {
+        return adaptFn ? adaptFn(sourceState.value) : sourceState.value;
+      },
     });
   }
 }
