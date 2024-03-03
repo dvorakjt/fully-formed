@@ -2,11 +2,14 @@ export {
   AbstractAdapter,
   AbstractExcludableAdapter,
   Adapter,
+  DefaultAdapter,
   ExcludableAdapter,
 } from './adapters';
 export type {
   AdaptFn,
   AdapterConstructorArgs,
+  DefaultAdaptFn,
+  DefaultAdapterConstructorArgs,
   ExcludableAdaptFnReturnType,
   ExcludableAdaptFn,
   ExcludableAdapterConstructorArgs,
