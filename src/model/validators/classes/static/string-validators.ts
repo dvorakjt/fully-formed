@@ -57,4 +57,45 @@ export class StringValidators {
       invalidMessage: args && args.invalidMessage,
     });
   }
+
+  public static includesLower(
+    args?: ValidatorMessages,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      return /[a-z]/.test(value);
+    };
+    return new Validator<string>({
+      predicate,
+      validMessage: args && args.validMessage,
+      invalidMessage: args && args.invalidMessage,
+    });
+  }
+
+  public static includesDigit(
+    args?: ValidatorMessages,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      return /\d/.test(value);
+    };
+    return new Validator<string>({
+      predicate,
+      validMessage: args && args.validMessage,
+      invalidMessage: args && args.invalidMessage,
+    });
+  }
+
+  public static includesSymbol(
+    args?: ValidatorMessages & TrimBeforeValidation,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      return /[ !"#$%&'()*+,-./\\:;<=>?@[\]^_`{|}~]/.test(
+        args && args.trimBeforeValidation ? value.trim() : value,
+      );
+    };
+    return new Validator<string>({
+      predicate,
+      validMessage: args && args.validMessage,
+      invalidMessage: args && args.invalidMessage,
+    });
+  }
 }
