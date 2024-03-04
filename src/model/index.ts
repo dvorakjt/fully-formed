@@ -83,7 +83,6 @@ export {
 } from './reducers';
 export type {
   FieldGroupReducerConstructorArgs,
-  FieldGroupReducerState,
   FormReducerState,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,

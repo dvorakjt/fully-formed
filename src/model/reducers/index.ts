@@ -7,7 +7,6 @@ export {
 } from './classes';
 export type {
   FieldGroupReducerConstructorArgs,
-  FieldGroupReducerState,
   FormReducerState,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,

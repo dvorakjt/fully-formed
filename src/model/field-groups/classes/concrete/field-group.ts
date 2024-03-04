@@ -9,8 +9,9 @@ import {
 } from '../../../reducers';
 import {
   StateManager,
-  type AbstractStateManager,
   Validity,
+  type AbstractStateManager,
+  type Message,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type { UniquelyNamed } from '../../../shared';
@@ -22,6 +23,7 @@ import type {
 } from '../../types';
 import { FieldGroupValiditySource } from '../..';
 
+//TODO implement pending message logic
 export class FieldGroup<
   Name extends string,
   const Members extends FieldGroupMembers & UniquelyNamed<Members>,
@@ -50,6 +52,7 @@ export class FieldGroup<
     asyncValidators,
     validatorTemplates,
     asyncValidatorTemplates,
+    pendingMessage
   }: FieldGroupConstructorArgs<Name, Members>) {
     super();
     this.name = name;
@@ -60,6 +63,7 @@ export class FieldGroup<
       asyncValidators,
       validatorTemplates,
       asyncValidatorTemplates,
+      pendingMessage
     });
     if (this.reducer.state.validity !== Validity.Valid) {
       const initialState: FieldGroupState<Members> = {
@@ -76,7 +80,6 @@ export class FieldGroup<
       );
       const initialState: FieldGroupState<Members> = {
         ...syncResult,
-        includedMemberNames: this.reducer.state.includedMemberNames,
         validitySource: FieldGroupValiditySource.Validation,
       };
       this.stateManager = new StateManager<FieldGroupState<Members>>(
@@ -85,7 +88,10 @@ export class FieldGroup<
       this.validatorSuiteSubscription = observableResult?.subscribe(result => {
         this.state = {
           ...result,
-          includedMemberNames: this.reducer.state.includedMemberNames,
+          messages : [
+            ...this.getNonPendingMessages(),
+            ...result.messages
+          ],
           validitySource: FieldGroupValiditySource.Validation,
         };
       });
@@ -114,19 +120,25 @@ export class FieldGroup<
         );
         this.state = {
           ...syncResult,
-          includedMemberNames: state.includedMemberNames,
           validitySource: FieldGroupValiditySource.Validation,
         };
         this.validatorSuiteSubscription = observableResult?.subscribe(
           result => {
             this.state = {
               ...result,
-              includedMemberNames: state.includedMemberNames,
+              messages : [
+                ...this.getNonPendingMessages(),
+                ...result.messages
+              ],
               validitySource: FieldGroupValiditySource.Validation,
             };
           },
         );
       }
     });
+  }
+
+  private getNonPendingMessages() : Message[] {
+    return this.state.messages.filter(m => m.validity !== Validity.Pending);
   }
 }

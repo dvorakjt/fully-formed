@@ -3,60 +3,45 @@ import {
   StateManager,
   Validity,
   type AbstractStateManager,
+  type State,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type { FieldGroupMembers, FieldGroupValue } from '../../../field-groups';
-import type {
-  FieldGroupReducerState,
-  FieldGroupReducerConstructorArgs,
-} from '../../types';
+import type { FieldGroupReducerConstructorArgs } from '../../types';
 
 export class FieldGroupReducer<
   const Members extends FieldGroupMembers,
 > extends AbstractFieldGroupReducer<Members> {
   public readonly members: Members;
-  private stateManager: AbstractStateManager<FieldGroupReducerState<Members>>;
-  private includedMemberNames: Set<Members[number]['name']>;
+  private stateManager: AbstractStateManager<State<FieldGroupValue<Members>>>;
   private pendingIncludedMemberNames: Set<Members[number]['name']>;
   private invalidIncludedMemberNames: Set<Members[number]['name']>;
 
-  public get state(): FieldGroupReducerState<Members> {
+  public get state(): State<FieldGroupValue<Members>> {
     return this.stateManager.state;
   }
 
-  private set state(state: FieldGroupReducerState<Members>) {
+  private set state(state: State<FieldGroupValue<Members>>) {
     this.stateManager.state = state;
   }
 
   public constructor({ members }: FieldGroupReducerConstructorArgs<Members>) {
     super();
     this.members = members;
-    this.includedMemberNames = this.initializeIncludedMemberNames();
     this.pendingIncludedMemberNames =
       this.initializePendingIncludedMemberNames();
     this.invalidIncludedMemberNames =
       this.initializeInvalidIncludedMemberNames();
-    this.stateManager = new StateManager<FieldGroupReducerState<Members>>(
+    this.stateManager = new StateManager<State<FieldGroupValue<Members>>>(
       this.getInitialState(),
     );
     this.subscribeToMembers();
   }
 
   public subscribeToState(
-    cb: (state: FieldGroupReducerState<Members>) => void,
+    cb: (state: State<FieldGroupValue<Members>>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
-  }
-
-  private initializeIncludedMemberNames(): Set<Members[number]['name']> {
-    const includedMemberNames = new Set<Members[number]['name']>(
-      this.members
-        .filter(m => {
-          return this.isIncludedMember(m.state);
-        })
-        .map(m => m.name),
-    );
-    return includedMemberNames;
   }
 
   private initializePendingIncludedMemberNames(): Set<Members[number]['name']> {
@@ -87,11 +72,10 @@ export class FieldGroupReducer<
     return invalidIncludedMemberNames;
   }
 
-  private getInitialState(): FieldGroupReducerState<Members> {
+  private getInitialState(): State<FieldGroupValue<Members>> {
     return {
       value: this.getInitialValue(),
       validity: this.determineValidity(),
-      includedMemberNames: Array.from(this.includedMemberNames),
     };
   }
 
@@ -112,7 +96,6 @@ export class FieldGroupReducer<
         this.state = {
           value: this.getUpdatedValue(member.name, state),
           validity: this.determineValidity(),
-          includedMemberNames: Array.from(this.includedMemberNames),
         };
       });
     }
@@ -133,7 +116,6 @@ export class FieldGroupReducer<
     memberName: Members[number]['name'],
     memberState: Members[number]['state'],
   ): void {
-    this.includedMemberNames.add(memberName);
     if (memberState.validity === Validity.Invalid) {
       this.invalidIncludedMemberNames.add(memberName);
     } else {
@@ -149,7 +131,6 @@ export class FieldGroupReducer<
   private removeExcludedMemberNameFromSets(
     memberName: Members[number]['name'],
   ): void {
-    this.includedMemberNames.delete(memberName);
     this.pendingIncludedMemberNames.delete(memberName);
     this.invalidIncludedMemberNames.delete(memberName);
   }

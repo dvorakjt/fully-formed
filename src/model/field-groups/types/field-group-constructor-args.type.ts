@@ -20,4 +20,5 @@ export type FieldGroupConstructorArgs<
   asyncValidatorTemplates?: Array<
     AsyncValidatorTemplate<FieldGroupValue<Members>>
   >;
+  pendingMessage? : string;
 };

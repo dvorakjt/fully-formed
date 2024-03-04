@@ -106,37 +106,6 @@ describe('FieldGroupReducer', () => {
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
   });
 
-  test('The includedMembers property of its state includes the names of all included members.', () => {
-    const firstName = new Field({ name: 'firstName', defaultValue: '' });
-    const lastName = new Field({ name: 'lastName', defaultValue: '' });
-    const previousName = new ExcludableField({
-      name: 'previousName',
-      defaultValue: '',
-      excludeByDefault: true,
-    });
-    const nameGroupReducer = new FieldGroupReducer({
-      members: [firstName, lastName, previousName],
-    });
-    expect(nameGroupReducer.state.includedMemberNames).toContain('firstName');
-    expect(nameGroupReducer.state.includedMemberNames).toContain('lastName');
-  });
-
-  test('The includedMembers property of its state does not include the names of excluded members.', () => {
-    const firstName = new Field({ name: 'firstName', defaultValue: '' });
-    const lastName = new Field({ name: 'lastName', defaultValue: '' });
-    const previousName = new ExcludableField({
-      name: 'previousName',
-      defaultValue: '',
-      excludeByDefault: true,
-    });
-    const nameGroupReducer = new FieldGroupReducer({
-      members: [firstName, lastName, previousName],
-    });
-    expect(nameGroupReducer.state.includedMemberNames).not.toContain(
-      'previousName',
-    );
-  });
-
   test('When the value of one of its members changes, its value is updated.', () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
@@ -182,34 +151,6 @@ describe('FieldGroupReducer', () => {
       firstName: 'Pete',
       lastName: 'Fountain',
     });
-  });
-
-  test('When the exclude property of one of its members changes, its includedMembers property is updated.', () => {
-    const firstName = new Field({ name: 'firstName', defaultValue: '' });
-    const lastName = new Field({ name: 'lastName', defaultValue: '' });
-    const previousName = new ExcludableField({
-      name: 'previousName',
-      defaultValue: '',
-      excludeByDefault: true,
-    });
-    const nameGroupReducer = new FieldGroupReducer({
-      members: [firstName, lastName, previousName],
-    });
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
-      'firstName',
-      'lastName',
-    ]);
-    previousName.setExclude(false);
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
-      'firstName',
-      'lastName',
-      'previousName',
-    ]);
-    previousName.setExclude(true);
-    expect(nameGroupReducer.state.includedMemberNames).toStrictEqual([
-      'firstName',
-      'lastName',
-    ]);
   });
 
   test('When the validity of one of its members changes, its validity is updated.', () => {
@@ -276,7 +217,6 @@ describe('FieldGroupReducer', () => {
         lastName: 'Strauss',
       },
       validity: Validity.Valid,
-      includedMemberNames: ['firstName', 'lastName'],
     });
   });
 });
