@@ -1,6 +1,13 @@
 export {
   AbstractGroupReducer,
   AbstractFormReducer,
+  AbstractFormValidityReducer,
   AbstractStatefulArrayReducer,
+  AbstractValidityReducer,
 } from './abstract';
-export { GroupReducer, StatefulArrayReducer } from './concrete';
+export {
+  FormValidityReducer,
+  GroupReducer,
+  StatefulArrayReducer,
+  ValidityReducer,
+} from './concrete';
