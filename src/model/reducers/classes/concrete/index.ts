@@ -1,2 +1,2 @@
-export { FieldGroupReducer } from './field-group-reducer';
+export { GroupReducer } from './group-reducer';
 export { StatefulArrayReducer } from './stateful-array-reducer';

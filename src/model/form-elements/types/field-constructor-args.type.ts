@@ -6,14 +6,14 @@ import type {
 } from '../../validators';
 import type { FieldControlTemplate } from './field-control-template.type';
 import type { FormElement } from './form-element.type';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 
 export type FieldConstructorArgs<
   Name extends string,
   Value,
   Transient extends boolean,
   Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   >,
 > = {
   name: Name;

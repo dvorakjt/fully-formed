@@ -1,8 +1,8 @@
 import type { FormElement } from '../../form-elements';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { ExcludableAdaptFnReturnType } from '.';
 
 export type ExcludableAdaptFn<
-  Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+  Source extends FormElement | AbstractGroup<string, GroupMembers>,
   Value,
 > = (sourceState: Source['state']) => ExcludableAdaptFnReturnType<Value>;

@@ -1,10 +1,10 @@
 import type { FormElement } from './form-element.type';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { FieldControlFn } from './field-control-fn.type';
 
 export type FieldControlTemplate<
   Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   >,
   Value,
 > = {

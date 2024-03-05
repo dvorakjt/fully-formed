@@ -1,14 +1,6 @@
-import type {
-  Identifiable,
-  Nameable,
-  PossiblyTransient,
-  Resettable,
-  Stateful,
-} from '../../shared';
-import type { StateWithMessages } from '../../state';
+import type { FormConstituents } from '../types';
+import type { AbstractField, AbstractSubForm } from '../classes';
 
-export type FormElement = Nameable<string> &
-  Identifiable &
-  Stateful<StateWithMessages<unknown>> &
-  PossiblyTransient<boolean> &
-  Resettable;
+export type FormElement =
+  | AbstractField<string, unknown, boolean>
+  | AbstractSubForm<string, FormConstituents, boolean>;

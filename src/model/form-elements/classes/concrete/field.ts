@@ -12,10 +12,7 @@ import type {
   FieldState,
   FormElement,
 } from '../../types';
-import type {
-  AbstractFieldGroup,
-  FieldGroupMembers,
-} from '../../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { Subscription } from 'rxjs';
 import {
   CombinedValidatorSuite,
@@ -31,7 +28,7 @@ export class Field<
   Value,
   Transient extends boolean = false,
   const Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   > = [],
 > extends AbstractField<Name, Value, Transient> {
   public readonly name: Name;

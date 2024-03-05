@@ -1,12 +1,9 @@
-import { AbstractFieldGroup } from '../abstract';
+import { AbstractGroup } from '../abstract';
 import {
   CombinedValidatorSuite,
   type AbstractCombinedValidatorSuite,
 } from '../../../validators';
-import {
-  FieldGroupReducer,
-  type AbstractFieldGroupReducer,
-} from '../../../reducers';
+import { GroupReducer, type AbstractGroupReducer } from '../../../reducers';
 import {
   StateManager,
   Validity,
@@ -16,32 +13,29 @@ import {
 import type { Subscription } from 'rxjs';
 import type { UniquelyNamed } from '../../../shared';
 import type {
-  FieldGroupMembers,
-  FieldGroupValue,
-  FieldGroupState,
-  FieldGroupConstructorArgs,
+  GroupMembers,
+  GroupValue,
+  GroupState,
+  GroupConstructorArgs,
 } from '../../types';
-import { FieldGroupValiditySource } from '../..';
+import { GroupValiditySource } from '../..';
 
-//TODO implement pending message logic
-export class FieldGroup<
+export class Group<
   Name extends string,
-  const Members extends FieldGroupMembers & UniquelyNamed<Members>,
-> extends AbstractFieldGroup<Name, Members> {
+  const Members extends GroupMembers & UniquelyNamed<Members>,
+> extends AbstractGroup<Name, Members> {
   public readonly name: Name;
   public readonly members: Members;
-  private reducer: AbstractFieldGroupReducer<Members>;
-  private validatorSuite: AbstractCombinedValidatorSuite<
-    FieldGroupValue<Members>
-  >;
-  private stateManager: AbstractStateManager<FieldGroupState<Members>>;
+  private reducer: AbstractGroupReducer<Members>;
+  private validatorSuite: AbstractCombinedValidatorSuite<GroupValue<Members>>;
+  private stateManager: AbstractStateManager<GroupState<Members>>;
   private validatorSuiteSubscription?: Subscription;
 
-  public get state(): FieldGroupState<Members> {
+  public get state(): GroupState<Members> {
     return this.stateManager.state;
   }
 
-  private set state(state: FieldGroupState<Members>) {
+  private set state(state: GroupState<Members>) {
     this.stateManager.state = state;
   }
 
@@ -52,47 +46,40 @@ export class FieldGroup<
     asyncValidators,
     validatorTemplates,
     asyncValidatorTemplates,
-    pendingMessage
-  }: FieldGroupConstructorArgs<Name, Members>) {
+    pendingMessage,
+  }: GroupConstructorArgs<Name, Members>) {
     super();
     this.name = name;
     this.members = members;
-    this.reducer = new FieldGroupReducer<Members>({ members });
-    this.validatorSuite = new CombinedValidatorSuite<FieldGroupValue<Members>>({
+    this.reducer = new GroupReducer<Members>({ members });
+    this.validatorSuite = new CombinedValidatorSuite<GroupValue<Members>>({
       validators,
       asyncValidators,
       validatorTemplates,
       asyncValidatorTemplates,
-      pendingMessage
+      pendingMessage,
     });
     if (this.reducer.state.validity !== Validity.Valid) {
-      const initialState: FieldGroupState<Members> = {
+      const initialState: GroupState<Members> = {
         ...this.reducer.state,
         messages: [],
-        validitySource: FieldGroupValiditySource.Reduction,
+        validitySource: GroupValiditySource.Reduction,
       };
-      this.stateManager = new StateManager<FieldGroupState<Members>>(
-        initialState,
-      );
+      this.stateManager = new StateManager<GroupState<Members>>(initialState);
     } else {
       const { syncResult, observableResult } = this.validatorSuite.validate(
         this.reducer.state.value,
       );
-      const initialState: FieldGroupState<Members> = {
+      const initialState: GroupState<Members> = {
         ...syncResult,
-        validitySource: FieldGroupValiditySource.Validation,
+        validitySource: GroupValiditySource.Validation,
       };
-      this.stateManager = new StateManager<FieldGroupState<Members>>(
-        initialState,
-      );
+      this.stateManager = new StateManager<GroupState<Members>>(initialState);
       this.validatorSuiteSubscription = observableResult?.subscribe(result => {
         this.state = {
           ...result,
-          messages : [
-            ...this.getNonPendingMessages(),
-            ...result.messages
-          ],
-          validitySource: FieldGroupValiditySource.Validation,
+          messages: [...this.getNonPendingMessages(), ...result.messages],
+          validitySource: GroupValiditySource.Validation,
         };
       });
     }
@@ -100,7 +87,7 @@ export class FieldGroup<
   }
 
   public subscribeToState(
-    cb: (state: FieldGroupState<Members>) => void,
+    cb: (state: GroupState<Members>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
@@ -112,7 +99,7 @@ export class FieldGroup<
         this.state = {
           ...state,
           messages: [],
-          validitySource: FieldGroupValiditySource.Reduction,
+          validitySource: GroupValiditySource.Reduction,
         };
       } else {
         const { syncResult, observableResult } = this.validatorSuite.validate(
@@ -120,17 +107,14 @@ export class FieldGroup<
         );
         this.state = {
           ...syncResult,
-          validitySource: FieldGroupValiditySource.Validation,
+          validitySource: GroupValiditySource.Validation,
         };
         this.validatorSuiteSubscription = observableResult?.subscribe(
           result => {
             this.state = {
               ...result,
-              messages : [
-                ...this.getNonPendingMessages(),
-                ...result.messages
-              ],
-              validitySource: FieldGroupValiditySource.Validation,
+              messages: [...this.getNonPendingMessages(), ...result.messages],
+              validitySource: GroupValiditySource.Validation,
             };
           },
         );
@@ -138,7 +122,7 @@ export class FieldGroup<
     });
   }
 
-  private getNonPendingMessages() : Message[] {
+  private getNonPendingMessages(): Message[] {
     return this.state.messages.filter(m => m.validity !== Validity.Pending);
   }
 }

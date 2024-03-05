@@ -1,10 +1,7 @@
 import { AbstractExcludableAdapter } from '../abstract';
 import { StateManager, type AbstractStateManager } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type {
-  AbstractFieldGroup,
-  FieldGroupMembers,
-} from '../../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { FormElement } from '../../../form-elements';
 import type {
   ExcludableAdaptFn,
@@ -14,7 +11,7 @@ import type { ExcludableAdapterState } from '../../types';
 
 export class ExcludableAdapter<
   Name extends string,
-  Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+  Source extends FormElement | AbstractGroup<string, GroupMembers>,
   Value,
 > extends AbstractExcludableAdapter<Name, Source, Value> {
   public readonly name: Name;

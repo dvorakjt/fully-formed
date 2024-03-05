@@ -24,8 +24,6 @@ export type {
   FieldControlFn,
   FieldControlTemplate,
   FieldState,
-  FirstNonValidFormElement,
-  FirstNonValidField,
   FormConstituents,
   FormElement,
   FormState,

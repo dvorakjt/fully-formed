@@ -1,18 +1,18 @@
 import { describe, test, expect } from 'vitest';
 import {
-  FieldGroup,
+  Group,
   ExcludableField,
   Field,
   StringValidators,
   Validity,
-  FieldGroupValiditySource,
+  GroupValiditySource,
   AsyncValidator,
   Validator,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
 
 //TODO : need to test messages and that pending validators are ignored when the value is updated
-describe('FieldGroup', () => {
+describe('Group', () => {
   test('Its value is initialized to an object containing the names and values of its members.', () => {
     const firstName = new Field({ name: 'firstName', defaultValue: 'John' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Cage' });
@@ -20,7 +20,7 @@ describe('FieldGroup', () => {
       name: 'middleName',
       defaultValue: 'Milton',
     });
-    const fullName = new FieldGroup({
+    const fullName = new Group({
       name: 'fullName',
       members: [firstName, middleName, lastName],
     });
@@ -28,7 +28,7 @@ describe('FieldGroup', () => {
       name: 'occupation',
       defaultValue: 'composer',
     });
-    const nameAndOccupation = new FieldGroup({
+    const nameAndOccupation = new Group({
       name: 'nameAndOccupation',
       members: [fullName, occupation],
     });
@@ -50,7 +50,7 @@ describe('FieldGroup', () => {
       defaultValue: '',
       excludeByDefault: true,
     });
-    const fullName = new FieldGroup({
+    const fullName = new Group({
       name: 'fullName',
       members: [firstName, middleName, lastName],
     });
@@ -69,7 +69,7 @@ describe('FieldGroup', () => {
       excludeByDefault: true,
       validators: [StringValidators.required()],
     });
-    const fullName = new FieldGroup({
+    const fullName = new Group({
       name: 'fullName',
       members: [firstName, middleName, lastName],
     });
@@ -83,11 +83,11 @@ describe('FieldGroup', () => {
       validators: [StringValidators.required()],
     });
     const validField = new Field({ name: 'validField', defaultValue: '' });
-    const fieldGroup = new FieldGroup({
+    const group = new Group({
       name: 'invalidGroup',
       members: [invalidField, validField],
     });
-    expect(fieldGroup.state.validity).toBe(Validity.Invalid);
+    expect(group.state.validity).toBe(Validity.Invalid);
   });
 
   test('If the reduced validity of its members is invalid, its validity source is reduction.', () => {
@@ -97,13 +97,11 @@ describe('FieldGroup', () => {
       validators: [StringValidators.required()],
     });
     const validField = new Field({ name: 'validField', defaultValue: '' });
-    const fieldGroup = new FieldGroup({
-      name: 'fieldGroup',
+    const group = new Group({
+      name: 'group',
       members: [invalidField, validField],
     });
-    expect(fieldGroup.state.validitySource).toBe(
-      FieldGroupValiditySource.Reduction,
-    );
+    expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
   });
 
   test('If the reduced validity of its members is pending, its validity is pending.', () => {
@@ -119,11 +117,11 @@ describe('FieldGroup', () => {
       asyncValidators: [asyncRequired],
     });
     const validField = new Field({ name: 'validField', defaultValue: '' });
-    const fieldGroup = new FieldGroup({
-      name: 'fieldGroup',
+    const group = new Group({
+      name: 'group',
       members: [pendingField, validField],
     });
-    expect(fieldGroup.state.validity).toBe(Validity.Pending);
+    expect(group.state.validity).toBe(Validity.Pending);
   });
 
   test('If the reduced validity of its members is pending, its validity source is reduction.', () => {
@@ -139,25 +137,21 @@ describe('FieldGroup', () => {
       asyncValidators: [asyncRequired],
     });
     const validField = new Field({ name: 'validField', defaultValue: '' });
-    const fieldGroup = new FieldGroup({
-      name: 'fieldGroup',
+    const group = new Group({
+      name: 'group',
       members: [pendingField, validField],
     });
-    expect(fieldGroup.state.validitySource).toBe(
-      FieldGroupValiditySource.Reduction,
-    );
+    expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
   });
 
   test('If all its included members are valid, its validity source is validation.', () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
-    const nameGroup = new FieldGroup({
+    const nameGroup = new Group({
       name: 'nameGroup',
       members: [firstName, lastName],
     });
-    expect(nameGroup.state.validitySource).toBe(
-      FieldGroupValiditySource.Validation,
-    );
+    expect(nameGroup.state.validitySource).toBe(GroupValiditySource.Validation);
   });
 
   type ContactInfoGroupValue = {
@@ -179,7 +173,7 @@ describe('FieldGroup', () => {
       name: 'secondaryEmail',
       defaultValue: 'user@example.com',
     });
-    const contactInfoGroup = new FieldGroup({
+    const contactInfoGroup = new Group({
       name: 'contactInfo',
       members: [primaryEmail, secondaryEmail],
       validators: [contactInfoValidator],
@@ -196,7 +190,7 @@ describe('FieldGroup', () => {
       name: 'secondaryEmail',
       defaultValue: '',
     });
-    const contactInfoGroup = new FieldGroup({
+    const contactInfoGroup = new Group({
       name: 'contactInfo',
       members: [primaryEmail, secondaryEmail],
       validators: [contactInfoValidator],
@@ -232,9 +226,9 @@ describe('FieldGroup', () => {
     const confirmPassword = new Field({
       name: 'confirmPassword',
       defaultValue: 'password',
-      transient : true
+      transient: true,
     });
-    const signUpGroup = new FieldGroup({
+    const signUpGroup = new Group({
       name: 'signUpGroup',
       members: [email, password, confirmPassword],
       validators: [passwordsMatch],
@@ -271,9 +265,9 @@ describe('FieldGroup', () => {
     const confirmPassword = new Field({
       name: 'confirmPassword',
       defaultValue: 'password',
-      transient: true
+      transient: true,
     });
-    const signUpGroup = new FieldGroup({
+    const signUpGroup = new Group({
       name: 'signUpGroup',
       members: [email, password, confirmPassword],
       validators: [passwordsMatch],
@@ -314,9 +308,9 @@ describe('FieldGroup', () => {
     const confirmPassword = new Field({
       name: 'confirmPassword',
       defaultValue: 'password',
-      transient: true
+      transient: true,
     });
-    const signUpGroup = new FieldGroup({
+    const signUpGroup = new Group({
       name: 'signUpGroup',
       members: [email, password, confirmPassword],
       validators: [passwordsMatch],
@@ -338,53 +332,54 @@ describe('FieldGroup', () => {
     const confirmPassword = new Field({
       name: 'confirmPassword',
       defaultValue: '',
-      transient: true
+      transient: true,
     });
     const validMessage = 'The passwords match.';
-    const invalidMessage = 'Please ensure the confirmed password matches the password.';
-    const signUpGroup = new FieldGroup({
+    const invalidMessage =
+      'Please ensure the confirmed password matches the password.';
+    const signUpGroup = new Group({
       name: 'signUpGroup',
       members: [email, password, confirmPassword],
-      validatorTemplates : [
+      validatorTemplates: [
         {
-          predicate : (value):boolean => {
+          predicate: (value): boolean => {
             return value.password === value.confirmPassword;
           },
           validMessage,
-          invalidMessage
-        }
-      ]
+          invalidMessage,
+        },
+      ],
     });
     expect(signUpGroup.state).toStrictEqual({
-      value : {
-        email : 'user@example.com',
-        password : 'password',
-        confirmPassword : ''
+      value: {
+        email: 'user@example.com',
+        password: 'password',
+        confirmPassword: '',
       },
-      validity : Validity.Invalid,
-      messages : [
+      validity: Validity.Invalid,
+      messages: [
         {
-          text : invalidMessage,
-          validity : Validity.Invalid
-        }
+          text: invalidMessage,
+          validity: Validity.Invalid,
+        },
       ],
-      validitySource : FieldGroupValiditySource.Validation
+      validitySource: GroupValiditySource.Validation,
     });
     confirmPassword.setValue(password.state.value);
     expect(signUpGroup.state).toStrictEqual({
-      value : {
-        email : 'user@example.com',
-        password : 'password',
-        confirmPassword : 'password'
+      value: {
+        email: 'user@example.com',
+        password: 'password',
+        confirmPassword: 'password',
       },
-      validity : Validity.Valid,
-      messages : [
+      validity: Validity.Valid,
+      messages: [
         {
-          text : validMessage,
-          validity : Validity.Valid
-        }
+          text: validMessage,
+          validity: Validity.Valid,
+        },
       ],
-      validitySource : FieldGroupValiditySource.Validation
+      validitySource: GroupValiditySource.Validation,
     });
   });
 
@@ -396,18 +391,18 @@ describe('FieldGroup', () => {
       defaultValue: 'user@example.com',
     });
     const password = new Field({ name: 'password', defaultValue: 'password' });
-    const signUpGroup = new FieldGroup({
+    const signUpGroup = new Group({
       name: 'signUpGroup',
       members: [email, password],
-      asyncValidatorTemplates : [
+      asyncValidatorTemplates: [
         {
           predicate: (value): Promise<boolean> => {
             return promiseScheduler.createScheduledPromise(
               !existingUsers.has(value.email),
             );
           },
-        }
-      ]
+        },
+      ],
     });
     expect(signUpGroup.state.validity).toBe(Validity.Pending);
     signUpGroup.subscribeToState(state => {
@@ -416,28 +411,82 @@ describe('FieldGroup', () => {
     promiseScheduler.resolveAll();
   });
 
+  test('When its value changes, its async validators validate the new value.', () => {
+    const email = new Field({ name: 'email', defaultValue: '' });
+    const password = new Field({ name: 'password', defaultValue: '' });
+    const existingUsers = new Set<string>(['user@example.com']);
+    const promiseScheduler = new PromiseScheduler();
+    const signUpGroup = new Group({
+      name: 'signUpGroup',
+      members: [email, password],
+      asyncValidatorTemplates: [
+        {
+          predicate: (value): Promise<boolean> => {
+            return promiseScheduler.createScheduledPromise(
+              !existingUsers.has(value.email),
+            );
+          },
+        },
+      ],
+    });
+    email.setValue('user@example.com');
+    signUpGroup.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: {
+          email: 'user@example.com',
+          password: '',
+        },
+        validity: Validity.Invalid,
+        validitySource: GroupValiditySource.Validation,
+        messages: [],
+      });
+    });
+    promiseScheduler.resolveAll();
+  });
+
   test('When one of its included members becomes invalid, its validity becomes invalid.', () => {
-    const requiredField = new Field({ name : 'requiredField', defaultValue : 'test', validators : [StringValidators.required()]});
-    const optionalField = new Field({ name : 'optionalField', defaultValue : '' });
-    const fieldGroup = new FieldGroup({ name : 'fieldGroup', members : [requiredField, optionalField]});
-    expect(fieldGroup.state.validity).toBe(Validity.Valid);
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: 'test',
+      validators: [StringValidators.required()],
+    });
+    const optionalField = new Field({
+      name: 'optionalField',
+      defaultValue: '',
+    });
+    const group = new Group({
+      name: 'group',
+      members: [requiredField, optionalField],
+    });
+    expect(group.state.validity).toBe(Validity.Valid);
     requiredField.setValue('');
-    expect(fieldGroup.state.validity).toBe(Validity.Invalid);
+    expect(group.state.validity).toBe(Validity.Invalid);
   });
 
   test('When one of its included members becomes pending and all other included members are valid, its validity becomes pending.', () => {
     const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({ 
-      predicate : (value):Promise<boolean> => {
-        return promiseScheduler.createScheduledPromise(value.length > 0)
-      }
+    const requiredAsync = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(value.length > 0);
+      },
     });
-    const asyncValidatedField = new Field({ name : 'asyncValidatedField', defaultValue : 'test', asyncValidators : [requiredAsync]});
-    const validField = new Field({ name : 'validField', defaultValue : ''});
-    const fieldGroup = new FieldGroup({ name : 'fieldGroup', members : [asyncValidatedField, validField]});
-    fieldGroup.subscribeToState(state => {
-      expect(state.validity).toBe(asyncValidatedField.state.value === 'test' ? Validity.Valid : Validity.Pending);
-      if(asyncValidatedField.state.value === 'test') {
+    const asyncValidatedField = new Field({
+      name: 'asyncValidatedField',
+      defaultValue: 'test',
+      asyncValidators: [requiredAsync],
+    });
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const group = new Group({
+      name: 'group',
+      members: [asyncValidatedField, validField],
+    });
+    group.subscribeToState(state => {
+      expect(state.validity).toBe(
+        asyncValidatedField.state.value === 'test' ?
+          Validity.Valid
+        : Validity.Pending,
+      );
+      if (asyncValidatedField.state.value === 'test') {
         asyncValidatedField.setValue('');
       }
     });
@@ -446,38 +495,53 @@ describe('FieldGroup', () => {
 
   test('When one of its members becomes invalid or pending, its messages array is emptied.', () => {
     const password = new Field({
-      name : 'password',
-      defaultValue : 'password',
-      validators : [StringValidators.required()]
+      name: 'password',
+      defaultValue: 'password',
+      validators: [StringValidators.required()],
     });
-    const confirmPassword = new Field({ name : 'confirmPassword', defaultValue : ''});
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+    });
     const invalidMessage = 'Confirmed password must match password.';
-    const passwordGroup = new FieldGroup({ 
-      name : 'passwordGroup',
-      members : [password, confirmPassword],
-      validatorTemplates : [{
-        predicate : (value):boolean => {
-          return value.password === value.confirmPassword
+    const passwordGroup = new Group({
+      name: 'passwordGroup',
+      members: [password, confirmPassword],
+      validatorTemplates: [
+        {
+          predicate: (value): boolean => {
+            return value.password === value.confirmPassword;
+          },
+          invalidMessage,
         },
-        invalidMessage
-      }]
+      ],
     });
     expect(passwordGroup.state.messages).toStrictEqual([
       {
-        text : invalidMessage,
-        validity : Validity.Invalid
-      }
+        text: invalidMessage,
+        validity: Validity.Invalid,
+      },
     ]);
     password.setValue('');
     expect(passwordGroup.state.messages).toStrictEqual([]);
   });
 
   test('When one of its members becomes invalid or pending, its validity source becomes reduction.', () => {
-    const requiredField = new Field({ name : 'requiredField', defaultValue : 'test', validators : [StringValidators.required()]});
-    const optionalField = new Field({ name : 'optionalField', defaultValue : '' });
-    const fieldGroup = new FieldGroup({ name : 'fieldGroup', members : [requiredField, optionalField]});
-    expect(fieldGroup.state.validitySource).toBe(FieldGroupValiditySource.Validation);
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: 'test',
+      validators: [StringValidators.required()],
+    });
+    const optionalField = new Field({
+      name: 'optionalField',
+      defaultValue: '',
+    });
+    const group = new Group({
+      name: 'group',
+      members: [requiredField, optionalField],
+    });
+    expect(group.state.validitySource).toBe(GroupValiditySource.Validation);
     requiredField.setValue('');
-    expect(fieldGroup.state.validitySource).toBe(FieldGroupValiditySource.Reduction);
+    expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
   });
 });

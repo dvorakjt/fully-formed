@@ -1,6 +1,6 @@
 import type { AbstractAdapter } from '../../adapters';
 import type { AbstractDerivedValue } from '../../derived-values';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { FormElement, AutoTrim } from '../../form-elements';
 import type {
   UniquelyNamed,
@@ -13,31 +13,25 @@ type FormElementNamesAreUnique<FormElements extends readonly FormElement[]> = {
   formElements: UniquelyNamed<FormElements>;
 };
 
-type FieldGroupNamesAreUnique<
-  FieldGroups extends ReadonlyArray<
-    AbstractFieldGroup<string, FieldGroupMembers>
-  >,
+type GroupNamesAreUnique<
+  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
 > = {
-  fieldGroups: UniquelyNamed<FieldGroups>;
+  groups: UniquelyNamed<Groups>;
 };
 
-type FieldGroupNamesAreNotFormElementNames<
-  FieldGroups extends ReadonlyArray<
-    AbstractFieldGroup<string, FieldGroupMembers>
-  >,
+type GroupNamesAreNotFormElementNames<
+  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
   FormElements extends readonly FormElement[],
 > = {
-  fieldGroups: DisjointlyNamed<FieldGroups, FormElements>;
+  groups: DisjointlyNamed<Groups, FormElements>;
 };
 
-type FieldGroupMembersOccurInForm<
-  FieldGroups extends ReadonlyArray<
-    AbstractFieldGroup<string, FieldGroupMembers>
-  >,
+type GroupMembersOccurInForm<
+  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
   FormElements extends readonly FormElement[],
 > = {
-  fieldGroups: ReadonlyArray<{
-    members: ReadonlyArray<FieldGroups[number] | FormElements[number]>;
+  groups: ReadonlyArray<{
+    members: ReadonlyArray<Groups[number] | FormElements[number]>;
   }>;
 };
 
@@ -45,7 +39,7 @@ type AdapterNamesAreUnique<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,
@@ -57,7 +51,7 @@ export type AdapterNamesAreNotNonTransientFormElementNames<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,
@@ -71,12 +65,10 @@ export type AdapterNamesAreNotNonTransientFormElementNames<
 
 export type AdapterSourcesOccurInForm<
   FormElements extends readonly FormElement[],
-  FieldGroups extends ReadonlyArray<
-    AbstractFieldGroup<string, FieldGroupMembers>
-  >,
+  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
 > = {
   adapters: ReadonlyArray<
-    AbstractAdapter<string, FormElements[number] | FieldGroups[number], unknown>
+    AbstractAdapter<string, FormElements[number] | Groups[number], unknown>
   >;
 };
 
@@ -88,21 +80,16 @@ type DerivedValueNamesAreUnique<
 
 export type AllowedInitFormReturnType<T extends InitFormReturnType> =
   FormElementNamesAreUnique<T['formElements']> &
-    (T['fieldGroups'] extends (
-      ReadonlyArray<AbstractFieldGroup<string, FieldGroupMembers>>
-    ) ?
-      FieldGroupNamesAreUnique<T['fieldGroups']> &
-        FieldGroupNamesAreNotFormElementNames<
-          T['fieldGroups'],
-          T['formElements']
-        > &
-        FieldGroupMembersOccurInForm<T['fieldGroups'], T['formElements']>
+    (T['groups'] extends ReadonlyArray<AbstractGroup<string, GroupMembers>> ?
+      GroupNamesAreUnique<T['groups']> &
+        GroupNamesAreNotFormElementNames<T['groups'], T['formElements']> &
+        GroupMembersOccurInForm<T['groups'], T['formElements']>
     : object) &
     (T['adapters'] extends (
       ReadonlyArray<
         AbstractAdapter<
           string,
-          FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+          FormElement | AbstractGroup<string, GroupMembers>,
           unknown
         >
       >
@@ -114,10 +101,10 @@ export type AllowedInitFormReturnType<T extends InitFormReturnType> =
         > &
         AdapterSourcesOccurInForm<
           T['formElements'],
-          T['fieldGroups'] extends (
-            ReadonlyArray<AbstractFieldGroup<string, FieldGroupMembers>>
+          T['groups'] extends (
+            ReadonlyArray<AbstractGroup<string, GroupMembers>>
           ) ?
-            T['fieldGroups']
+            T['groups']
           : []
         >
     : object) &

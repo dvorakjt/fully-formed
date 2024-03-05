@@ -5,7 +5,7 @@ import type {
   ValidatorTemplate,
 } from '../../validators';
 import type { FormElement } from './form-element.type';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { ExcludableFieldControlTemplate } from './excludable-field-control-template.type';
 
 export type ExcludableFieldConstructorArgs<
@@ -13,7 +13,7 @@ export type ExcludableFieldConstructorArgs<
   Value,
   Transient extends boolean,
   Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   >,
 > = {
   name: Name;

@@ -1,7 +1,5 @@
-import type { FieldGroupMembers } from '../../field-groups';
+import type { GroupMembers } from '../../groups';
 
-export type FieldGroupReducerConstructorArgs<
-  Members extends FieldGroupMembers,
-> = {
+export type GroupReducerConstructorArgs<Members extends GroupMembers> = {
   members: Members;
 };

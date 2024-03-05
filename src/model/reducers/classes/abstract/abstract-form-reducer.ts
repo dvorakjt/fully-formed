@@ -1,9 +1,6 @@
 import type { Subscription } from 'rxjs';
 import type { AbstractAdapter } from '../../../adapters';
-import type {
-  AbstractFieldGroup,
-  FieldGroupMembers,
-} from '../../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { FormElement } from '../../../form-elements';
 import type { Stateful } from '../../../shared';
 import type { FormReducerState } from '../../types';
@@ -13,9 +10,8 @@ export abstract class AbstractFormReducer<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
-      unknown,
-      boolean
+      FormElement | AbstractGroup<string, GroupMembers>,
+      unknown
     >
   >,
 > implements Stateful<FormReducerState<FormElements, Adapters>>

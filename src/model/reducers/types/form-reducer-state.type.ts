@@ -1,25 +1,15 @@
 import type { AbstractAdapter } from '../../adapters';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
-import type {
-  FirstNonValidFormElement,
-  FormElement,
-  FormValue,
-} from '../../form-elements';
-import type { FirstNonValidField } from '../../form-elements/types/first-non-valid-field.type';
-import type { Validity } from '../../state';
+import type { AbstractGroup, GroupMembers } from '../../groups';
+import type { FormElement, FormValue } from '../../form-elements';
+import type { State } from '../../state';
 
 export type FormReducerState<
   FormElements extends readonly FormElement[],
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,
-> = {
-  value: FormValue<FormElements, Adapters>;
-  validity: Validity;
-  firstNonValidFormElement: FirstNonValidFormElement<FormElements>;
-  firstNonValidField: FirstNonValidField<FormElements>;
-};
+> = State<FormValue<FormElements, Adapters>>;

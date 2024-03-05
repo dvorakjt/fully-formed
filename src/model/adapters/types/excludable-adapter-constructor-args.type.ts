@@ -1,10 +1,10 @@
 import type { FormElement } from '../../form-elements';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { ExcludableAdaptFn } from './excludable-adapt-fn.type';
 
 export type ExcludableAdapterConstructorArgs<
   Name extends string,
-  Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+  Source extends FormElement | AbstractGroup<string, GroupMembers>,
   Value,
 > = {
   name: Name;

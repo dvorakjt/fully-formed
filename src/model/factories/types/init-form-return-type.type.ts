@@ -1,16 +1,16 @@
 import type { AbstractAdapter } from '../../adapters';
 import type { AbstractDerivedValue } from '../../derived-values';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { FormElement, AutoTrim } from '../../form-elements';
 
 export type InitFormReturnType = {
   name: string;
   formElements: readonly FormElement[];
-  fieldGroups?: ReadonlyArray<AbstractFieldGroup<string, FieldGroupMembers>>;
+  groups?: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
   adapters?: ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >;

@@ -1,13 +1,13 @@
 import type { Subscription } from 'rxjs';
 import type { FormElement } from '../../../form-elements';
-import type { AbstractFieldGroup } from '../../../field-groups';
-import type { FieldGroupMembers } from '../../../field-groups';
+import type { AbstractGroup } from '../../../groups';
+import type { GroupMembers } from '../../../groups';
 import type { Nameable, Stateful } from '../../../shared';
 import type { State } from '../../../state';
 
 export abstract class AbstractAdapter<
     Name extends string,
-    Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+    Source extends FormElement | AbstractGroup<string, GroupMembers>,
     Value,
   >
   implements Nameable<Name>, Stateful<State<Value>>

@@ -13,8 +13,6 @@ export type { FieldConstructorArgs } from './field-constructor-args.type';
 export type { FieldControlFn } from './field-control-fn.type';
 export type { FieldControlTemplate } from './field-control-template.type';
 export type { FieldState } from './field-state.type';
-export type { FirstNonValidFormElement } from './first-non-valid-form-element.type';
-export type { FirstNonValidField } from './first-non-valid-field.type';
 export type { FormConstituents } from './form-constituents.type';
 export type { FormElement } from './form-element.type';
 export type { FormState } from './form-state.type';

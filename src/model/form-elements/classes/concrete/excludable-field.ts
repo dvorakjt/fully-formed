@@ -14,10 +14,7 @@ import {
   type AbstractStatefulArrayReducer,
 } from '../../../reducers';
 import type { Subscription } from 'rxjs';
-import type {
-  AbstractFieldGroup,
-  FieldGroupMembers,
-} from '../../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type {
   ControlledExcludableFieldState,
   ExcludableFieldConstructorArgs,
@@ -31,7 +28,7 @@ export class ExcludableField<
   Value,
   Transient extends boolean,
   const Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   > = [],
 > extends AbstractExcludableField<Name, Value, Transient> {
   public readonly name: Name;

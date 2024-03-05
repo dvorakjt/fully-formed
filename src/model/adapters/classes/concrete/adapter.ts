@@ -6,15 +6,12 @@ import {
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type { FormElement } from '../../../form-elements';
-import type {
-  AbstractFieldGroup,
-  FieldGroupMembers,
-} from '../../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { AdaptFn, AdapterConstructorArgs } from '../../types';
 
 export class Adapter<
   Name extends string,
-  Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+  Source extends FormElement | AbstractGroup<string, GroupMembers>,
   Value,
 > extends AbstractAdapter<Name, Source, Value> {
   public readonly name: Name;

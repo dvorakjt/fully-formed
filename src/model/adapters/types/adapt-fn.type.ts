@@ -1,7 +1,7 @@
 import type { FormElement } from '../../form-elements';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 
 export type AdaptFn<
-  Source extends FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+  Source extends FormElement | AbstractGroup<string, GroupMembers>,
   Value,
 > = (sourceState: Source['state']) => Value;

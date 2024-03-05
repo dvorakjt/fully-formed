@@ -28,17 +28,14 @@ export type {
   InitSubFormReturnType,
   InitSubForm,
 } from './factories';
-export {
-  AbstractFieldGroup,
-  FieldGroup,
-  FieldGroupValiditySource,
-} from './field-groups';
+export { AbstractGroup, Group, GroupValiditySource } from './groups';
 export type {
-  FieldGroupConstructorArgs,
-  FieldGroupMembers,
-  FieldGroupState,
-  FieldGroupValue,
-} from './field-groups';
+  GroupConstructorArgs,
+  GroupMember,
+  GroupMembers,
+  GroupState,
+  GroupValue,
+} from './groups';
 export {
   AbstractExcludableField,
   AbstractExcludableSubForm,
@@ -65,24 +62,21 @@ export type {
   FieldControlFn,
   FieldControlTemplate,
   FieldState,
-  FirstNonValidField,
-  FirstNonValidFormElement,
   FormConstituents,
   FormElement,
   FormState,
   FormValue,
   NonExcludableFormElementValues,
 } from './form-elements';
-export { AbstractFormElementAndGroupHeap } from './heaps';
 export {
-  AbstractFieldGroupReducer,
+  AbstractGroupReducer,
   AbstractFormReducer,
   AbstractStatefulArrayReducer,
-  FieldGroupReducer,
+  GroupReducer,
   StatefulArrayReducer,
 } from './reducers';
 export type {
-  FieldGroupReducerConstructorArgs,
+  GroupReducerConstructorArgs,
   FormReducerState,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,

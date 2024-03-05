@@ -3,11 +3,11 @@ import type {
   ExcludableSubFormControlTemplate,
   FormElement,
 } from '../../form-elements';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 
 export type InitExcludableSubFormReturnType = InitSubFormReturnType & {
   excludeByDefault?: boolean;
   controlledBy?: ExcludableSubFormControlTemplate<
-    ReadonlyArray<FormElement | AbstractFieldGroup<string, FieldGroupMembers>>
+    ReadonlyArray<FormElement | AbstractGroup<string, GroupMembers>>
   >;
 };

@@ -27,7 +27,7 @@ export abstract class AbstractForm<
   public abstract name: Name;
   public abstract id: string;
   public abstract formElements: NameableObject<Constituents['formElements']>;
-  public abstract fieldGroups: NameableObject<Constituents['fieldGroups']>;
+  public abstract groups: NameableObject<Constituents['groups']>;
   public abstract derivedValues: NameableObject<Constituents['derivedValues']>;
   public abstract state: FormState<
     Constituents['formElements'],

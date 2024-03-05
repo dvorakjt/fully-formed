@@ -1,5 +1,5 @@
 import type { AbstractAdapter } from '../../adapters';
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { Excludable } from '../../shared';
 import type { ExcludableFormElementValues } from './excludable-form-element-values.type';
 import type { FormElement } from './form-element.type';
@@ -9,7 +9,7 @@ type ExcludableAdapterValues<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,
@@ -23,7 +23,7 @@ type NonExcludableAdapterValues<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,
@@ -38,7 +38,7 @@ export type FormValue<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
-      FormElement | AbstractFieldGroup<string, FieldGroupMembers>,
+      FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
   >,

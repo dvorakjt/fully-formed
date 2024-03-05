@@ -1,4 +1,4 @@
-import type { AbstractFieldGroup, FieldGroupMembers } from '../../field-groups';
+import type { AbstractGroup, GroupMembers } from '../../groups';
 import type { StatefulArrayStates } from '../../reducers';
 import type { ControlledFieldState } from './controlled-field-state.type';
 import type { FieldState } from './field-state.type';
@@ -6,7 +6,7 @@ import type { FormElement } from './form-element.type';
 
 export type FieldControlFn<
   Controllers extends ReadonlyArray<
-    FormElement | AbstractFieldGroup<string, FieldGroupMembers>
+    FormElement | AbstractGroup<string, GroupMembers>
   >,
   Value,
 > = (

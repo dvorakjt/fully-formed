@@ -1,4 +1,4 @@
-export enum FieldGroupValiditySource {
+export enum GroupValiditySource {
   Reduction = 'reduction',
   Validation = 'validation',
 }

@@ -3,20 +3,20 @@ import {
   AsyncValidator,
   ExcludableField,
   Field,
-  FieldGroupReducer,
+  GroupReducer,
   StringValidators,
   Validity,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
 
-describe('FieldGroupReducer', () => {
+describe('GroupReducer', () => {
   test('Its value defaults to an object containing the values of its members.', () => {
     const firstName = new Field({
       name: 'firstName',
       defaultValue: 'Mieczyslaw',
     });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Weinberg' });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName],
     });
     expect(nameGroupReducer.state.value).toStrictEqual({
@@ -33,7 +33,7 @@ describe('FieldGroupReducer', () => {
       defaultValue: '',
       excludeByDefault: true,
     });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName, previousName],
     });
     expect(nameGroupReducer.state.value).toStrictEqual({
@@ -51,7 +51,7 @@ describe('FieldGroupReducer', () => {
       validators: [StringValidators.required()],
       excludeByDefault: true,
     });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName, previousName],
     });
     expect(nameGroupReducer.state.validity).toBe(Validity.Valid);
@@ -76,7 +76,7 @@ describe('FieldGroupReducer', () => {
       validators: [StringValidators.required()],
       excludeByDefault: true,
     });
-    const groupReducer = new FieldGroupReducer({
+    const groupReducer = new GroupReducer({
       members: [validField, pendingField, invalidExcludedField],
     });
     expect(groupReducer.state.validity).toBe(Validity.Pending);
@@ -100,7 +100,7 @@ describe('FieldGroupReducer', () => {
       defaultValue: '',
       validators: [StringValidators.required()],
     });
-    const groupReducer = new FieldGroupReducer({
+    const groupReducer = new GroupReducer({
       members: [validField, pendingField, invalidField],
     });
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
@@ -109,7 +109,7 @@ describe('FieldGroupReducer', () => {
   test('When the value of one of its members changes, its value is updated.', () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName],
     });
     firstName.setValue('Johannes');
@@ -132,7 +132,7 @@ describe('FieldGroupReducer', () => {
       defaultValue: '',
       excludeByDefault: true,
     });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName, previousName],
     });
     previousName.setValue('Pierre');
@@ -167,7 +167,7 @@ describe('FieldGroupReducer', () => {
       asyncValidators: [asyncIncludesUpper],
     });
     const validField = new Field({ name: 'validField', defaultValue: '' });
-    const groupReducer = new FieldGroupReducer({
+    const groupReducer = new GroupReducer({
       members: [asyncValidatedField, validField],
     });
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
@@ -194,7 +194,7 @@ describe('FieldGroupReducer', () => {
       name: 'optionalField',
       defaultValue: '',
     });
-    const groupReducer = new FieldGroupReducer({
+    const groupReducer = new GroupReducer({
       members: [excludableRequiredField, optionalField],
     });
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
@@ -206,7 +206,7 @@ describe('FieldGroupReducer', () => {
     const subscribe = vi.fn();
     const firstName = new Field({ name: 'firstName', defaultValue: 'Johann' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Strauss' });
-    const nameGroupReducer = new FieldGroupReducer({
+    const nameGroupReducer = new GroupReducer({
       members: [firstName, lastName],
     });
     nameGroupReducer.subscribeToState(subscribe);
