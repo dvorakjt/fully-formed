@@ -19,22 +19,6 @@ type GroupNamesAreUnique<
   groups: UniquelyNamed<Groups>;
 };
 
-type GroupNamesAreNotFormElementNames<
-  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
-  FormElements extends readonly FormElement[],
-> = {
-  groups: DisjointlyNamed<Groups, FormElements>;
-};
-
-type GroupMembersOccurInForm<
-  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
-  FormElements extends readonly FormElement[],
-> = {
-  groups: ReadonlyArray<{
-    members: ReadonlyArray<Groups[number] | FormElements[number]>;
-  }>;
-};
-
 type AdapterNamesAreUnique<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
@@ -63,15 +47,6 @@ export type AdapterNamesAreNotNonTransientFormElementNames<
   >;
 };
 
-export type AdapterSourcesOccurInForm<
-  FormElements extends readonly FormElement[],
-  Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
-> = {
-  adapters: ReadonlyArray<
-    AbstractAdapter<string, FormElements[number] | Groups[number], unknown>
-  >;
-};
-
 type DerivedValueNamesAreUnique<
   DerivedValues extends ReadonlyArray<AbstractDerivedValue<string, unknown>>,
 > = {
@@ -81,9 +56,7 @@ type DerivedValueNamesAreUnique<
 export type AllowedInitFormReturnType<T extends InitFormReturnType> =
   FormElementNamesAreUnique<T['formElements']> &
     (T['groups'] extends ReadonlyArray<AbstractGroup<string, GroupMembers>> ?
-      GroupNamesAreUnique<T['groups']> &
-        GroupNamesAreNotFormElementNames<T['groups'], T['formElements']> &
-        GroupMembersOccurInForm<T['groups'], T['formElements']>
+      GroupNamesAreUnique<T['groups']>
     : object) &
     (T['adapters'] extends (
       ReadonlyArray<
@@ -98,14 +71,6 @@ export type AllowedInitFormReturnType<T extends InitFormReturnType> =
         AdapterNamesAreNotNonTransientFormElementNames<
           T['adapters'],
           T['formElements']
-        > &
-        AdapterSourcesOccurInForm<
-          T['formElements'],
-          T['groups'] extends (
-            ReadonlyArray<AbstractGroup<string, GroupMembers>>
-          ) ?
-            T['groups']
-          : []
         >
     : object) &
     (T['derivedValues'] extends (
