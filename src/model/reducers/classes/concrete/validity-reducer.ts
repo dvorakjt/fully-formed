@@ -1,6 +1,9 @@
 import { AbstractValidityReducer } from '../abstract';
 import { Validity } from '../../../state';
-import type { ValidityReducerMemberState } from '../..';
+import type {
+  ValidityReducerConstructorArgs,
+  ValidityReducerMemberState,
+} from '../../types';
 
 export class ValidityReducer extends AbstractValidityReducer {
   private invalidIncludedMemberNames: Set<string> = new Set<string>();
@@ -12,7 +15,12 @@ export class ValidityReducer extends AbstractValidityReducer {
     return Validity.Valid;
   }
 
-  public processMemberState(
+  public constructor({ members }: ValidityReducerConstructorArgs) {
+    super();
+    members.forEach(m => this.processMemberStateUpdate(m.name, m.state));
+  }
+
+  public processMemberStateUpdate(
     memberName: string,
     state: ValidityReducerMemberState,
   ): void {

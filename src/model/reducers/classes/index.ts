@@ -10,4 +10,5 @@ export {
   GroupReducer,
   StatefulArrayReducer,
   ValidityReducer,
+  ValueReducer,
 } from './concrete';

@@ -1,12 +1,18 @@
 import { ValidityReducer } from './validity-reducer';
-import { AbstractFormValidityReducer } from '../abstract';
 import { Validity } from '../../../state';
-import type { ValidityReducerMemberState } from '../../types';
+import {
+  AbstractFormValidityReducer,
+  type AbstractValidityReducer,
+} from '../abstract';
+import type {
+  ValidityReducerMemberState,
+  FormValidityReducerConstructorArgs,
+} from '../../types';
 
 export class FormValidityReducer extends AbstractFormValidityReducer {
-  private adapterReducer = new ValidityReducer();
-  private transientElementReducer = new ValidityReducer();
-  private groupReducer = new ValidityReducer();
+  private adapterReducer: AbstractValidityReducer;
+  private transientElementReducer: AbstractValidityReducer;
+  private groupReducer: AbstractValidityReducer;
 
   public get validity(): Validity {
     if (
@@ -26,24 +32,37 @@ export class FormValidityReducer extends AbstractFormValidityReducer {
     return Validity.Valid;
   }
 
-  public processAdapterState(
+  public constructor({
+    adapters,
+    transientFormElements,
+    groups,
+  }: FormValidityReducerConstructorArgs) {
+    super();
+    this.adapterReducer = new ValidityReducer({ members: adapters });
+    this.transientElementReducer = new ValidityReducer({
+      members: transientFormElements,
+    });
+    this.groupReducer = new ValidityReducer({ members: groups });
+  }
+
+  public processAdapterStateUpdate(
     adapterName: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.adapterReducer.processMemberState(adapterName, state);
+    this.adapterReducer.processMemberStateUpdate(adapterName, state);
   }
 
-  public processTransientElementState(
+  public processTransientElementStateUpdate(
     elementName: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.transientElementReducer.processMemberState(elementName, state);
+    this.transientElementReducer.processMemberStateUpdate(elementName, state);
   }
 
-  public processGroupState(
+  public processGroupStateUpdate(
     groupName: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.groupReducer.processMemberState(groupName, state);
+    this.groupReducer.processMemberStateUpdate(groupName, state);
   }
 }

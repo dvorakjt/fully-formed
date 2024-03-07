@@ -78,13 +78,20 @@ export {
   GroupReducer,
   StatefulArrayReducer,
   ValidityReducer,
+  ValueReducer,
 } from './reducers';
 export type {
   GroupReducerConstructorArgs,
   FormReducerState,
+  FormValidityReducerConstructorArgs,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,
+  ValidityReducerConstructorArgs,
   ValidityReducerMemberState,
+  ValidityReducerMember,
+  ValueReducerConstructorArgs,
+  ValueReducerMemberState,
+  ValueReducerMember,
 } from './reducers';
 export type {
   Identifiable,

@@ -14,9 +14,9 @@ import type { Subscription } from 'rxjs';
 import type { UniquelyNamed } from '../../../shared';
 import type {
   GroupMembers,
-  GroupValue,
   GroupState,
   GroupConstructorArgs,
+  GroupValue,
 } from '../../types';
 import { GroupValiditySource } from '../..';
 

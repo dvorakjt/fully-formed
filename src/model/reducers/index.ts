@@ -8,11 +8,18 @@ export {
   GroupReducer,
   StatefulArrayReducer,
   ValidityReducer,
+  ValueReducer,
 } from './classes';
 export type {
   GroupReducerConstructorArgs,
   FormReducerState,
+  FormValidityReducerConstructorArgs,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,
+  ValidityReducerConstructorArgs,
   ValidityReducerMemberState,
+  ValidityReducerMember,
+  ValueReducerConstructorArgs,
+  ValueReducerMemberState,
+  ValueReducerMember,
 } from './types';

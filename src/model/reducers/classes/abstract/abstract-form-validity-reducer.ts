@@ -3,15 +3,15 @@ import type { ValidityReducerMemberState } from '../../types';
 
 export abstract class AbstractFormValidityReducer {
   public abstract validity: Validity;
-  public abstract processAdapterState(
+  public abstract processAdapterStateUpdate(
     adapterName: string,
     state: ValidityReducerMemberState,
   ): void;
-  public abstract processTransientElementState(
+  public abstract processTransientElementStateUpdate(
     elementName: string,
     state: ValidityReducerMemberState,
   ): void;
-  public abstract processGroupState(
+  public abstract processGroupStateUpdate(
     groupName: string,
     state: ValidityReducerMemberState,
   ): void;
