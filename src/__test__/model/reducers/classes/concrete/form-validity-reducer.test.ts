@@ -14,8 +14,8 @@ import { PromiseScheduler } from '../../../../../testing';
 import { DefaultExcludableAdapter } from '../../../../../model/adapters/classes/concrete/default-excludable-adapter';
 
 describe('FormValidityReducer', () => {
-  let promiseScheduler : PromiseScheduler;
-  let requiredAsync : AbstractAsyncValidator<string>;
+  let promiseScheduler: PromiseScheduler;
+  let requiredAsync: AbstractAsyncValidator<string>;
 
   beforeEach(() => {
     promiseScheduler = new PromiseScheduler();
@@ -529,60 +529,397 @@ describe('FormValidityReducer', () => {
   });
 
   test('When the sole invalid adapter becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {
-    const requiredField = new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]});
-    const requiredAdapter = new DefaultAdapter({ source : requiredField });
-    const validField = new Field({ name : 'validField', defaultValue : '' });
-    const validAdapter = new DefaultAdapter({ source : validField });
-    const pendingTransientField = new Field({ name : 'pendingTransientField', defaultValue : '', asyncValidators : [requiredAsync]});
-    const validGroup = new Group({ name : 'validGroup', members : [validField] });
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const requiredAdapter = new DefaultAdapter({ source: requiredField });
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingTransientField = new Field({
+      name: 'pendingTransientField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({ name: 'validGroup', members: [validField] });
     const reducer = new FormValidityReducer({
-      adapters : [requiredAdapter, validAdapter],
-      transientFormElements : [pendingTransientField],
-      groups : [validGroup]
+      adapters: [requiredAdapter, validAdapter],
+      transientFormElements: [pendingTransientField],
+      groups: [validGroup],
     });
     expect(reducer.validity).toBe(Validity.Invalid);
 
     requiredField.setValue('test');
-    reducer.processAdapterStateUpdate(requiredAdapter.name, requiredAdapter.state);
+    reducer.processAdapterStateUpdate(
+      requiredAdapter.name,
+      requiredAdapter.state,
+    );
     expect(requiredAdapter.state.validity).toBe(Validity.Valid);
     expect(reducer.validity).toBe(Validity.Pending);
   });
 
   test('When the sole invalid transient form element becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {
-    const validField = new Field({ name : 'validField', defaultValue : ''});
-    const validAdapter = new DefaultAdapter({ source : validField });
-    const pendingField = new Field({ name : 'pendingField', defaultValue : '', asyncValidators : [requiredAsync]});
-    const pendingAdapter = new DefaultAdapter({ source : pendingField });
-    const requiredTransientField = new Field({ name : 'requiredTransientField', defaultValue : '', validators : [StringValidators.required()]});
-    const validGroup = new Group({ name : 'validGroup', members : [validField]});
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingField = new Field({
+      name: 'pendingField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const pendingAdapter = new DefaultAdapter({ source: pendingField });
+    const requiredTransientField = new Field({
+      name: 'requiredTransientField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const validGroup = new Group({ name: 'validGroup', members: [validField] });
     const reducer = new FormValidityReducer({
-      adapters : [validAdapter, pendingAdapter],
-      transientFormElements : [requiredTransientField],
-      groups : [validGroup]
+      adapters: [validAdapter, pendingAdapter],
+      transientFormElements: [requiredTransientField],
+      groups: [validGroup],
     });
     expect(reducer.validity).toBe(Validity.Invalid);
 
     requiredTransientField.setValue('test');
-    reducer.processTransientElementStateUpdate(requiredTransientField.name, requiredTransientField.state);
+    reducer.processTransientElementStateUpdate(
+      requiredTransientField.name,
+      requiredTransientField.state,
+    );
     expect(requiredTransientField.state.validity).toBe(Validity.Valid);
     expect(reducer.validity).toBe(Validity.Pending);
   });
-  test('When the sole invalid group becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {});
 
-  test('When the sole invalid adapter becomes pending and all other members are valid, its validity becomes pending.', () => {});
-  test('When the sole invalid transient form element becomes pending and all other members are valid, its validity becomes pending.', () => {});
-  test('When the sole invalid group becomes pending and all other members are valid, its validity becomes pending.', () => {});
+  test('When the sole invalid group becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {
+    const password = new Field({ name: 'password', defaultValue: 'password' });
+    const passwordAdapter = new DefaultAdapter({ source: password });
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      transient: true,
+    });
+    const passwordGroup = new Group({
+      name: 'passwordGroup',
+      members: [password, confirmPassword],
+      validatorTemplates: [
+        {
+          predicate: ({ password, confirmPassword }): boolean => {
+            return password === confirmPassword;
+          },
+        },
+      ],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [passwordAdapter],
+      transientFormElements: [confirmPassword],
+      groups: [passwordGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
 
-  test('When the sole invalid adapter becomes valid and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole invalid transient form element becomes valid and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole invalid group becomes valid and all other members are valid, its validity becomes valid.', () => {});
+    confirmPassword.setValue(password.state.value);
+    reducer.processGroupStateUpdate(passwordGroup.name, passwordGroup.state);
+    expect(passwordGroup.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When the sole invalid adapter becomes pending and all other members are valid, its validity becomes pending.', () => {
+    const promiseScheduler = new PromiseScheduler();
+    const unavailableEmails = new Set<string>(['user@example.com']);
+    const emailAvailable = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(
+          !unavailableEmails.has(value),
+        );
+      },
+    });
+    const email = new Field({
+      name: 'email',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [emailAvailable],
+    });
+    const emailAdapter = new DefaultAdapter({ source: email });
+    const password = new Field({ name: 'password', defaultValue: 'password' });
+    const passwordAdapter = new DefaultAdapter({ source: password });
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: 'password',
+      transient: true,
+    });
+    const passwordGroup = new Group({
+      name: 'passwordGroup',
+      members: [password, confirmPassword],
+      validatorTemplates: [
+        {
+          predicate: ({ password, confirmPassword }): boolean => {
+            return password === confirmPassword;
+          },
+        },
+      ],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [emailAdapter, passwordAdapter],
+      transientFormElements: [confirmPassword],
+      groups: [passwordGroup],
+    });
+    expect(emailAdapter.state.validity).toBe(Validity.Invalid);
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    email.setValue('user@example.com');
+    reducer.processAdapterStateUpdate(emailAdapter.name, emailAdapter.state);
+    expect(emailAdapter.state.validity).toBe(Validity.Pending);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When the sole invalid transient form element becomes pending and all other members are valid, its validity becomes pending.', () => {
+    const asyncIncludesUpper = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(/[A-Z]/.test(value));
+      },
+    });
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const transientField = new Field({
+      name: 'transientField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      asyncValidators: [asyncIncludesUpper],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [transientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    transientField.setValue('test');
+    reducer.processTransientElementStateUpdate(
+      transientField.name,
+      transientField.state,
+    );
+    expect(transientField.state.validity).toBe(Validity.Pending);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When the sole invalid group becomes pending and all other members are valid, its validity becomes pending.', () => {
+    const email = new Field({
+      name: 'email',
+      defaultValue: 'user@example.com',
+    });
+    const emailAdapter = new DefaultAdapter({ source: email });
+    const confirmEmail = new Field({
+      name: 'confirmEmail',
+      defaultValue: '',
+      transient: true,
+    });
+    const emailGroup = new Group({
+      name: 'emailGroup',
+      members: [email, confirmEmail],
+      validatorTemplates: [
+        {
+          predicate: ({ email, confirmEmail }): boolean => {
+            return email === confirmEmail;
+          },
+        },
+      ],
+      asyncValidatorTemplates: [
+        {
+          predicate: ({ email }): Promise<boolean> => {
+            const unavailableEmails = new Set<string>(['user@example.com']);
+            return promiseScheduler.createScheduledPromise(
+              !unavailableEmails.has(email),
+            );
+          },
+        },
+      ],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [emailAdapter],
+      transientFormElements: [confirmEmail],
+      groups: [emailGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    confirmEmail.setValue(email.state.value);
+    reducer.processGroupStateUpdate(emailGroup.name, emailGroup.state);
+    expect(emailGroup.state.validity).toBe(Validity.Pending);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When the sole invalid adapter becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const requiredAdapter = new DefaultAdapter({ source: requiredField });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+      transient: true,
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [requiredAdapter],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    requiredField.setValue('test');
+    reducer.processAdapterStateUpdate(
+      requiredAdapter.name,
+      requiredAdapter.state,
+    );
+    expect(requiredAdapter.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When the sole invalid transient form element becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const requiredTransientField = new Field({
+      name: 'requiredTransientField',
+      defaultValue: '',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [requiredTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    requiredTransientField.setValue('test');
+    reducer.processTransientElementStateUpdate(
+      requiredTransientField.name,
+      requiredTransientField.state,
+    );
+    expect(requiredTransientField.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When the sole invalid group becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const password = new Field({ name: 'password', defaultValue: 'password' });
+    const passwordAdapter = new DefaultAdapter({ source: password });
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      transient: true,
+    });
+    const passwordGroup = new Group({
+      name: 'passwordGroup',
+      members: [password, confirmPassword],
+      validatorTemplates: [
+        {
+          predicate: ({ password, confirmPassword }): boolean => {
+            return password === confirmPassword;
+          },
+        },
+      ],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [passwordAdapter],
+      transientFormElements: [confirmPassword],
+      groups: [passwordGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    confirmPassword.setValue(password.state.value);
+    reducer.processGroupStateUpdate(passwordGroup.name, passwordGroup.state);
+    expect(passwordGroup.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
 
   test('When the sole pending adapter becomes valid and all other members are valid, its validity becomes valid.', () => {});
   test('When the sole pending transient form element becomes valid and all other members are valid, its validity becomes valid.', () => {});
   test('When the sole pending group becomes valid and all other members are valid, its validity becomes valid.', () => {});
 
-  test('When the sole invalid adapter becomes excluded and all other members are either pending or valid, its validity becomes pending.', () => {});
-  test('When the sole invalid transient form element becomes excluded and all other members are either pending or valid, its validity becomes pending.', () => {});
+  test('When the sole invalid adapter becomes excluded and all other members are either pending or valid, its validity becomes pending.', () => {
+    const excludableRequiredField = new ExcludableField({
+      name: 'excludableRequiredField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const excludableAdapter = new DefaultExcludableAdapter({
+      source: excludableRequiredField,
+    });
+    const validField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+      transient: true,
+    });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingTransientField = new Field({
+      name: 'pendingTransientField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [excludableAdapter, validAdapter],
+      transientFormElements: [pendingTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    excludableRequiredField.setExclude(true);
+    reducer.processAdapterStateUpdate(
+      excludableAdapter.name,
+      excludableAdapter.state,
+    );
+    expect(excludableRequiredField.state.exclude).toBe(true);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When the sole invalid transient form element becomes excluded and all other members are either pending or valid, its validity becomes pending.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingField = new Field({
+      name: 'pendingField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const pendingAdapter = new DefaultAdapter({ source: pendingField });
+    const excludableTransientField = new ExcludableField({
+      name: 'excludableTransientField',
+      defaultValue: '',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter, pendingAdapter],
+      transientFormElements: [excludableTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    excludableTransientField.setExclude(true);
+    reducer.processTransientElementStateUpdate(
+      excludableTransientField.name,
+      excludableTransientField.state,
+    );
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
 
   test('When the sole invalid adapter becomes excluded and all other members are valid, its validity becomes valid.', () => {});
   test('When the sole invalid transient form element becomes excluded and all other members are valid, its validity becomes valid.', () => {});
