@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeEach } from 'vitest';
 import {
   AsyncValidator,
   DefaultAdapter,
@@ -8,11 +8,23 @@ import {
   Group,
   StringValidators,
   Validity,
+  type AbstractAsyncValidator,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
 import { DefaultExcludableAdapter } from '../../../../../model/adapters/classes/concrete/default-excludable-adapter';
 
 describe('FormValidityReducer', () => {
+  let promiseScheduler : PromiseScheduler;
+  let requiredAsync : AbstractAsyncValidator<string>;
+
+  beforeEach(() => {
+    promiseScheduler = new PromiseScheduler();
+    requiredAsync = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> =>
+        promiseScheduler.createScheduledPromise(value.length > 0),
+    });
+  });
+
   test('Upon instantiation, if at least one included adapter is invalid, its validity is invalid.', () => {
     const invalidField = new Field({
       name: 'invalidField',
@@ -98,11 +110,6 @@ describe('FormValidityReducer', () => {
   });
 
   test('Upon instantiation, if at least one included adapter is pending and all other members are either pending or valid, its validity is pending.', () => {
-    const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({
-      predicate: (value): Promise<boolean> =>
-        promiseScheduler.createScheduledPromise(value.length > 0),
-    });
     const pendingField = new Field({
       name: 'pendingField',
       defaultValue: '',
@@ -134,11 +141,6 @@ describe('FormValidityReducer', () => {
   });
 
   test('Upon instantiation, if at least one included transient form element is pending and all other members are either pending or valid, its validity is pending.', () => {
-    const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({
-      predicate: (value): Promise<boolean> =>
-        promiseScheduler.createScheduledPromise(value.length > 0),
-    });
     const validField = new Field({
       name: 'validField',
       defaultValue: '',
@@ -273,11 +275,6 @@ describe('FormValidityReducer', () => {
   });
 
   test('When its validity is pending and an adapter becomes invalid, its validity becomes invalid.', () => {
-    const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({
-      predicate: (value): Promise<boolean> =>
-        promiseScheduler.createScheduledPromise(value.length > 0),
-    });
     const requiredField = new Field({
       name: 'requiredField',
       defaultValue: 'test',
@@ -350,11 +347,6 @@ describe('FormValidityReducer', () => {
   });
 
   test('When its validity is pending and a transient form element becomes invalid, its validity becomes invalid.', () => {
-    const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({
-      predicate: (value): Promise<boolean> =>
-        promiseScheduler.createScheduledPromise(value.length > 0),
-    });
     const validField = new Field({
       name: 'validField',
       defaultValue: '',
@@ -536,8 +528,45 @@ describe('FormValidityReducer', () => {
     expect(reducer.validity).toBe(Validity.Invalid);
   });
 
-  test('When the sole invalid adapter becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {});
-  test('When the sole invalid transient form element becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {});
+  test('When the sole invalid adapter becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {
+    const requiredField = new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]});
+    const requiredAdapter = new DefaultAdapter({ source : requiredField });
+    const validField = new Field({ name : 'validField', defaultValue : '' });
+    const validAdapter = new DefaultAdapter({ source : validField });
+    const pendingTransientField = new Field({ name : 'pendingTransientField', defaultValue : '', asyncValidators : [requiredAsync]});
+    const validGroup = new Group({ name : 'validGroup', members : [validField] });
+    const reducer = new FormValidityReducer({
+      adapters : [requiredAdapter, validAdapter],
+      transientFormElements : [pendingTransientField],
+      groups : [validGroup]
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    requiredField.setValue('test');
+    reducer.processAdapterStateUpdate(requiredAdapter.name, requiredAdapter.state);
+    expect(requiredAdapter.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When the sole invalid transient form element becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {
+    const validField = new Field({ name : 'validField', defaultValue : ''});
+    const validAdapter = new DefaultAdapter({ source : validField });
+    const pendingField = new Field({ name : 'pendingField', defaultValue : '', asyncValidators : [requiredAsync]});
+    const pendingAdapter = new DefaultAdapter({ source : pendingField });
+    const requiredTransientField = new Field({ name : 'requiredTransientField', defaultValue : '', validators : [StringValidators.required()]});
+    const validGroup = new Group({ name : 'validGroup', members : [validField]});
+    const reducer = new FormValidityReducer({
+      adapters : [validAdapter, pendingAdapter],
+      transientFormElements : [requiredTransientField],
+      groups : [validGroup]
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
+
+    requiredTransientField.setValue('test');
+    reducer.processTransientElementStateUpdate(requiredTransientField.name, requiredTransientField.state);
+    expect(requiredTransientField.state.validity).toBe(Validity.Valid);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
   test('When the sole invalid group becomes valid and all other members are either pending or valid, its validity becomes pending.', () => {});
 
   test('When the sole invalid adapter becomes pending and all other members are valid, its validity becomes pending.', () => {});
