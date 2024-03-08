@@ -18,7 +18,7 @@ describe('FormValidityReducer', () => {
       validators: [StringValidators.required()],
     });
     const invalidAdapter = new DefaultAdapter({
-      source: invalidField
+      source: invalidField,
     });
     const validTransientField = new Field({
       name: 'validTransientField',
@@ -73,9 +73,15 @@ describe('FormValidityReducer', () => {
       defaultValue: '',
       transient: true,
     });
-    const invalidGroup = new Group({ name: 'validGroup', members: [], validatorTemplates : [{
-      predicate : ():boolean => false
-    }] });
+    const invalidGroup = new Group({
+      name: 'validGroup',
+      members: [],
+      validatorTemplates: [
+        {
+          predicate: (): boolean => false,
+        },
+      ],
+    });
 
     expect(validAdapter.state.validity).toBe(Validity.Valid);
     expect(validTransientField.state.validity).toBe(Validity.Valid);
@@ -92,15 +98,16 @@ describe('FormValidityReducer', () => {
   test('Upon instantiation, if at least one included adapter is pending and all other members are either pending or valid, its validity is pending.', () => {
     const promiseScheduler = new PromiseScheduler();
     const requiredAsync = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => promiseScheduler.createScheduledPromise(value.length > 0)
+      predicate: (value): Promise<boolean> =>
+        promiseScheduler.createScheduledPromise(value.length > 0),
     });
     const pendingField = new Field({
       name: 'pendingField',
       defaultValue: '',
-      asyncValidators : [requiredAsync]
+      asyncValidators: [requiredAsync],
     });
     const pendingAdapter = new DefaultAdapter({
-      source: pendingField
+      source: pendingField,
     });
     const validTransientField = new Field({
       name: 'validTransientField',
@@ -127,20 +134,21 @@ describe('FormValidityReducer', () => {
   test('Upon instantiation, if at least one included transient form element is pending and all other members are either pending or valid, its validity is pending.', () => {
     const promiseScheduler = new PromiseScheduler();
     const requiredAsync = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => promiseScheduler.createScheduledPromise(value.length > 0)
+      predicate: (value): Promise<boolean> =>
+        promiseScheduler.createScheduledPromise(value.length > 0),
     });
     const validField = new Field({
       name: 'validField',
       defaultValue: '',
     });
     const validAdapter = new DefaultAdapter({
-      source: validField
+      source: validField,
     });
     const pendingTransientField = new Field({
       name: 'validTransientField',
       defaultValue: '',
       transient: true,
-      asyncValidators : [requiredAsync]
+      asyncValidators: [requiredAsync],
     });
     const validGroup = new Group({
       name: 'validGroup',
@@ -159,9 +167,7 @@ describe('FormValidityReducer', () => {
     expect(reducer.validity).toBe(Validity.Pending);
   });
 
-  test('Upon instantiation, if at least one group is pending and all other members are either pending or valid, its validity is invalid.', () => {
-    
-  });
+  test('Upon instantiation, if at least one group is pending and all other members are either pending or valid, its validity is invalid.', () => {});
 
   test('Upon instantiation, if all included members are valid, its validity is valid.', () => {});
   test('Upon instantiation, if there are no included members, its validity is valid.', () => {});

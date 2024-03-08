@@ -81,11 +81,13 @@ export {
   ValueReducer,
 } from './reducers';
 export type {
-  GroupReducerConstructorArgs,
+  FormReducerConstructorArgs,
   FormReducerState,
   FormValidityReducerConstructorArgs,
+  GroupReducerConstructorArgs,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,
+  UserDefinedOrDefaultAdapter,
   ValidityReducerConstructorArgs,
   ValidityReducerMemberState,
   ValidityReducerMember,

@@ -11,11 +11,13 @@ export {
   ValueReducer,
 } from './classes';
 export type {
-  GroupReducerConstructorArgs,
+  FormReducerConstructorArgs,
   FormReducerState,
   FormValidityReducerConstructorArgs,
+  GroupReducerConstructorArgs,
   StatefulArrayConstructorArgs,
   StatefulArrayStates,
+  UserDefinedOrDefaultAdapter,
   ValidityReducerConstructorArgs,
   ValidityReducerMemberState,
   ValidityReducerMember,
