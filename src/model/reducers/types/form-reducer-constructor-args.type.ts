@@ -2,7 +2,7 @@ import type { PossiblyTransient } from '../../shared';
 import type { AbstractAdapter } from '../../adapters';
 import type { FormElement } from '../../form-elements';
 import type { AbstractGroup, GroupMembers } from '../../groups';
-import type { UserDefinedOrDefaultAdapter } from './user-defined-or-default-adapter.type';
+import type { UserDefinedAndDefaultAdapters } from './user-defined-and-default-adapters.type';
 
 export type FormReducerConstructorArgs<
   FormElements extends readonly FormElement[],
@@ -14,7 +14,9 @@ export type FormReducerConstructorArgs<
     >
   >,
 > = {
-  adapters: ReadonlyArray<UserDefinedOrDefaultAdapter<FormElements, Adapters>>;
-  transientFormElements : ReadonlyArray<Extract<FormElements[number], PossiblyTransient<true>>>;
-  groups : ReadonlyArray<AbstractGroup<string, GroupMembers>>;
+  adapters: UserDefinedAndDefaultAdapters<FormElements, Adapters>;
+  transientFormElements: ReadonlyArray<
+    Extract<FormElements[number], PossiblyTransient<true>>
+  >;
+  groups: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
 };

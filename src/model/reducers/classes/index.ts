@@ -4,8 +4,10 @@ export {
   AbstractFormValidityReducer,
   AbstractStatefulArrayReducer,
   AbstractValidityReducer,
+  AbstractValueReducer,
 } from './abstract';
 export {
+  FormReducer,
   FormValidityReducer,
   GroupReducer,
   StatefulArrayReducer,
