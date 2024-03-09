@@ -921,15 +921,261 @@ describe('FormValidityReducer', () => {
     expect(reducer.validity).toBe(Validity.Pending);
   });
 
-  test('When the sole invalid adapter becomes excluded and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole invalid transient form element becomes excluded and all other members are valid, its validity becomes valid.', () => {});
+  test('When the sole invalid adapter becomes excluded and all other members are valid, its validity becomes valid.', () => {
+    const invalidExcludableField = new ExcludableField({
+      name: 'invalidExcludableField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const invalidExcludableAdapter = new DefaultExcludableAdapter({
+      source: invalidExcludableField,
+    });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+      transient: true,
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [invalidExcludableAdapter],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
 
-  test('When the sole pending adapter becomes excluded and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole pending transient form element becomes excluded and all other members are valid, its validity becomes valid.', () => {});
+    invalidExcludableField.setExclude(true);
+    reducer.processAdapterStateUpdate(
+      invalidExcludableAdapter.name,
+      invalidExcludableAdapter.state,
+    );
+    expect(invalidExcludableAdapter.state.exclude).toBe(true);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
 
-  test('When a previously excluded invalid adapter becomes included, its validity becomes invalid.', () => {});
-  test('When a previously excluded invalid transient form element becomes included, its validity becomes invalid.', () => {});
+  test('When the sole invalid transient form element becomes excluded and all other members are valid, its validity becomes valid.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const invalidExcludableTransientField = new ExcludableField({
+      name: 'invalidExcludableTransientField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [invalidExcludableTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Invalid);
 
-  test('When a previously excluded pending adapter becomes included and all other members are valid or pending, its validity becomes pending.', () => {});
-  test('When a previously excluded pending transient form element becomes included and all other members are valid or pending, its validity becomes pending.', () => {});
+    invalidExcludableTransientField.setExclude(true);
+    reducer.processTransientElementStateUpdate(
+      invalidExcludableTransientField.name,
+      invalidExcludableTransientField.state,
+    );
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When the sole pending adapter becomes excluded and all other members are valid, its validity becomes valid.', () => {
+    const pendingExcludableField = new ExcludableField({
+      name: 'pendingExcludableField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const pendingExcludableAdapter = new DefaultExcludableAdapter({
+      source: pendingExcludableField,
+    });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [pendingExcludableAdapter],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    pendingExcludableField.setExclude(true);
+    reducer.processAdapterStateUpdate(
+      pendingExcludableAdapter.name,
+      pendingExcludableAdapter.state,
+    );
+    expect(pendingExcludableAdapter.state.exclude).toBe(true);
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When the sole pending transient form element becomes excluded and all other members are valid, its validity becomes valid.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingExcludableTransientField = new ExcludableField({
+      name: 'pendingExcludableTransientField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [pendingExcludableTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    pendingExcludableTransientField.setExclude(true);
+    reducer.processTransientElementStateUpdate(
+      pendingExcludableTransientField.name,
+      pendingExcludableTransientField.state,
+    );
+    expect(reducer.validity).toBe(Validity.Valid);
+  });
+
+  test('When a previously excluded invalid adapter becomes included, its validity becomes invalid.', () => {
+    const invalidExcludableField = new ExcludableField({
+      name: 'invalidExcludableField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+      excludeByDefault: true,
+    });
+    const invalidExcludableAdapter = new DefaultExcludableAdapter({
+      source: invalidExcludableField,
+    });
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingTransientField = new Field({
+      name: 'pendingTransientField',
+      defaultValue: '',
+      transient: true,
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [invalidExcludableAdapter, validAdapter],
+      transientFormElements: [pendingTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    invalidExcludableField.setExclude(false);
+    reducer.processAdapterStateUpdate(
+      invalidExcludableAdapter.name,
+      invalidExcludableAdapter.state,
+    );
+    expect(invalidExcludableAdapter.state.exclude).toBe(false);
+    expect(reducer.validity).toBe(Validity.Invalid);
+  });
+
+  test('When a previously excluded invalid transient form element becomes included, its validity becomes invalid.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingField = new Field({
+      name: 'pendingField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const pendingAdapter = new DefaultAdapter({ source: pendingField });
+    const invalidExcludableTransientField = new ExcludableField({
+      name: 'invalidExcludableTransientField',
+      defaultValue: '',
+      transient: true,
+      excludeByDefault: true,
+      validators: [StringValidators.required()],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter, pendingAdapter],
+      transientFormElements: [invalidExcludableTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    invalidExcludableTransientField.setExclude(false);
+    reducer.processTransientElementStateUpdate(
+      invalidExcludableTransientField.name,
+      invalidExcludableTransientField.state,
+    );
+    expect(reducer.validity).toBe(Validity.Invalid);
+  });
+
+  test('When a previously excluded pending adapter becomes included and all other members are valid or pending, its validity becomes pending.', () => {
+    const pendingExcludableField = new ExcludableField({
+      name: 'pendingExcludableField',
+      defaultValue: '',
+      excludeByDefault: true,
+      asyncValidators: [requiredAsync],
+    });
+    const pendingExcludableAdapter = new DefaultExcludableAdapter({
+      source: pendingExcludableField,
+    });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+      transient: true,
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [pendingExcludableAdapter],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Valid);
+
+    pendingExcludableField.setExclude(false);
+    reducer.processAdapterStateUpdate(
+      pendingExcludableAdapter.name,
+      pendingExcludableAdapter.state,
+    );
+    expect(pendingExcludableAdapter.state.exclude).toBe(false);
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
+
+  test('When a previously excluded pending transient form element becomes included and all other members are valid or pending, its validity becomes pending.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingExcludableTransientField = new ExcludableField({
+      name: 'pendingExcludableTransientField',
+      defaultValue: '',
+      excludeByDefault: true,
+      transient: true,
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [pendingExcludableTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Valid);
+
+    pendingExcludableTransientField.setExclude(false);
+    reducer.processTransientElementStateUpdate(
+      pendingExcludableTransientField.name,
+      pendingExcludableTransientField.state,
+    );
+    expect(reducer.validity).toBe(Validity.Pending);
+  });
 });
