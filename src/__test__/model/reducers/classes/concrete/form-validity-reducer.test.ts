@@ -897,7 +897,6 @@ describe('FormValidityReducer', () => {
         pendingTransientField.name,
         state,
       );
-      console.log(reducer.validity);
       expect(reducer.validity).toBe(Validity.Valid);
     });
     promiseScheduler.resolveAll();

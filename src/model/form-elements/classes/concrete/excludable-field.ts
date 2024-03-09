@@ -26,7 +26,7 @@ import type {
 export class ExcludableField<
   Name extends string,
   Value,
-  Transient extends boolean,
+  Transient extends boolean = false,
   const Controllers extends ReadonlyArray<
     FormElement | AbstractGroup<string, GroupMembers>
   > = [],
