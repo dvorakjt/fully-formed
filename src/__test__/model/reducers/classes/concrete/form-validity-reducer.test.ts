@@ -843,9 +843,116 @@ describe('FormValidityReducer', () => {
     expect(reducer.validity).toBe(Validity.Valid);
   });
 
-  test('When the sole pending adapter becomes valid and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole pending transient form element becomes valid and all other members are valid, its validity becomes valid.', () => {});
-  test('When the sole pending group becomes valid and all other members are valid, its validity becomes valid.', () => {});
+  test('When the sole pending adapter becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const pendingField = new Field({
+      name: 'pendingValid',
+      defaultValue: 'test',
+      asyncValidators: [requiredAsync],
+    });
+    const pendingAdapter = new DefaultAdapter({ source: pendingField });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [pendingAdapter],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    pendingAdapter.subscribeToState(state => {
+      reducer.processAdapterStateUpdate(pendingAdapter.name, state);
+      expect(reducer.validity).toBe(Validity.Valid);
+    });
+    promiseScheduler.resolveAll();
+  });
+
+  test('When the sole pending transient form element becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const validAdapter = new DefaultAdapter({ source: validField });
+    const pendingTransientField = new Field({
+      name: 'pendingTransientField',
+      defaultValue: 'test',
+      transient: true,
+      asyncValidators: [requiredAsync],
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validField],
+    });
+    const reducer = new FormValidityReducer({
+      adapters: [validAdapter],
+      transientFormElements: [pendingTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    pendingTransientField.subscribeToState(state => {
+      reducer.processTransientElementStateUpdate(
+        pendingTransientField.name,
+        state,
+      );
+      console.log(reducer.validity);
+      expect(reducer.validity).toBe(Validity.Valid);
+    });
+    promiseScheduler.resolveAll();
+  });
+
+  test('When the sole pending group becomes valid and all other members are valid, its validity becomes valid.', () => {
+    const streetAddress = new Field({
+      name: 'streetAddress',
+      defaultValue: '2001 N. 13th Street',
+    });
+    const city = new Field({ name: 'city', defaultValue: 'Philadelphia' });
+    const state = new Field({ name: 'state', defaultValue: 'PA' });
+    const zip = new Field({ name: 'zip', defaultValue: '19122' });
+    const adapters = [
+      new DefaultAdapter({ source: streetAddress }),
+      new DefaultAdapter({ source: city }),
+      new DefaultAdapter({ source: state }),
+      new DefaultAdapter({ source: zip }),
+    ];
+    const addressGroup = new Group({
+      name: 'addressGroup',
+      members: [streetAddress, city, state, zip],
+      asyncValidatorTemplates: [
+        {
+          predicate: ({
+            streetAddress,
+            city,
+            state,
+            zip,
+          }): Promise<boolean> => {
+            const validAddresses = new Set<string>([
+              '2001 N. 13th Street, Philadelphia, PA 19122',
+            ]);
+            const address = `${streetAddress}, ${city}, ${state} ${zip}`;
+            return promiseScheduler.createScheduledPromise(
+              validAddresses.has(address),
+            );
+          },
+        },
+      ],
+    });
+    const reducer = new FormValidityReducer({
+      adapters,
+      transientFormElements: [],
+      groups: [addressGroup],
+    });
+    expect(reducer.validity).toBe(Validity.Pending);
+
+    addressGroup.subscribeToState(state => {
+      reducer.processGroupStateUpdate(addressGroup.name, state);
+      expect(reducer.validity).toBe(Validity.Valid);
+    });
+
+    promiseScheduler.resolveAll();
+  });
 
   test('When the sole invalid adapter becomes excluded and all other members are either pending or valid, its validity becomes pending.', () => {
     const excludableRequiredField = new ExcludableField({
