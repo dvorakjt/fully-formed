@@ -13,6 +13,7 @@ export {
   ValueReducer,
 } from './classes';
 export type {
+  DefaultAdapters,
   FormReducerConstructorArgs,
   FormReducerState,
   FormValidityReducerConstructorArgs,

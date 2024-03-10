@@ -15,5 +15,8 @@ export type InitFormReturnType = {
     >
   >;
   derivedValues?: ReadonlyArray<AbstractDerivedValue<string, unknown>>;
+  invalidMessage?: string;
+  pendingMessage?: string;
+  validMessage?: string;
   autoTrim?: AutoTrim<readonly FormElement[]>;
 };

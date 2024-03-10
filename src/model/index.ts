@@ -3,6 +3,7 @@ export {
   AbstractExcludableAdapter,
   Adapter,
   DefaultAdapter,
+  DefaultExcludableAdapter,
   ExcludableAdapter,
 } from './adapters';
 export type {
@@ -17,6 +18,7 @@ export type {
 } from './adapters';
 export { AbstractDerivedValue, DerivedValue } from './derived-values';
 export type { DeriveFn, DerivedValueConstructorArgs } from './derived-values';
+export { NameableObjectFactory, DefaultAdapterFactory, FormReducerFactory } from './factories';
 export type {
   FormClassFactory,
   AllowedInitFormReturnType,
@@ -27,6 +29,7 @@ export type {
   InitForm,
   InitSubFormReturnType,
   InitSubForm,
+  NonGenericAutoTrim
 } from './factories';
 export { AbstractGroup, Group, GroupValiditySource } from './groups';
 export type {
@@ -62,6 +65,7 @@ export type {
   FieldControlFn,
   FieldControlTemplate,
   FieldState,
+  FormConstructorArgs,
   FormConstituents,
   FormElement,
   FormState,
@@ -83,6 +87,7 @@ export {
   ValueReducer,
 } from './reducers';
 export type {
+  DefaultAdapters,
   FormReducerConstructorArgs,
   FormReducerState,
   FormValidityReducerConstructorArgs,

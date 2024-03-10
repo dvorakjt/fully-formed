@@ -1,3 +1,4 @@
+export type { DefaultAdapters } from './default-adapters.type';
 export type { FormReducerConstructorArgs } from './form-reducer-constructor-args.type';
 export type { FormReducerState } from './form-reducer-state.type';
 export type { FormValidityReducerConstructorArgs } from './form-validity-reducer-constructor-args.type';

@@ -25,6 +25,7 @@ export type {
   FieldControlTemplate,
   FieldState,
   FormConstituents,
+  FormConstructorArgs,
   FormElement,
   FormState,
   FormValue,

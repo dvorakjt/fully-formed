@@ -3,6 +3,7 @@ export {
   AbstractExcludableAdapter,
   Adapter,
   DefaultAdapter,
+  DefaultExcludableAdapter,
   ExcludableAdapter,
 } from './classes';
 export type {

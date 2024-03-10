@@ -14,6 +14,7 @@ export type { FieldControlFn } from './field-control-fn.type';
 export type { FieldControlTemplate } from './field-control-template.type';
 export type { FieldState } from './field-state.type';
 export type { FormConstituents } from './form-constituents.type';
+export type { FormConstructorArgs } from './form-constructor-args.type';
 export type { FormElement } from './form-element.type';
 export type { FormState } from './form-state.type';
 export type { FormValue } from './form-value.type';

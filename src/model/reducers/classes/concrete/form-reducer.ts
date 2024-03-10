@@ -7,42 +7,32 @@ import { ValueReducer } from './value-reducer';
 import { FormValidityReducer } from './form-validity-reducer';
 import { StateManager, type AbstractStateManager } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type { FormElement, FormValue } from '../../../form-elements';
+import type { FormElement } from '../../../form-elements';
 import type { AbstractAdapter } from '../../../adapters';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
-import type {
-  FormReducerConstructorArgs,
-  FormReducerState,
-  UserDefinedAndDefaultAdapters,
-} from '../../types';
-import type { PossiblyTransient } from '../../../shared';
+import type { FormReducerConstructorArgs, FormReducerState } from '../../types';
 
 export class FormReducer<
-  FormElements extends readonly FormElement[],
-  Adapters extends ReadonlyArray<
+  Value extends Record<string, unknown>,
+> extends AbstractFormReducer<Value> {
+  private stateManager: AbstractStateManager<FormReducerState<Value>>;
+  private valueReducer: AbstractValueReducer<Value>;
+  private validityReducer: AbstractFormValidityReducer;
+  private adapters: Array<
     AbstractAdapter<
       string,
       FormElement | AbstractGroup<string, GroupMembers>,
       unknown
     >
-  >,
-> extends AbstractFormReducer<FormElements, Adapters> {
-  private stateManager: AbstractStateManager<
-    FormReducerState<FormElements, Adapters>
   >;
-  private valueReducer: AbstractValueReducer<FormValue<FormElements, Adapters>>;
-  private validityReducer: AbstractFormValidityReducer;
-  private adapters: UserDefinedAndDefaultAdapters<FormElements, Adapters>;
-  private transientFormElements: ReadonlyArray<
-    Extract<FormElements[number], PossiblyTransient<true>>
-  >;
+  private transientFormElements: FormElement[];
   private groups: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
 
-  public get state(): FormReducerState<FormElements, Adapters> {
+  public get state(): FormReducerState<Value> {
     return this.stateManager.state;
   }
 
-  private set state(state: FormReducerState<FormElements, Adapters>) {
+  private set state(state: FormReducerState<Value>) {
     this.stateManager.state = state;
   }
 
@@ -50,9 +40,9 @@ export class FormReducer<
     adapters,
     transientFormElements,
     groups,
-  }: FormReducerConstructorArgs<FormElements, Adapters>) {
+  }: FormReducerConstructorArgs) {
     super();
-    this.valueReducer = new ValueReducer<FormValue<FormElements, Adapters>>({
+    this.valueReducer = new ValueReducer<Value>({
       members: adapters,
     });
     this.validityReducer = new FormValidityReducer({
@@ -60,9 +50,7 @@ export class FormReducer<
       transientFormElements,
       groups,
     });
-    this.stateManager = new StateManager<
-      FormReducerState<FormElements, Adapters>
-    >({
+    this.stateManager = new StateManager<FormReducerState<Value>>({
       value: this.valueReducer.value,
       validity: this.validityReducer.validity,
     });
@@ -73,7 +61,7 @@ export class FormReducer<
   }
 
   public subscribeToState(
-    cb: (state: FormReducerState<FormElements, Adapters>) => void,
+    cb: (state: FormReducerState<Value>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
