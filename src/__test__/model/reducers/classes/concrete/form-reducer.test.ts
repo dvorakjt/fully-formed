@@ -6,8 +6,12 @@ import {
   DefaultAdapter,
   FormReducer,
   ExcludableField,
+  StringValidators,
+  Validity,
+  AsyncValidator,
 } from '../../../../../model';
 import { DefaultExcludableAdapter } from '../../../../../model/adapters/classes/concrete/default-excludable-adapter';
+import { PromiseScheduler } from '../../../../../testing';
 
 describe('FormReducer', () => {
   test('Its value contains the values of all included adapters.', () => {
@@ -37,12 +41,9 @@ describe('FormReducer', () => {
         return `${value.lastName}, ${value.firstName}`;
       },
     });
-    const formElements = [firstName, lastName, occupation] as const;
-    const userDefinedAdapters = [fullNameAdapter] as const;
-    const reducer = new FormReducer<
-      typeof formElements,
-      typeof userDefinedAdapters
-    >({
+    type FormElements = [typeof firstName, typeof lastName, typeof occupation];
+    type Adapters = [typeof fullNameAdapter];
+    const reducer = new FormReducer<FormElements, Adapters>({
       adapters: [occupationAdapter, fullNameAdapter],
       transientFormElements: [firstName, lastName],
       groups: [fullNameGroup],
@@ -62,8 +63,8 @@ describe('FormReducer', () => {
       defaultValue: 'Josephine',
       excludeByDefault: true,
     });
-    const formElements = [firstName, lastName, middleName] as const;
-    const reducer = new FormReducer<typeof formElements, []>({
+    type FormElements = [typeof firstName, typeof lastName, typeof middleName];
+    const reducer = new FormReducer<FormElements, []>({
       adapters: [
         new DefaultAdapter({ source: firstName }),
         new DefaultExcludableAdapter({ source: middleName }),
@@ -78,19 +79,328 @@ describe('FormReducer', () => {
     });
   });
 
-  test('Its validity is invalid if any included adapters are invalid.', () => {});
+  test('Its validity is invalid if any included adapters are invalid.', () => {
+    const firstName = new Field({
+      name: 'firstName',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const lastName = new Field({ name: 'lastName', defaultValue: 'Schumann' });
+    type FormElements = [typeof firstName, typeof lastName];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: firstName }),
+        new DefaultAdapter({ source: lastName }),
+      ],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+  });
 
-  test('Its validity is invalid if any included transient form elements are invalid.', () => {});
-  test('Its validity is invalid if any groups are invalid.', () => {});
-  test('Its validity is pending if all included adapters, included transient fields, and groups are either valid or pending.', () => {});
-  test('Its validity is valid if all included adapters, included transient fields, and groups are valid.', () => {});
-  test('When the value of an adapter changes, its value is updated.', () => {});
-  test('When the exclude property an adapter changes, its value is updated.', () => {});
-  test('When the validity of an adapter changes, its validity is updated.', () => {});
-  test('When the exclude property an adapter changes changes, its validity is updated.', () => {});
-  test('When the validity of a transient form element changes, its validity is updated.', () => {});
-  test('When the exclude property of a transient form element changes, its validity is updated.', () => {});
-  test('When the validity of a group changes, its validity is updated.', () => {});
+  test('Its validity is invalid if any included transient form elements are invalid.', () => {
+    const password = new Field({ name: 'password', defaultValue: '' });
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    type FormElements = [typeof password, typeof confirmPassword];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [new DefaultAdapter({ source: password })],
+      transientFormElements: [confirmPassword],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+  });
 
-  test('When its state changes, it emits the new state to subscribers.', () => {});
+  test('Its validity is invalid if any groups are invalid.', () => {
+    const primaryEmail = new Field({
+      name: 'primaryEmail',
+      defaultValue: 'user@example.com',
+    });
+    const secondaryEmail = new Field({
+      name: 'secondaryEmail',
+      defaultValue: 'user@example.com',
+    });
+    const emailAddresses = new Group({
+      name: 'emailAddresses',
+      members: [primaryEmail, secondaryEmail],
+      validatorTemplates: [
+        {
+          predicate: ({ primaryEmail, secondaryEmail }): boolean => {
+            return primaryEmail !== secondaryEmail;
+          },
+        },
+      ],
+    });
+    type FormElements = [typeof primaryEmail, typeof secondaryEmail];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: primaryEmail }),
+        new DefaultAdapter({ source: secondaryEmail }),
+      ],
+      transientFormElements: [],
+      groups: [emailAddresses],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+  });
+
+  test('Its validity is pending if all included adapters, included transient fields, and groups are either valid or pending.', () => {
+    const promiseScheduler = new PromiseScheduler();
+    const requiredAsync = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(value.length > 0);
+      },
+    });
+    const pendingField = new Field({
+      name: 'pendingField',
+      defaultValue: '',
+      asyncValidators: [requiredAsync],
+    });
+    const validTransientField = new Field({
+      name: 'validTransientField',
+      defaultValue: '',
+      transient: true,
+    });
+    const validGroup = new Group({
+      name: 'validGroup',
+      members: [validTransientField],
+    });
+    type FormElements = [typeof pendingField, typeof validTransientField];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [new DefaultAdapter({ source: pendingField })],
+      transientFormElements: [validTransientField],
+      groups: [validGroup],
+    });
+    expect(reducer.state.validity).toBe(Validity.Pending);
+  });
+
+  test('Its validity is valid if all included adapters, included transient fields, and groups are valid.', () => {
+    const firstName = new Field({
+      name: 'firstName',
+      defaultValue: 'Francine',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    const lastName = new Field({
+      name: 'lastName',
+      defaultValue: 'Aubin',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    const firstAndLast = new Group({
+      name: 'firstAndLast',
+      members: [firstName, lastName],
+    });
+    const fullName = new Adapter({
+      name: 'fullName',
+      source: firstAndLast,
+      adaptFn: ({ value }): string => `${value.lastName}, ${value.lastName}`,
+    });
+    type FormElements = [typeof firstName, typeof lastName];
+    const adapters = [fullName] as const;
+    const reducer = new FormReducer<FormElements, typeof adapters>({
+      adapters: [fullName],
+      transientFormElements: [firstName, lastName],
+      groups: [firstAndLast],
+    });
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When the value of an adapter changes, its value is updated.', () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: 'Felix' });
+    const lastName = new Field({
+      name: 'lastName',
+      defaultValue: 'Mendelssohn',
+    });
+    type FormElements = [typeof firstName, typeof lastName];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: firstName }),
+        new DefaultAdapter({ source: lastName }),
+      ],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.value).toStrictEqual({
+      firstName: 'Felix',
+      lastName: 'Mendelssohn',
+    });
+
+    firstName.setValue('Fanny');
+    expect(reducer.state.value).toStrictEqual({
+      firstName: 'Fanny',
+      lastName: 'Mendelssohn',
+    });
+  });
+
+  test('When the exclude property an adapter changes, its value is updated.', () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: 'Clara' });
+    const lastName = new Field({ name: 'lastName', defaultValue: 'Schumann' });
+    const middleName = new ExcludableField({
+      name: 'middleName',
+      defaultValue: 'Josephine',
+      excludeByDefault: true,
+    });
+    type FormElements = [typeof firstName, typeof lastName, typeof middleName];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: firstName }),
+        new DefaultExcludableAdapter({ source: middleName }),
+        new DefaultAdapter({ source: lastName }),
+      ],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.value).toStrictEqual({
+      firstName: 'Clara',
+      lastName: 'Schumann',
+    });
+
+    middleName.setExclude(false);
+    expect(reducer.state.value).toStrictEqual({
+      firstName: 'Clara',
+      middleName: 'Josephine',
+      lastName: 'Schumann',
+    });
+  });
+
+  test('When the validity of an adapter changes, its validity is updated.', () => {
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    const reducer = new FormReducer<Array<typeof requiredField>, []>({
+      adapters: [new DefaultAdapter({ source: requiredField })],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+    requiredField.setValue('test');
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When the exclude property an adapter changes changes, its validity is updated.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const invalidExcludableField = new ExcludableField({
+      name: 'invalidExcludableField',
+      defaultValue: '',
+      validators: [StringValidators.required()],
+    });
+    type FormElements = [typeof validField, typeof invalidExcludableField];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: validField }),
+        new DefaultExcludableAdapter({ source: invalidExcludableField }),
+      ],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+
+    invalidExcludableField.setExclude(true);
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When the validity of a transient form element changes, its validity is updated.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const requiredTransientField = new Field({
+      name: 'requiredTransientField',
+      defaultValue: '',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    type FormElements = [typeof validField, typeof requiredTransientField];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [new DefaultAdapter({ source: validField })],
+      transientFormElements: [requiredTransientField],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+
+    requiredTransientField.setValue('test');
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When the exclude property of a transient form element changes, its validity is updated.', () => {
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+    const invalidExcludableTransientField = new ExcludableField({
+      name: 'invalidExcludableTransientField',
+      defaultValue: '',
+      transient: true,
+      validators: [StringValidators.required()],
+    });
+    type FormElements = [
+      typeof validField,
+      typeof invalidExcludableTransientField,
+    ];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [new DefaultAdapter({ source: validField })],
+      transientFormElements: [invalidExcludableTransientField],
+      groups: [],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+
+    invalidExcludableTransientField.setExclude(true);
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When the validity of a group changes, its validity is updated.', () => {
+    const password = new Field({ name: 'password', defaultValue: 'password' });
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      transient: true,
+    });
+    const passwordGroup = new Group({
+      name: 'passwordGroup',
+      members: [password, confirmPassword],
+      validatorTemplates: [
+        {
+          predicate: ({ password, confirmPassword }): boolean => {
+            return password === confirmPassword;
+          },
+        },
+      ],
+    });
+    type FormElements = [typeof password, typeof confirmPassword];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [new DefaultAdapter({ source: password })],
+      transientFormElements: [confirmPassword],
+      groups: [passwordGroup],
+    });
+    expect(reducer.state.validity).toBe(Validity.Invalid);
+
+    confirmPassword.setValue(password.state.value);
+    expect(reducer.state.validity).toBe(Validity.Valid);
+  });
+
+  test('When its state changes, it emits the new state to subscribers.', () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: 'Antonin' });
+    const lastName = new Field({ name: 'lastName', defaultValue: 'Dvorak' });
+    type FormElements = [typeof firstName, typeof lastName];
+    const reducer = new FormReducer<FormElements, []>({
+      adapters: [
+        new DefaultAdapter({ source: firstName }),
+        new DefaultAdapter({ source: lastName }),
+      ],
+      transientFormElements: [],
+      groups: [],
+    });
+    expect(reducer.state.value).toStrictEqual({
+      firstName: 'Antonin',
+      lastName: 'Dvorak',
+    });
+
+    reducer.subscribeToState(state => {
+      expect(state.value).toStrictEqual({
+        firstName: 'August',
+        lastName: 'Dvorak',
+      });
+    });
+    firstName.setValue('August');
+  });
 });
