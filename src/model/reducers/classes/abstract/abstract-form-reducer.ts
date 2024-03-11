@@ -1,12 +1,13 @@
 import type { Subscription } from 'rxjs';
 import type { Stateful } from '../../../shared';
 import type { FormReducerState } from '../../types';
+import type { FormConstituents } from '../../../form-elements';
 
-export abstract class AbstractFormReducer<Value extends Record<string, unknown>>
-  implements Stateful<FormReducerState<Value>>
+export abstract class AbstractFormReducer<Constituents extends FormConstituents>
+  implements Stateful<FormReducerState<Constituents>>
 {
-  public abstract state: FormReducerState<Value>;
+  public abstract state: FormReducerState<Constituents>;
   public abstract subscribeToState(
-    cb: (state: FormReducerState<Value>) => void,
+    cb: (state: FormReducerState<Constituents>) => void,
   ): Subscription;
 }

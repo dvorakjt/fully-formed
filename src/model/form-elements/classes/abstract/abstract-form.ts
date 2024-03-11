@@ -21,7 +21,7 @@ export abstract class AbstractForm<
   implements
     Nameable<Name>,
     Identifiable,
-    Stateful<FormState<Constituents['formElements'], Constituents['adapters']>>,
+    Stateful<FormState<Constituents>>,
     Resettable
 {
   public abstract name: Name;
@@ -29,14 +29,11 @@ export abstract class AbstractForm<
   public abstract formElements: NameableObject<Constituents['formElements']>;
   public abstract groups: NameableObject<Constituents['groups']>;
   public abstract derivedValues: NameableObject<Constituents['derivedValues']>;
-  public abstract state: FormState<
-    Constituents['formElements'],
-    Constituents['adapters']
-  >;
+  public abstract state: FormState<Constituents>;
   public abstract confirmationAttempted: boolean;
   public abstract subscribeToState(
     cb: (
-      state: FormState<Constituents['formElements'], Constituents['adapters']>,
+      state: FormState<Constituents>,
     ) => void,
   ): Subscription;
   public abstract subscribeToConfirmationAttempted(
@@ -44,9 +41,7 @@ export abstract class AbstractForm<
   ): Subscription;
   public abstract setMessages(messages: Message[]): void;
   public abstract confirm(
-    args: ConfirmMethodArgs<
-      FormValue<Constituents['formElements'], Constituents['adapters']>
-    >,
+    args: ConfirmMethodArgs<FormValue<Constituents>>,
   ): void;
   public abstract reset(): void;
 }

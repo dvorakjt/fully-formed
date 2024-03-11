@@ -1,4 +1,5 @@
+import type { FormConstituents, FormValue } from '../../form-elements';
 import type { State } from '../../state';
 
-export type FormReducerState<Value extends Record<string, unknown>> =
-  State<Value>;
+export type FormReducerState<Constituents extends FormConstituents> =
+  State<FormValue<Constituents>>;

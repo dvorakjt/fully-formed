@@ -1,4 +1,8 @@
-export { NameableObjectFactory, DefaultAdapterFactory, FormReducerFactory } from './classes';
+export {
+  NameableObjectFactory,
+  DefaultAdapterFactory,
+  FormReducerFactory,
+} from './classes';
 export type { FormClassFactory } from './interfaces';
 export type {
   AllowedInitFormReturnType,
@@ -9,5 +13,5 @@ export type {
   InitForm,
   InitSubFormReturnType,
   InitSubForm,
-  NonGenericAutoTrim
+  NonGenericAutoTrim,
 } from './types';
