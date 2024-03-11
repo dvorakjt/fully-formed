@@ -22,9 +22,9 @@ export {
   NameableObjectFactory,
   DefaultAdapterFactory,
   FormReducerFactory,
+  FormClassFactory,
 } from './factories';
 export type {
-  FormClassFactory,
   AllowedInitFormReturnType,
   InitExcludableSubFormReturnType,
   InitExcludableSubForm,

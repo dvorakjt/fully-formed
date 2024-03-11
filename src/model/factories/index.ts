@@ -2,8 +2,8 @@ export {
   NameableObjectFactory,
   DefaultAdapterFactory,
   FormReducerFactory,
+  FormClassFactory,
 } from './classes';
-export type { FormClassFactory } from './interfaces';
 export type {
   AllowedInitFormReturnType,
   InitExcludableSubFormReturnType,
