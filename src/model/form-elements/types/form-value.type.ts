@@ -32,8 +32,8 @@ type NonExcludableAdapterValues<
   : A['name']]: A['state']['value'];
 };
 
-export type FormValue<Constituents extends FormConstituents>
- = ExcludableFormElementValues<Constituents['formElements']> &
-  NonExcludableFormElementValues<Constituents['formElements']> &
-  ExcludableAdapterValues<Constituents['adapters']> &
-  NonExcludableAdapterValues<Constituents['adapters']>;
+export type FormValue<Constituents extends FormConstituents> =
+  ExcludableFormElementValues<Constituents['formElements']> &
+    NonExcludableFormElementValues<Constituents['formElements']> &
+    ExcludableAdapterValues<Constituents['adapters']> &
+    NonExcludableAdapterValues<Constituents['adapters']>;

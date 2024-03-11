@@ -10,11 +10,18 @@ import {
 } from '../../../form-elements';
 import type { NonGenericAutoTrim } from '../../types';
 
+type CreateDefaultAdaptersArgs = {
+  formElements: readonly FormElement[];
+  autoTrim: NonGenericAutoTrim;
+};
+
 export class DefaultAdapterFactory {
-  public static createDefaultAdapters(
-    formElements: readonly FormElement[],
-    autoTrim: NonGenericAutoTrim,
-  ): Array<AbstractAdapter<string, FormElement, unknown>> {
+  public static createDefaultAdapters({
+    formElements,
+    autoTrim,
+  }: CreateDefaultAdaptersArgs): Array<
+    AbstractAdapter<string, FormElement, unknown>
+  > {
     return formElements
       .filter(formElement => !formElement.transient)
       .map(formElement => {

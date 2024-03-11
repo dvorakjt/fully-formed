@@ -37,9 +37,7 @@ export abstract class PartialForm<
     return this.stateManager.state;
   }
 
-  private set state(
-    state: FormState<Constituents>,
-  ) {
+  private set state(state: FormState<Constituents>) {
     this.stateManager.state = state;
   }
 
@@ -74,16 +72,21 @@ export abstract class PartialForm<
     this.validMessage = validMessage;
     this.pendingMessage = pendingMessage;
     this.invalidMessage = invalidMessage;
-    this.reducer = FormReducerFactory.createFormReducer<Constituents>(formElements, adapters, groups, autoTrim);
-    this.stateManager = new StateManager<FormState<Constituents>>(this.getInitialState());
+    this.reducer = FormReducerFactory.createFormReducer<Constituents>({
+      formElements,
+      customAdapters: adapters,
+      groups,
+      autoTrim,
+    });
+    this.stateManager = new StateManager<FormState<Constituents>>(
+      this.getInitialState(),
+    );
     this.confirmationAttemptedManager = new StateManager<boolean>(false);
     this.subscribeToReducer();
   }
 
   public subscribeToState(
-    cb: (
-      state: FormState<Constituents>,
-    ) => void,
+    cb: (state: FormState<Constituents>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
@@ -101,9 +104,7 @@ export abstract class PartialForm<
     };
   }
 
-  public confirm(
-    args: ConfirmMethodArgs<FormValue<Constituents>>,
-  ): void {
+  public confirm(args: ConfirmMethodArgs<FormValue<Constituents>>): void {
     this.confirmationAttempted = true;
     if (this.state.validity === Validity.Valid && args.onSuccess) {
       args.onSuccess(this.state.value);

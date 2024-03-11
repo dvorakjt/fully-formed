@@ -32,9 +32,7 @@ export abstract class AbstractForm<
   public abstract state: FormState<Constituents>;
   public abstract confirmationAttempted: boolean;
   public abstract subscribeToState(
-    cb: (
-      state: FormState<Constituents>,
-    ) => void,
+    cb: (state: FormState<Constituents>) => void,
   ): Subscription;
   public abstract subscribeToConfirmationAttempted(
     cb: (confirmationAttempted: boolean) => void,

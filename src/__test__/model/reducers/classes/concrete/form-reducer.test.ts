@@ -42,11 +42,11 @@ describe('FormReducer', () => {
       },
     });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName, typeof occupation];
-      adapters : [typeof fullNameAdapter];
-      groups : [typeof fullNameGroup];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName, typeof occupation];
+      adapters: [typeof fullNameAdapter];
+      groups: [typeof fullNameGroup];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [occupationAdapter, fullNameAdapter],
       transientFormElements: [firstName, lastName],
@@ -68,11 +68,11 @@ describe('FormReducer', () => {
       excludeByDefault: true,
     });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName, typeof middleName];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName, typeof middleName];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: firstName }),
@@ -96,11 +96,11 @@ describe('FormReducer', () => {
     });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Schumann' });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: firstName }),
@@ -121,11 +121,11 @@ describe('FormReducer', () => {
       validators: [StringValidators.required()],
     });
     type Constituents = {
-      formElements : [typeof password, typeof confirmPassword];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof password, typeof confirmPassword];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: password })],
       transientFormElements: [confirmPassword],
@@ -155,11 +155,11 @@ describe('FormReducer', () => {
       ],
     });
     type Constituents = {
-      formElements : [typeof primaryEmail, typeof secondaryEmail];
-      adapters : [];
-      groups : [typeof emailAddresses];
-      derivedValues : [];
-    }
+      formElements: [typeof primaryEmail, typeof secondaryEmail];
+      adapters: [];
+      groups: [typeof emailAddresses];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: primaryEmail }),
@@ -193,11 +193,11 @@ describe('FormReducer', () => {
       members: [validTransientField],
     });
     type Constituents = {
-      formElements : [typeof pendingField, typeof validTransientField];
-      adapters : [];
-      groups : [typeof validGroup];
-      derivedValues : [];
-    }
+      formElements: [typeof pendingField, typeof validTransientField];
+      adapters: [];
+      groups: [typeof validGroup];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: pendingField })],
       transientFormElements: [validTransientField],
@@ -229,11 +229,11 @@ describe('FormReducer', () => {
       adaptFn: ({ value }): string => `${value.lastName}, ${value.lastName}`,
     });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName];
-      adapters : [typeof fullName];
-      groups : [typeof firstAndLast];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName];
+      adapters: [typeof fullName];
+      groups: [typeof firstAndLast];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [fullName],
       transientFormElements: [firstName, lastName],
@@ -249,11 +249,11 @@ describe('FormReducer', () => {
       defaultValue: 'Mendelssohn',
     });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: firstName }),
@@ -283,11 +283,11 @@ describe('FormReducer', () => {
       excludeByDefault: true,
     });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName, typeof middleName];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName, typeof middleName];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: firstName }),
@@ -317,11 +317,11 @@ describe('FormReducer', () => {
       validators: [StringValidators.required()],
     });
     type Constituents = {
-      formElements : [typeof requiredField];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof requiredField];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: requiredField })],
       transientFormElements: [],
@@ -340,11 +340,11 @@ describe('FormReducer', () => {
       validators: [StringValidators.required()],
     });
     type Constituents = {
-      formElements : [typeof validField, typeof invalidExcludableField];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof validField, typeof invalidExcludableField];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: validField }),
@@ -368,11 +368,11 @@ describe('FormReducer', () => {
       validators: [StringValidators.required()],
     });
     type Constituents = {
-      formElements : [typeof validField, typeof requiredTransientField];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof validField, typeof requiredTransientField];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: validField })],
       transientFormElements: [requiredTransientField],
@@ -393,11 +393,11 @@ describe('FormReducer', () => {
       validators: [StringValidators.required()],
     });
     type Constituents = {
-      formElements : [typeof validField, typeof invalidExcludableTransientField];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof validField, typeof invalidExcludableTransientField];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: validField })],
       transientFormElements: [invalidExcludableTransientField],
@@ -428,11 +428,11 @@ describe('FormReducer', () => {
       ],
     });
     type Constituents = {
-      formElements : [typeof password, typeof confirmPassword];
-      adapters : [];
-      groups : [typeof passwordGroup];
-      derivedValues : [];
-    }
+      formElements: [typeof password, typeof confirmPassword];
+      adapters: [];
+      groups: [typeof passwordGroup];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [new DefaultAdapter({ source: password })],
       transientFormElements: [confirmPassword],
@@ -448,11 +448,11 @@ describe('FormReducer', () => {
     const firstName = new Field({ name: 'firstName', defaultValue: 'Antonin' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Dvorak' });
     type Constituents = {
-      formElements : [typeof firstName, typeof lastName];
-      adapters : [];
-      groups : [];
-      derivedValues : [];
-    }
+      formElements: [typeof firstName, typeof lastName];
+      adapters: [];
+      groups: [];
+      derivedValues: [];
+    };
     const reducer = new FormReducer<Constituents>({
       adapters: [
         new DefaultAdapter({ source: firstName }),

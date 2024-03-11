@@ -7,12 +7,18 @@ import { ValueReducer } from './value-reducer';
 import { FormValidityReducer } from './form-validity-reducer';
 import { StateManager, type AbstractStateManager } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type { FormConstituents, FormElement, FormValue } from '../../../form-elements';
+import type {
+  FormConstituents,
+  FormElement,
+  FormValue,
+} from '../../../form-elements';
 import type { AbstractAdapter } from '../../../adapters';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { FormReducerConstructorArgs, FormReducerState } from '../../types';
 
-export class FormReducer<Constituents extends FormConstituents> extends AbstractFormReducer<Constituents> {
+export class FormReducer<
+  Constituents extends FormConstituents,
+> extends AbstractFormReducer<Constituents> {
   private stateManager: AbstractStateManager<FormReducerState<Constituents>>;
   private valueReducer: AbstractValueReducer<FormValue<Constituents>>;
   private validityReducer: AbstractFormValidityReducer;
