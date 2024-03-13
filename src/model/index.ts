@@ -21,19 +21,8 @@ export type { DeriveFn, DerivedValueConstructorArgs } from './derived-values';
 export {
   NameableObjectFactory,
   DefaultAdapterFactory,
-  FormReducerFactory,
-  FormClassFactory,
-} from './factories';
-export type {
-  AllowedInitFormReturnType,
-  InitExcludableSubFormReturnType,
-  InitExcludableSubForm,
-  InitFormReturnTypeToFormConstituents,
-  InitFormReturnType,
-  InitForm,
-  InitSubFormReturnType,
-  InitSubForm,
-  NonGenericAutoTrim,
+  FormFactory,
+  FormReducerFactory
 } from './factories';
 export { AbstractGroup, Group, GroupValiditySource } from './groups';
 export type {
@@ -49,6 +38,7 @@ export {
   AbstractField,
   AbstractForm,
   AbstractSubForm,
+  Form,
   Field,
   ExcludableField,
 } from './form-elements';
@@ -112,6 +102,7 @@ export type {
   PossiblyTransient,
   Resettable,
   Stateful,
+  Constructor,
   DisjointlyNamed,
   ExcludableState,
   InteractableState,
@@ -120,6 +111,8 @@ export type {
 } from './shared';
 export { AbstractStateManager, StateManager, Validity } from './state';
 export type { Message, StateWithMessages, State } from './state';
+export { FormTemplate } from './templates';
+export type { TemplateToConstituents } from './templates';
 export {
   AbstractAsyncValidatorSuite,
   AbstractAsyncValidator,

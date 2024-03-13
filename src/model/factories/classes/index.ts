@@ -1,6 +1,6 @@
 export {
   NameableObjectFactory,
   DefaultAdapterFactory,
-  FormReducerFactory,
-  FormClassFactory,
+  FormFactory,
+  FormReducerFactory
 } from './static';

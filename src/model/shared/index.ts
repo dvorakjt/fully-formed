@@ -8,6 +8,7 @@ export type {
   Stateful,
 } from './interfaces';
 export type {
+  Constructor,
   DisjointlyNamed,
   ExcludableState,
   InteractableState,

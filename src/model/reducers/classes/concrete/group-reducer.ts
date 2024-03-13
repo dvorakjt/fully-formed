@@ -11,10 +11,9 @@ import type { AbstractValueReducer } from '../abstract/abstract-value-reducer';
 import type { AbstractValidityReducer } from '../abstract';
 import type { GroupMembers, GroupValue } from '../../../groups';
 import type { GroupReducerConstructorArgs } from '../../types';
-import type { UniquelyNamed } from '../../../shared';
 
 export class GroupReducer<
-  const Members extends GroupMembers & UniquelyNamed<Members>,
+  const Members extends GroupMembers,
 > extends AbstractGroupReducer<Members> {
   public readonly members: Members;
   private valueReducer: AbstractValueReducer<GroupValue<Members>>;

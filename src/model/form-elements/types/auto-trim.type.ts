@@ -1,14 +1,8 @@
-import type { FormElement } from './form-element.type';
-import type { AbstractField } from '../classes';
-
-type NonTransientStringFieldNames<FormElements extends readonly FormElement[]> =
-  Extract<FormElements, AbstractField<string, string, false>>['name'];
-
-export type AutoTrim<FormElements extends readonly FormElement[]> =
+export type AutoTrim =
   | boolean
   | {
-      include: Array<NonTransientStringFieldNames<FormElements>>;
+      include: string[];
     }
   | {
-      exclude: Array<NonTransientStringFieldNames<FormElements>>;
+      exclude: string[];
     };

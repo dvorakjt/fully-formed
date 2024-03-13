@@ -4,6 +4,7 @@ export {
   AbstractField,
   AbstractForm,
   AbstractSubForm,
+  Form,
   Field,
   ExcludableField,
 } from './classes';

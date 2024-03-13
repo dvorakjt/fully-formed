@@ -17,7 +17,7 @@ import type {
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
 
-export abstract class PartialForm<
+export abstract class Form<
   Name extends string,
   Constituents extends FormConstituents,
 > extends AbstractForm<Name, Constituents> {

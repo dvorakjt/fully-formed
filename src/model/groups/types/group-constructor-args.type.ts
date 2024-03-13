@@ -1,6 +1,5 @@
 import type { GroupMembers } from './group-members.type';
 import type { GroupValue } from './group-value.type';
-import type { UniquelyNamed } from '../../shared';
 import type {
   AbstractValidator,
   AbstractAsyncValidator,
@@ -10,7 +9,7 @@ import type {
 
 export type GroupConstructorArgs<
   Name extends string,
-  Members extends GroupMembers & UniquelyNamed<Members>,
+  Members extends GroupMembers,
 > = {
   name: Name;
   members: Members;

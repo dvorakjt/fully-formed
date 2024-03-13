@@ -11,7 +11,6 @@ import {
   type Message,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type { UniquelyNamed } from '../../../shared';
 import type {
   GroupMembers,
   GroupState,
@@ -22,7 +21,7 @@ import { GroupValiditySource } from '../..';
 
 export class Group<
   Name extends string,
-  const Members extends GroupMembers & UniquelyNamed<Members>,
+  const Members extends GroupMembers,
 > extends AbstractGroup<Name, Members> {
   public readonly name: Name;
   public readonly members: Members;

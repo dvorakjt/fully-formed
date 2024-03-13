@@ -1,8 +1,7 @@
 import { FormReducer, type AbstractFormReducer } from '../../../reducers';
 import { DefaultAdapterFactory } from './default-adapter-factory';
-import type { FormElement, FormConstituents } from '../../../form-elements';
+import type { FormElement, FormConstituents, AutoTrim } from '../../../form-elements';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
-import type { NonGenericAutoTrim } from '../../types';
 import type { AbstractAdapter } from '../../../adapters';
 
 type CreateFormReducerArgs = {
@@ -15,7 +14,7 @@ type CreateFormReducerArgs = {
     >
   >;
   groups: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
-  autoTrim: NonGenericAutoTrim;
+  autoTrim: AutoTrim;
 };
 
 export class FormReducerFactory {
