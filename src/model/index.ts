@@ -22,7 +22,7 @@ export {
   NameableObjectFactory,
   DefaultAdapterFactory,
   FormFactory,
-  FormReducerFactory
+  FormReducerFactory,
 } from './factories';
 export { AbstractGroup, Group, GroupValiditySource } from './groups';
 export type {
@@ -43,6 +43,7 @@ export {
   ExcludableField,
 } from './form-elements';
 export type {
+  AllowedConstituents,
   AutoTrim,
   ControlledFieldState,
   ControlledExcludableFieldState,

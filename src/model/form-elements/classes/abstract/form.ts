@@ -16,10 +16,11 @@ import type {
   FormValue,
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
+import type { AllowedConstituents } from '../../types/allowed-constituents.type';
 
 export abstract class Form<
   Name extends string,
-  Constituents extends FormConstituents,
+  Constituents extends FormConstituents & AllowedConstituents<Constituents>,
 > extends AbstractForm<Name, Constituents> {
   public readonly name: Name;
   public readonly id: string;

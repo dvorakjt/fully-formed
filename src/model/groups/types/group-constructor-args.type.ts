@@ -6,10 +6,11 @@ import type {
   ValidatorTemplate,
   AsyncValidatorTemplate,
 } from '../../validators';
+import type { UniquelyNamed } from '../../shared';
 
 export type GroupConstructorArgs<
   Name extends string,
-  Members extends GroupMembers,
+  Members extends GroupMembers & UniquelyNamed<Members>,
 > = {
   name: Name;
   members: Members;

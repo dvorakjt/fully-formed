@@ -17,11 +17,12 @@ import type {
   GroupConstructorArgs,
   GroupValue,
 } from '../../types';
-import { GroupValiditySource } from '../..';
+import { GroupValiditySource } from '../../enums';
+import type { UniquelyNamed } from '../../../shared';
 
 export class Group<
   Name extends string,
-  const Members extends GroupMembers,
+  const Members extends GroupMembers & UniquelyNamed<Members>,
 > extends AbstractGroup<Name, Members> {
   public readonly name: Name;
   public readonly members: Members;

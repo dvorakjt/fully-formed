@@ -1,3 +1,4 @@
+export type { AllowedConstituents } from './allowed-constituents.type';
 export type { AutoTrim } from './auto-trim.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
 export type { ControlledExcludableFieldState } from './controlled-excludable-field-state.type';

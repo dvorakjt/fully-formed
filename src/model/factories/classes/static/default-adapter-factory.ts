@@ -32,12 +32,7 @@ export class DefaultAdapterFactory {
           return new DefaultExcludableAdapter({
             source: formElement,
             adaptFn:
-              (
-                DefaultAdapterFactory.applyAutoTrim(
-                  formElement,
-                  autoTrim,
-                )
-              ) ?
+              DefaultAdapterFactory.applyAutoTrim(formElement, autoTrim) ?
                 (value): string => (value as string).trim()
               : undefined,
           });
@@ -45,12 +40,7 @@ export class DefaultAdapterFactory {
         return new DefaultAdapter({
           source: formElement,
           adaptFn:
-            (
-              DefaultAdapterFactory.applyAutoTrim(
-                formElement,
-                autoTrim,
-              )
-            ) ?
+            DefaultAdapterFactory.applyAutoTrim(formElement, autoTrim) ?
               (value): string => (value as string).trim()
             : undefined,
         });

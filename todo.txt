@@ -1,4 +1,2 @@
 add more string validators
-decide on form message mechanics
-write tests for forms
-implement forms
+test form and new factories

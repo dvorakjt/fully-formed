@@ -10,6 +10,7 @@ export {
 } from './classes';
 export type { ExcludableFormElement } from './interfaces';
 export type {
+  AllowedConstituents,
   AutoTrim,
   ControlledExcludableFieldState,
   ControlledFieldState,

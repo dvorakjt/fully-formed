@@ -2,5 +2,5 @@ export {
   NameableObjectFactory,
   DefaultAdapterFactory,
   FormFactory,
-  FormReducerFactory
+  FormReducerFactory,
 } from './static';

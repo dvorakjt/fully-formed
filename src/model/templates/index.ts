@@ -1,4 +1,2 @@
 export { FormTemplate } from './classes';
-export type {
-  TemplateToConstituents
-} from './types'
+export type { TemplateToConstituents } from './types';

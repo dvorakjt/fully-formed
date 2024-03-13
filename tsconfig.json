@@ -6,7 +6,6 @@
     "declaration": true,
     // These settings prevent errors when running typedoc:
     "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "experimentalDecorators": true
+    "moduleResolution": "Bundler"
   }
 }

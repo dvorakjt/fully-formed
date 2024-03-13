@@ -4,6 +4,6 @@ export {
   AbstractField,
   AbstractForm,
   AbstractSubForm,
-  Form
+  Form,
 } from './abstract';
 export { Field, ExcludableField } from './concrete';
