@@ -1,10 +1,10 @@
 import { describe, test, expect, vi } from 'vitest';
-import { 
-  ExcludableField, 
-  Field, 
-  FormFactory, 
-  FormTemplate, 
-  Adapter, 
+import {
+  ExcludableField,
+  Field,
+  FormFactory,
+  FormTemplate,
+  Adapter,
   ExcludableAdapter,
   StringValidators,
   Validity,
@@ -35,13 +35,13 @@ describe('Form', () => {
         new ExcludableField({ name: 'middleName', defaultValue: 'Christoph' }),
         new Field({ name: 'lastName', defaultValue: 'Bach' }),
       ];
-    };
+    }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       firstName: 'Georg',
       middleName: 'Christoph',
-      lastName: 'Bach'
+      lastName: 'Bach',
     });
   });
 
@@ -50,13 +50,17 @@ describe('Form', () => {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: '' }),
-        new Field({ name: 'confirmPassword', defaultValue: '', transient: true })
-      ]
-    };
+        new Field({
+          name: 'confirmPassword',
+          defaultValue: '',
+          transient: true,
+        }),
+      ];
+    }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
-      password: ''
+      password: '',
     });
   });
 
@@ -65,32 +69,40 @@ describe('Form', () => {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'primaryEmail', defaultValue: 'user@example.com' }),
-        new ExcludableField({ name: 'secondaryEmail', defaultValue: '', excludeByDefault: true })
+        new ExcludableField({
+          name: 'secondaryEmail',
+          defaultValue: '',
+          excludeByDefault: true,
+        }),
       ];
-    };
-    const TestForm = FormFactory.createForm(Template);
-    const instance = new TestForm();
-    expect(instance.state.value).toStrictEqual({
-      primaryEmail: 'user@example.com'
-    });
-  });
-
-  test('Its value includes the values of any included user-defined adapters.', () => { 
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public formElements = <const>[
-        new Field({ name : 'birthYear', defaultValue : '1990', transient : true })
-      ];
-      public adapters = <const>[
-        new Adapter({ name : 'age', source : this.formElements[0], adaptFn : ({ value }):number => {
-          return 2024 - Number(value);
-        }})
-      ]
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
-      age : 34
+      primaryEmail: 'user@example.com',
+    });
+  });
+
+  test('Its value includes the values of any included user-defined adapters.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'TestForm';
+      public formElements = <const>[
+        new Field({ name: 'birthYear', defaultValue: '1990', transient: true }),
+      ];
+      public adapters = <const>[
+        new Adapter({
+          name: 'age',
+          source: this.formElements[0],
+          adaptFn: ({ value }): number => {
+            return 2024 - Number(value);
+          },
+        }),
+      ];
+    }
+    const TestForm = FormFactory.createForm(Template);
+    const instance = new TestForm();
+    expect(instance.state.value).toStrictEqual({
+      age: 34,
     });
   });
 
@@ -98,75 +110,101 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'firstName', defaultValue : '' }),
-        new ExcludableField({ name : 'middleName', defaultValue : '', transient : true, excludeByDefault : true }),
-        new Field({ name : 'lastName', defaultValue : '' })
+        new Field({ name: 'firstName', defaultValue: '' }),
+        new ExcludableField({
+          name: 'middleName',
+          defaultValue: '',
+          transient: true,
+          excludeByDefault: true,
+        }),
+        new Field({ name: 'lastName', defaultValue: '' }),
       ];
       public adapters = <const>[
-        new ExcludableAdapter({ name : 'middleInitial', source : this.formElements[1], adaptFn : ({ value, exclude }) : ExcludableAdaptFnReturnType<string> => {
-          return {
-            value : value.length > 0 ? value[0].toUpperCase() : '',
-            exclude
-          };
-        }})
+        new ExcludableAdapter({
+          name: 'middleInitial',
+          source: this.formElements[1],
+          adaptFn: ({
+            value,
+            exclude,
+          }): ExcludableAdaptFnReturnType<string> => {
+            return {
+              value: value.length > 0 ? value[0].toUpperCase() : '',
+              exclude,
+            };
+          },
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
-      firstName : '',
-      lastName : ''
+      firstName: '',
+      lastName: '',
     });
   });
 
-  test('If any included fields are invalid, its validity is invalid.', () => { 
+  test('If any included fields are invalid, its validity is invalid.', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]})
-      ]
+        new Field({
+          name: 'requiredField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
-    expect(instance.state.validity).toBe(Validity.Invalid)
+    expect(instance.state.validity).toBe(Validity.Invalid);
   });
 
   test('If any groups are invalid, its validity is invalid.', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'password', defaultValue : 'password' }),
-        new Field({ name : 'confirmPassword', defaultValue : '' })
+        new Field({ name: 'password', defaultValue: 'password' }),
+        new Field({ name: 'confirmPassword', defaultValue: '' }),
       ];
       public groups = <const>[
-        new Group({ name : 'passwordGroup', members : this.formElements, validatorTemplates : [
-          {
-            predicate : ({ password, confirmPassword }):boolean => {
-              return password === confirmPassword;
-            }
-          }
-        ]})
+        new Group({
+          name: 'passwordGroup',
+          members: this.formElements,
+          validatorTemplates: [
+            {
+              predicate: ({ password, confirmPassword }): boolean => {
+                return password === confirmPassword;
+              },
+            },
+          ],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.groups.passwordGroup.state.validity).toBe(Validity.Invalid);
-    expect(instance.groups.passwordGroup.state.validitySource).toBe(GroupValiditySource.Validation);
+    expect(instance.groups.passwordGroup.state.validitySource).toBe(
+      GroupValiditySource.Validation,
+    );
     expect(instance.state.validity).toBe(Validity.Invalid);
   });
 
-  test('If there is at least one pending field and no invalid fields or groups, its validity is pending.', () => { 
+  test('If there is at least one pending field and no invalid fields or groups, its validity is pending.', () => {
     const promiseScheduler = new PromiseScheduler();
     const requiredAsync = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => {
+      predicate: (value): Promise<boolean> => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
-      }
+      },
     });
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'pendingField', defaultValue : '', asyncValidators : [requiredAsync]})
-      ]
+        new Field({
+          name: 'pendingField',
+          defaultValue: '',
+          asyncValidators: [requiredAsync],
+        }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
@@ -178,45 +216,72 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'AddressForm';
       public formElements = <const>[
-        new Field({ name : 'streetAddress', defaultValue : '1726 Locust St.' }),
-        new Field({ name : 'city', defaultValue : 'Philadelphia'}),
-        new Field({ name : 'state', defaultValue : 'PA' }),
-        new Field({ name : 'zip', defaultValue : '19103' })
+        new Field({ name: 'streetAddress', defaultValue: '1726 Locust St.' }),
+        new Field({ name: 'city', defaultValue: 'Philadelphia' }),
+        new Field({ name: 'state', defaultValue: 'PA' }),
+        new Field({ name: 'zip', defaultValue: '19103' }),
       ];
       public groups = <const>[
-        new Group({ name : 'addressGroup', members : this.formElements, asyncValidatorTemplates : [
-          {
-            predicate : ({ streetAddress, city, state, zip }):Promise<boolean> => {
-              const validAddresses = new Set<string>(['1726 Locust St., Philadelphia, PA 19103']);
-              const address = `${streetAddress}, ${city}, ${state} ${zip}`;
-              return promiseScheduler.createScheduledPromise(validAddresses.has(address));
-            }
-          }
-        ]})
+        new Group({
+          name: 'addressGroup',
+          members: this.formElements,
+          asyncValidatorTemplates: [
+            {
+              predicate: ({
+                streetAddress,
+                city,
+                state,
+                zip,
+              }): Promise<boolean> => {
+                const validAddresses = new Set<string>([
+                  '1726 Locust St., Philadelphia, PA 19103',
+                ]);
+                const address = `${streetAddress}, ${city}, ${state} ${zip}`;
+                return promiseScheduler.createScheduledPromise(
+                  validAddresses.has(address),
+                );
+              },
+            },
+          ],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.groups.addressGroup.state.validity).toBe(Validity.Pending);
-    expect(instance.groups.addressGroup.state.validitySource).toBe(GroupValiditySource.Validation);
+    expect(instance.groups.addressGroup.state.validitySource).toBe(
+      GroupValiditySource.Validation,
+    );
     expect(instance.state.validity).toBe(Validity.Pending);
   });
 
-  test('If all fields and groups are valid, its validity is valid.', () => { 
+  test('If all fields and groups are valid, its validity is valid.', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'password', defaultValue : 'password', validators : [StringValidators.required()]}),
-        new Field({ name : 'confirmPassword', defaultValue : 'password', validators : [StringValidators.required()]})
+        new Field({
+          name: 'password',
+          defaultValue: 'password',
+          validators: [StringValidators.required()],
+        }),
+        new Field({
+          name: 'confirmPassword',
+          defaultValue: 'password',
+          validators: [StringValidators.required()],
+        }),
       ];
       public groups = <const>[
-        new Group({ name : 'passwordGroup', members : this.formElements, validatorTemplates : [
-          {
-            predicate : ({ password, confirmPassword }):boolean => {
-              return password === confirmPassword;
-            }
-          }
-        ]})
+        new Group({
+          name: 'passwordGroup',
+          members: this.formElements,
+          validatorTemplates: [
+            {
+              predicate: ({ password, confirmPassword }): boolean => {
+                return password === confirmPassword;
+              },
+            },
+          ],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
@@ -228,66 +293,92 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]})                  
+        new Field({
+          name: 'requiredField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template, { invalidMessage : 'The form has invalid fields.' });
+    const TestForm = FormFactory.createForm(Template, {
+      invalidMessage: 'The form has invalid fields.',
+    });
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
-        text : 'The form has invalid fields.',
-        validity : Validity.Invalid
-      }
+        text: 'The form has invalid fields.',
+        validity: Validity.Invalid,
+      },
     ]);
   });
 
-  test('If its validity is pending and it has a pending message, that message is included in the messages array of its state.', () => { 
+  test('If its validity is pending and it has a pending message, that message is included in the messages array of its state.', () => {
     const promiseScheduler = new PromiseScheduler();
     const requiredAsync = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => {
+      predicate: (value): Promise<boolean> => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
-      }
+      },
     });
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'pendingField', defaultValue : '', asyncValidators : [requiredAsync]})
+        new Field({
+          name: 'pendingField',
+          defaultValue: '',
+          asyncValidators: [requiredAsync],
+        }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template, { pendingMessage : 'Checking fields...'});
+    const TestForm = FormFactory.createForm(Template, {
+      pendingMessage: 'Checking fields...',
+    });
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
-        text : 'Checking fields...',
-        validity : Validity.Pending
-      }
+        text: 'Checking fields...',
+        validity: Validity.Pending,
+      },
     ]);
   });
 
-  test('If its validity is valid and it has a valid message, that message is included in the messages array of its state.', () => { 
+  test('If its validity is valid and it has a valid message, that message is included in the messages array of its state.', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'password', defaultValue : 'password', validators : [StringValidators.required()]}),
-        new Field({ name : 'confirmPassword', defaultValue : 'password', validators : [StringValidators.required()]})
+        new Field({
+          name: 'password',
+          defaultValue: 'password',
+          validators: [StringValidators.required()],
+        }),
+        new Field({
+          name: 'confirmPassword',
+          defaultValue: 'password',
+          validators: [StringValidators.required()],
+        }),
       ];
       public groups = <const>[
-        new Group({ name : 'passwordGroup', members : this.formElements, validatorTemplates : [
-          {
-            predicate : ({ password, confirmPassword }):boolean => {
-              return password === confirmPassword;
-            }
-          }
-        ]})
+        new Group({
+          name: 'passwordGroup',
+          members: this.formElements,
+          validatorTemplates: [
+            {
+              predicate: ({ password, confirmPassword }): boolean => {
+                return password === confirmPassword;
+              },
+            },
+          ],
+        }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template, { validMessage : 'All fields are valid!' });
+    const TestForm = FormFactory.createForm(Template, {
+      validMessage: 'All fields are valid!',
+    });
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
-        text : 'All fields are valid!',
-        validity : Validity.Valid
-      }
+        text: 'All fields are valid!',
+        validity: Validity.Valid,
+      },
     ]);
   });
 
@@ -295,28 +386,28 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
-        new Field({ name : 'firstName', defaultValue : '' }),
-        new Field({ name : 'lastName', defaultValue : '' })
+        new Field({ name: 'firstName', defaultValue: '' }),
+        new Field({ name: 'lastName', defaultValue: '' }),
       ];
-    };
+    }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
 
     expect(instance.state.value).toStrictEqual({
-      firstName : '',
-      lastName : ''
+      firstName: '',
+      lastName: '',
     });
 
     instance.formElements.firstName.setValue('George');
     expect(instance.state.value).toStrictEqual({
-      firstName : 'George',
-      lastName : ''
+      firstName: 'George',
+      lastName: '',
     });
 
     instance.formElements.lastName.setValue('Crumb');
     expect(instance.state.value).toStrictEqual({
-      firstName : 'George',
-      lastName : 'Crumb'
+      firstName: 'George',
+      lastName: 'Crumb',
     });
   });
 
@@ -324,33 +415,47 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
-        new Field({ name : 'firstName', defaultValue : '', transient : true, validators : [StringValidators.required()] }),
-        new Field({ name : 'lastName', defaultValue : '', transient : true, validators : [StringValidators.required()] })
-      ]
+        new Field({
+          name: 'firstName',
+          defaultValue: '',
+          transient: true,
+          validators: [StringValidators.required()],
+        }),
+        new Field({
+          name: 'lastName',
+          defaultValue: '',
+          transient: true,
+          validators: [StringValidators.required()],
+        }),
+      ];
       public readonly groups = <const>[
-        new Group({ name : 'fullName', members : this.formElements })
+        new Group({ name: 'fullName', members: this.formElements }),
       ];
       public readonly adapters = <const>[
-        new Adapter({ name : 'fullName', source : this.groups[0], adaptFn : ({ value, validity }):string => {
-          if(validity !== Validity.Valid) return '';
-          return `${value.lastName}, ${value.firstName}`
-        }})
+        new Adapter({
+          name: 'fullName',
+          source: this.groups[0],
+          adaptFn: ({ value, validity }): string => {
+            if (validity !== Validity.Valid) return '';
+            return `${value.lastName}, ${value.firstName}`;
+          },
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
-      fullName : ''
+      fullName: '',
     });
 
     instance.formElements.firstName.setValue('Samuel');
     expect(instance.state.value).toStrictEqual({
-      fullName : ''
+      fullName: '',
     });
 
     instance.formElements.lastName.setValue('Coleridge-Taylor');
     expect(instance.state.value).toStrictEqual({
-      fullName : 'Coleridge-Taylor, Samuel'
+      fullName: 'Coleridge-Taylor, Samuel',
     });
   });
 
@@ -358,7 +463,11 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
-        new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]})
+        new Field({
+          name: 'requiredField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
@@ -373,24 +482,30 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'password', defaultValue : 'password' }),
-        new Field({ name : 'confirmPassword', defaultValue : '' })
+        new Field({ name: 'password', defaultValue: 'password' }),
+        new Field({ name: 'confirmPassword', defaultValue: '' }),
       ];
       public groups = <const>[
-        new Group({ name : 'passwordGroup', members : this.formElements, validatorTemplates : [
-          {
-            predicate : ({ password, confirmPassword }):boolean => {
-              return password === confirmPassword;
-            }
-          }
-        ]})
+        new Group({
+          name: 'passwordGroup',
+          members: this.formElements,
+          validatorTemplates: [
+            {
+              predicate: ({ password, confirmPassword }): boolean => {
+                return password === confirmPassword;
+              },
+            },
+          ],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
 
-    instance.formElements.confirmPassword.setValue(instance.formElements.password.state.value);
+    instance.formElements.confirmPassword.setValue(
+      instance.formElements.password.state.value,
+    );
     expect(instance.state.validity).toBe(Validity.Valid);
   });
 
@@ -402,37 +517,49 @@ describe('Form', () => {
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.confirmationAttempted).toBe(false);
-    
+
     instance.confirm();
     expect(instance.confirmationAttempted).toBe(true);
   });
 
-  test('When confirm() is called with an onSuccess callback and the form is valid, that callback is called with the form\'s value.', () => {
+  test("When confirm() is called with an onSuccess callback and the form is valid, that callback is called with the form's value.", () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'firstName', defaultValue : 'Sergei', transient : true }),
-        new Field({ name : 'lastName', defaultValue : 'Rachmaninoff', transient : true })
+        new Field({
+          name: 'firstName',
+          defaultValue: 'Sergei',
+          transient: true,
+        }),
+        new Field({
+          name: 'lastName',
+          defaultValue: 'Rachmaninoff',
+          transient: true,
+        }),
       ];
       public groups = <const>[
-        new Group({ name : 'fullName', members : this.formElements })
-      ]
+        new Group({ name: 'fullName', members: this.formElements }),
+      ];
       public adapters = <const>[
-        new Adapter({ name : 'fullName', source : this.groups[0], adaptFn : ({ value }):string => {
-          return `${value.lastName}, ${value.firstName}`;
-        }})
-      ]
+        new Adapter({
+          name: 'fullName',
+          source: this.groups[0],
+          adaptFn: ({ value }): string => {
+            return `${value.lastName}, ${value.firstName}`;
+          },
+        }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     const onSuccess = vi.fn();
 
     instance.confirm({
-      onSuccess
+      onSuccess,
     });
 
     expect(onSuccess).toHaveBeenCalledWith({
-      fullName : 'Rachmaninoff, Sergei'
+      fullName: 'Rachmaninoff, Sergei',
     });
   });
 
@@ -440,8 +567,12 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'requiredField', defaultValue : '', validators : [StringValidators.required()]})
-      ]
+        new Field({
+          name: 'requiredField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
@@ -455,14 +586,18 @@ describe('Form', () => {
   test('When confirm() is called with an onFailure callback and the form is pending, that callback is called.', () => {
     const promiseScheduler = new PromiseScheduler();
     const requiredAsync = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => {
+      predicate: (value): Promise<boolean> => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
-      }
+      },
     });
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'pendingField', defaultValue : '', asyncValidators : [requiredAsync]})
+        new Field({
+          name: 'pendingField',
+          defaultValue: '',
+          asyncValidators: [requiredAsync],
+        }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
@@ -474,11 +609,28 @@ describe('Form', () => {
     expect(onFailure).toHaveBeenCalledOnce();
   });
 
-  test('When confirm() is called, all of its subforms are confirmed as well.', () => {});
+  test('When confirm() is called, all of its subforms are confirmed as well.', () => {
+    class InnerFormTemplate extends FormTemplate {
+      public readonly name = 'subForm';
+      public readonly formElements = [];
+    }
+    const InnerForm = FormFactory.createSubForm(InnerFormTemplate);
+    class OuterFormTemplate extends FormTemplate {
+      public readonly name = 'outerForm';
+      public readonly formElements = <const>[
+        new InnerForm()
+      ]
+    };
+    const OuterForm = FormFactory.createForm(OuterFormTemplate);
+    const instance = new OuterForm();
+    const spy = vi.spyOn(instance.formElements.subForm, 'confirm');
+    instance.confirm();
+    expect(spy).toHaveBeenCalledOnce();
+  });
 
   test('When reset() is called, confirmationAttempted is set to false.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'TestForm'
+      public readonly name = 'TestForm';
       public readonly formElements = [];
     }
     const TestForm = FormFactory.createForm(Template);
@@ -486,7 +638,7 @@ describe('Form', () => {
 
     instance.confirm();
     expect(instance.confirmationAttempted).toBe(true);
-  
+
     instance.reset();
     expect(instance.confirmationAttempted).toBe(false);
   });
@@ -495,10 +647,10 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
-        new Field({ name : 'firstName', defaultValue : '' }),
-        new Field({ name : 'middleName', defaultValue : ''}),
-        new Field({ name : 'lastName', defaultValue : '' }),
-        new Field({ name : 'age', defaultValue : 0 })
+        new Field({ name: 'firstName', defaultValue: '' }),
+        new Field({ name: 'middleName', defaultValue: '' }),
+        new Field({ name: 'lastName', defaultValue: '' }),
+        new Field({ name: 'age', defaultValue: 0 }),
       ];
     }
     const TestForm = FormFactory.createForm(Template);
@@ -514,10 +666,10 @@ describe('Form', () => {
     instance.formElements.age.setValue(338);
 
     expect(instance.state.value).toStrictEqual({
-      firstName : 'Johann',
-      middleName : 'Sebastian',
-      lastName : 'Bach',
-      age : 338
+      firstName: 'Johann',
+      middleName: 'Sebastian',
+      lastName: 'Bach',
+      age: 338,
     });
 
     instance.reset();
@@ -528,73 +680,80 @@ describe('Form', () => {
     expect(instance.formElements.lastName.state.value).toBe('');
     expect(instance.formElements.age.state.value).toBe(0);
     expect(instance.state.value).toStrictEqual({
-      firstName : '',
-      middleName : '',
-      lastName : '',
-      age : 0
-    })
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      age: 0,
+    });
   });
-  
+
   test('After subscribeToState() has been called, state updates are emitted to subscribers.', () => {
     const promiseScheduler = new PromiseScheduler();
     const emailIsAvailable = new AsyncValidator<string>({
-      predicate : (value):Promise<boolean> => {
+      predicate: (value): Promise<boolean> => {
         const unavailableEmails = new Set<string>();
-        return promiseScheduler.createScheduledPromise(!unavailableEmails.has(value));
-      }
+        return promiseScheduler.createScheduledPromise(
+          !unavailableEmails.has(value),
+        );
+      },
     });
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
-        new Field({ name : 'email', defaultValue : '', validators : [StringValidators.required()], asyncValidators : [emailIsAvailable]})
-      ]
+        new Field({
+          name: 'email',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+          asyncValidators: [emailIsAvailable],
+        }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template, {
-      validMessage : 'All fields are valid!',
-      pendingMessage : 'Checking fields...',
-      invalidMessage : 'The form has invalid fields.'
+      validMessage: 'All fields are valid!',
+      pendingMessage: 'Checking fields...',
+      invalidMessage: 'The form has invalid fields.',
     });
     const instance = new TestForm();
     expect(instance.state).toStrictEqual({
-      value : {
-        email : ''
+      value: {
+        email: '',
       },
-      validity : Validity.Invalid,
-      messages : [
+      validity: Validity.Invalid,
+      messages: [
         {
-          text : 'The form has invalid fields.',
-          validity : Validity.Invalid
-        }
-      ]
+          text: 'The form has invalid fields.',
+          validity: Validity.Invalid,
+        },
+      ],
     });
 
     let counter = 0;
     instance.subscribeToState(state => {
-      if(counter === 0) {
+      if (counter === 0) {
         expect(state).toStrictEqual({
-          value : {
-            email : 'user@example.com'
+          value: {
+            email: 'user@example.com',
           },
-          validity : Validity.Pending,
-          messages : [
+          validity: Validity.Pending,
+          messages: [
             {
-              text : 'Checking fields...',
-              validity : Validity.Pending
-            }
-          ]
+              text: 'Checking fields...',
+              validity: Validity.Pending,
+            },
+          ],
         });
       } else {
         expect(state).toStrictEqual({
-          value : {
-            email : 'user@example.com'
+          value: {
+            email: 'user@example.com',
           },
-          validity : Validity.Valid,
-          messages : [
+          validity: Validity.Valid,
+          messages: [
             {
-              text : 'All fields are valid!',
-              validity : Validity.Valid
-            }
-          ]
+              text: 'All fields are valid!',
+              validity: Validity.Valid,
+            },
+          ],
         });
       }
       counter++;
@@ -622,7 +781,7 @@ describe('Form', () => {
   });
 
   //messages
-  test('When setMessages(), the messages property of the form\'s state is set.', () => {
+  test("When setMessages(), the messages property of the form's state is set.", () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
@@ -631,23 +790,23 @@ describe('Form', () => {
     const instance = new TestForm();
     instance.setMessages([
       {
-        text : 'Custom message',
-        validity : Validity.Valid
+        text: 'Custom message',
+        validity: Validity.Valid,
       },
       {
-        text : 'Another custom message',
-        validity : Validity.Valid
-      }
+        text: 'Another custom message',
+        validity: Validity.Valid,
+      },
     ]);
     expect(instance.state.messages).toStrictEqual([
       {
-        text : 'Custom message',
-        validity : Validity.Valid
+        text: 'Custom message',
+        validity: Validity.Valid,
       },
       {
-        text : 'Another custom message',
-        validity : Validity.Valid
-      }
+        text: 'Another custom message',
+        validity: Validity.Valid,
+      },
     ]);
   });
 
@@ -655,30 +814,30 @@ describe('Form', () => {
     class Template extends FormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
-        new Field({ name : 'myField', defaultValue : ''})
-      ]
+        new Field({ name: 'myField', defaultValue: '' }),
+      ];
     }
     const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     instance.setMessages([
       {
-        text : 'Custom message',
-        validity : Validity.Valid
+        text: 'Custom message',
+        validity: Validity.Valid,
       },
       {
-        text : 'Another custom message',
-        validity : Validity.Valid
-      }
+        text: 'Another custom message',
+        validity: Validity.Valid,
+      },
     ]);
     expect(instance.state.messages).toStrictEqual([
       {
-        text : 'Custom message',
-        validity : Validity.Valid
+        text: 'Custom message',
+        validity: Validity.Valid,
       },
       {
-        text : 'Another custom message',
-        validity : Validity.Valid
-      }
+        text: 'Another custom message',
+        validity: Validity.Valid,
+      },
     ]);
 
     instance.formElements.myField.setValue('test');

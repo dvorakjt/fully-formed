@@ -6,5 +6,6 @@ export {
 } from './classes';
 export type {
   CreateFormOpts,
-  NonGenericAutoTrim
+  CreateSubFormOpts,
+  NonGenericAutoTrim,
 } from './types';

@@ -1,4 +1,4 @@
-import type { FormElement, AutoTrim } from "../../form-elements";
+import type { FormElement, AutoTrim } from '../../form-elements';
 
 export type CreateFormOpts<FormElements extends readonly FormElement[]> = {
   autoTrim?: AutoTrim<FormElements>;
@@ -6,4 +6,4 @@ export type CreateFormOpts<FormElements extends readonly FormElement[]> = {
   invalidMessage?: string;
   pendingMessage?: string;
   validMessage?: string;
-}
+};

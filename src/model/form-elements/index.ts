@@ -5,6 +5,7 @@ export {
   AbstractForm,
   AbstractSubForm,
   Form,
+  SubForm,
   Field,
   ExcludableField,
 } from './classes';
@@ -32,4 +33,5 @@ export type {
   FormState,
   FormValue,
   NonExcludableFormElementValues,
+  SubFormConstructorArgs,
 } from './types';

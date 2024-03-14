@@ -1,30 +1,30 @@
-import { AbstractForm } from './abstract-form';
-import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
+import { AbstractSubForm } from '.';
 import {
   StateManager,
+  Validity,
   type AbstractStateManager,
   type Message,
-  Validity,
 } from '../../../state';
-import type { AbstractFormReducer } from '../../../reducers';
+import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
 import type { Subscription } from 'rxjs';
+import type { AbstractFormReducer } from '../../../reducers';
 import type {
-  ConfirmMethodArgs,
   FormConstituents,
-  FormConstructorArgs,
   FormState,
   FormValue,
+  ConfirmMethodArgs,
+  SubFormConstructorArgs,
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
-import type { AllowedConstituents } from '../../types';
-import { AbstractSubForm } from '.';
 
-export abstract class Form<
+export class SubForm<
   Name extends string,
-  Constituents extends FormConstituents & AllowedConstituents<Constituents>,
-> extends AbstractForm<Name, Constituents> {
+  Constituents extends FormConstituents,
+  Transient extends boolean = false,
+> extends AbstractSubForm<Name, Constituents, Transient> {
   public readonly name: Name;
   public readonly id: string;
+  public readonly transient: Transient;
   public readonly formElements: NameableObject<Constituents['formElements']>;
   public readonly groups: NameableObject<Constituents['groups']>;
   public readonly derivedValues: NameableObject<Constituents['derivedValues']>;
@@ -58,14 +58,16 @@ export abstract class Form<
     adapters,
     groups,
     derivedValues,
+    transient,
     validMessage,
     pendingMessage,
     invalidMessage,
     autoTrim = false,
-  }: FormConstructorArgs<Name, Constituents>) {
+  }: SubFormConstructorArgs<Name, Constituents, Transient>) {
     super();
     this.name = name;
     this.id = id;
+    this.transient = !!transient as Transient;
     this.formElements =
       NameableObjectFactory.createNameableObjectFromArray(formElements);
     this.groups = NameableObjectFactory.createNameableObjectFromArray(groups);

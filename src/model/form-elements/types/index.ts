@@ -20,3 +20,4 @@ export type { FormElement } from './form-element.type';
 export type { FormState } from './form-state.type';
 export type { FormValue } from './form-value.type';
 export type { NonExcludableFormElementValues } from './non-excludable-form-element-values.type';
+export type { SubFormConstructorArgs } from './subform-constructor-args.type';

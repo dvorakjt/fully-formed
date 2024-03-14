@@ -26,16 +26,9 @@ export {
 } from './factories';
 export type {
   CreateFormOpts,
-  NonGenericAutoTrim
+  CreateSubFormOpts,
+  NonGenericAutoTrim,
 } from './factories';
-export { AbstractGroup, Group, GroupValiditySource } from './groups';
-export type {
-  GroupConstructorArgs,
-  GroupMember,
-  GroupMembers,
-  GroupState,
-  GroupValue,
-} from './groups';
 export {
   AbstractExcludableField,
   AbstractExcludableSubForm,
@@ -43,6 +36,7 @@ export {
   AbstractForm,
   AbstractSubForm,
   Form,
+  SubForm,
   Field,
   ExcludableField,
 } from './form-elements';
@@ -70,7 +64,16 @@ export type {
   FormState,
   FormValue,
   NonExcludableFormElementValues,
+  SubFormConstructorArgs,
 } from './form-elements';
+export { AbstractGroup, Group, GroupValiditySource } from './groups';
+export type {
+  GroupConstructorArgs,
+  GroupMember,
+  GroupMembers,
+  GroupState,
+  GroupValue,
+} from './groups';
 export {
   AbstractGroupReducer,
   AbstractFormReducer,
