@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "strict": true,
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "outDir": "dist",
     "declaration": true,
     // These settings prevent errors when running typedoc:
