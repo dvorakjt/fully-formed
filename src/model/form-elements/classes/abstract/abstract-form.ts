@@ -39,7 +39,7 @@ export abstract class AbstractForm<
   ): Subscription;
   public abstract setMessages(messages: Message[]): void;
   public abstract confirm(
-    args: ConfirmMethodArgs<FormValue<Constituents>>,
+    args?: ConfirmMethodArgs<FormValue<Constituents>>,
   ): void;
   public abstract reset(): void;
 }

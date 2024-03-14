@@ -17,6 +17,7 @@ import type {
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
 import type { AllowedConstituents } from '../../types/allowed-constituents.type';
+import { AbstractSubForm } from '.';
 
 export abstract class Form<
   Name extends string,
@@ -105,11 +106,12 @@ export abstract class Form<
     };
   }
 
-  public confirm(args: ConfirmMethodArgs<FormValue<Constituents>>): void {
+  public confirm(args?: ConfirmMethodArgs<FormValue<Constituents>>): void {
+    this.confirmSubForms();
     this.confirmationAttempted = true;
-    if (this.state.validity === Validity.Valid && args.onSuccess) {
+    if (this.state.validity === Validity.Valid && args?.onSuccess) {
       args.onSuccess(this.state.value);
-    } else if (args.onFailure) {
+    } else if (args?.onFailure) {
       args.onFailure();
     }
   }
@@ -166,5 +168,13 @@ export abstract class Form<
         break;
     }
     return messages;
+  }
+
+  private confirmSubForms() : void {
+    for(const formElement of Object.values(this.formElements)) {
+      if(formElement instanceof AbstractSubForm) {
+        formElement.confirm();
+      }
+    }
   }
 }
