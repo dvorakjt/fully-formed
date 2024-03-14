@@ -16,7 +16,7 @@ import type {
   FormValue,
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
-import type { AllowedConstituents } from '../../types/allowed-constituents.type';
+import type { AllowedConstituents } from '../../types';
 import { AbstractSubForm } from '.';
 
 export abstract class Form<

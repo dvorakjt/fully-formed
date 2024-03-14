@@ -8,11 +8,11 @@ import {
   AbstractExcludableSubForm,
   type FormElement,
 } from '../../../form-elements';
-import type { AutoTrim } from '../../../form-elements';
+import type { NonGenericAutoTrim } from '../../types';
 
 type CreateDefaultAdaptersArgs = {
   formElements: readonly FormElement[];
-  autoTrim: AutoTrim;
+  autoTrim: NonGenericAutoTrim;
 };
 
 export class DefaultAdapterFactory {
@@ -32,7 +32,7 @@ export class DefaultAdapterFactory {
           return new DefaultExcludableAdapter({
             source: formElement,
             adaptFn:
-              DefaultAdapterFactory.applyAutoTrim(formElement, autoTrim) ?
+              DefaultAdapterFactory.applyNonGenericAutoTrim(formElement, autoTrim) ?
                 (value): string => (value as string).trim()
               : undefined,
           });
@@ -40,16 +40,16 @@ export class DefaultAdapterFactory {
         return new DefaultAdapter({
           source: formElement,
           adaptFn:
-            DefaultAdapterFactory.applyAutoTrim(formElement, autoTrim) ?
+            DefaultAdapterFactory.applyNonGenericAutoTrim(formElement, autoTrim) ?
               (value): string => (value as string).trim()
             : undefined,
         });
       });
   }
 
-  private static applyAutoTrim(
+  private static applyNonGenericAutoTrim(
     formElement: FormElement,
-    autoTrim: AutoTrim,
+    autoTrim: NonGenericAutoTrim,
   ): boolean {
     if (typeof formElement.state.value === 'string') {
       if (typeof autoTrim === 'object') {

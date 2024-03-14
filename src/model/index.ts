@@ -24,6 +24,10 @@ export {
   FormFactory,
   FormReducerFactory,
 } from './factories';
+export type {
+  CreateFormOpts,
+  NonGenericAutoTrim
+} from './factories';
 export { AbstractGroup, Group, GroupValiditySource } from './groups';
 export type {
   GroupConstructorArgs,
@@ -113,7 +117,6 @@ export type {
 export { AbstractStateManager, StateManager, Validity } from './state';
 export type { Message, StateWithMessages, State } from './state';
 export { FormTemplate } from './templates';
-export type { TemplateToConstituents } from './templates';
 export {
   AbstractAsyncValidatorSuite,
   AbstractAsyncValidator,

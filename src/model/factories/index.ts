@@ -4,3 +4,7 @@ export {
   FormFactory,
   FormReducerFactory,
 } from './classes';
+export type {
+  CreateFormOpts,
+  NonGenericAutoTrim
+} from './types';
