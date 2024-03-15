@@ -4,8 +4,4 @@ export {
   FormFactory,
   FormReducerFactory,
 } from './classes';
-export type {
-  CreateFormOpts,
-  CreateSubFormOpts,
-  NonGenericAutoTrim,
-} from './types';
+export type { TransienceFromTemplate } from './types';

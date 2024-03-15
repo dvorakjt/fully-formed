@@ -1,45 +1,53 @@
-import { AbstractForm } from './abstract-form';
+import { AbstractExcludableSubForm } from './abstract-excludable-subform';
 import { AbstractSubForm } from './abstract-subform';
-import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
 import {
   StateManager,
+  Validity,
   type AbstractStateManager,
   type Message,
-  Validity,
 } from '../../../state';
-import type { AbstractFormReducer } from '../../../reducers';
+import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
 import type { Subscription } from 'rxjs';
+import type { AbstractFormReducer } from '../../../reducers';
 import type {
-  ConfirmMethodArgs,
   FormConstituents,
-  FormConstructorArgs,
   FormState,
   FormValue,
+  ConfirmMethodArgs,
+  ExcludableSubFormConstructorArgs,
 } from '../../types';
-import type { NameableObject, Resettable } from '../../../shared';
-import type { AllowedConstituents } from '../../types';
+import type {
+  NameableObject,
+  ExcludableState,
+  Resettable,
+} from '../../../shared';
 
-export abstract class Form<
+export class ExcludableSubForm<
   Name extends string,
-  Constituents extends FormConstituents & AllowedConstituents<Constituents>,
-> extends AbstractForm<Name, Constituents> {
+  Constituents extends FormConstituents,
+  Transient extends boolean,
+> extends AbstractExcludableSubForm<Name, Constituents, Transient> {
   public readonly name: Name;
   public readonly id: string;
+  public readonly transient: Transient;
   public readonly formElements: NameableObject<Constituents['formElements']>;
   public readonly groups: NameableObject<Constituents['groups']>;
   public readonly derivedValues: NameableObject<Constituents['derivedValues']>;
-  private stateManager: AbstractStateManager<FormState<Constituents>>;
+  private stateManager: AbstractStateManager<
+    FormState<Constituents> & ExcludableState
+  >;
   private confirmationAttemptedManager: AbstractStateManager<boolean>;
   private reducer: AbstractFormReducer<Constituents>;
+  private excludeByDefault: boolean;
   private validMessage?: string;
   private pendingMessage?: string;
   private invalidMessage?: string;
 
-  public get state(): FormState<Constituents> {
+  public get state(): FormState<Constituents> & ExcludableState {
     return this.stateManager.state;
   }
 
-  private set state(state: FormState<Constituents>) {
+  private set state(state: FormState<Constituents> & ExcludableState) {
     this.stateManager.state = state;
   }
 
@@ -58,19 +66,23 @@ export abstract class Form<
     adapters,
     groups,
     derivedValues,
+    transient,
+    excludeByDefault,
     validMessage,
     pendingMessage,
     invalidMessage,
     autoTrim = false,
-  }: FormConstructorArgs<Name, Constituents>) {
+  }: ExcludableSubFormConstructorArgs<Name, Constituents, Transient>) {
     super();
     this.name = name;
     this.id = id;
+    this.transient = !!transient as Transient;
     this.formElements =
       NameableObjectFactory.createNameableObjectFromArray(formElements);
     this.groups = NameableObjectFactory.createNameableObjectFromArray(groups);
     this.derivedValues =
       NameableObjectFactory.createNameableObjectFromArray(derivedValues);
+    this.excludeByDefault = !!excludeByDefault;
     this.validMessage = validMessage;
     this.pendingMessage = pendingMessage;
     this.invalidMessage = invalidMessage;
@@ -80,15 +92,15 @@ export abstract class Form<
       groups,
       autoTrim,
     });
-    this.stateManager = new StateManager<FormState<Constituents>>(
-      this.getInitialState(),
-    );
+    this.stateManager = new StateManager<
+      FormState<Constituents> & ExcludableState
+    >(this.getInitialState());
     this.confirmationAttemptedManager = new StateManager<boolean>(false);
     this.subscribeToReducer();
   }
 
   public subscribeToState(
-    cb: (state: FormState<Constituents>) => void,
+    cb: (state: FormState<Constituents> & ExcludableState) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
@@ -106,6 +118,10 @@ export abstract class Form<
     };
   }
 
+  public setExclude(exclude: boolean): void {
+    this.state = { ...this.state, exclude };
+  }
+
   public confirm(args?: ConfirmMethodArgs<FormValue<Constituents>>): void {
     this.confirmSubForms();
     this.confirmationAttempted = true;
@@ -118,14 +134,16 @@ export abstract class Form<
 
   public reset(): void {
     this.confirmationAttempted = false;
+    this.state = { ...this.state, exclude: this.excludeByDefault };
     for (const formElement of Object.values(this.formElements)) {
       (formElement as Resettable).reset();
     }
   }
 
-  private getInitialState(): FormState<Constituents> {
+  private getInitialState(): FormState<Constituents> & ExcludableState {
     return {
       ...this.reducer.state,
+      exclude: this.excludeByDefault,
       messages: this.getAutomaticMessages(this.reducer.state.validity),
     };
   }
@@ -134,6 +152,7 @@ export abstract class Form<
     this.reducer.subscribeToState(state => {
       this.state = {
         ...state,
+        exclude: this.state.exclude,
         messages: this.getAutomaticMessages(state.validity),
       };
     });

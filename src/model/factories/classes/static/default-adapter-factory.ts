@@ -7,12 +7,12 @@ import {
   AbstractExcludableField,
   AbstractExcludableSubForm,
   type FormElement,
+  type AutoTrim,
 } from '../../../form-elements';
-import type { NonGenericAutoTrim } from '../../types';
 
 type CreateDefaultAdaptersArgs = {
   formElements: readonly FormElement[];
-  autoTrim: NonGenericAutoTrim;
+  autoTrim: AutoTrim;
 };
 
 export class DefaultAdapterFactory {
@@ -49,7 +49,7 @@ export class DefaultAdapterFactory {
 
   private static applyAutoTrim(
     formElement: FormElement,
-    autoTrim: NonGenericAutoTrim,
+    autoTrim: AutoTrim,
   ): boolean {
     if (typeof formElement.state.value === 'string') {
       if (typeof autoTrim === 'object') {

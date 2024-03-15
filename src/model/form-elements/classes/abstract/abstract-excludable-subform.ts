@@ -12,16 +12,9 @@ export abstract class AbstractExcludableSubForm<
   extends AbstractSubForm<Name, Constituents, Transient>
   implements ExcludableFormElement
 {
-  public abstract state: FormState<
-    Constituents['formElements'],
-    Constituents['adapters']
-  > &
-    ExcludableState;
+  public abstract state: FormState<Constituents> & ExcludableState;
   public abstract subscribeToState(
-    cb: (
-      state: FormState<Constituents['formElements'], Constituents['adapters']> &
-        ExcludableState,
-    ) => void,
+    cb: (state: FormState<Constituents> & ExcludableState) => void,
   ): Subscription;
   public abstract setExclude(exclude: boolean): void;
 }

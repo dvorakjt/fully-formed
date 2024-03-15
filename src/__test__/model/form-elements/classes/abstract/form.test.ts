@@ -299,10 +299,9 @@ describe('Form', () => {
           validators: [StringValidators.required()],
         }),
       ];
+      public invalidMessage = 'The form has invalid fields.';
     }
-    const TestForm = FormFactory.createForm(Template, {
-      invalidMessage: 'The form has invalid fields.',
-    });
+    const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -328,10 +327,9 @@ describe('Form', () => {
           asyncValidators: [requiredAsync],
         }),
       ];
+      public pendingMessage = 'Checking fields...';
     }
-    const TestForm = FormFactory.createForm(Template, {
-      pendingMessage: 'Checking fields...',
-    });
+    const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -369,10 +367,9 @@ describe('Form', () => {
           ],
         }),
       ];
+      public validMessage = 'All fields are valid!';
     }
-    const TestForm = FormFactory.createForm(Template, {
-      validMessage: 'All fields are valid!',
-    });
+    const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -617,10 +614,8 @@ describe('Form', () => {
     const InnerForm = FormFactory.createSubForm(InnerFormTemplate);
     class OuterFormTemplate extends FormTemplate {
       public readonly name = 'outerForm';
-      public readonly formElements = <const>[
-        new InnerForm()
-      ]
-    };
+      public readonly formElements = <const>[new InnerForm()];
+    }
     const OuterForm = FormFactory.createForm(OuterFormTemplate);
     const instance = new OuterForm();
     const spy = vi.spyOn(instance.formElements.subForm, 'confirm');
@@ -707,12 +702,11 @@ describe('Form', () => {
           asyncValidators: [emailIsAvailable],
         }),
       ];
+      public validMessage = 'All fields are valid!';
+      public pendingMessage = 'Checking fields...';
+      public invalidMessage = 'The form has invalid fields.';
     }
-    const TestForm = FormFactory.createForm(Template, {
-      validMessage: 'All fields are valid!',
-      pendingMessage: 'Checking fields...',
-      invalidMessage: 'The form has invalid fields.',
-    });
+    const TestForm = FormFactory.createForm(Template);
     const instance = new TestForm();
     expect(instance.state).toStrictEqual({
       value: {

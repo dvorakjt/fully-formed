@@ -1,2 +1,3 @@
 add more string validators
-test form and new factories
+simplify exports
+document code

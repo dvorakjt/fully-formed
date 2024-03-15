@@ -1,4 +1,4 @@
-import { AbstractSubForm } from '.';
+import { AbstractSubForm } from './abstract-subform';
 import {
   StateManager,
   Validity,

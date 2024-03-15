@@ -24,17 +24,14 @@ export {
   FormFactory,
   FormReducerFactory,
 } from './factories';
-export type {
-  CreateFormOpts,
-  CreateSubFormOpts,
-  NonGenericAutoTrim,
-} from './factories';
+export type { TransienceFromTemplate } from './factories';
 export {
   AbstractExcludableField,
   AbstractExcludableSubForm,
   AbstractField,
   AbstractForm,
   AbstractSubForm,
+  ExcludableSubForm,
   Form,
   SubForm,
   Field,
@@ -52,6 +49,7 @@ export type {
   ExcludableFieldState,
   ExcludableFormElement,
   ExcludableFormElementValues,
+  ExcludableSubFormConstructorArgs,
   ExcludableSubFormControlFn,
   ExcludableSubFormControlTemplate,
   FieldConstructorArgs,
@@ -119,7 +117,12 @@ export type {
 } from './shared';
 export { AbstractStateManager, StateManager, Validity } from './state';
 export type { Message, StateWithMessages, State } from './state';
-export { FormTemplate } from './templates';
+export {
+  ExcludableSubFormTemplate,
+  FormTemplate,
+  SubFormTemplate,
+} from './templates';
+export type { ExcludableTemplate, TransientTemplate } from './templates';
 export {
   AbstractAsyncValidatorSuite,
   AbstractAsyncValidator,

@@ -13,22 +13,22 @@ import {
   type ExcludableAdaptFnReturnType,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
-import { SubFormTemplate } from '../../../../../model';
+import { ExcludableSubFormTemplate } from '../../../../../model';
 
 describe('Form', () => {
   test('Its id defaults to its name.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.name).toBe('TestForm');
     expect(instance.id).toBe(instance.name);
   });
 
   test('Its value consists of all included, non-transient fields.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: 'Georg' }),
@@ -36,7 +36,7 @@ describe('Form', () => {
         new Field({ name: 'lastName', defaultValue: 'Bach' }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       firstName: 'Georg',
@@ -46,7 +46,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include any transient fields.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: '' }),
@@ -57,7 +57,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       password: '',
@@ -65,7 +65,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include the values of any excluded excludable fields.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'primaryEmail', defaultValue: 'user@example.com' }),
@@ -76,7 +76,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       primaryEmail: 'user@example.com',
@@ -84,7 +84,7 @@ describe('Form', () => {
   });
 
   test('Its value includes the values of any included user-defined adapters.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'birthYear', defaultValue: '1990', transient: true }),
@@ -99,7 +99,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       age: 34,
@@ -107,7 +107,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include the values of any excluded excludable adapters.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
@@ -135,7 +135,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       firstName: '',
@@ -144,7 +144,7 @@ describe('Form', () => {
   });
 
   test('If any included fields are invalid, its validity is invalid.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -154,13 +154,13 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
   });
 
   test('If any groups are invalid, its validity is invalid.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
@@ -180,7 +180,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.groups.passwordGroup.state.validity).toBe(Validity.Invalid);
     expect(instance.groups.passwordGroup.state.validitySource).toBe(
@@ -196,7 +196,7 @@ describe('Form', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -206,14 +206,14 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Pending);
   });
 
   test('If there is at least one pending group and no invalid fields or groups, its validity is pending.', () => {
     const promiseScheduler = new PromiseScheduler();
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'AddressForm';
       public formElements = <const>[
         new Field({ name: 'streetAddress', defaultValue: '1726 Locust St.' }),
@@ -246,7 +246,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.groups.addressGroup.state.validity).toBe(Validity.Pending);
     expect(instance.groups.addressGroup.state.validitySource).toBe(
@@ -256,7 +256,7 @@ describe('Form', () => {
   });
 
   test('If all fields and groups are valid, its validity is valid.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -284,13 +284,13 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Valid);
   });
 
   test('If its validity is invalid and it has an invalid message, that message is included the messages array of its state.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -301,7 +301,7 @@ describe('Form', () => {
       ];
       public invalidMessage = 'The form has invalid fields.';
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -318,7 +318,7 @@ describe('Form', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -329,7 +329,7 @@ describe('Form', () => {
       ];
       public pendingMessage = 'Checking fields...';
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -340,7 +340,7 @@ describe('Form', () => {
   });
 
   test('If its validity is valid and it has a valid message, that message is included in the messages array of its state.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -369,7 +369,7 @@ describe('Form', () => {
       ];
       public validMessage = 'All fields are valid!';
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.messages).toStrictEqual([
       {
@@ -380,14 +380,14 @@ describe('Form', () => {
   });
 
   test('When the value of one of its form elements changes, its value is updated.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
         new Field({ name: 'lastName', defaultValue: '' }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
 
     expect(instance.state.value).toStrictEqual({
@@ -409,7 +409,7 @@ describe('Form', () => {
   });
 
   test('When the value of one of its adapters changes, its value is updated.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -439,7 +439,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       fullName: '',
@@ -457,7 +457,7 @@ describe('Form', () => {
   });
 
   test('When the validity of one of its form elements changes, its validity is updated.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -467,7 +467,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
 
@@ -476,7 +476,7 @@ describe('Form', () => {
   });
 
   test('When the validity of one of its groups changes, its validity is updated.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
@@ -496,7 +496,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
 
@@ -507,11 +507,11 @@ describe('Form', () => {
   });
 
   test('When confirm() is called, confirmationAttempted is set to true.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.confirmationAttempted).toBe(false);
 
@@ -520,7 +520,7 @@ describe('Form', () => {
   });
 
   test("When confirm() is called with an onSuccess callback and the form is valid, that callback is called with the form's value.", () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -547,7 +547,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     const onSuccess = vi.fn();
 
@@ -561,7 +561,7 @@ describe('Form', () => {
   });
 
   test('When confirm() is called with an onFailure callback and the form is invalid, that callback is called.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -571,7 +571,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     const onFailure = vi.fn();
 
@@ -587,7 +587,7 @@ describe('Form', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -597,7 +597,7 @@ describe('Form', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     const onFailure = vi.fn();
 
@@ -607,17 +607,17 @@ describe('Form', () => {
   });
 
   test('When confirm() is called, all of its subforms are confirmed as well.', () => {
-    class InnerFormTemplate extends SubFormTemplate {
+    class InnerFormTemplate extends ExcludableSubFormTemplate {
       public readonly name = 'subForm';
       public readonly formElements = [];
     }
 
-    const InnerForm = FormFactory.createSubForm(InnerFormTemplate);
-    class OuterFormTemplate extends SubFormTemplate {
+    const InnerForm = FormFactory.createExcludableSubForm(InnerFormTemplate);
+    class OuterFormTemplate extends ExcludableSubFormTemplate {
       public readonly name = 'outerForm';
       public readonly formElements = <const>[new InnerForm()];
     }
-    const OuterForm = FormFactory.createSubForm(OuterFormTemplate);
+    const OuterForm = FormFactory.createExcludableSubForm(OuterFormTemplate);
     const instance = new OuterForm();
     const spy = vi.spyOn(instance.formElements.subForm, 'confirm');
     instance.confirm();
@@ -625,11 +625,11 @@ describe('Form', () => {
   });
 
   test('When reset() is called, confirmationAttempted is set to false.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
 
     instance.confirm();
@@ -640,7 +640,7 @@ describe('Form', () => {
   });
 
   test('When reset() is called, reset is called on all of its form elements.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
@@ -649,7 +649,7 @@ describe('Form', () => {
         new Field({ name: 'age', defaultValue: 0 }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
 
     const spies = Object.values(instance.formElements).map(formElement => {
@@ -683,6 +683,23 @@ describe('Form', () => {
     });
   });
 
+  test('When reset() is called, the exclude property of its state becomes excludeByDefault.', () => {
+    class Template extends ExcludableSubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly formElements = [];
+      public readonly excludeByDefault = true;
+    }
+    const TestForm = FormFactory.createExcludableSubForm(Template);
+    const instance = new TestForm();
+    expect(instance.state.exclude).toBe(true);
+
+    instance.setExclude(false);
+    expect(instance.state.exclude).toBe(false);
+
+    instance.reset();
+    expect(instance.state.exclude).toBe(true);
+  });
+
   test('After subscribeToState() has been called, state updates are emitted to subscribers.', () => {
     const promiseScheduler = new PromiseScheduler();
     const emailIsAvailable = new AsyncValidator<string>({
@@ -693,7 +710,7 @@ describe('Form', () => {
         );
       },
     });
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -707,7 +724,7 @@ describe('Form', () => {
       public pendingMessage = 'Checking fields...';
       public invalidMessage = 'The form has invalid fields.';
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     expect(instance.state).toStrictEqual({
       value: {
@@ -720,6 +737,7 @@ describe('Form', () => {
           validity: Validity.Invalid,
         },
       ],
+      exclude: false,
     });
 
     let counter = 0;
@@ -736,6 +754,7 @@ describe('Form', () => {
               validity: Validity.Pending,
             },
           ],
+          exclude: false,
         });
       } else {
         expect(state).toStrictEqual({
@@ -749,6 +768,7 @@ describe('Form', () => {
               validity: Validity.Valid,
             },
           ],
+          exclude: false,
         });
       }
       counter++;
@@ -759,11 +779,11 @@ describe('Form', () => {
   });
 
   test('After subscribeToConfirmationAttempted() has been called, updates to confirmationAttempted are emitted to subscribers.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     const subscribe = vi.fn();
     instance.subscribeToConfirmationAttempted(subscribe);
@@ -775,13 +795,12 @@ describe('Form', () => {
     expect(subscribe).toHaveBeenNthCalledWith(2, false);
   });
 
-  //messages
   test("When setMessages(), the messages property of the form's state is set.", () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     instance.setMessages([
       {
@@ -806,13 +825,13 @@ describe('Form', () => {
   });
 
   test('When the state of the form changes, any messages added with setMessage() are removed.', () => {
-    class Template extends SubFormTemplate {
+    class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({ name: 'myField', defaultValue: '' }),
       ];
     }
-    const TestForm = FormFactory.createSubForm(Template);
+    const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
     instance.setMessages([
       {

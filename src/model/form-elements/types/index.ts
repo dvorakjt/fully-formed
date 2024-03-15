@@ -8,6 +8,7 @@ export type { ExcludableFieldControlFn } from './excludable-field-control-fn.typ
 export type { ExcludableFieldControlTemplate } from './excludable-field-control-template.type';
 export type { ExcludableFieldState } from './excludable-field-state.type';
 export type { ExcludableFormElementValues } from './excludable-form-element-values.type';
+export type { ExcludableSubFormConstructorArgs } from './excludable-subform-constructor-args.type';
 export type { ExcludableSubFormControlFn } from './excludable-subform-control-fn.type';
 export type { ExcludableSubFormControlTemplate } from './excludable-subform-control-template.type';
 export type { FieldConstructorArgs } from './field-constructor-args.type';

@@ -1,1 +1,5 @@
-export { FormTemplate } from './abstract';
+export {
+  ExcludableSubFormTemplate,
+  FormTemplate,
+  SubFormTemplate,
+} from './abstract';

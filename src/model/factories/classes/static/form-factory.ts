@@ -1,8 +1,13 @@
-import { Form, SubForm } from '../../../form-elements';
+import { Form, SubForm, ExcludableSubForm } from '../../../form-elements';
 import type { FormTemplate } from '../../../templates';
 import type { Constructor } from '../../../shared';
-import type { AllowedConstituents } from '../../../form-elements';
-import type { CreateFormOpts, CreateSubFormOpts } from '../../types';
+import type {
+  AbstractExcludableSubForm,
+  AbstractForm,
+  AbstractSubForm,
+  AllowedConstituents,
+} from '../../../form-elements';
+import type { TransienceFromTemplate } from '../../types';
 
 export class FormFactory {
   public static createForm<
@@ -10,14 +15,10 @@ export class FormFactory {
     T extends FormTemplate & AllowedConstituents<T>,
   >(
     Template: Constructor<Args, T>,
-    opts?: CreateFormOpts<T['formElements']>,
-  ): Constructor<Args, Form<T['name'], T>> {
+  ): Constructor<Args, AbstractForm<T['name'], T>> {
     return class extends Form<T['name'], T> {
       public constructor(...args: Args) {
-        super({
-          ...opts,
-          ...new Template(...args),
-        });
+        super(new Template(...args));
       }
     };
   }
@@ -25,17 +26,35 @@ export class FormFactory {
   public static createSubForm<
     Args extends unknown[],
     T extends FormTemplate & AllowedConstituents<T>,
-    Transient extends boolean = false,
   >(
     Template: Constructor<Args, T>,
-    opts?: CreateSubFormOpts<T['formElements'], Transient>,
-  ): Constructor<Args, SubForm<T['name'], T, Transient>> {
-    return class extends SubForm<T['name'], T, Transient> {
+  ): Constructor<
+    Args,
+    AbstractSubForm<T['name'], T, TransienceFromTemplate<T>>
+  > {
+    return class extends SubForm<T['name'], T, TransienceFromTemplate<T>> {
       public constructor(...args: Args) {
-        super({
-          ...opts,
-          ...new Template(...args),
-        });
+        super(new Template(...args));
+      }
+    };
+  }
+
+  public static createExcludableSubForm<
+    Args extends unknown[],
+    T extends FormTemplate & AllowedConstituents<T>,
+  >(
+    Template: Constructor<Args, T>,
+  ): Constructor<
+    Args,
+    AbstractExcludableSubForm<T['name'], T, TransienceFromTemplate<T>>
+  > {
+    return class extends ExcludableSubForm<
+      T['name'],
+      T,
+      TransienceFromTemplate<T>
+    > {
+      public constructor(...args: Args) {
+        super(new Template(...args));
       }
     };
   }
