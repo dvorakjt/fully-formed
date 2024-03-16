@@ -100,6 +100,7 @@ export type {
   ValueReducerMemberState,
   ValueReducerMember,
 } from './reducers';
+export { EmailRegExp } from './shared';
 export type {
   Identifiable,
   Interactable,

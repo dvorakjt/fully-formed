@@ -1,3 +1,6 @@
 add more string validators
 simplify exports
 document code
+proof of concept
+create and test hooks
+create and test components

@@ -1,3 +1,4 @@
+export { EmailRegExp } from './classes';
 export type {
   Identifiable,
   Interactable,

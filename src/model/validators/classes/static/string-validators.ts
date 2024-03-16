@@ -1,4 +1,5 @@
 import { Validator } from '../concrete';
+import { EmailRegExp } from '../../../shared';
 import type { Predicate } from '../../types';
 import type { AbstractValidator } from '../abstract';
 
@@ -15,6 +16,8 @@ type TrimBeforeValidation = {
  * A static class whose methods return validators with pre-defined predicates for various common string validation requirements.
  */
 export class StringValidators {
+  private static readonly EMAIL_REGEXP = new EmailRegExp();
+
   /**
    * Returns a validator that returns a valid result if the string is not empty.
    *
@@ -28,14 +31,29 @@ export class StringValidators {
     args?: ValidatorMessages & TrimBeforeValidation,
   ): AbstractValidator<string> {
     const predicate: Predicate<string> = value => {
-      return args && args.trimBeforeValidation ?
+      return args?.trimBeforeValidation ?
           value.trim().length > 0
         : value.length > 0;
     };
     return new Validator<string>({
       predicate,
-      validMessage: args && args.validMessage,
-      invalidMessage: args && args.invalidMessage,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
+    });
+  }
+
+  public static email(
+    args?: ValidatorMessages & TrimBeforeValidation,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      return StringValidators.EMAIL_REGEXP.test(
+        args?.trimBeforeValidation ? value.trim() : value,
+      );
+    };
+    return new Validator<string>({
+      predicate,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
     });
   }
 
@@ -53,8 +71,8 @@ export class StringValidators {
     };
     return new Validator<string>({
       predicate,
-      validMessage: args && args.validMessage,
-      invalidMessage: args && args.invalidMessage,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
     });
   }
 
@@ -66,8 +84,8 @@ export class StringValidators {
     };
     return new Validator<string>({
       predicate,
-      validMessage: args && args.validMessage,
-      invalidMessage: args && args.invalidMessage,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
     });
   }
 
@@ -79,8 +97,8 @@ export class StringValidators {
     };
     return new Validator<string>({
       predicate,
-      validMessage: args && args.validMessage,
-      invalidMessage: args && args.invalidMessage,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
     });
   }
 
@@ -89,13 +107,13 @@ export class StringValidators {
   ): AbstractValidator<string> {
     const predicate: Predicate<string> = value => {
       return /[ !"#$%&'()*+,-./\\:;<=>?@[\]^_`{|}~]/.test(
-        args && args.trimBeforeValidation ? value.trim() : value,
+        args?.trimBeforeValidation ? value.trim() : value,
       );
     };
     return new Validator<string>({
       predicate,
-      validMessage: args && args.validMessage,
-      invalidMessage: args && args.invalidMessage,
+      validMessage: args?.validMessage,
+      invalidMessage: args?.invalidMessage,
     });
   }
 }

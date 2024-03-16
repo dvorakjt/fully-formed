@@ -1,0 +1,1 @@
+export { EmailRegExp } from './concrete';
