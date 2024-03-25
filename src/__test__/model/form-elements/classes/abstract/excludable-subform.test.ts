@@ -11,6 +11,8 @@ import {
   GroupValiditySource,
   AsyncValidator,
   type ExcludableAdaptFnReturnType,
+  type ExcludableSubFormControlTemplate,
+  type AbstractField,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
 import { ExcludableSubFormTemplate } from '../../../../../model';
@@ -379,6 +381,44 @@ describe('Form', () => {
     ]);
   });
 
+  test('Its exclude property defaults to excludeByDefault.', () => {
+    class Template extends ExcludableSubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly formElements = [];
+      public readonly excludeByDefault = true;
+    }
+    const TestForm = FormFactory.createExcludableSubForm(Template);
+    const instance = new TestForm();
+    expect(instance.state.exclude).toBe(true);
+  });
+
+  test('If a controlledBy object was passed into its constructor, the result of that function is applied to its exclude property upon instantiation.', () => {
+    class Template<
+      ControllingField extends AbstractField<string, boolean, boolean>,
+    > extends ExcludableSubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly formElements = [];
+      public readonly controlledBy: ExcludableSubFormControlTemplate<
+        [ControllingField]
+      >;
+
+      public constructor(controllingField: ControllingField) {
+        super();
+        this.controlledBy = {
+          controlFn: ([controllerState]): boolean => controllerState.value,
+          controllers: [controllingField],
+        };
+      }
+    }
+    const TestForm = FormFactory.createExcludableSubForm(Template);
+    const excludeTestForm = new Field({
+      name: 'excludeTestForm',
+      defaultValue: true,
+    });
+    const instance = new TestForm(excludeTestForm);
+    expect(instance.state.exclude).toBe(true);
+  });
+
   test('When the value of one of its form elements changes, its value is updated.', () => {
     class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
@@ -560,6 +600,36 @@ describe('Form', () => {
     });
   });
 
+  test('If a controlledBy object was passed into its constructor, when the value of its controller changes, its exclude property is updated.', () => {
+    class Template<
+      ControllingField extends AbstractField<string, boolean, boolean>,
+    > extends ExcludableSubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly formElements = [];
+      public readonly controlledBy: ExcludableSubFormControlTemplate<
+        [ControllingField]
+      >;
+
+      public constructor(controllingField: ControllingField) {
+        super();
+        this.controlledBy = {
+          controlFn: ([controllerState]): boolean => controllerState.value,
+          controllers: [controllingField],
+        };
+      }
+    }
+    const TestForm = FormFactory.createExcludableSubForm(Template);
+    const excludeTestForm = new Field({
+      name: 'excludeTestForm',
+      defaultValue: true,
+    });
+    const instance = new TestForm(excludeTestForm);
+    expect(instance.state.exclude).toBe(true);
+
+    excludeTestForm.setValue(false);
+    expect(instance.state.exclude).toBe(false);
+  });
+
   test('When confirm() is called with an onFailure callback and the form is invalid, that callback is called.', () => {
     class Template extends ExcludableSubFormTemplate {
       public readonly name = 'TestForm';
@@ -691,6 +761,39 @@ describe('Form', () => {
     }
     const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
+    expect(instance.state.exclude).toBe(true);
+
+    instance.setExclude(false);
+    expect(instance.state.exclude).toBe(false);
+
+    instance.reset();
+    expect(instance.state.exclude).toBe(true);
+  });
+
+  test('If a controlledBy object was passed into its constructor, the controlFn is called when reset() is called.', () => {
+    class Template<
+      ControllingField extends AbstractField<string, boolean, boolean>,
+    > extends ExcludableSubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly formElements = [];
+      public readonly controlledBy: ExcludableSubFormControlTemplate<
+        [ControllingField]
+      >;
+
+      public constructor(controllingField: ControllingField) {
+        super();
+        this.controlledBy = {
+          controlFn: ([controllerState]): boolean => controllerState.value,
+          controllers: [controllingField],
+        };
+      }
+    }
+    const TestForm = FormFactory.createExcludableSubForm(Template);
+    const excludeTestForm = new Field({
+      name: 'excludeTestForm',
+      defaultValue: true,
+    });
+    const instance = new TestForm(excludeTestForm);
     expect(instance.state.exclude).toBe(true);
 
     instance.setExclude(false);
