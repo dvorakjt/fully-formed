@@ -8,10 +8,8 @@ export type ExcludableSubFormConstructorArgs<
   Name extends string,
   Constituents extends FormConstituents,
   Transient extends boolean,
-  Controllers extends ReadonlyArray<
-    FormElement | AbstractGroup<string, GroupMembers>
-  >,
+  Controller extends FormElement | AbstractGroup<string, GroupMembers>,
 > = SubFormConstructorArgs<Name, Constituents, Transient> & {
   excludeByDefault?: boolean;
-  controlledBy?: ExcludableSubFormControlTemplate<Controllers>;
+  controlledBy?: ExcludableSubFormControlTemplate<Controller>;
 };

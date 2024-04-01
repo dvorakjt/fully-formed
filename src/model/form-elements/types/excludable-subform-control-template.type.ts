@@ -3,10 +3,8 @@ import type { ExcludableSubFormControlFn } from './excludable-subform-control-fn
 import type { FormElement } from './form-element.type';
 
 export type ExcludableSubFormControlTemplate<
-  Controllers extends ReadonlyArray<
-    FormElement | AbstractGroup<string, GroupMembers>
-  >,
+  Controller extends FormElement | AbstractGroup<string, GroupMembers>,
 > = {
-  controllers: Controllers;
-  controlFn: ExcludableSubFormControlFn<Controllers>;
+  controller: Controller;
+  controlFn: ExcludableSubFormControlFn<Controller>;
 };

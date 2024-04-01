@@ -5,9 +5,7 @@ import type {
 import type { AbstractGroup, GroupMembers } from '../../groups';
 
 export interface ControllableTemplate<
-  Controllers extends ReadonlyArray<
-    FormElement | AbstractGroup<string, GroupMembers>
-  >,
+  Controller extends FormElement | AbstractGroup<string, GroupMembers>,
 > {
-  controlledBy: ExcludableSubFormControlTemplate<Controllers>;
+  controlledBy: ExcludableSubFormControlTemplate<Controller>;
 }

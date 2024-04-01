@@ -13,7 +13,7 @@ import {
   type ExcludableAdaptFnReturnType,
   type ExcludableSubFormControlTemplate,
   type AbstractField,
-  ExcludableTemplate,
+  type ExcludableTemplate,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../testing';
 import { FormTemplate, type ControllableTemplate } from '../../../../../model';
@@ -398,19 +398,17 @@ describe('Form', () => {
         ControllingField extends AbstractField<string, boolean, boolean>,
       >
       extends FormTemplate
-      implements ControllableTemplate<[ControllingField]>
+      implements ControllableTemplate<ControllingField>
     {
       public readonly name = 'TestForm';
       public readonly formElements = [];
-      public readonly controlledBy: ExcludableSubFormControlTemplate<
-        [ControllingField]
-      >;
+      public readonly controlledBy: ExcludableSubFormControlTemplate<ControllingField>;
 
       public constructor(controllingField: ControllingField) {
         super();
         this.controlledBy = {
-          controlFn: ([controllerState]): boolean => controllerState.value,
-          controllers: [controllingField],
+          controlFn: (controllerState): boolean => controllerState.value,
+          controller: controllingField,
         };
       }
     }
@@ -609,19 +607,17 @@ describe('Form', () => {
         ControllingField extends AbstractField<string, boolean, boolean>,
       >
       extends FormTemplate
-      implements ControllableTemplate<[ControllingField]>
+      implements ControllableTemplate<ControllingField>
     {
       public readonly name = 'TestForm';
       public readonly formElements = [];
-      public readonly controlledBy: ExcludableSubFormControlTemplate<
-        [ControllingField]
-      >;
+      public readonly controlledBy: ExcludableSubFormControlTemplate<ControllingField>;
 
       public constructor(controllingField: ControllingField) {
         super();
         this.controlledBy = {
-          controlFn: ([controllerState]): boolean => controllerState.value,
-          controllers: [controllingField],
+          controlFn: (controllerState): boolean => controllerState.value,
+          controller: controllingField,
         };
       }
     }
@@ -782,19 +778,17 @@ describe('Form', () => {
         ControllingField extends AbstractField<string, boolean, boolean>,
       >
       extends FormTemplate
-      implements ControllableTemplate<[ControllingField]>
+      implements ControllableTemplate<ControllingField>
     {
       public readonly name = 'TestForm';
       public readonly formElements = [];
-      public readonly controlledBy: ExcludableSubFormControlTemplate<
-        [ControllingField]
-      >;
+      public readonly controlledBy: ExcludableSubFormControlTemplate<ControllingField>;
 
       public constructor(controllingField: ControllingField) {
         super();
         this.controlledBy = {
-          controlFn: ([controllerState]): boolean => controllerState.value,
-          controllers: [controllingField],
+          controlFn: (controllerState): boolean => controllerState.value,
+          controller: controllingField,
         };
       }
     }

@@ -8,11 +8,7 @@ import {
 } from '../../../state';
 import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
 import type { Subscription } from 'rxjs';
-import {
-  StatefulArrayReducer,
-  type AbstractFormReducer,
-  type AbstractStatefulArrayReducer,
-} from '../../../reducers';
+import type { AbstractFormReducer } from '../../../reducers';
 import type {
   FormConstituents,
   FormState,
@@ -33,9 +29,7 @@ export class ExcludableSubForm<
   Name extends string,
   Constituents extends FormConstituents,
   Transient extends boolean,
-  Controllers extends ReadonlyArray<
-    FormElement | AbstractGroup<string, GroupMembers>
-  >,
+  Controller extends FormElement | AbstractGroup<string, GroupMembers>,
 > extends AbstractExcludableSubForm<Name, Constituents, Transient> {
   public readonly name: Name;
   public readonly id: string;
@@ -52,8 +46,8 @@ export class ExcludableSubForm<
   private validMessage?: string;
   private pendingMessage?: string;
   private invalidMessage?: string;
-  private controllerReducer?: AbstractStatefulArrayReducer<Controllers>;
-  private controlFn?: ExcludableSubFormControlFn<Controllers>;
+  private controller?: Controller;
+  private controlFn?: ExcludableSubFormControlFn<Controller>;
 
   public get state(): FormState<Constituents> & ExcludableState {
     return this.stateManager.state;
@@ -89,7 +83,7 @@ export class ExcludableSubForm<
     Name,
     Constituents,
     Transient,
-    Controllers
+    Controller
   >) {
     super();
     this.name = name;
@@ -116,12 +110,10 @@ export class ExcludableSubForm<
     this.confirmationAttemptedManager = new StateManager<boolean>(false);
     this.subscribeToReducer();
     if (controlledBy) {
+      this.controller = controlledBy.controller;
       this.controlFn = controlledBy.controlFn;
-      this.controllerReducer = new StatefulArrayReducer<Controllers>({
-        members: controlledBy.controllers,
-      });
-      this.setExclude(this.controlFn(this.controllerReducer.state));
-      this.controllerReducer.subscribeToState(state => {
+      this.setExclude(this.controlFn(this.controller.state));
+      this.controller.subscribeToState(state => {
         const exclude = this.controlFn!(state);
         this.setExclude(exclude);
       });
@@ -169,8 +161,8 @@ export class ExcludableSubForm<
   private resetSelf(): void {
     this.confirmationAttempted = false;
     this.state = { ...this.state, exclude: this.excludeByDefault };
-    if (this.controlFn && this.controllerReducer) {
-      const exclude = this.controlFn(this.controllerReducer.state);
+    if (this.controlFn && this.controller) {
+      const exclude = this.controlFn(this.controller.state);
       this.setExclude(exclude);
     }
   }
