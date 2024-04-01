@@ -118,12 +118,12 @@ export type {
 } from './shared';
 export { AbstractStateManager, StateManager, Validity } from './state';
 export type { Message, StateWithMessages, State } from './state';
-export {
-  ExcludableSubFormTemplate,
-  FormTemplate,
-  SubFormTemplate,
+export { FormTemplate } from './templates';
+export type {
+  ControllableTemplate,
+  ExcludableTemplate,
+  TransientTemplate,
 } from './templates';
-export type { ExcludableTemplate, TransientTemplate } from './templates';
 export {
   AbstractAsyncValidatorSuite,
   AbstractAsyncValidator,

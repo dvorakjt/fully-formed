@@ -1,6 +1,6 @@
-export {
-  ExcludableSubFormTemplate,
-  FormTemplate,
-  SubFormTemplate,
-} from './classes';
-export type { ExcludableTemplate, TransientTemplate } from './interfaces';
+export { FormTemplate } from './classes';
+export type {
+  ControllableTemplate,
+  ExcludableTemplate,
+  TransientTemplate,
+} from './interfaces';
