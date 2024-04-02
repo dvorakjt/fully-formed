@@ -8,7 +8,7 @@ import {
 import {
   AsyncValidatorSuiteContainer,
   PromiseScheduler,
-} from '../../../../../testing/classes/concrete';
+} from '../../../../../test-utils';
 
 describe('AsyncValidatorSuite', () => {
   test('When validate() is called and the returned Observable emits a ValidatorSuiteResult, that object contains the provided value.', () => {

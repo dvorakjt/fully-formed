@@ -1,2 +1,2 @@
-export { AbstractStateManager } from './abstract';
-export { StateManager } from './concrete';
+export * from './abstract';
+export * from './concrete';

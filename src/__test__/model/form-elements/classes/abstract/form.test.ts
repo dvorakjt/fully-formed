@@ -13,7 +13,7 @@ import {
   AsyncValidator,
   type ExcludableAdaptFnReturnType,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 
 describe('Form', () => {
   test('Its id defaults to its name.', () => {

@@ -12,7 +12,7 @@ import {
   AsyncValidator,
   type ExcludableAdaptFnReturnType,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 import { FormTemplate } from '../../../../../model';
 
 describe('Form', () => {

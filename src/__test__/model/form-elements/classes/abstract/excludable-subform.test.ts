@@ -15,7 +15,7 @@ import {
   type AbstractField,
   type ExcludableTemplate,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 import { FormTemplate, type ControllableTemplate } from '../../../../../model';
 
 describe('Form', () => {

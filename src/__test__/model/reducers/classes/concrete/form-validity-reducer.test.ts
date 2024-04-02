@@ -10,7 +10,7 @@ import {
   Validity,
   type AbstractAsyncValidator,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 import { DefaultExcludableAdapter } from '../../../../../model/adapters/classes/concrete/default-excludable-adapter';
 
 describe('FormValidityReducer', () => {

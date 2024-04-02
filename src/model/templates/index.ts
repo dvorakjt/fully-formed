@@ -1,6 +1,2 @@
-export { FormTemplate } from './classes';
-export type {
-  ControllableTemplate,
-  ExcludableTemplate,
-  TransientTemplate,
-} from './interfaces';
+export * from './classes';
+export * from './interfaces';

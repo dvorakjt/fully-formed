@@ -1,11 +1,7 @@
-excludable forms and templates need to account for control exclude
-simplify exports
 document code
 create and test hooks
 create and test components
 
 create convenience types for
 
--NonTransientField of a certain name and type
--TransientField of a certain name and type
 -Any kind of field of a certain type (name and transience don't matter)

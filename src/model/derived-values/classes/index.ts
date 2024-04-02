@@ -1,2 +1,2 @@
-export { AbstractDerivedValue } from './abstract';
-export { DerivedValue } from './concrete';
+export * from './abstract';
+export * from './concrete';

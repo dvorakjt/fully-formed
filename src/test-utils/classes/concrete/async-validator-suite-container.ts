@@ -9,7 +9,8 @@ type AsyncValidatorContainerConstructorArgs<T> = {
 };
 
 /**
- * Funnels all results produced by the validate() method of an {@link AbstractAsyncValidatorSuite} through a single {@link Subject}. This enables output of the suite to be tested for unexpected results.
+ * Funnels all results produced by the validate() method of an
+ * {@link AbstractAsyncValidatorSuite} through a single {@link Subject}.
  */
 export class AsyncValidatorSuiteContainer<T> {
   private subject: Subject<StateWithMessages<T>> = new Subject<
@@ -18,7 +19,10 @@ export class AsyncValidatorSuiteContainer<T> {
   private asyncValidatorSuite: AbstractAsyncValidatorSuite<T>;
 
   /**
-   * @param argsObject - An object containing the required property `asyncValidatorSuite`, which refers to the {@link AbstractAsyncValidatorSuite} to be contained by the resultant instance of this class.
+   * @param argsObject - An object containing the required property
+   * `asyncValidatorSuite`, which refers to the
+   * {@link AbstractAsyncValidatorSuite} to be contained by the resultant
+   * instance of this class.
    */
   public constructor({
     asyncValidatorSuite,
@@ -27,7 +31,8 @@ export class AsyncValidatorSuiteContainer<T> {
   }
 
   /**
-   * Validates a value against its {@link AbstractAsyncValidatorSuite} and emits the result to any subscribers.
+   * Validates a value against its {@link AbstractAsyncValidatorSuite} and
+   * emits the result to any subscribers.
    *
    * @param value - The value to be validated.
    */
@@ -38,9 +43,12 @@ export class AsyncValidatorSuiteContainer<T> {
   }
 
   /**
-   * Calls the provided callback function in response to any new results produced by the validate() method of its {@link AbstractAsyncValidatorSuite}.
+   * Calls the provided callback function in response to any new results
+   * produced by the validate() method of its
+   * {@link AbstractAsyncValidatorSuite}.
    *
-   * @param cb - The callback function to be called in response to new validation results.
+   * @param cb - The callback function to be called in response to new
+   * validation results.
    * @returns A {@link Subscription}.
    */
   public subscribe(

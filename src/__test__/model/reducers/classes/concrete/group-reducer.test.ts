@@ -7,7 +7,7 @@ import {
   StringValidators,
   Validity,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 
 describe('GroupReducer', () => {
   test('Its value defaults to an object containing the values of its members.', () => {

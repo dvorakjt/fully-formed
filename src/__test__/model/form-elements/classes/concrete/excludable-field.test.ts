@@ -9,7 +9,7 @@ import {
   type AsyncValidatorTemplate,
   type ValidatorTemplate,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 
 describe('ExcludableField', () => {
   test('After instantiation, its value is set to the default value passed into its constructor.', () => {

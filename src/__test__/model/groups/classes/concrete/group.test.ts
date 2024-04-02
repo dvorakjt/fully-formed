@@ -9,7 +9,7 @@ import {
   AsyncValidator,
   Validator,
 } from '../../../../../model';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 
 //TODO : need to test messages and that pending validators are ignored when the value is updated
 describe('Group', () => {

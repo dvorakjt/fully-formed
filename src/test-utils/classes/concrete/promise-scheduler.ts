@@ -1,5 +1,6 @@
 /**
- * Schedules `Promise`s that can be resolved sequentially. Use this class to predictably test asynchronous processes.
+ * Schedules `Promise`s that can be resolved sequentially. Use this class to
+ * predictably test asynchronous processes.
  */
 export class PromiseScheduler {
   private promiseResolvers: Array<() => void> = [];
@@ -12,10 +13,12 @@ export class PromiseScheduler {
   }
 
   /**
-   * Creates a scheduled `Promise` and adds it to the list of `Promise`s to be resolved.
+   * Creates a scheduled `Promise` and adds it to the list of `Promise`s to be
+   * resolved.
    *
    * @param value - The value to be returned when the `Promise` resolves.
-   * @returns - A `Promise` which will resolve in sequence when `resolveFirst()` or `resolveAll()` is called.
+   * @returns - A `Promise` which will resolve in sequence when `resolveFirst()`
+   * or `resolveAll()` is called.
    */
   public createScheduledPromise<T>(value: T): Promise<T> {
     return new Promise<T>(resolve => {

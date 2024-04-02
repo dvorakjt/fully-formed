@@ -12,13 +12,13 @@ import type { AdaptFn, AdapterConstructorArgs } from '../../types';
 /**
  * Adapts a value originating from a form element or group into a new value to be included
  * in the value of a form.
- * 
+ *
  * @typeParam Name - A string literal which will be the name given to the adapted value in the
  * value of the form.
- * 
+ *
  * @typeParam Source - A FormElement or AbstractGroup whose value the adapter will
  * subscribe to and adapt.
- * 
+ *
  * @typeParam Value - The type of value that the adapter produces.
  */
 export class Adapter<

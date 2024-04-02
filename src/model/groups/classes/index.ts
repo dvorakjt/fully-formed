@@ -1,2 +1,2 @@
-export { AbstractGroup } from './abstract';
-export { Group } from './concrete';
+export * from './abstract';
+export * from './concrete';

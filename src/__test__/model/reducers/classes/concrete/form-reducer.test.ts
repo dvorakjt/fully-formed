@@ -11,7 +11,7 @@ import {
   AsyncValidator,
 } from '../../../../../model';
 import { DefaultExcludableAdapter } from '../../../../../model/adapters/classes/concrete/default-excludable-adapter';
-import { PromiseScheduler } from '../../../../../testing';
+import { PromiseScheduler } from '../../../../../test-utils';
 
 describe('FormReducer', () => {
   test('Its value contains the values of all included adapters.', () => {
