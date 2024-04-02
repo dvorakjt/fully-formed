@@ -5,19 +5,20 @@ import {
   type State,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
-import type { FormElement } from '../../../form-elements';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { FormElement, FormValue } from '../../../form-elements';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { AdaptFn, AdapterConstructorArgs } from '../../types';
 
 /**
- * Adapts a value originating from a form element or group into a new value to be included
- * in the value of a form.
+ * Adapts a value originating from a form element or group into a new value to
+ * be included in the value of a form.
  *
- * @typeParam Name - A string literal which will be the name given to the adapted value in the
- * value of the form.
+ * @typeParam Name - A string literal which will be the key given to the adapted
+ * value within a {@link FormValue} object.
  *
- * @typeParam Source - A FormElement or AbstractGroup whose value the adapter will
- * subscribe to and adapt.
+ * @typeParam Source - A {@link FormElement} or {@link AbstractGroup} whose
+ * state the adapter will subscribe to and adapt.
  *
  * @typeParam Value - The type of value that the adapter produces.
  */
@@ -52,6 +53,14 @@ export class Adapter<
     this.subscribeToSource();
   }
 
+  /**
+   * Executes a callback function whenever the state of the adapter changes.
+   *
+   * @param cb - The callback function to be executed when the state of the
+   * adapter changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToState(cb: (state: State<Value>) => void): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
