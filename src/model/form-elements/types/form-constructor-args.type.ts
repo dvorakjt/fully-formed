@@ -10,7 +10,7 @@ export type FormConstructorArgs<
   groups: Constituents['groups'];
   adapters: Constituents['adapters'];
   derivedValues: Constituents['derivedValues'];
-  autoTrim?: AutoTrim<Constituents['formElements']>;
+  autoTrim?: AutoTrim;
   id?: string;
   invalidMessage?: string;
   pendingMessage?: string;

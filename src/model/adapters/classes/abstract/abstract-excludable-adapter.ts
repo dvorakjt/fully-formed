@@ -28,6 +28,14 @@ export abstract class AbstractExcludableAdapter<
   implements Excludable
 {
   public abstract state: ExcludableAdapterState<Value>;
+  /**
+   * Executes a callback function whenever the state of the adapter changes.
+   *
+   * @param cb - The callback function to be executed when the state of the
+   * adapter changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public abstract subscribeToState(
     cb: (state: ExcludableAdapterState<Value>) => void,
   ): Subscription;

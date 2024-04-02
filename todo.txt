@@ -3,5 +3,4 @@ create and test hooks
 create and test components
 
 create convenience types for
-
 -Any kind of field of a certain type (name and transience don't matter)

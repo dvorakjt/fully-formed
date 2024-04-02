@@ -1,8 +1,4 @@
-import type { FormTemplate, SubFormTemplate } from '../../templates';
+import type { FormTemplate, TransientTemplate } from '../../templates';
 
 export type TransienceFromTemplate<T extends FormTemplate> =
-  T extends SubFormTemplate ?
-    T['transient'] extends boolean ?
-      T['transient']
-    : false
-  : false;
+  T extends TransientTemplate<boolean> ? T['transient'] : false;
