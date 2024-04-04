@@ -5,7 +5,12 @@ import {
   type AbstractStateManager,
   type Message,
 } from '../../../state';
-import { NameableObjectFactory, FormReducerFactory } from '../../../factories';
+import { 
+  NameableObjectFactory, 
+  FormReducerFactory,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  FormFactory
+} from '../../../factories';
 import type { Subscription } from 'rxjs';
 import type { AbstractFormReducer } from '../../../reducers';
 import type {
@@ -17,6 +22,18 @@ import type {
 } from '../../types';
 import type { NameableObject, Resettable } from '../../../shared';
 
+/**
+ * Provides a partial implementation of the {@link AbstractSubForm} class, to be
+ * completed with constituents, transience, and other settings by passing a 
+ * template to the `createSubForm()` method of the {@link FormFactory} class.
+ * 
+ * @typeParam Name - A string literal representing the name of the form.
+ * 
+ * @typeParam Contituents - An object extending {@link FormConstituents}.
+ * 
+ * @typeParam Transient -  Represents whether or not the value of the sub-form
+ * will be included in the value of its parent form.
+ */
 export class SubForm<
   Name extends string,
   Constituents extends FormConstituents,
@@ -89,18 +106,41 @@ export class SubForm<
     this.subscribeToReducer();
   }
 
+  /**
+   * Executes a callback function whenever the state of the form changes.
+   *
+   * @param cb - The callback function to be executed when the state of the
+   * form changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToState(
     cb: (state: FormState<Constituents>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
 
+  /**
+   * Executes a callback function whenever `confirmationAttempted` property of 
+   * the form changes.
+   *
+   * @param cb - The callback function to be executed when the 
+   * `confirmationAttempted` property of the form changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToConfirmationAttempted(
     cb: (confirmationAttempted: boolean) => void,
   ): Subscription {
     return this.confirmationAttemptedManager.subscribeToState(cb);
   }
 
+  /**
+   * Sets the `messages` property of the state of the form.
+   * 
+   * @param messages - The array of {@link Message}s to set to the `messages` 
+   * property of the state of the form.
+   */
   public setMessages(messages: Message[]): void {
     this.state = {
       ...this.state,
@@ -108,6 +148,26 @@ export class SubForm<
     };
   }
 
+  /**
+   * If the form is valid and the object provided as an argument contains an 
+   * `onSuccess()` method, the `onSuccess()` method is called with the
+   * current value of the form.
+   * 
+   * If the form is not valid and the object provided as an argument contains an
+   * `onFailure()` method, that method is called instead.
+   * 
+   * In either case, sets the `confirmationAttempted` property of the form to 
+   * true.
+   * 
+   * @remarks
+   * This method provides a means of checking the validity of the form before
+   * performing some operation, such as making an API call to a server, with
+   * the form data. Additionally, it provides a means of performing a 
+   * different operation, such as displaying an error message to the user,
+   * when the form is not valid. Finally, the `confirmationAttempted` property
+   * of the form can be used to reveal error messages once the user has 
+   * attempted to submit the form, if that is the desired user experience.
+   */
   public confirm(args?: ConfirmMethodArgs<FormValue<Constituents>>): void {
     this.confirmSubForms();
     this.confirmationAttempted = true;
@@ -118,6 +178,10 @@ export class SubForm<
     }
   }
 
+  /**
+   * Resets the `confirmationAttempted` property of the form and calls the 
+   * `reset()` methods of each of its form elements.
+   */
   public reset(): void {
     this.confirmationAttempted = false;
     for (const formElement of Object.values(this.formElements)) {

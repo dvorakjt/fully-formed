@@ -30,13 +30,13 @@ import {
  * a field via HTML elements such as `<input>`, `<select>`, `<textarea>`, etc.
  *
  * @typeParam Name - A string literal which will be the key given to the field
- * within the `formElements` property of an enclosing form, as well as to the
+ * within the `formElements` property of its parent form, as well as to the
  * value of the field (if non-transient) within a {@link FormValue} object.
  *
  * @typeParam Value - The type of value the field will contain.
  *
  * @typeParam Transient - Represents whether or not the value of the field
- * will be included in the value of an enclosing form.
+ * will be included in the value of its parent form.
  *
  * @typeParam Controllers - A readonly array of form elements and/or groups to
  * which the field will subscribe. If provided, the states of these entities
