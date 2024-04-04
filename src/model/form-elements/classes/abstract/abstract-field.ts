@@ -13,28 +13,29 @@ import type { FieldState, FormValue } from '../../types';
 /**
  * Represents a field within a form. A user may interact with such
  * a field via HTML elements such as `<input>`, `<select>`, `<textarea>`, etc.
- * 
+ *
  * @typeParam Name - A string literal which will be the key given to the field
  * within the `formElements` property of an enclosing form, as well as to the
  * value of the field (if non-transient) within a {@link FormValue} object.
- * 
+ *
  * @typeParam Value - The type of value the field will contain.
- * 
+ *
  * @typeParam Transient - Represents whether or not the value of the field
  * will be included in the value of an enclosing form.
  */
 export abstract class AbstractField<
-  Name extends string,
-  Value,
-  Transient extends boolean,
->
+    Name extends string,
+    Value,
+    Transient extends boolean,
+  >
   implements
-  Nameable<Name>,
-  Identifiable,
-  Stateful<FieldState<Value>>,
-  PossiblyTransient<Transient>,
-  Interactable,
-  Resettable {
+    Nameable<Name>,
+    Identifiable,
+    Stateful<FieldState<Value>>,
+    PossiblyTransient<Transient>,
+    Interactable,
+    Resettable
+{
   public abstract name: Name;
   public abstract id: string;
   public abstract state: FieldState<Value>;
@@ -43,7 +44,7 @@ export abstract class AbstractField<
    * Calls validators against the provided value, and then
    * sets the `value`, `validity`, and `messages` properties of the state
    * of the field based on the results of those validators.
-   * 
+   *
    * @param value - The value to validate and apply to the `value` property
    * of the state of the field.
    */

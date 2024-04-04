@@ -23,6 +23,24 @@ import type {
   FormElement,
 } from '../../types';
 
+/**
+ * Represents a field within a form. This type of field may be excluded
+ * from the value of a form. If excluded, it will not impact the
+ * validity of the form, either.
+ *
+ * @typeParam Name - A string literal which will be the key given to the field
+ * within the `formElements` property of an enclosing form, as well as to the
+ * value of the field (if non-transient) within a {@link FormValue} object.
+ *
+ * @typeParam Value - The type of value the field will contain.
+ *
+ * @typeParam Transient - Represents whether or not the value of the field
+ * will be included in the value of an enclosing form.
+ *
+ * @typeParam Controllers - A readonly array of form elements and/or groups to
+ * which the field will subscribe. If provided, the states of these entities
+ * will control the state of the field.
+ */
 export class ExcludableField<
   Name extends string,
   Value,
@@ -119,12 +137,28 @@ export class ExcludableField<
     }
   }
 
+  /**
+   * Executes a callback function whenever the state of the field changes.
+   *
+   * @param cb - The callback function to be executed when the state of the
+   * field changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToState(
     cb: (state: ExcludableFieldState<Value>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
 
+  /**
+   * Calls validators against the provided value, and then
+   * sets the `value`, `validity`, and `messages` properties of the state
+   * of the field based on the results of those validators.
+   *
+   * @param value - The value to validate and apply to the `value` property
+   * of the state of the field.
+   */
   public setValue(value: Value): void {
     this.validatorSuiteSubscription?.unsubscribe();
     const { syncResult, observableResult } =
@@ -138,18 +172,41 @@ export class ExcludableField<
     });
   }
 
+  /**
+   * Sets the exclude property of the state of the field to true or false.
+   *
+   * @param exclude - A boolean property representing whether or not to
+   * exclude the value of the field from that of an enclosing form.
+   */
   public setExclude(exclude: boolean): void {
     this.setPartialState({ exclude });
   }
 
+  /**
+   * Sets the `focused` property of the state of the field to true.
+   */
   public focus(): void {
     this.setPartialState({ focused: true });
   }
 
+  /**
+   * Sets the `visited` property of the state of the field to true.
+   */
   public visit(): void {
     this.setPartialState({ visited: true });
   }
 
+  /**
+   * Calls validators against the default value of the field and sets the
+   * `value`, `validity`, and `messages` properties of the state of the
+   * field accordingly.
+   *
+   * If `controllers` and a `controlFn` were provided, calls that function
+   * with the states of its controllers.
+   *
+   * Also resets the `focused`, `visited`, `modified`, and `exclude`
+   * properties of the state of the field.
+   */
   public reset(): void {
     const { syncResult, observableResult } = this.validatorSuite.validate(
       this.defaultValue,

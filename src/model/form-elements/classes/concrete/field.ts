@@ -28,16 +28,16 @@ import {
 /**
  * Represents a field within a form. A user may interact with such
  * a field via HTML elements such as `<input>`, `<select>`, `<textarea>`, etc.
- * 
+ *
  * @typeParam Name - A string literal which will be the key given to the field
  * within the `formElements` property of an enclosing form, as well as to the
  * value of the field (if non-transient) within a {@link FormValue} object.
- * 
+ *
  * @typeParam Value - The type of value the field will contain.
- * 
+ *
  * @typeParam Transient - Represents whether or not the value of the field
  * will be included in the value of an enclosing form.
- * 
+ *
  * @typeParam Controllers - A readonly array of form elements and/or groups to
  * which the field will subscribe. If provided, the states of these entities
  * will control the state of the field.
@@ -137,7 +137,7 @@ export class Field<
    * Calls validators against the provided value, and then
    * sets the `value`, `validity`, and `messages` properties of the state
    * of the field based on the results of those validators.
-   * 
+   *
    * @param value - The value to validate and apply to the `value` property
    * of the state of the field.
    */
@@ -185,8 +185,13 @@ export class Field<
   /**
    * Calls validators against the default value of the field and sets the
    * `value`, `validity`, and `messages` properties of the state of the
-   * field accordingly. Also resets the `focused`,
-   * `visited`, and `modified` properties of the state of the field.
+   * field accordingly.
+   *
+   * If `controllers` and a `controlFn` were provided, calls that function
+   * with the states of its controllers.
+   *
+   * Also resets the `focused`, `visited`, and `modified` properties of
+   * the state of the field.
    */
   public reset(): void {
     const { syncResult, observableResult } = this.validatorSuite.validate(
