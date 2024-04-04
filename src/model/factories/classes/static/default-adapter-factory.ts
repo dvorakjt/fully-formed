@@ -12,22 +12,22 @@ import {
 import type { CreateDefaultAdaptersArgs } from '../../types';
 
 /**
- * A static class that is responsible for instantiating {@link DefaultAdapter}
+ * A static class that is responsible for instantiating {@link DefaultAdapter}s
  * and {@link DefaultExcludableAdapter}s for all non-transient form elements
  * within a form.
  */
 export class DefaultAdapterFactory {
   /**
    * Instantiates {@link DefaultAdapter}s and {@link DefaultExcludableAdapter}s
-   * for all non-transient form elements it receives and applies auto-trim to 
+   * for all non-transient form elements it receives and applies auto-trim to
    * string-type fields depending on the value of `autoTrim` in the object it
    * receives as an argument.
-   * 
+   *
    * @param createDefaultAdapterArgs - An object containing an array of form
-   * elements to create {@link DefaultAdapter}s and 
+   * elements to create {@link DefaultAdapter}s and
    * {@link DefaultExcludableAdapter}s for, and an `autoTrim` property which
    * determines which string-type fields will be auto-trimmed.
-   * 
+   *
    * @returns An array of {@link AbstractAdapter}s.
    */
   public static createDefaultAdapters({

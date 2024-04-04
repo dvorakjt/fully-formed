@@ -2,12 +2,12 @@ import type { Subscription } from 'rxjs';
 import type { Nameable } from '../../../shared';
 
 /**
- * Represents a value that can be displayed to the user, used to determine how 
+ * Represents a value that can be displayed to the user, used to determine how
  * to render aspects of the UI, etc.
- * 
- * @typeParam Name - A string literal which will become the key given to the 
+ *
+ * @typeParam Name - A string literal which will become the key given to the
  * derived value in the derivedValues property of the enclosing form.
- * 
+ *
  * @typeParam Value - The type of value that the derived value will produce.
  */
 export abstract class AbstractDerivedValue<Name extends string, Value>

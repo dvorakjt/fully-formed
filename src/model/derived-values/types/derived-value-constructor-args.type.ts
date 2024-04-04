@@ -10,10 +10,10 @@ import type { AbstractGroup } from '../../groups';
 /**
  * An object passed as an argument to the constructor of a {@link DerivedValue}.
  *
- * @typeParam Name - A string literal which will become the key given to the 
+ * @typeParam Name - A string literal which will become the key given to the
  * {@link DerivedValue} in the derivedValues property of the enclosing form.
  *
- * @typeParam Sources - A readonly array of {@link FormElement}s and/or 
+ * @typeParam Sources - A readonly array of {@link FormElement}s and/or
  * {@link AbstractGroup}s whose state the {@link DerivedValue} will subscribe to
  * and pass into its {@link DeriveFn}.
  *
@@ -25,18 +25,18 @@ export type DerivedValueConstructorArgs<
   V,
 > = {
   /**
-   * A string literal which will become the key given to the 
+   * A string literal which will become the key given to the
    * {@link DerivedValue} in the derivedValues property of the enclosing form.
    */
   name: Name;
   /**
-   * A readonly array of {@link FormElement}s and/or 
-   * {@link AbstractGroup}s whose state the {@link DerivedValue} will subscribe 
+   * A readonly array of {@link FormElement}s and/or
+   * {@link AbstractGroup}s whose state the {@link DerivedValue} will subscribe
    * to and pass into its {@link DeriveFn}.
    */
   sources: Sources;
   /**
-   * Produces a value from an array of form element and/or group states. The 
+   * Produces a value from an array of form element and/or group states. The
    * value of the {@link DerivedValue} is produced by calling this function with
    * the states of its sources.
    */

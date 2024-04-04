@@ -9,15 +9,15 @@ import type { DeriveFn, DerivedValueConstructorArgs } from '../../types';
 import type { Stateful } from '../../../shared';
 
 /**
- * Represents a value that can be displayed to the user, used to determine how 
+ * Represents a value that can be displayed to the user, used to determine how
  * to render aspects of the UI, etc.
- * 
- * @typeParam Name - A string literal which will become the key given to the 
+ *
+ * @typeParam Name - A string literal which will become the key given to the
  * derived value in the derivedValues property of the enclosing form.
- * 
- * @typeParam Sources - A readonly array of form elements and/or groups whose 
+ *
+ * @typeParam Sources - A readonly array of form elements and/or groups whose
  * states will determine the derived value.
- * 
+ *
  * @typeParam Value - The type of value that the derived value will produce.
  */
 export class DerivedValue<

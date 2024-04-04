@@ -19,17 +19,17 @@ import type { AbstractGroup, GroupMembers } from '../../../groups';
 export class FormFactory {
   /**
    * Creates a class that extends {@link Form}.
-   * 
-   * @typeParam T - A class that extends {@link FormTemplate} and meets the 
+   *
+   * @typeParam T - A class that extends {@link FormTemplate} and meets the
    * criteria specified by {@link AllowedConstituents}.
-   * 
+   *
    * @typeParam Args - The arguments required to instantiate an instance of `T`,
    * which will become the arguments required to instantiate an instance of the
    * resultant {@link Form} subclass.
-   * 
-   * @param Template - A class that extends {@link FormTemplate} and meets the 
+   *
+   * @param Template - A class that extends {@link FormTemplate} and meets the
    * criteria specified by {@link AllowedConstituents}.
-   * 
+   *
    * @returns A class that extends {@link Form}.
    */
   public static createForm<
@@ -47,17 +47,17 @@ export class FormFactory {
 
   /**
    * Creates a class that extends {@link SubForm}.
-   * 
-   * @typeParam T - A class that extends {@link FormTemplate} and meets the 
+   *
+   * @typeParam T - A class that extends {@link FormTemplate} and meets the
    * criteria specified by {@link AllowedConstituents}.
-   * 
+   *
    * @typeParam Args - The arguments required to instantiate an instance of `T`,
    * which will become the arguments required to instantiate an instance of the
    * resultant {@link SubForm} subclass.
-   * 
-   * @param Template - A class that extends {@link FormTemplate} and meets the 
+   *
+   * @param Template - A class that extends {@link FormTemplate} and meets the
    * criteria specified by {@link AllowedConstituents}.
-   * 
+   *
    * @returns A class that extends {@link SubForm}.
    */
   public static createSubForm<
@@ -78,23 +78,23 @@ export class FormFactory {
 
   /**
    * Creates a class that extends {@link ExcludableSubForm}.
-   * 
-   * @typeParam T - A class that extends {@link FormTemplate}, meets the 
+   *
+   * @typeParam T - A class that extends {@link FormTemplate}, meets the
    * criteria specified by {@link AllowedConstituents}, and may extend
    * {@link ControllableTemplate}.
-   * 
+   *
    * @typeParam Args - The arguments required to instantiate an instance of `T`,
    * which will become the arguments required to instantiate an instance of the
    * resultant {@link ExcludableSubForm} subclass.
-   * 
-   * @typeParam Controller - A {@link FormElement} or {@link AbstractGroup} 
+   *
+   * @typeParam Controller - A {@link FormElement} or {@link AbstractGroup}
    * whose state controls whether or not an instance of the resultant class is
    * excluded.
-   * 
-   * @param Template - A class that extends {@link FormTemplate}, meets the 
+   *
+   * @param Template - A class that extends {@link FormTemplate}, meets the
    * criteria specified by {@link AllowedConstituents}, and may extend
    * {@link ControllableTemplate}.
-   * 
+   *
    * @returns A class that extends {@link ExcludableSubForm}.
    */
   public static createExcludableSubForm<

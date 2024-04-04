@@ -1,27 +1,27 @@
 import { FormReducer, type AbstractFormReducer } from '../../../reducers';
 import { DefaultAdapterFactory } from './default-adapter-factory';
-import type {
-  FormElement,
-  FormConstituents,
-  AutoTrim,
-} from '../../../form-elements';
-import type { AbstractGroup, GroupMembers } from '../../../groups';
-import type { AbstractAdapter } from '../../../adapters';
+import type { FormConstituents } from '../../../form-elements';
+import type { CreateFormReducerArgs } from '../../types';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { AutoTrim } from '../../../form-elements';
 
-type CreateFormReducerArgs = {
-  formElements: readonly FormElement[];
-  customAdapters: ReadonlyArray<
-    AbstractAdapter<
-      string,
-      FormElement | AbstractGroup<string, GroupMembers>,
-      unknown
-    >
-  >;
-  groups: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
-  autoTrim: AutoTrim;
-};
-
+/**
+ * A static class which is responsible for instantiating an
+ * {@link AbstractFormReducer} for a form, given its form elements,
+ * adapters, groups and other properties.
+ */
 export class FormReducerFactory {
+  /**
+   * Instantiates an {@link AbstractFormReducer}.
+   *
+   * @typeParam Constituents - An object that extends {@link FormConstituents}.
+   *
+   * @param createFormReducerArgs - An object containing arrays of form
+   * elements, adapters, groups and an `autoTrim` property which determines
+   * how string-type fields will be auto-trimmed.
+   *
+   * @returns An instance of {@link AbstractFormReducer}.
+   */
   public static createFormReducer<Constituents extends FormConstituents>({
     formElements,
     customAdapters,
