@@ -9,7 +9,7 @@ type AsyncValidatorContainerConstructorArgs<T> = {
 };
 
 /**
- * Funnels all results produced by the validate() method of an
+ * Funnels all results produced by the `validate()` method of an
  * {@link AbstractAsyncValidatorSuite} through a single {@link Subject}.
  */
 export class AsyncValidatorSuiteContainer<T> {
@@ -18,21 +18,15 @@ export class AsyncValidatorSuiteContainer<T> {
   >();
   private asyncValidatorSuite: AbstractAsyncValidatorSuite<T>;
 
-  /**
-   * @param argsObject - An object containing the required property
-   * `asyncValidatorSuite`, which refers to the
-   * {@link AbstractAsyncValidatorSuite} to be contained by the resultant
-   * instance of this class.
-   */
   public constructor({
-    asyncValidatorSuite,
+    asyncValidatorSuite
   }: AsyncValidatorContainerConstructorArgs<T>) {
     this.asyncValidatorSuite = asyncValidatorSuite;
   }
 
   /**
-   * Validates a value against its {@link AbstractAsyncValidatorSuite} and
-   * emits the result to any subscribers.
+   * Validates a value against its {@link AbstractAsyncValidatorSuite} and emits 
+   * the result to any subscribers.
    *
    * @param value - The value to be validated.
    */
@@ -43,7 +37,7 @@ export class AsyncValidatorSuiteContainer<T> {
   }
 
   /**
-   * Calls the provided callback function in response to any new results
+   * Calls the provided callback function in response to any new results 
    * produced by the validate() method of its
    * {@link AbstractAsyncValidatorSuite}.
    *

@@ -10,21 +10,19 @@ import type {
 
 /**
  * Provides asynchronous validation for a given type of value.
+ * 
+ * @typeParam T - The type of value that the validator can validate.
  */
-export class AsyncValidator<Value> extends AbstractAsyncValidator<Value> {
-  private predicate: AsyncPredicate<Value>;
+export class AsyncValidator<T> extends AbstractAsyncValidator<T> {
+  private predicate: AsyncPredicate<T>;
   private validMessage?: string;
   private invalidMessage?: string;
 
-  /**
-   * @typeParam Value - The type of value that the validator is expected to validate.
-   * @param argsObject - An object containing an {@link AsyncPredicate} and the optional properties `validMessage` and `invalidMessage`
-   */
   public constructor({
     predicate,
     validMessage,
     invalidMessage,
-  }: AsyncValidatorConstructorArgs<Value>) {
+  }: AsyncValidatorConstructorArgs<T>) {
     super();
     this.predicate = predicate;
     this.validMessage = validMessage;
@@ -35,9 +33,11 @@ export class AsyncValidator<Value> extends AbstractAsyncValidator<Value> {
    * Asynchronously validates the provided value.
    *
    * @param value - The value to be validated.
-   * @returns An {@link Observable} which emits an object representing the validity of the value and, optionally, an associated {@link Message}.
+   * 
+   * @returns An {@link Observable} which emits an object representing the 
+   * validity of the value and, optionally, an associated {@link Message}.
    */
-  public validate(value: Value): Observable<ValidatorResult> {
+  public validate(value: T): Observable<ValidatorResult> {
     return new Observable<ValidatorResult>(subscriber => {
       this.predicate(value).then(isValid => {
         const result: ValidatorResult = {

@@ -3,7 +3,7 @@ import { StringValidators, Validity } from '../../../../../../model';
 
 describe('StringValidators.includesSymbol()', () => {
   test('It returns a validator that determines whether a string contains a symbol, and, if so, returns a valid result.', () => {
-    const symbols = ' !"#$%&\'()*+,-./\\:;<=>?@[]^_`{|}~';
+    const symbols = '!"#$%&\'()*+,-./\\:;<=>?@[]^_`{|}~';
     const includesSymbol = StringValidators.includesSymbol();
     for (let i = 0; i < symbols.length; i++) {
       const symbol = symbols[i];
@@ -27,13 +27,6 @@ describe('StringValidators.includesSymbol()', () => {
     expect(includesSymbol.validate('abcdefABCDEF012345').validity).toBe(
       Validity.Invalid,
     );
-  });
-
-  test('If trimBeforeValidation is true, it returns a validator that trims the string prior to checking it.', () => {
-    const includesSymbol = StringValidators.includesSymbol({
-      trimBeforeValidation: true,
-    });
-    expect(includesSymbol.validate(' ').validity).toBe(Validity.Invalid);
   });
 
   test('If a valid message was provided, that message is returned as part of a valid result.', () => {

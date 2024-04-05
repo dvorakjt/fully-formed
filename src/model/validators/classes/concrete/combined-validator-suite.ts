@@ -16,6 +16,8 @@ import { Validity, type Message } from '../../../state';
 
 /**
  * Provides synchronous and asynchronous validation for a given type of value.
+ * 
+ * @typeParam T - The type of value that the suite can validate.
  */
 export class CombinedValidatorSuite<
   T,
@@ -24,9 +26,6 @@ export class CombinedValidatorSuite<
   private asyncValidatorSuite?: AbstractAsyncValidatorSuite<T>;
   private pendingMessage?: string;
 
-  /**
-   * @param argsObject - An object containing optional properties `validators`, `validatorTemplates`, `asyncValidators`, `asyncValidatorTemplates`, and `pendingMessage`.
-   */
   public constructor({
     validators,
     validatorTemplates,
@@ -57,8 +56,18 @@ export class CombinedValidatorSuite<
    * Validates the provided value against both sync and async validators.
    *
    * @param value - The value to be validated.
-   * @returns An object containing a `syncResult` and possibly an `observableResult.` An `observableResult` is only included when the value is synchronously determined to be valid and `asyncValidators` or `asyncValidatorTemplates` have been passed into the constructor.
-   * In these cases, the `validity` property of `syncResult` will be {@link Validity.Pending}, and, if a `pendingMessage` was also passed into the constructor, a corresponding {@link Message} will be included in the messages array.
+   * 
+   * @returns An object containing a `syncResult` and possibly an 
+   * `observableResult.` 
+   * 
+   * @remarks
+   * An `observableResult` is only included when the value 
+   * is synchronously determined to be valid and `asyncValidators` or 
+   * `asyncValidatorTemplates` have been passed into the constructor. In these 
+   * cases, the `validity` property of `syncResult` will be 
+   * {@link Validity.Pending}, and, if a `pendingMessage` was also passed into 
+   * the constructor, a corresponding {@link Message} will be included in the 
+   * messages array.
    */
   public validate(value: T): CombinedValidatorSuiteResult<T> {
     const syncResult = this.validatorSuite.validate(value);

@@ -10,21 +10,19 @@ import type { Message } from '../../../state';
 
 /**
  * Provides synchronous validation for a given type of value.
+ * 
+ * @typeParam T - The type of value that the validator can validate.
  */
-export class Validator<Value> extends AbstractValidator<Value> {
-  private predicate: Predicate<Value>;
+export class Validator<T> extends AbstractValidator<T> {
+  private predicate: Predicate<T>;
   private invalidMessage?: string;
   private validMessage?: string;
 
-  /**
-   * @typeParam Value - The type of value that the validator is expected to validate.
-   * @param argsObject - An object containing a {@link Predicate} and the optional properties `validMessage` and `invalidMessage`.
-   */
   public constructor({
     predicate,
     invalidMessage,
     validMessage,
-  }: ValidatorConstructorArgs<Value>) {
+  }: ValidatorConstructorArgs<T>) {
     super();
     this.predicate = predicate;
     this.invalidMessage = invalidMessage;
@@ -35,9 +33,11 @@ export class Validator<Value> extends AbstractValidator<Value> {
    * Validates the provided value.
    *
    * @param value - The value to be validated.
-   * @returns A {@link ValidatorResult} object representing the validity of the value and, optionally, an associated {@link Message}.
+   * 
+   * @returns A {@link ValidatorResult} object representing the validity of the 
+   * value and, optionally, an associated {@link Message}.
    */
-  public validate(value: Value): ValidatorResult {
+  public validate(value: T): ValidatorResult {
     const result: ValidatorResult = {
       validity: this.predicate(value) ? Validity.Valid : Validity.Invalid,
     };
