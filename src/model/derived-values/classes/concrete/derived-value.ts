@@ -13,7 +13,7 @@ import type { Stateful } from '../../../shared';
  * to render aspects of the UI, etc.
  *
  * @typeParam Name - A string literal which will become the key given to the
- * derived value in the derivedValues property of the enclosing form.
+ * derived value in the `derivedValues` property of its parent form.
  *
  * @typeParam Sources - A readonly array of form elements and/or groups whose
  * states will determine the derived value.
