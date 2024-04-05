@@ -9,11 +9,11 @@ import type {
   PossiblyTransient,
 } from '../../shared';
 
-type FormElementNamesAreUnique<FormElements extends readonly FormElement[]> = {
+export type FormElementNamesAreUnique<FormElements extends readonly FormElement[]> = {
   formElements: UniquelyNamed<FormElements>;
 };
 
-type AdapterNamesAreUnique<
+export type AdapterNamesAreUnique<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
@@ -41,18 +41,32 @@ export type AdapterNamesAreNotNonTransientFormElementNames<
   >;
 };
 
-type GroupNamesAreUnique<
+export type GroupNamesAreUnique<
   Groups extends ReadonlyArray<AbstractGroup<string, GroupMembers>>,
 > = {
   groups: UniquelyNamed<Groups>;
 };
 
-type DerivedValueNamesAreUnique<
+export type DerivedValueNamesAreUnique<
   DerivedValues extends ReadonlyArray<AbstractDerivedValue<string, unknown>>,
 > = {
   derivedValues: UniquelyNamed<DerivedValues>;
 };
 
+/**
+ * Defines a set of rules that must be met by an object extending
+ * {@link FormConstituents}.
+ * 
+ * @typeParam T - An object extending {@link FormConstituents}.
+ * 
+ * @remarks
+ * Validates `T` against the following rules:
+ * - Form element names must be unique
+ * - Adapter names must be unique
+ * - Adapters must not share their names with non-transient form elements
+ * - Group names must be unique
+ * - Derived value names must be unique
+ */
 export type AllowedConstituents<T extends FormConstituents> =
   FormElementNamesAreUnique<T['formElements']> &
     AdapterNamesAreUnique<T['adapters']> &

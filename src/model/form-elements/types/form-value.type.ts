@@ -6,7 +6,12 @@ import type { ExcludableFormElementValues } from './excludable-form-element-valu
 import type { FormElement } from './form-element.type';
 import type { NonExcludableFormElementValues } from './non-excludable-form-element-values.type';
 
-type ExcludableAdapterValues<
+/**
+ * Filters out non-excludable adapters and returns an object whose keys consist
+ * of the names of the remaining adapters, and whose values are the types of
+ * values those adapters produce, or `undefined`.
+ */
+export type ExcludableAdapterValues<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
@@ -19,7 +24,12 @@ type ExcludableAdapterValues<
   : never]+?: A['state']['value'];
 };
 
-type NonExcludableAdapterValues<
+/**
+ * Filters out excludable adapters and returns an object whose keys consist
+ * of the names of the remaining adapters, and whose values are the types of
+ * values those adapters produce.
+ */
+export type NonExcludableAdapterValues<
   Adapters extends ReadonlyArray<
     AbstractAdapter<
       string,
@@ -32,6 +42,12 @@ type NonExcludableAdapterValues<
   : A['name']]: A['state']['value'];
 };
 
+/**
+ * Produces an object whose keys consist of the names of all adapters and
+ * non-transient form elements, and whose values are the types of values that 
+ * those adapters/form elements produce/contain, or `undefined` for excludable
+ * adapters/form elements.
+ */
 export type FormValue<Constituents extends FormConstituents> =
   ExcludableFormElementValues<Constituents['formElements']> &
     NonExcludableFormElementValues<Constituents['formElements']> &
