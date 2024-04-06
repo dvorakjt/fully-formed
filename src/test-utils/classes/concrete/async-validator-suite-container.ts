@@ -19,13 +19,13 @@ export class AsyncValidatorSuiteContainer<T> {
   private asyncValidatorSuite: AbstractAsyncValidatorSuite<T>;
 
   public constructor({
-    asyncValidatorSuite
+    asyncValidatorSuite,
   }: AsyncValidatorContainerConstructorArgs<T>) {
     this.asyncValidatorSuite = asyncValidatorSuite;
   }
 
   /**
-   * Validates a value against its {@link AbstractAsyncValidatorSuite} and emits 
+   * Validates a value against its {@link AbstractAsyncValidatorSuite} and emits
    * the result to any subscribers.
    *
    * @param value - The value to be validated.
@@ -37,7 +37,7 @@ export class AsyncValidatorSuiteContainer<T> {
   }
 
   /**
-   * Calls the provided callback function in response to any new results 
+   * Calls the provided callback function in response to any new results
    * produced by the validate() method of its
    * {@link AbstractAsyncValidatorSuite}.
    *

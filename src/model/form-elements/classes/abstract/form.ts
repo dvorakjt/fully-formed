@@ -1,10 +1,10 @@
 import { AbstractForm } from './abstract-form';
 import { AbstractSubForm } from './abstract-subform';
-import { 
-  NameableObjectFactory, 
-  FormReducerFactory, 
+import {
+  NameableObjectFactory,
+  FormReducerFactory,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  FormFactory 
+  FormFactory,
 } from '../../../factories';
 import {
   StateManager,
@@ -25,12 +25,12 @@ import type { NameableObject, Resettable } from '../../../shared';
 import type { AllowedConstituents } from '../../types';
 
 /**
- * Provides a partial implementation of the {@link AbstractForm} class, to be 
- * completed with constituents and other settings by passing a template to the 
+ * Provides a partial implementation of the {@link AbstractForm} class, to be
+ * completed with constituents and other settings by passing a template to the
  * `createForm()` method of the {@link FormFactory} class.
- * 
+ *
  * @typeParam Name - A string literal representing the name of the form.
- * 
+ *
  * @typeParam Contituents - An object extending {@link FormConstituents}.
  */
 export abstract class Form<
@@ -116,10 +116,10 @@ export abstract class Form<
   }
 
   /**
-   * Executes a callback function whenever `confirmationAttempted` property of 
+   * Executes a callback function whenever `confirmationAttempted` property of
    * the form changes.
    *
-   * @param cb - The callback function to be executed when the 
+   * @param cb - The callback function to be executed when the
    * `confirmationAttempted` property of the form changes.
    *
    * @returns An RxJS {@link Subscription}.
@@ -132,8 +132,8 @@ export abstract class Form<
 
   /**
    * Sets the `messages` property of the state of the form.
-   * 
-   * @param messages - The array of {@link Message}s to set to the `messages` 
+   *
+   * @param messages - The array of {@link Message}s to set to the `messages`
    * property of the state of the form.
    */
   public setMessages(messages: Message[]): void {
@@ -144,23 +144,23 @@ export abstract class Form<
   }
 
   /**
-   * If the form is valid and the object provided as an argument contains an 
+   * If the form is valid and the object provided as an argument contains an
    * `onSuccess()` method, the `onSuccess()` method is called with the
    * current value of the form.
-   * 
+   *
    * If the form is not valid and the object provided as an argument contains an
    * `onFailure()` method, that method is called instead.
-   * 
-   * In either case, sets the `confirmationAttempted` property of the form to 
+   *
+   * In either case, sets the `confirmationAttempted` property of the form to
    * true.
-   * 
+   *
    * @remarks
    * This method provides a means of checking the validity of the form before
    * performing some operation, such as making an API call to a server, with
-   * the form data. Additionally, it provides a means of performing a 
+   * the form data. Additionally, it provides a means of performing a
    * different operation, such as displaying an error message to the user,
    * when the form is not valid. Finally, the `confirmationAttempted` property
-   * of the form can be used to reveal error messages once the user has 
+   * of the form can be used to reveal error messages once the user has
    * attempted to submit the form, if that is the desired user experience.
    */
   public confirm(args?: ConfirmMethodArgs<FormValue<Constituents>>): void {
@@ -174,7 +174,7 @@ export abstract class Form<
   }
 
   /**
-   * Resets the `confirmationAttempted` property of the form and calls the 
+   * Resets the `confirmationAttempted` property of the form and calls the
    * `reset()` methods of each of its form elements.
    */
   public reset(): void {

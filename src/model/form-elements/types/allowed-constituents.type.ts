@@ -9,7 +9,9 @@ import type {
   PossiblyTransient,
 } from '../../shared';
 
-export type FormElementNamesAreUnique<FormElements extends readonly FormElement[]> = {
+export type FormElementNamesAreUnique<
+  FormElements extends readonly FormElement[],
+> = {
   formElements: UniquelyNamed<FormElements>;
 };
 
@@ -56,9 +58,9 @@ export type DerivedValueNamesAreUnique<
 /**
  * Defines a set of rules that must be met by an object extending
  * {@link FormConstituents}.
- * 
+ *
  * @typeParam T - An object extending {@link FormConstituents}.
- * 
+ *
  * @remarks
  * Validates `T` against the following rules:
  * - Form element names must be unique

@@ -9,14 +9,12 @@ import { Validity, type StateWithMessages, type Message } from '../../../state';
 import type { AsyncValidatorSuiteConstructorArgs } from '../../types';
 
 /**
- * Manages the validation of a value of a given type against a collection of 
+ * Manages the validation of a value of a given type against a collection of
  * {@link AbstractAsyncValidator}s.
- * 
+ *
  * @typeParam T - The type of value that the suite can validate.
  */
-export class AsyncValidatorSuite<
-  T,
-> extends AbstractAsyncValidatorSuite<T> {
+export class AsyncValidatorSuite<T> extends AbstractAsyncValidatorSuite<T> {
   private validators: Array<AbstractAsyncValidator<T>>;
   private validatorSubscriptions: Subscription[];
 
@@ -26,9 +24,7 @@ export class AsyncValidatorSuite<
   }: AsyncValidatorSuiteConstructorArgs<T>) {
     super();
     this.validators = asyncValidators.concat(
-      asyncValidatorTemplates.map(
-        template => new AsyncValidator<T>(template),
-      ),
+      asyncValidatorTemplates.map(template => new AsyncValidator<T>(template)),
     );
     this.validatorSubscriptions = new Array<Subscription>(
       this.validators.length,
@@ -39,8 +35,8 @@ export class AsyncValidatorSuite<
    * Validates the provided value against a collection of validators.
    *
    * @param value - The value to be validated.
-   * 
-   * @returns An {@link Observable} that emits an object containing the provided 
+   *
+   * @returns An {@link Observable} that emits an object containing the provided
    * value, its {@link Validity}, and an array of associated {@link Message}s.
    */
   public validate(value: T): Observable<StateWithMessages<T>> {

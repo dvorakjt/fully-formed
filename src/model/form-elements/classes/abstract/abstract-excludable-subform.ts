@@ -5,13 +5,13 @@ import type { ExcludableState } from '../../../shared';
 import type { FormConstituents, FormState } from '../../types';
 
 /**
- * Defines the structure of an excludable sub-form and maintains its state. This 
+ * Defines the structure of an excludable sub-form and maintains its state. This
  * type of sub-form may be excluded from the value of its parent form.
- * 
+ *
  * @typeParam Name - A string literal representing the name of the form.
- * 
+ *
  * @typeParam Contituents - An object extending {@link FormConstituents}.
- * 
+ *
  * @typeParam Transient - Represents whether or not the value of the sub-form
  * will be included in the value of its parent form.
  */
@@ -44,8 +44,8 @@ export abstract class AbstractExcludableSubForm<
   public abstract setExclude(exclude: boolean): void;
   /**
    * Resets the `confirmationAttempted` property of the form and the `exclude`
-   * property of the state of the form, and calls the `reset()` methods of each 
+   * property of the state of the form, and calls the `reset()` methods of each
    * of its form elements.
    */
-  public abstract reset() : void;
+  public abstract reset(): void;
 }

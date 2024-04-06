@@ -10,7 +10,7 @@ import type {
 
 /**
  * Provides asynchronous validation for a given type of value.
- * 
+ *
  * @typeParam T - The type of value that the validator can validate.
  */
 export class AsyncValidator<T> extends AbstractAsyncValidator<T> {
@@ -33,8 +33,8 @@ export class AsyncValidator<T> extends AbstractAsyncValidator<T> {
    * Asynchronously validates the provided value.
    *
    * @param value - The value to be validated.
-   * 
-   * @returns An {@link Observable} which emits an object representing the 
+   *
+   * @returns An {@link Observable} which emits an object representing the
    * validity of the value and, optionally, an associated {@link Message}.
    */
   public validate(value: T): Observable<ValidatorResult> {

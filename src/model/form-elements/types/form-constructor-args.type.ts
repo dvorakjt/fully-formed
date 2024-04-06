@@ -7,7 +7,7 @@ import type { Form } from '../classes';
  * An object passed as an argument to the constructor of a {@link Form}.
  *
  * @typeParam Name - A string literal representing the name of the form.
- * 
+ *
  * @typeParam Contituents - An object extending {@link FormConstituents}.
  */
 export type FormConstructorArgs<

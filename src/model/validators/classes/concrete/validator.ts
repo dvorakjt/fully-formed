@@ -10,7 +10,7 @@ import type { Message } from '../../../state';
 
 /**
  * Provides synchronous validation for a given type of value.
- * 
+ *
  * @typeParam T - The type of value that the validator can validate.
  */
 export class Validator<T> extends AbstractValidator<T> {
@@ -33,8 +33,8 @@ export class Validator<T> extends AbstractValidator<T> {
    * Validates the provided value.
    *
    * @param value - The value to be validated.
-   * 
-   * @returns A {@link ValidatorResult} object representing the validity of the 
+   *
+   * @returns A {@link ValidatorResult} object representing the validity of the
    * value and, optionally, an associated {@link Message}.
    */
   public validate(value: T): ValidatorResult {

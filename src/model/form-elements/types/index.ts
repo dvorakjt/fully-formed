@@ -1,10 +1,10 @@
-export type { 
+export type {
   AllowedConstituents,
   FormElementNamesAreUnique,
   AdapterNamesAreUnique,
   AdapterNamesAreNotNonTransientFormElementNames,
   GroupNamesAreUnique,
-  DerivedValueNamesAreUnique
+  DerivedValueNamesAreUnique,
 } from './allowed-constituents.type';
 export type { AutoTrim } from './auto-trim.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
@@ -26,10 +26,10 @@ export type { FormConstituents } from './form-constituents.type';
 export type { FormConstructorArgs } from './form-constructor-args.type';
 export type { FormElement } from './form-element.type';
 export type { FormState } from './form-state.type';
-export type { 
+export type {
   FormValue,
   ExcludableAdapterValues,
-  NonExcludableAdapterValues
+  NonExcludableAdapterValues,
 } from './form-value.type';
 export type { NonExcludableFormElementValues } from './non-excludable-form-element-values.type';
 export type { SubFormConstructorArgs } from './subform-constructor-args.type';

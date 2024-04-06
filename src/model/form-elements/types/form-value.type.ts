@@ -44,7 +44,7 @@ export type NonExcludableAdapterValues<
 
 /**
  * Produces an object whose keys consist of the names of all adapters and
- * non-transient form elements, and whose values are the types of values that 
+ * non-transient form elements, and whose values are the types of values that
  * those adapters/form elements produce/contain, or `undefined` for excludable
  * adapters/form elements.
  */

@@ -1,17 +1,17 @@
 import { AbstractValidatorSuite, type AbstractValidator } from '../abstract';
-import { 
-  Validity, 
-  type StateWithMessages, 
+import {
+  Validity,
+  type StateWithMessages,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type Message 
+  type Message,
 } from '../../../state';
 import { Validator } from './validator';
 import type { ValidatorSuiteConstructorArgs } from '../../types';
 
 /**
- * Manages the validation of a value of a given type against a collection of 
+ * Manages the validation of a value of a given type against a collection of
  * {@link AbstractValidator}s.
- * 
+ *
  * @typeParam T - The type of value that the suite can validate.
  */
 export class ValidatorSuite<T> extends AbstractValidatorSuite<T> {
@@ -31,8 +31,8 @@ export class ValidatorSuite<T> extends AbstractValidatorSuite<T> {
    * Validates the provided value against a collection of validators.
    *
    * @param value - The value to be validated.
-   * 
-   * @returns An object containing the value, its {@link Validity}, and an array 
+   *
+   * @returns An object containing the value, its {@link Validity}, and an array
    * of associated {@link Message}s.
    */
   public validate(value: T): StateWithMessages<T> {

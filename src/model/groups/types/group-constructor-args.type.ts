@@ -18,7 +18,7 @@ import type { FormElement } from '../../form-elements';
  * @typeParam Name - A string literal which will become the key given to the
  * group in the `groups` property of its parent form. Also becomes the key given
  * to the value of the group if it is included in a {@link GroupValue} object.
- * 
+ *
  * @typeParam Members - A readonly array of {@link FormElement}s and/or
  * {@link AbstractGroup}s. The value of each member's `name` property must be
  * unique within the array.

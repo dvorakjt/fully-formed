@@ -6,8 +6,8 @@ import type { FormElement } from '../../form-elements';
 import type { AbstractGroup } from '../classes';
 
 /**
- * Filters out excludable members and returns an object whose keys are the names 
- * of the remaining members and whose values are the types of values that 
+ * Filters out excludable members and returns an object whose keys are the names
+ * of the remaining members and whose values are the types of values that
  * each of those members holds.
  */
 export type NonExcludableMemberValues<Members extends GroupMembers> = {
@@ -16,8 +16,8 @@ export type NonExcludableMemberValues<Members extends GroupMembers> = {
 };
 
 /**
- * Filters out non-excludable members and returns an object whose keys are the 
- * names of the remaining members and whose values are the types of values that 
+ * Filters out non-excludable members and returns an object whose keys are the
+ * names of the remaining members and whose values are the types of values that
  * each of those members holds, or `undefined`.
  */
 export type ExcludableMemberValues<Members extends GroupMembers> = {
@@ -26,10 +26,10 @@ export type ExcludableMemberValues<Members extends GroupMembers> = {
 };
 
 /**
- * Produces an object whose keys consist of the names of all members, and whose 
- * values are the types of values that the members contain, or `undefined` for 
+ * Produces an object whose keys consist of the names of all members, and whose
+ * values are the types of values that the members contain, or `undefined` for
  * excludable members.
- * 
+ *
  * @typeParam Members - A readonly array of {@link FormElement}s and/or
  * {@link AbstractGroup}s.
  */

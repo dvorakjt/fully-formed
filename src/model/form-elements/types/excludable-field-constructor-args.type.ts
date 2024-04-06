@@ -13,7 +13,7 @@ import type { ExcludableField } from '../classes';
 import type { FormValue } from './form-value.type';
 
 /**
- * An object passed as an argument to the constructor of an 
+ * An object passed as an argument to the constructor of an
  * {@link ExcludableField}.
  *
  * @typeParam Name - A string literal which will be the key given to the field

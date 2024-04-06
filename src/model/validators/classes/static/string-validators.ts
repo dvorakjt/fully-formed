@@ -13,7 +13,7 @@ type TrimBeforeValidation = {
 };
 
 /**
- * A static class whose methods return validators with pre-defined predicates 
+ * A static class whose methods return validators with pre-defined predicates
  * for various common string validation requirements.
  */
 export class StringValidators {
@@ -22,14 +22,14 @@ export class StringValidators {
   /**
    * Returns a validator that checks if a string is not empty.
    *
-   * @param args - An object with optional properties `validMessage`, 
+   * @param args - An object with optional properties `validMessage`,
    * `invalidMessage`, and `trimBeforeValidation`.
-   * 
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;.
-   * 
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
+   *
    * @remarks
-   * If `trimBeforeValidation` is set to true in the object passed into this 
-   * method, the string will be trimmed and then evaluated. This is useful when 
+   * If `trimBeforeValidation` is set to true in the object passed into this
+   * method, the string will be trimmed and then evaluated. This is useful when
    * `autoTrim` has been enabled for the field containing this validator.
    */
   public static required(
@@ -49,20 +49,20 @@ export class StringValidators {
 
   /**
    * Returns a validator that checks if a string is a valid email address.
-   * 
-   * @param args - An object with optional properties `validMessage`, 
+   *
+   * @param args - An object with optional properties `validMessage`,
    * `invalidMessage`, and `trimBeforeValidation`.
-   *  
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;.
-   * 
-   * @remarks 
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
+   *
+   * @remarks
    * The following requirements have been implemented:
-   * - The local part of the email must be between 1 and 64 characters in 
+   * - The local part of the email must be between 1 and 64 characters in
    * length.
    * - The length of the domain must be between 4 and 255 characters in length.
-   * - The local part can consist of printable characters separated by a period. 
-   * Periods must not occur consecutively or at the beginning or end of the 
-   * local part. Printable characters are: 
+   * - The local part can consist of printable characters separated by a period.
+   * Periods must not occur consecutively or at the beginning or end of the
+   * local part. Printable characters are:
    *   - Alphanumeric characters
    *   - Any of the following symbols: !#$%&'*+-/=?^_\`\{|\}~
    * - The domain consists of DNS labels separated by periods.
@@ -71,12 +71,12 @@ export class StringValidators {
    * provided it is not comprised only of numbers, does not start or end with a
    * hyphen, and does not include consecutive hyphens.
    * - The top-level domain must consist of 2 or more alphabetical characters.
-   * 
-   * Please see [RFC 3696](https://datatracker.ietf.org/doc/html/rfc3696) for 
+   *
+   * Please see [RFC 3696](https://datatracker.ietf.org/doc/html/rfc3696) for
    * more information.
-   * 
-   * If `trimBeforeValidation` is set to true in the object passed into this 
-   * method, the string will be trimmed and then evaluated. This is useful when 
+   *
+   * If `trimBeforeValidation` is set to true in the object passed into this
+   * method, the string will be trimmed and then evaluated. This is useful when
    * `autoTrim` has been enabled for the field containing this validator.
    */
   public static email(
@@ -95,13 +95,13 @@ export class StringValidators {
   }
 
   /**
-   * Returns a validator that checks if a string contains an uppercase letter 
+   * Returns a validator that checks if a string contains an uppercase letter
    * (A-Z).
    *
-   * @param args - An object with optional properties `validMessage` and 
+   * @param args - An object with optional properties `validMessage` and
    * `invalidMessage`.
-   * 
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>
    */
   public static includesUpper(
     args?: ValidatorMessages,
@@ -117,13 +117,13 @@ export class StringValidators {
   }
 
   /**
-   * Returns a validator that checks if a string contains a lowercase letter 
+   * Returns a validator that checks if a string contains a lowercase letter
    * (a-z).
    *
-   * @param args - An object with optional properties `validMessage` and 
+   * @param args - An object with optional properties `validMessage` and
    * `invalidMessage`.
-   * 
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>
    */
   public static includesLower(
     args?: ValidatorMessages,
@@ -141,10 +141,10 @@ export class StringValidators {
   /**
    * Returns a validator that checks if a string contains a digit.
    *
-   * @param args - An object with optional properties `validMessage` and 
+   * @param args - An object with optional properties `validMessage` and
    * `invalidMessage`.
-   * 
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>
    */
   public static includesDigit(
     args?: ValidatorMessages,
@@ -160,13 +160,13 @@ export class StringValidators {
   }
 
   /**
-   * Returns a validator that checks if a string contains at least one of the 
+   * Returns a validator that checks if a string contains at least one of the
    * following symbols: !"#$%&'()*+,-./\\:;\<=\>?\@[\]^_\`\{|\}~
    *
    * @param args - An object with optional properties `validMessage` and
    * `invalidMessage`.
-   * 
-   * @returns An instance of {@link AbstractValidator}&lt;string&gt;.
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
    */
   public static includesSymbol(
     args?: ValidatorMessages,

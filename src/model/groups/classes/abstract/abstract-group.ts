@@ -1,22 +1,22 @@
 import type { Subscription } from 'rxjs';
 import type { Nameable, Stateful } from '../../../shared';
-import type { 
-  GroupMembers, 
+import type {
+  GroupMembers,
   GroupState,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  GroupValue
+  GroupValue,
 } from '../../types';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { FormElement } from '../../../form-elements';
 
 /**
- * Provides a means of validating a collection of {@link FormElement}s and/or 
+ * Provides a means of validating a collection of {@link FormElement}s and/or
  * {@link AbstractGroup}s as a group.
- * 
+ *
  * @typeParam Name - A string literal which will become the key given to the
  * group in the `groups` property of its parent form. Also becomes the key given
  * to the value of the group if it is included in a {@link GroupValue} object.
- * 
+ *
  * @typeParam Members - A readonly array of {@link FormElement}s and/or
  * {@link AbstractGroup}s.
  */
