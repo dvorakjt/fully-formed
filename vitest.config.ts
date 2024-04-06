@@ -21,6 +21,7 @@ export default defineConfig({
         '**/*.enum.ts',
         '**/*.error.ts',
         'src/stories/**',
+        'src/hooks/**'
       ],
     },
   },
