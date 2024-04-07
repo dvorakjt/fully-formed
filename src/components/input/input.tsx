@@ -1,18 +1,22 @@
 import React, { type CSSProperties, type ReactNode } from 'react';
-import { useConfirmationAttempted, useStatefulEntityState } from '../../hooks';
+import { 
+  useConfirmationAttempted, 
+  useStatefulEntityState 
+} from '../../hooks';
 import { useGroupValidation } from '../../hooks/use-group-validation';
 import { joinClassNames } from '../utils';
 import type {
   AbstractField,
   AbstractForm,
-  AbstractGroup,
   FormConstituents,
-  GroupMembers,
   PickSingleTypeFormElements,
 } from '../../model';
-import type { GetInputClassName, GetInputStyle } from '../types';
+import type { 
+  GetInputClassName, 
+  GetInputStyle, 
+  StringInputTypes 
+} from '../types';
 
-//should probably be group names not groups
 export type InputProps<
   ParentForm extends AbstractForm<string, FormConstituents>,
   FieldName extends keyof PickSingleTypeFormElements<
@@ -22,8 +26,8 @@ export type InputProps<
 > = {
   form: ParentForm;
   fieldName: FieldName;
-  type: string;
-  groups?: Array<AbstractGroup<string, GroupMembers>>;
+  type: StringInputTypes;
+  groupNames?: Array<keyof ParentForm['groups']>;
   className?: string;
   getClassName?: GetInputClassName<ParentForm['formElements'][FieldName]>;
   style?: CSSProperties;
@@ -40,7 +44,7 @@ export function Input<
   form,
   fieldName,
   type,
-  groups = [],
+  groupNames = [],
   className,
   getClassName,
   style,
@@ -51,7 +55,11 @@ export function Input<
   ] as AbstractField<string, string, boolean>;
   const fieldState = useStatefulEntityState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
-  const groupValidity = useGroupValidation(groups);
+  const groupValidity = useGroupValidation(
+    groupNames.map(
+      groupName => form.groups[groupName as keyof typeof form.groups],
+    ),
+  );
 
   return (
     <input

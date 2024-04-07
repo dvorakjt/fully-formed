@@ -24,7 +24,7 @@ export default defineConfig({
         'src/hooks/**',
         '.storybook',
         'src/components',
-        'src/stories'
+        'src/stories',
       ],
     },
   },

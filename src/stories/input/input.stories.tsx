@@ -41,7 +41,7 @@ function FormWithOneFieldComponent(): ReactNode {
       <Input
         form={formRef.current}
         fieldName={'firstName'}
-        type={'text'}
+        type="text"
         className="input"
       />
     </>
@@ -144,7 +144,7 @@ function PasswordAndConfirmPasswordComponent(): ReactNode {
         fieldName={'password'}
         type="password"
         className="input"
-        groups={[formRef.current.groups.passwordGroup]}
+        groupNames={['passwordGroup']}
         getClassName={({ fieldState, groupValidity }) => {
           if (
             !(
@@ -165,7 +165,7 @@ function PasswordAndConfirmPasswordComponent(): ReactNode {
         fieldName={'confirmPassword'}
         type="password"
         className="input"
-        groups={[formRef.current.groups.passwordGroup]}
+        groupNames={['passwordGroup']}
         getClassName={({ fieldState, groupValidity }) => {
           if (
             !(
