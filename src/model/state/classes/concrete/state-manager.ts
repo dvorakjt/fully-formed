@@ -2,7 +2,10 @@ import { AbstractStateManager } from '../abstract';
 import { Subject, type Subscription } from 'rxjs';
 
 /**
- * Stores state and emits changes to subscribers.
+ * Maintains state and emits updates to subscribers when that state changes.
+ * 
+ * @typeParam T - The type of value that will be held in its `state` property
+ * and emitted to subscribers.
  */
 export class StateManager<T> extends AbstractStateManager<T> {
   private _state: T;
@@ -26,10 +29,12 @@ export class StateManager<T> extends AbstractStateManager<T> {
   }
 
   /**
-   * Calls the provided callback function in response to any changes to `state`.
+   * Executes a callback function whenever its `state` property changes.
    *
-   * @param cb - The callback function to be called when `state` has changed.
-   * @returns - A {@link Subscription}.
+   * @param cb - The callback function to be executed when its `state` property
+   * changes.
+   *
+   * @returns An RxJS {@link Subscription}.
    */
   public subscribeToState(cb: (state: T) => void): Subscription {
     return this.stateChanges.subscribe(cb);
