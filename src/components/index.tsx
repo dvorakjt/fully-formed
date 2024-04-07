@@ -1,3 +1,3 @@
-export * from './input';
+export * from './controls';
 export * from './types';
 export * from './utils';

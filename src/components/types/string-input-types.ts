@@ -1,16 +1,16 @@
-export type StringInputTypes = 
-  'checkbox' | 
-  'color' | 
-  'date' | 
-  'datetime-local' | 
-  'email' | 
-  'hidden' |
-  'month' |
-  'number' |
-  'password' |
-  'search' |
-  'tel' |
-  'text' |
-  'time'|
-  'url' |
-  'week';
+export type StringInputTypes =
+  | 'color'
+  | 'date'
+  | 'datetime-local'
+  | 'email'
+  | 'hidden'
+  | 'month'
+  | 'number'
+  | 'password'
+  | 'range'
+  | 'search'
+  | 'tel'
+  | 'text'
+  | 'time'
+  | 'url'
+  | 'week';

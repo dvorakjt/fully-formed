@@ -1,8 +1,5 @@
-import React, { type CSSProperties, type ReactNode } from 'react';
-import { 
-  useConfirmationAttempted, 
-  useStatefulEntityState 
-} from '../../hooks';
+import React, { type ReactNode } from 'react';
+import { useConfirmationAttempted, useStatefulEntityState } from '../../hooks';
 import { useGroupValidation } from '../../hooks/use-group-validation';
 import { joinClassNames } from '../utils';
 import type {
@@ -11,28 +8,7 @@ import type {
   FormConstituents,
   PickSingleTypeFormElements,
 } from '../../model';
-import type { 
-  GetInputClassName, 
-  GetInputStyle, 
-  StringInputTypes 
-} from '../types';
-
-export type InputProps<
-  ParentForm extends AbstractForm<string, FormConstituents>,
-  FieldName extends keyof PickSingleTypeFormElements<
-    ParentForm,
-    AbstractField<string, string, boolean>
-  >,
-> = {
-  form: ParentForm;
-  fieldName: FieldName;
-  type: StringInputTypes;
-  groupNames?: Array<keyof ParentForm['groups']>;
-  className?: string;
-  getClassName?: GetInputClassName<ParentForm['formElements'][FieldName]>;
-  style?: CSSProperties;
-  getStyle?: GetInputStyle<ParentForm['formElements'][FieldName]>;
-};
+import type { InputProps, StringInputTypes } from '../types';
 
 export function Input<
   ParentForm extends AbstractForm<string, FormConstituents>,
@@ -40,6 +16,7 @@ export function Input<
     ParentForm,
     AbstractField<string, string, boolean>
   >,
+  Type extends StringInputTypes,
 >({
   form,
   fieldName,
@@ -49,7 +26,17 @@ export function Input<
   getClassName,
   style,
   getStyle,
-}: InputProps<ParentForm, FieldName>): ReactNode {
+  autoFocus,
+  autoCapitalize,
+  autoComplete,
+  placeholder,
+  list,
+  max,
+  min,
+  maxLength,
+  size,
+  step,
+}: InputProps<ParentForm, FieldName, Type>): ReactNode {
   const field = form.formElements[
     fieldName as keyof typeof form.formElements
   ] as AbstractField<string, string, boolean>;
@@ -80,6 +67,16 @@ export function Input<
         ...(getStyle &&
           getStyle({ fieldState, confirmationAttempted, groupValidity })),
       }}
+      autoFocus={autoFocus}
+      autoCapitalize={autoCapitalize}
+      autoComplete={autoComplete}
+      placeholder={placeholder}
+      list={list}
+      max={max}
+      min={min}
+      maxLength={maxLength}
+      size={size}
+      step={step}
     />
   );
 }
