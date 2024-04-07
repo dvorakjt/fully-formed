@@ -15,13 +15,13 @@ import type { Message } from '../../state';
  *
  * @remarks
  * If `validMessage` is included, a {@link Message} with that text will
- * be included in the {@link ValidatorResult} object returned by the 
- * `validate()` method of the validator instantiated with this object when the 
+ * be included in the {@link ValidatorResult} object returned by the
+ * `validate()` method of the validator instantiated with this object when the
  * value passed to it is valid.
  *
  * If `invalidMessage` is included, a {@link Message} with that text will
- * be included in the {@link ValidatorResult} object returned by the 
- * `validate()` method of the validator instantiated with this object when the 
+ * be included in the {@link ValidatorResult} object returned by the
+ * `validate()` method of the validator instantiated with this object when the
  * value passed to it is invalid.
  */
 export type ValidatorConstructorArgs<T> = {

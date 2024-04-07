@@ -21,7 +21,10 @@ export default defineConfig({
         '**/*.enum.ts',
         '**/*.error.ts',
         'src/stories/**',
-        'src/hooks/**'
+        'src/hooks/**',
+        '.storybook',
+        'src/components',
+        'src/stories'
       ],
     },
   },

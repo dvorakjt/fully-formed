@@ -6,14 +6,14 @@ import type { AsyncValidatorSuite } from '../classes';
 import type { AsyncValidator } from '../classes';
 
 /**
- * An object passed as an argument to the constructor of an 
+ * An object passed as an argument to the constructor of an
  * {@link AsyncValidatorSuite}.
- * 
+ *
  * @typeParam T - The type of value that the suite will be expected to validate.
- * 
+ *
  * @remarks
  * If `asyncValidatorTemplates` are provided, an {@link AsyncValidator} will
- * be instantiated for each template provided. 
+ * be instantiated for each template provided.
  */
 export type AsyncValidatorSuiteConstructorArgs<T> = {
   asyncValidators?: Array<AbstractAsyncValidator<T>>;
