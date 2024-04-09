@@ -5,6 +5,10 @@ import type {
   ValidityReducerMemberState,
 } from '../../types';
 
+/**
+ * Processes the states of elements whose states contain a `validity` property,
+ * and reduces the validities of each of those elements into a single value.
+ */
 export class ValidityReducer extends AbstractValidityReducer {
   private invalidIncludedMemberNames: Set<string> = new Set<string>();
   private pendingIncludedMemberNames: Set<string> = new Set<string>();

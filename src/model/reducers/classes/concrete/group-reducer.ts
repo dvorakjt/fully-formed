@@ -5,6 +5,8 @@ import {
   StateManager,
   type State,
   type AbstractStateManager,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Validity
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type { AbstractValueReducer } from '../abstract/abstract-value-reducer';
@@ -12,6 +14,10 @@ import type { AbstractValidityReducer } from '../abstract';
 import type { GroupMembers, GroupValue } from '../../../groups';
 import type { GroupReducerConstructorArgs } from '../../types';
 
+/**
+ * Produces a {@link GroupValue} object and corresponding {@link Validity} based
+ * on the states of its members.
+ */
 export class GroupReducer<
   const Members extends GroupMembers,
 > extends AbstractGroupReducer<Members> {
@@ -40,6 +46,15 @@ export class GroupReducer<
     this.subscribeToMembers();
   }
 
+  /**
+   * Executes a callback function whenever the state of the {@link GroupReducer} 
+   * changes.
+   *
+   * @param cb - The callback function to be executed when the state of the
+   * {@link GroupReducer} changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToState(
     cb: (state: State<GroupValue<Members>>) => void,
   ): Subscription {

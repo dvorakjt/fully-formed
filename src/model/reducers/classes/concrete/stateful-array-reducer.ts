@@ -8,7 +8,9 @@ import type {
 } from '../../types';
 
 /**
- * Groups the state of a collection of {@link Stateful} items into an array and emits a new array when the state of any members changes.
+ * Subscribes to an array of instances of classes implementing the 
+ * {@link Stateful} interface and maintains an array of their states in its
+ * `state` property. Emits updates to this array to subscribers.
  */
 export class StatefulArrayReducer<
   const T extends ReadonlyArray<Stateful<unknown>>,
@@ -24,9 +26,6 @@ export class StatefulArrayReducer<
     this.stateManager.state = state;
   }
 
-  /**
-   * @param argsObject - An object containing the required property `members` which refers to an array of {@link Stateful} items to be reduced.
-   */
   public constructor({ members }: StatefulArrayConstructorArgs<T>) {
     super();
     this.members = members;
@@ -37,10 +36,13 @@ export class StatefulArrayReducer<
   }
 
   /**
-   * Calls the provided callback function in response to any changes to `state`.
+   * Executes a callback function whenever the state of the 
+   * {@link StatefulArrayReducer} changes.
    *
-   * @param cb - The callback function to be called when `state` has changed.
-   * @returns A {@link Subscription}.
+   * @param cb - The callback function to be executed when the state of the 
+   * {@link StatefulArrayReducer} changes.
+   * 
+   * @returns An RxJS {@link Subscription}.
    */
   public subscribeToState(
     cb: (state: StatefulArrayStates<T>) => void,

@@ -9,6 +9,10 @@ import type {
   FormValidityReducerConstructorArgs,
 } from '../../types';
 
+/**
+ * Processes the states of adapters, transient form elements, and groups and 
+ * reduces the validities of each of those elements into a single value.
+ */
 export class FormValidityReducer extends AbstractFormValidityReducer {
   private adapterReducer: AbstractValidityReducer;
   private transientElementReducer: AbstractValidityReducer;

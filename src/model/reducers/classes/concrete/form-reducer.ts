@@ -5,7 +5,12 @@ import {
 } from '../abstract';
 import { ValueReducer } from './value-reducer';
 import { FormValidityReducer } from './form-validity-reducer';
-import { StateManager, type AbstractStateManager } from '../../../state';
+import {
+  StateManager, 
+  type AbstractStateManager,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  type Validity
+} from '../../../state';
 import type { Subscription } from 'rxjs';
 import type {
   FormConstituents,
@@ -16,6 +21,10 @@ import type { AbstractAdapter } from '../../../adapters';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
 import type { FormReducerConstructorArgs, FormReducerState } from '../../types';
 
+/**
+ * Produces a {@link FormValue} object and corresponding {@link Validity} based
+ * on the states of {@link FormConstituents}.
+ */
 export class FormReducer<
   Constituents extends FormConstituents,
 > extends AbstractFormReducer<Constituents> {
@@ -64,6 +73,15 @@ export class FormReducer<
     this.subscribeToConstituents();
   }
 
+  /**
+   * Executes a callback function whenever the state of the {@link FormReducer} 
+   * changes.
+   *
+   * @param cb - The callback function to be executed when the state of the 
+   * {@link FormReducer} changes.
+   *
+   * @returns An RxJS {@link Subscription}.
+   */
   public subscribeToState(
     cb: (state: FormReducerState<Constituents>) => void,
   ): Subscription {

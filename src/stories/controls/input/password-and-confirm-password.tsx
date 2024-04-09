@@ -16,14 +16,19 @@ class Template extends FormTemplate {
     new Field({
       name: 'password',
       defaultValue: '',
-      validators: [StringValidators.required()],
+      validators: [
+        StringValidators.includesLower({
+          validMessage : 'Password includes a lowercase letter.',
+          invalidMessage : 'Password must include a lowercase letter.'
+        })
+      ],
     }),
     new Field({
       name: 'confirmPassword',
       defaultValue: '',
       validators: [StringValidators.required()],
     }),
-  ];
+  ] as const;
   public readonly groups = [
     new Group({
       name: 'passwordGroup',
@@ -35,7 +40,7 @@ class Template extends FormTemplate {
         },
       ],
     }),
-  ];
+  ] as const;
 }
 
 const Form = FormFactory.createForm(Template);
