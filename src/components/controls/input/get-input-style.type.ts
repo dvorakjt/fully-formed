@@ -1,7 +1,7 @@
-import type { FormElement, Validity } from '../../model';
+import type { FormElement, Validity } from '../../../model';
 import type { CSSProperties } from 'react';
 
-type GetInputStyleArgs<Field extends FormElement> = {
+export type GetInputStyleArgs<Field extends FormElement> = {
   fieldState: Field['state'];
   confirmationAttempted: boolean;
   groupValidity: Validity;

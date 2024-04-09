@@ -1,31 +1,33 @@
-import React, { type ReactNode } from 'react';
-import { useConfirmationAttempted, useStatefulEntityState } from '../../hooks';
-import { useGroupValidation } from '../../hooks/use-group-validation';
-import { joinClassNames } from '../utils';
+import React from 'react';
+import {
+  useConfirmationAttempted,
+  useFieldState,
+  useGroupValidation,
+} from '../../../hooks';
+import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
+import type { InputProps } from './input-props.type';
 import type {
   AbstractField,
   AbstractForm,
   FormConstituents,
-  PickSingleTypeFormElements,
-} from '../../model';
-import type { InputProps, StringInputTypes } from '../types';
+} from '../../../model';
 
 export function Input<
-  ParentForm extends AbstractForm<string, FormConstituents>,
-  FieldName extends keyof PickSingleTypeFormElements<
-    ParentForm,
-    AbstractField<string, string, boolean>
-  >,
-  Type extends StringInputTypes,
+  Form extends AbstractForm<string, FormConstituents>,
+  Field extends AbstractField<string, string, boolean> &
+    Form['formElements'][keyof Form['formElements']],
 >({
+  field,
   form,
-  fieldName,
   type,
-  groupNames = [],
+  groups = [],
   className,
   getClassName,
   style,
   getStyle,
+  disabled,
+  disabledWhenExcluded,
+  readOnly,
   autoFocus,
   autoCapitalize,
   autoComplete,
@@ -36,25 +38,18 @@ export function Input<
   maxLength,
   size,
   step,
-}: InputProps<ParentForm, FieldName, Type>): ReactNode {
-  const field = form.formElements[
-    fieldName as keyof typeof form.formElements
-  ] as AbstractField<string, string, boolean>;
-  const fieldState = useStatefulEntityState(field);
+}: InputProps<Form, Field>): React.JSX.Element {
+  const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
-  const groupValidity = useGroupValidation(
-    groupNames.map(
-      groupName => form.groups[groupName as keyof typeof form.groups],
-    ),
-  );
+  const groupValidity = useGroupValidation(groups);
 
   return (
     <input
-      id={field.id}
       name={field.name}
+      id={field.id}
       type={type}
       value={fieldState.value}
-      onChange={({ target }) => field.setValue(target.value)}
+      onChange={e => field.setValue(e.target.value)}
       onFocus={() => field.focus()}
       onBlur={() => field.visit()}
       className={joinClassNames(
@@ -67,6 +62,17 @@ export function Input<
         ...(getStyle &&
           getStyle({ fieldState, confirmationAttempted, groupValidity })),
       }}
+      disabled={
+        !!(
+          disabled ||
+          (disabledWhenExcluded &&
+            'exclude' in fieldState &&
+            fieldState.exclude)
+        )
+      }
+      readOnly={readOnly}
+      aria-readonly={readOnly}
+      aria-describedby={getFieldMessagesContainerId(field.id)}
       autoFocus={autoFocus}
       autoCapitalize={autoCapitalize}
       autoComplete={autoComplete}
