@@ -1,18 +1,13 @@
 import type { CSSProperties } from 'react';
-import type {
-  AbstractForm,
-  FormConstituents,
-  AbstractField,
-} from '../../../model';
+import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
 import type { GetFieldMessagesContainerClassName } from './get-field-messages-container-classname.type';
 import type { GetFieldMessagesContainerStyle } from './get-field-messages-container-style.type';
 import type { GetFieldMessageClassName } from './get-field-message-classname.type';
 import type { GetFieldMessageStyle } from './get-field-message-style.type';
 
 export type FieldMessagesProps<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, unknown, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyField & ChildOfForm<Form>,
 > = {
   form: Form;
   field: Field;

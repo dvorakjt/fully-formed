@@ -1,16 +1,11 @@
 import type { CSSProperties, ReactNode } from 'react';
-import type {
-  AbstractField,
-  AbstractForm,
-  FormConstituents,
-} from '../../../model';
+import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
 import type { GetFieldLabelClassName } from './get-field-label-classname';
 import type { GetFieldLabelStyle } from './get-field-label-style';
 
 export type FieldLabelProps<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, unknown, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyField & ChildOfForm<Form>,
 > = {
   field: Field;
   form: Form;

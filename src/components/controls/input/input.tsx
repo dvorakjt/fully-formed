@@ -6,16 +6,16 @@ import {
 } from '../../../hooks';
 import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
 import type { InputProps } from './input-props.type';
-import type {
-  AbstractField,
-  AbstractForm,
-  FormConstituents,
+import {
+  Validity,
+  type AnyForm,
+  type AnyStringTypeField,
+  type ChildOfForm,
 } from '../../../model';
 
 export function Input<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, string, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyStringTypeField & ChildOfForm<Form>,
 >({
   field,
   form,
@@ -38,6 +38,7 @@ export function Input<
   maxLength,
   size,
   step,
+  ['aria-required']: ariaRequired,
 }: InputProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
@@ -72,7 +73,13 @@ export function Input<
       }
       readOnly={readOnly}
       aria-readonly={readOnly}
+      aria-required={ariaRequired}
       aria-describedby={getFieldMessagesContainerId(field.id)}
+      aria-invalid={
+        (fieldState.visited || fieldState.modified || confirmationAttempted) &&
+        (fieldState.validity === Validity.Invalid ||
+          groupValidity === Validity.Invalid)
+      }
       autoFocus={autoFocus}
       autoCapitalize={autoCapitalize}
       autoComplete={autoComplete}

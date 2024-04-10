@@ -1,9 +1,5 @@
 import React from 'react';
-import type {
-  AbstractField,
-  AbstractForm,
-  FormConstituents,
-} from '../../../model';
+import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
 import type { FieldLabelProps } from './field-label-props';
 import {
   useConfirmationAttempted,
@@ -13,9 +9,8 @@ import {
 import { joinClassNames } from '../../utils';
 
 export function FieldLabel<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, unknown, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyField & ChildOfForm<Form>,
 >({
   field,
   form,

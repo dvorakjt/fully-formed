@@ -1,7 +1,7 @@
 import type {
-  AbstractForm,
-  FormConstituents,
-  AbstractField,
+  AnyForm,
+  AnyStringTypeField,
+  ChildOfForm,
   Excludable,
 } from '../../../model';
 import type { AutoCapitalize } from '../../types';
@@ -10,9 +10,8 @@ import type { GetInputStyle } from './get-input-style.type';
 import type { StringInputTypes } from './string-input-types.type';
 
 export type InputProps<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, string, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyStringTypeField & ChildOfForm<Form>,
 > = {
   field: Field;
   form: Form;
@@ -35,4 +34,5 @@ export type InputProps<
   maxLength?: number;
   size?: number;
   step?: number;
+  ['aria-required']?: boolean;
 };

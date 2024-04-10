@@ -1,11 +1,7 @@
 import React from 'react';
 import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
 import type { FieldMessagesProps } from './field-messages-props.type';
-import type {
-  AbstractForm,
-  FormConstituents,
-  AbstractField,
-} from '../../../model';
+import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
 import {
   useCombinedMessages,
   useFieldState,
@@ -15,9 +11,8 @@ import {
 import { FieldMessage } from './field-message';
 
 export function FieldMessages<
-  Form extends AbstractForm<string, FormConstituents>,
-  Field extends AbstractField<string, unknown, boolean> &
-    Form['formElements'][keyof Form['formElements']],
+  Form extends AnyForm,
+  Field extends AnyField & ChildOfForm<Form>,
 >({
   form,
   field,
@@ -62,7 +57,7 @@ export function FieldMessages<
         return (
           <FieldMessage
             text={text}
-            key={`${field.id}-messages-${index}`}
+            key={index}
             className={joinClassNames(
               messageClassName,
               getMessageClassName &&

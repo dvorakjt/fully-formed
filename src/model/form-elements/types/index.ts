@@ -6,7 +6,11 @@ export type {
   GroupNamesAreUnique,
   DerivedValueNamesAreUnique,
 } from './allowed-constituents.type';
+export type { AnyField } from './any-field.type';
+export type { AnyForm } from './any-form.type';
+export type { AnyStringTypeField } from './any-string-type-field';
 export type { AutoTrim } from './auto-trim.type';
+export type { ChildOfForm } from './child-of-form.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
 export type { ControlledExcludableFieldState } from './controlled-excludable-field-state.type';
 export type { ControlledFieldState } from './controlled-field-state.type';

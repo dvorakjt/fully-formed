@@ -3,19 +3,17 @@ import type { Message, Stateful, StateWithMessages } from '../model';
 import type { Subscription } from 'rxjs';
 
 export function useCombinedMessages(
-  ...statefulEntities: Array<Stateful<StateWithMessages<unknown>>>
+  ...messageBearers: Array<Stateful<StateWithMessages<unknown>>>
 ): Message[] {
   const [messages, setMessages] = useState(
-    statefulEntities.map(entity => entity.state.messages).flat(),
+    messageBearers.map(entity => entity.state.messages).flat(),
   );
 
   useLayoutEffect(() => {
     const subscriptions: Subscription[] = [];
-    statefulEntities.forEach(entity => {
+    messageBearers.forEach(entity => {
       const subscription = entity.subscribeToState(() => {
-        setMessages(
-          statefulEntities.map(entity => entity.state.messages).flat(),
-        );
+        setMessages(messageBearers.map(entity => entity.state.messages).flat());
       });
       subscriptions.push(subscription);
     });

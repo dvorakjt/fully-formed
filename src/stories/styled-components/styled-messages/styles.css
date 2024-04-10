@@ -1,0 +1,22 @@
+.message {
+  display: block;
+  height: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  transition: opacity 200ms ease-in-out;
+}
+
+.messageHidden {
+  opacity: 0;
+  height: 0px;
+}
+
+.messageInvalid {
+  opacity: 1;
+  color: red;
+}
+
+.messageValid {
+  opacity: 1;
+  color: green;
+}

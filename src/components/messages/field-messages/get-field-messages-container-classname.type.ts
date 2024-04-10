@@ -1,13 +1,11 @@
-import type { Validity, AbstractField } from '../../../model';
+import type { AnyField, Validity } from '../../../model';
 
-export type GetFieldMessagesContainerClassNameArgs<
-  Field extends AbstractField<string, unknown, boolean>,
-> = {
+export type GetFieldMessagesContainerClassNameArgs<Field extends AnyField> = {
   fieldState: Field['state'];
   confirmationAttempted: boolean;
   groupValidity: Validity;
 };
 
-export type GetFieldMessagesContainerClassName<
-  Field extends AbstractField<string, unknown, boolean>,
-> = (args: GetFieldMessagesContainerClassNameArgs<Field>) => string | undefined;
+export type GetFieldMessagesContainerClassName<Field extends AnyField> = (
+  args: GetFieldMessagesContainerClassNameArgs<Field>,
+) => string | undefined;
