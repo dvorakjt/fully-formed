@@ -8,7 +8,7 @@ export type {
 } from './allowed-constituents.type';
 export type { AnyField } from './any-field.type';
 export type { AnyForm } from './any-form.type';
-export type { AnyStringTypeField } from './any-string-type-field';
+export type { AnyStringTypeField } from './any-string-type-field.type';
 export type { AutoTrim } from './auto-trim.type';
 export type { ChildOfForm } from './child-of-form.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
