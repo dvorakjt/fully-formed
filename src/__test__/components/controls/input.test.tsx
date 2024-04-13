@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   FormTemplate,
@@ -9,6 +9,8 @@ import {
   Validity,
   type AbstractField,
   type ControlledFieldState,
+  ExcludableField,
+  StringValidators,
 } from '../../../model';
 import { useForm } from '../../../hooks';
 import { Input, type StringInputTypes } from '../../../components';
@@ -363,7 +365,7 @@ describe('Input', () => {
     expect(form.formElements.testField.state.visited).toBe(true);
   });
 
-  test('If its props include "className", the input it renders receives that className.', () => {
+  test('If its props include className, the input it renders receives that className.', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
@@ -372,9 +374,10 @@ describe('Input', () => {
     }
 
     const Form = FormFactory.createForm(Template);
-    const form = new Form();
 
     function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
       return (
         <Input
           form={form}
@@ -392,5 +395,402 @@ describe('Input', () => {
     expect(inputElements[0].className).toBe('test-input');
   });
 
-  test('If its props include "getClassName" that function is called the input element it renders receives the resulting className.', () => {});
+  test('If its props include getClassName that function is called the input element it renders receives the resulting className.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          getClassName={() => 'test-input'}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].className).toBe('test-input');
+  });
+
+  test('If its props include both className and getClassName, getClassName() is called and then merged with className.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          className="class-name-1"
+          getClassName={() => 'class-name-2'}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].className).toBe('class-name-1 class-name-2');
+  });
+
+  test('If its props include style, those styles are applied to the input element it renders.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          style={{
+            border: '1px solid lightgray',
+            borderRadius: '2px',
+            fontFamily: 'Arial',
+            fontSize: '18px',
+          }}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].style.border).toBe('1px solid lightgray');
+    expect(inputElements[0].style.borderRadius).toBe('2px');
+    expect(inputElements[0].style.fontFamily).toBe('Arial');
+    expect(inputElements[0].style.fontSize).toBe('18px');
+  });
+
+  test('If its props include getStyle(), getStyle() is called and the result is applied to the style of the input element it renders.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          getStyle={() => {
+            return {
+              border: '1px solid lightgray',
+              borderRadius: '2px',
+              fontFamily: 'Arial',
+              fontSize: '18px',
+            };
+          }}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].style.border).toBe('1px solid lightgray');
+    expect(inputElements[0].style.borderRadius).toBe('2px');
+    expect(inputElements[0].style.fontFamily).toBe('Arial');
+    expect(inputElements[0].style.fontSize).toBe('18px');
+  });
+
+  test('If its props include both style and getStyle(), getStyle() is called and the result is merged with the style prop and applied to the style of the input element it renders.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          style={{
+            border: '1px solid lightgray',
+            borderRadius: '2px',
+          }}
+          getStyle={() => {
+            return {
+              fontFamily: 'Arial',
+              fontSize: '18px',
+            };
+          }}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].style.border).toBe('1px solid lightgray');
+    expect(inputElements[0].style.borderRadius).toBe('2px');
+    expect(inputElements[0].style.fontFamily).toBe('Arial');
+    expect(inputElements[0].style.fontSize).toBe('18px');
+  });
+
+  test('If props.disabled is true, the input element it renders is disabled.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          disabled={true}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].disabled).toBe(true);
+  });
+
+  test('If props.disableWhenExcluded is true, the input element it renders is disabled when the underlying field is excluded.', async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new ExcludableField({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestForm(): ReactNode {
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          disabledWhenExcluded={true}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].disabled).toBe(false);
+
+    form.formElements.testField.setExclude(true);
+    await waitFor(() => expect(inputElements[0].disabled).toBe(true));
+  });
+
+  test('If props.disabled and props.disabledWhenExcluded are both true, but the field is not currently excluded, it is still disabled.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new ExcludableField({ name: 'testField', defaultValue: '' }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input
+          form={form}
+          field={form.formElements.testField}
+          type="text"
+          disabled={true}
+          disabledWhenExcluded={true}
+        />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].disabled).toBe(true);
+  });
+
+  test('If the field has not been modified or visited and the confirm() method of the form has not been called, its aria-invalid property is false.', () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({
+          name: 'testField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input form={form} field={form.formElements.testField} type="text" />
+      );
+    }
+
+    render(<TestForm />);
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].ariaInvalid).toBe('false');
+  });
+
+  test('If the field has been modified and the underlying field is invalid, its aria-invalid property is true.', async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({
+          name: 'testField',
+          defaultValue: '',
+          validators: [StringValidators.email()],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input form={form} field={form.formElements.testField} type="text" />
+      );
+    }
+
+    const user = userEvent.setup();
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].ariaInvalid).toBe('false');
+
+    await user.type(inputElements[0], 'not a valid email');
+    expect(inputElements[0].ariaInvalid).toBe('true');
+  });
+
+  test('If the field has been visited and the underlying field is invalid, its aria-invalid property is true.', async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({
+          name: 'testField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    function TestForm(): ReactNode {
+      const form = useForm(new Form());
+
+      return (
+        <Input form={form} field={form.formElements.testField} type="text" />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].ariaInvalid).toBe('false');
+
+    inputElements[0].focus();
+    inputElements[0].blur();
+    await waitFor(() => expect(inputElements[0].ariaInvalid).toBe('true'));
+  });
+
+  test('If the confirm() method of the form has been called and the underlying field is invalid, its aria-invalid property is true.', async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field({
+          name: 'testField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestForm(): ReactNode {
+      return (
+        <Input form={form} field={form.formElements.testField} type="text" />
+      );
+    }
+
+    render(<TestForm />);
+
+    const inputElements = document.getElementsByTagName('input');
+    expect(inputElements.length).toBe(1);
+    expect(inputElements[0].ariaInvalid).toBe('false');
+
+    form.confirm();
+    await waitFor(() => expect(inputElements[0].ariaInvalid).toBe('true'));
+  });
 });

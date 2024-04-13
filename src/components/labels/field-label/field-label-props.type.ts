@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
-import type { GetFieldLabelClassName } from './get-field-label-classname';
-import type { GetFieldLabelStyle } from './get-field-label-style';
+import type { GetFieldLabelClassName } from './get-field-label-classname.type';
+import type { GetFieldLabelStyle } from './get-field-label-style.type';
 
 export type FieldLabelProps<
   Form extends AnyForm,

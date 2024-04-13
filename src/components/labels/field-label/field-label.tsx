@@ -1,6 +1,6 @@
 import React from 'react';
 import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
-import type { FieldLabelProps } from './field-label-props';
+import type { FieldLabelProps } from './field-label-props.type';
 import {
   useConfirmationAttempted,
   useFieldState,
