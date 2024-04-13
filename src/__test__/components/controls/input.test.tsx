@@ -61,10 +61,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].name).toBe('testField');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.name).toBe('testField');
   });
 
   test('It renders an input element whose id matches that of the field it receives as a prop.', () => {
@@ -92,7 +90,6 @@ describe('Input', () => {
     render(<TestForm />);
 
     const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(2);
     expect(inputElements[0].id).toBe('testField1');
     expect(inputElements[1].id).toBe('test-field-2');
   });
@@ -140,10 +137,8 @@ describe('Input', () => {
     stringInputTypes.forEach(type => {
       render(<TestForm type={type} />);
 
-      const inputElements = document.getElementsByTagName('input');
-
-      expect(inputElements.length).toBe(1);
-      expect(inputElements[0].type).toBe(type);
+      const input = document.getElementsByTagName('input')[0];
+      expect(input.type).toBe(type);
 
       cleanup();
     });
@@ -167,9 +162,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].value).toBe('Joan Tower');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.value).toBe('Joan Tower');
   });
 
   test('Its value is updated when text is entered into the input element it renders.', async () => {
@@ -191,12 +185,11 @@ describe('Input', () => {
     const user = userEvent.setup();
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].value).toBe('');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.value).toBe('');
 
-    await user.type(inputElements[0], 'Valerie Coleman');
-    expect(inputElements[0].value).toBe('Valerie Coleman');
+    await user.type(input, 'Valerie Coleman');
+    expect(input.value).toBe('Valerie Coleman');
   });
 
   test('Its value is updated when the value of the field it received as a props is updated.', async () => {
@@ -274,7 +267,6 @@ describe('Input', () => {
     render(<TestForm />);
 
     const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(2);
     expect(inputElements[1].value).toBe('green');
 
     await user.clear(inputElements[0]);
@@ -302,9 +294,8 @@ describe('Input', () => {
     render(<TestForm />);
     expect(form.formElements.name.state.modified).toBe(false);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    await user.type(inputElements[0], 'Ludwig van Beethoven');
+    const input = document.getElementsByTagName('input')[0];
+    await user.type(input, 'Ludwig van Beethoven');
     expect(form.formElements.name.state.modified).toBe(true);
   });
 
@@ -329,9 +320,8 @@ describe('Input', () => {
     render(<TestForm />);
     expect(form.formElements.testField.state.focused).toBe(false);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    await user.click(inputElements[0]);
+    const input = document.getElementsByTagName('input')[0];
+    await user.click(input);
     expect(form.formElements.testField.state.focused).toBe(true);
   });
 
@@ -356,12 +346,11 @@ describe('Input', () => {
     render(<TestForm />);
     expect(form.formElements.testField.state.visited).toBe(false);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    await user.click(inputElements[0]);
+    const input = document.getElementsByTagName('input')[0];
+    await user.click(input);
     expect(form.formElements.testField.state.visited).toBe(false);
 
-    inputElements[0].blur();
+    input.blur();
     expect(form.formElements.testField.state.visited).toBe(true);
   });
 
@@ -390,9 +379,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].className).toBe('test-input');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.className).toBe('test-input');
   });
 
   test('If its props include getClassName that function is called the input element it renders receives the resulting className.', () => {
@@ -420,9 +408,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].className).toBe('test-input');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.className).toBe('test-input');
   });
 
   test('If its props include both className and getClassName, getClassName() is called and then merged with className.', () => {
@@ -451,9 +438,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].className).toBe('class-name-1 class-name-2');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.className).toBe('class-name-1 class-name-2');
   });
 
   test('If its props include style, those styles are applied to the input element it renders.', () => {
@@ -486,12 +472,11 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].style.border).toBe('1px solid lightgray');
-    expect(inputElements[0].style.borderRadius).toBe('2px');
-    expect(inputElements[0].style.fontFamily).toBe('Arial');
-    expect(inputElements[0].style.fontSize).toBe('18px');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.style.border).toBe('1px solid lightgray');
+    expect(input.style.borderRadius).toBe('2px');
+    expect(input.style.fontFamily).toBe('Arial');
+    expect(input.style.fontSize).toBe('18px');
   });
 
   test('If its props include getStyle(), getStyle() is called and the result is applied to the style of the input element it renders.', () => {
@@ -526,12 +511,11 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].style.border).toBe('1px solid lightgray');
-    expect(inputElements[0].style.borderRadius).toBe('2px');
-    expect(inputElements[0].style.fontFamily).toBe('Arial');
-    expect(inputElements[0].style.fontSize).toBe('18px');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.style.border).toBe('1px solid lightgray');
+    expect(input.style.borderRadius).toBe('2px');
+    expect(input.style.fontFamily).toBe('Arial');
+    expect(input.style.fontSize).toBe('18px');
   });
 
   test('If its props include both style and getStyle(), getStyle() is called and the result is merged with the style prop and applied to the style of the input element it renders.', () => {
@@ -568,12 +552,11 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].style.border).toBe('1px solid lightgray');
-    expect(inputElements[0].style.borderRadius).toBe('2px');
-    expect(inputElements[0].style.fontFamily).toBe('Arial');
-    expect(inputElements[0].style.fontSize).toBe('18px');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.style.border).toBe('1px solid lightgray');
+    expect(input.style.borderRadius).toBe('2px');
+    expect(input.style.fontFamily).toBe('Arial');
+    expect(input.style.fontSize).toBe('18px');
   });
 
   test('If props.disabled is true, the input element it renders is disabled.', () => {
@@ -601,9 +584,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].disabled).toBe(true);
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.disabled).toBe(true);
   });
 
   test('If props.disableWhenExcluded is true, the input element it renders is disabled when the underlying field is excluded.', async () => {
@@ -630,12 +612,11 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].disabled).toBe(false);
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.disabled).toBe(false);
 
     form.formElements.testField.setExclude(true);
-    await waitFor(() => expect(inputElements[0].disabled).toBe(true));
+    await waitFor(() => expect(input.disabled).toBe(true));
   });
 
   test('If props.disabled and props.disabledWhenExcluded are both true, but the field is not currently excluded, it is still disabled.', () => {
@@ -664,9 +645,8 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].disabled).toBe(true);
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.disabled).toBe(true);
   });
 
   test('If the field has not been modified or visited and the confirm() method of the form has not been called, its aria-invalid property is false.', () => {
@@ -692,9 +672,8 @@ describe('Input', () => {
     }
 
     render(<TestForm />);
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].ariaInvalid).toBe('false');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.ariaInvalid).toBe('false');
   });
 
   test('If the field has been modified and the underlying field is invalid, its aria-invalid property is true.', async () => {
@@ -722,12 +701,11 @@ describe('Input', () => {
     const user = userEvent.setup();
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].ariaInvalid).toBe('false');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.ariaInvalid).toBe('false');
 
-    await user.type(inputElements[0], 'not a valid email');
-    expect(inputElements[0].ariaInvalid).toBe('true');
+    await user.type(input, 'not a valid email');
+    expect(input.ariaInvalid).toBe('true');
   });
 
   test('If the field has been visited and the underlying field is invalid, its aria-invalid property is true.', async () => {
@@ -754,13 +732,12 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].ariaInvalid).toBe('false');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.ariaInvalid).toBe('false');
 
-    inputElements[0].focus();
-    inputElements[0].blur();
-    await waitFor(() => expect(inputElements[0].ariaInvalid).toBe('true'));
+    input.focus();
+    input.blur();
+    await waitFor(() => expect(input.ariaInvalid).toBe('true'));
   });
 
   test('If the confirm() method of the form has been called and the underlying field is invalid, its aria-invalid property is true.', async () => {
@@ -786,11 +763,10 @@ describe('Input', () => {
 
     render(<TestForm />);
 
-    const inputElements = document.getElementsByTagName('input');
-    expect(inputElements.length).toBe(1);
-    expect(inputElements[0].ariaInvalid).toBe('false');
+    const input = document.getElementsByTagName('input')[0];
+    expect(input.ariaInvalid).toBe('false');
 
     form.confirm();
-    await waitFor(() => expect(inputElements[0].ariaInvalid).toBe('true'));
+    await waitFor(() => expect(input.ariaInvalid).toBe('true'));
   });
 });

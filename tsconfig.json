@@ -5,6 +5,7 @@
     "outDir": "dist",
     "declaration": true,
     "jsx": "react",
+    "target": "ESNext",
     // These settings prevent errors when running typedoc:
     "module": "ESNext",
     "moduleResolution": "Bundler"
