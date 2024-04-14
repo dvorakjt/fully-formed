@@ -13,7 +13,7 @@ export abstract class AbstractGroupReducer<Members extends GroupMembers>
 {
   public abstract state: State<GroupValue<Members>>;
   /**
-   * Executes a callback function whenever the state of the 
+   * Executes a callback function whenever the state of the
    * {@link AbstractGroupReducer} changes.
    *
    * @param cb - The callback function to be executed when the state of the

@@ -3,7 +3,7 @@ import type { Subscription } from 'rxjs';
 /**
  * Represents an entity that maintains state and which can emit updates to this
  * state to subscribers.
- * 
+ *
  * @typeParam State - The type of state maintained by the entity and emitted to
  * subscribers.
  */

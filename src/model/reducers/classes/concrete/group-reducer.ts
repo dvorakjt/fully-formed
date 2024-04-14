@@ -6,7 +6,7 @@ import {
   type State,
   type AbstractStateManager,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Validity
+  Validity,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type { AbstractValueReducer } from '../abstract/abstract-value-reducer';
@@ -47,7 +47,7 @@ export class GroupReducer<
   }
 
   /**
-   * Executes a callback function whenever the state of the {@link GroupReducer} 
+   * Executes a callback function whenever the state of the {@link GroupReducer}
    * changes.
    *
    * @param cb - The callback function to be executed when the state of the

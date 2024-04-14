@@ -1,7 +1,5 @@
 export { FieldMessages } from './field-messages';
-export { FieldMessage } from './field-message';
 export type { FieldMessagesProps } from './field-messages-props.type';
-export type { FieldMessageProps } from './field-message-props.type';
 export type {
   GetFieldMessageClassName,
   GetFieldMessageClassNameArgs,

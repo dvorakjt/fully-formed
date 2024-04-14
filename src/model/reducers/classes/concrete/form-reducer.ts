@@ -6,10 +6,10 @@ import {
 import { ValueReducer } from './value-reducer';
 import { FormValidityReducer } from './form-validity-reducer';
 import {
-  StateManager, 
+  StateManager,
   type AbstractStateManager,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type Validity
+  type Validity,
 } from '../../../state';
 import type { Subscription } from 'rxjs';
 import type {
@@ -74,10 +74,10 @@ export class FormReducer<
   }
 
   /**
-   * Executes a callback function whenever the state of the {@link FormReducer} 
+   * Executes a callback function whenever the state of the {@link FormReducer}
    * changes.
    *
-   * @param cb - The callback function to be executed when the state of the 
+   * @param cb - The callback function to be executed when the state of the
    * {@link FormReducer} changes.
    *
    * @returns An RxJS {@link Subscription}.

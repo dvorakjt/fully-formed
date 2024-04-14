@@ -3,7 +3,7 @@ import type { Stateful } from '../../../shared';
 
 /**
  * Maintains state and emits updates to subscribers when that state changes.
- * 
+ *
  * @typeParam T - The type of value that will be held in its `state` property
  * and emitted to subscribers.
  */

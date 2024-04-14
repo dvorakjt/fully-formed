@@ -1,11 +1,11 @@
 import React from 'react';
-import type { FieldMessageProps } from './field-message-props.type';
+import type { MessageProps } from './message-props.type';
 
-export function FieldMessage({
+export function Message({
   text,
   className,
   style,
-}: FieldMessageProps): React.JSX.Element {
+}: MessageProps): React.JSX.Element {
   return (
     <span className={className} style={style}>
       {text}

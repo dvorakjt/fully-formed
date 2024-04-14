@@ -57,7 +57,7 @@ describe('FieldLabel', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({ name: 'testField', defaultValue: '', id: 'test-field' }),
+        new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
     }
 
