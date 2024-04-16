@@ -29,7 +29,7 @@ export function FieldMessages<
   const messages = useCombinedMessages(field, ...groups);
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
-  const groupValidity = useGroupValidation(groups);
+  const groupValidity = useGroupValidation(...groups);
 
   return (
     <div

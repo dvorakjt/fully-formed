@@ -8,7 +8,7 @@ import {
 import type { Subscription } from 'rxjs';
 
 export function useGroupValidation(
-  groups: Array<AbstractGroup<string, GroupMembers>>,
+  ...groups: Array<AbstractGroup<string, GroupMembers>>
 ): Validity {
   const invalidGroupsRef = useRef(
     new Set<string>(getInvalidGroupNames(groups)),

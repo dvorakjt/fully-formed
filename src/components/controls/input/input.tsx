@@ -42,7 +42,7 @@ export function Input<
 }: InputProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
-  const groupValidity = useGroupValidation(groups);
+  const groupValidity = useGroupValidation(...groups);
 
   return (
     <input

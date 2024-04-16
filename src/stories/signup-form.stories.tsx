@@ -10,7 +10,7 @@ import { useForm } from '../hooks';
 import { StyledLabel, StyledInput, StyledMessages } from './styled-components';
 import type { Meta, StoryObj } from '@storybook/react';
 
-class Template extends FormTemplate {
+class SignUpTemplate extends FormTemplate {
   public readonly name = 'signUpForm';
   public readonly formElements = [
     new Field({
@@ -82,10 +82,10 @@ class Template extends FormTemplate {
     include: ['email', 'nickname'],
   };
 }
-const Form = FormFactory.createForm(Template);
+const SignUpForm = FormFactory.createForm(SignUpTemplate);
 
-function SignUpForm(): React.JSX.Element {
-  const form = useForm(new Form());
+function SignUpPage(): React.JSX.Element {
+  const form = useForm(new SignUpForm());
 
   return (
     <form>
@@ -154,14 +154,14 @@ function SignUpForm(): React.JSX.Element {
   );
 }
 
-const meta: Meta<typeof SignUpForm> = {
-  component: SignUpForm,
+const meta: Meta<typeof SignUpPage> = {
+  component: SignUpPage,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof SignUpForm>;
+type Story = StoryObj<typeof SignUpPage>;
 
 export const Default: Story = {
-  render: SignUpForm,
+  render: SignUpPage,
 };
