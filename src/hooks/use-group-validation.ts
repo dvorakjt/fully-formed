@@ -7,6 +7,22 @@ import {
 } from '../model';
 import type { Subscription } from 'rxjs';
 
+/**
+ * Takes in any number of {@link AbstractGroup}s and returns a React state
+ * variable consisting of the reduced {@link Validity} of those groups.
+ *
+ * Any groups whose `state.validitySource` property is
+ * {@link GroupValiditySource.Reduction} will be treated as having a validity of
+ * {@link Validity.Valid}.
+ *
+ * If any groups are invalid, the hook returns
+ * {@link Validity.Invalid}. If no groups are invalid, but at least one is
+ * pending, the hook returns {@link Validity.Pending}. Otherwise, the hook
+ * returns {@link Validity.Valid}.
+ *
+ * The value returned by the hook will be updated whenever the state of any of
+ * the groups changes.
+ */
 export function useGroupValidation(
   ...groups: Array<AbstractGroup<string, GroupMembers>>
 ): Validity {
