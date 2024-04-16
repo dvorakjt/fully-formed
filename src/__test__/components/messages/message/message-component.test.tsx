@@ -1,13 +1,13 @@
 import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
-import { Message } from '../../../../components';
+import { MessageComponent } from '../../../../components';
 
-describe('Message', () => {
+describe('MessageComponent', () => {
   afterEach(cleanup);
 
   test('It renders a span element.', () => {
-    render(<Message text="" />);
+    render(<MessageComponent text="" />);
 
     const spanElements = document.getElementsByTagName('span');
     expect(spanElements.length).toBe(1);
@@ -15,7 +15,7 @@ describe('Message', () => {
 
   test(`The span element it returns contains the message text it received as a 
   prop.`, () => {
-    render(<Message text="test message" />);
+    render(<MessageComponent text="test message" />);
 
     const span = document.getElementsByTagName('span')[0];
     expect(span.textContent).toBe('test message');
@@ -23,7 +23,7 @@ describe('Message', () => {
 
   test(`If it received a className as a prop, the span element it returns 
   receives that className.`, () => {
-    render(<Message text="" className="test-message" />);
+    render(<MessageComponent text="" className="test-message" />);
 
     const span = document.getElementsByTagName('span')[0];
     expect(span.className).toBe('test-message');
@@ -32,7 +32,7 @@ describe('Message', () => {
   test(`If it received style as a prop, those styles are applied to the span 
   element it returns.`, () => {
     render(
-      <Message
+      <MessageComponent
         text=""
         style={{
           display: 'block',

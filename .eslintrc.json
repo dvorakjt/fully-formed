@@ -35,5 +35,6 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "ignorePatterns": ["/dist/**"]
 }

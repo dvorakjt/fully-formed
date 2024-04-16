@@ -1,7 +1,7 @@
 import React from 'react';
 import type { MessageProps } from './message-props.type';
 
-export function Message({
+export function MessageComponent({
   text,
   className,
   style,

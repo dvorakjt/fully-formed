@@ -8,7 +8,7 @@ import {
   useConfirmationAttempted,
   useGroupValidation,
 } from '../../../hooks';
-import { Message } from '../message';
+import { MessageComponent } from '../message';
 
 export function FieldMessages<
   Form extends AnyForm,
@@ -55,7 +55,7 @@ export function FieldMessages<
     >
       {messages.map(({ text, validity }, index) => {
         return (
-          <Message
+          <MessageComponent
             text={text}
             key={index}
             className={joinClassNames(

@@ -1,11 +1,12 @@
-document code
-create and test hooks
-create and test components
-
-create convenience types for
--Any kind of field of a certain type (name and transience don't matter)
+create, test, document components
+test with various react frameworks:
+  -vite
+  -next (page router)
+  -remix
+readme
 
 refactor tests:
+-return type of TestComponents should be React.JSX.Element not React.ReactNode
 -use template literals instead of strings so max line width can be respected
 
 clean up node modules/remove storybook?
