@@ -63,7 +63,7 @@ describe('useGroupValidation()', () => {
       members: [fieldE, fieldF],
     });
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupValidity = useGroupValidation(
         invalidDueToValidation,
         pendingDueToValidation,
@@ -129,7 +129,7 @@ describe('useGroupValidation()', () => {
       members: [fieldE, fieldF],
     });
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupValidity = useGroupValidation(
         pendingDueToValidation,
         invalidDueToReduction,
@@ -193,7 +193,7 @@ describe('useGroupValidation()', () => {
       members: [fieldE, fieldF],
     });
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupValidity = useGroupValidation(
         valid,
         invalidDueToReduction,
@@ -263,7 +263,7 @@ describe('useGroupValidation()', () => {
       members: [fieldE, fieldF],
     });
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupValidity = useGroupValidation(
         willBecomeInvalidDueToValidation,
         pendingDueToValidation,
@@ -336,7 +336,7 @@ describe('useGroupValidation()', () => {
       members: [fieldE, fieldF],
     });
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupValidity = useGroupValidation(
         willBecomePendingDueToValidation,
         invalidDueToReduction,

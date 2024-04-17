@@ -12,7 +12,7 @@ describe('useStatefulEntityState()', () => {
   changes.`, async () => {
     const stateManager = new StateManager<number>(0);
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const count = useStatefulEntityState(stateManager);
 
       return <p data-testid="count">{count}</p>;

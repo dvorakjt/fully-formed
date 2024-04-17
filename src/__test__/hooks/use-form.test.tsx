@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from 'react';
+import React, { useState } from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -20,7 +20,7 @@ describe('useForm()', () => {
     const objectIdMap = new ObjectIdMap();
     let renders = 0;
 
-    function TestComponent(): ReactNode {
+    function TestComponent(): React.JSX.Element {
       renders++;
       const form = useForm(new Form());
       const [counter, setCounter] = useState(0);
@@ -52,7 +52,7 @@ describe('useForm()', () => {
   test('Each call returns a unique form instance.', () => {
     const objectIdMap = new ObjectIdMap();
 
-    function TestComponent(): ReactNode {
+    function TestComponent(): React.JSX.Element {
       const formA = useForm(new Form());
       const formB = useForm(new Form());
 

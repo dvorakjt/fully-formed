@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
 import { FormTemplate, Field, FormFactory } from '../../../model';
@@ -19,7 +19,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return <FieldLabel form={form} field={form.formElements.testField} />;
@@ -41,7 +41,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return <FieldLabel form={form} field={form.formElements.testField} />;
@@ -63,7 +63,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -101,7 +101,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -130,7 +130,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -160,7 +160,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -190,7 +190,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -225,7 +225,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -261,7 +261,7 @@ describe('FieldLabel', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (

@@ -36,7 +36,7 @@ describe('useFieldState()', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const fieldState = useFieldState(form.formElements.email);
 
       return <p>{JSON.stringify(fieldState)}</p>;

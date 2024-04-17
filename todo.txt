@@ -3,14 +3,9 @@ create ComponentFactory
 test with various react frameworks:
   -cra
 readme
-add src-dir-exists.ts 
 update scripts and other info in package.json
 update gh actions to publish on creation of new release
 update env variables
 add license
-
-refactor tests:
--return type of TestComponents should be React.JSX.Element not React.ReactNode
--use template literals instead of strings so max line width can be respected
 
 clean up node modules/remove storybook?

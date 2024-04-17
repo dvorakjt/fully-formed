@@ -56,7 +56,7 @@ describe('useFormState()', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const formState = useFormState(form);
 
       return (

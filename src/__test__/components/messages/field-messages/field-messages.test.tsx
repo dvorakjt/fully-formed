@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -32,7 +32,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return <FieldMessages form={form} field={form.formElements.testField} />;
     }
 
@@ -57,7 +57,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -87,7 +87,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -119,7 +119,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -150,7 +150,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -184,7 +184,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -219,7 +219,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <FieldMessages
           form={form}
@@ -282,7 +282,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return <FieldMessages form={form} field={form.formElements.password} />;
     }
 
@@ -320,7 +320,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <>
           <Input form={form} field={form.formElements.email} type="email" />
@@ -398,7 +398,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -473,7 +473,7 @@ describe('FieldMessages', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <>
           <Input
@@ -524,7 +524,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -563,7 +563,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -604,7 +604,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -644,7 +644,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -698,7 +698,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -749,7 +749,7 @@ describe('FieldMessages', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (

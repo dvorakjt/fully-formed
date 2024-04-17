@@ -55,7 +55,7 @@ describe('useExclude()', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const changedNameState = useFieldState(form.formElements.changedName);
       const exclude = useExclude(form.formElements.previousName);
 

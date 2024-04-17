@@ -45,7 +45,7 @@ describe('useGroupState()', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const groupState = useGroupState(form.groups.passwordGroup);
 
       return (

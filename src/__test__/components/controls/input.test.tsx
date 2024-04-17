@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -28,7 +28,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -51,7 +51,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -76,7 +76,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -108,7 +108,7 @@ describe('Input', () => {
       type: StringInputTypes;
     }
 
-    function TestForm({ type }: TestFormProps): ReactNode {
+    function TestForm({ type }: TestFormProps): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -154,7 +154,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return <Input form={form} field={form.formElements.name} type="text" />;
@@ -176,7 +176,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return <Input form={form} field={form.formElements.name} type="text" />;
@@ -244,7 +244,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -286,7 +286,7 @@ describe('Input', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return <Input form={form} field={form.formElements.name} type="text" />;
     }
 
@@ -310,7 +310,7 @@ describe('Input', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <Input form={form} field={form.formElements.testField} type="text" />
       );
@@ -336,7 +336,7 @@ describe('Input', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <Input form={form} field={form.formElements.testField} type="text" />
       );
@@ -364,7 +364,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -393,7 +393,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -422,7 +422,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -452,7 +452,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -489,7 +489,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -528,7 +528,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -569,7 +569,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -599,7 +599,7 @@ describe('Input', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <Input
           form={form}
@@ -629,7 +629,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -663,7 +663,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -690,7 +690,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -722,7 +722,7 @@ describe('Input', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
       return (
@@ -755,7 +755,7 @@ describe('Input', () => {
     const Form = FormFactory.createForm(Template);
     const form = new Form();
 
-    function TestForm(): ReactNode {
+    function TestForm(): React.JSX.Element {
       return (
         <Input form={form} field={form.formElements.testField} type="text" />
       );

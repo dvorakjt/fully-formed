@@ -51,7 +51,7 @@ describe('useCombinedMessages()', () => {
 
     const Form = FormFactory.createForm(Template);
 
-    function TestComponent(): React.ReactNode {
+    function TestComponent(): React.JSX.Element {
       const form = useForm(new Form());
       const messages = useCombinedMessages(
         form.formElements.zip,
