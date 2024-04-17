@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { AbstractDerivedValue } from '../model';
 
 /**
@@ -19,7 +19,7 @@ export function useDerivedValue<
 >(derivedValue: T): T['value'] {
   const [value, setValue] = useState<T['value']>(derivedValue.value);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscription = derivedValue.subscribeToValue(v => {
       setValue(v);
     });

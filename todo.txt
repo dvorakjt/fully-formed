@@ -1,9 +1,13 @@
 create, test, document components
+create ComponentFactory
 test with various react frameworks:
-  -vite
-  -next (page router)
-  -remix
+  -cra
 readme
+add src-dir-exists.ts 
+update scripts and other info in package.json
+update gh actions to publish on creation of new release
+update env variables
+add license
 
 refactor tests:
 -return type of TestComponents should be React.JSX.Element not React.ReactNode

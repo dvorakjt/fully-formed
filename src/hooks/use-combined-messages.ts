@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Message, Stateful, StateWithMessages } from '../model';
 import type { Subscription } from 'rxjs';
 
@@ -24,7 +24,7 @@ export function useCombinedMessages(
     messageBearers.map(entity => entity.state.messages).flat(),
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscriptions: Subscription[] = [];
     messageBearers.forEach(entity => {
       const subscription = entity.subscribeToState(() => {

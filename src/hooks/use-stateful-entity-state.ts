@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Stateful } from '../model';
 
 /**
@@ -21,7 +21,7 @@ export function useStatefulEntityState<T extends Stateful<unknown>>(
 ): T['state'] {
   const [state, setState] = useState(statefulEntity.state);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscription = statefulEntity.subscribeToState(newState => {
       setState(newState);
     });

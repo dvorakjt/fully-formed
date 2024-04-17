@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { AbstractForm, FormConstituents } from '../model';
 
 /**
@@ -22,7 +22,7 @@ export function useConfirmationAttempted<
     form.confirmationAttempted,
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscription = form.subscribeToConfirmationAttempted(
       updatedConfirmationAttempted => {
         setConfirmationAttempted(updatedConfirmationAttempted);

@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Excludable } from '../model';
 
 /**
@@ -21,7 +21,7 @@ export function useExclude<T extends Excludable>(excludableEntity: T): boolean {
     excludableEntity.state.exclude,
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscription = excludableEntity.subscribeToState(state => {
       setExclude(state.exclude);
     });

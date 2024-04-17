@@ -4,10 +4,11 @@
     "lib": ["ESNext"],
     "outDir": "dist",
     "declaration": true,
+    "sourceMap": true,
     "jsx": "react",
     "target": "ESNext",
-    // These settings prevent errors when running typedoc:
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
   }
 }

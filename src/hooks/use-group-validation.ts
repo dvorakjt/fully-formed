@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   GroupValiditySource,
   Validity,
@@ -37,7 +37,7 @@ export function useGroupValidation(
     getValidity(invalidGroupsRef.current, pendingGroupsRef.current),
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscriptions: Subscription[] = [];
     groups.forEach(group => {
       const subscription = group.subscribeToState(state => {

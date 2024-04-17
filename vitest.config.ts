@@ -22,6 +22,7 @@ export default defineConfig({
         '**/*.type.ts',
         '**/*.enum.ts',
         '**/*.error.ts',
+        'src-exists.cjs',
       ],
     },
   },

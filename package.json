@@ -6,12 +6,12 @@
   "module": "dist/index.js",
   "type": "module",
   "scripts": {
-    "test": "vitest",
-    "lint": "eslint --ext .js,.ts,.tsx .",
-    "format": "prettier --write \"**/*.+(js|ts|tsx|json)\"",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "build": "tsup"
+    "test": "node src-exists.cjs && vitest",
+    "lint": "node src-exists.cjs && eslint --ext .js,.ts,.tsx .",
+    "format": "node src-exists.cjs && prettier --write \"**/*.+(js|ts|tsx|json)\"",
+    "storybook": "node src-exists.cjs && storybook dev -p 6006",
+    "build-storybook": "node src-exists.cjs && storybook build",
+    "build": "node src-exists.cjs && tsup"
   },
   "files": [
     "/dist"
@@ -58,6 +58,7 @@
     "rxjs": "^7.8.1"
   },
   "peerDependencies": {
-    "react": "^18"
+    "react": ">=18",
+    "typescript": ">=5"
   }
 }
