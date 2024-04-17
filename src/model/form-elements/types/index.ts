@@ -6,6 +6,7 @@ export type {
   GroupNamesAreUnique,
   DerivedValueNamesAreUnique,
 } from './allowed-constituents.type';
+export type { AnyBooleanTypeField } from './any-boolean-type-field.type';
 export type { AnyField } from './any-field.type';
 export type { AnyForm } from './any-form.type';
 export type { AnyStringTypeField } from './any-string-type-field.type';

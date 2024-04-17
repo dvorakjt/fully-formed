@@ -5,8 +5,7 @@ import type {
   Excludable,
 } from '../../../model';
 import type { AutoCapitalize } from '../../types';
-import type { GetInputClassName } from './get-input-classname.type';
-import type { GetInputStyle } from './get-input-style.type';
+import type { GetControlClassName, GetControlStyle } from '../../types';
 import type { StringInputTypes } from './string-input-types.type';
 
 export type InputProps<
@@ -18,9 +17,9 @@ export type InputProps<
   type: StringInputTypes;
   groups?: Array<Form['groups'][keyof Form['groups']]>;
   className?: string;
-  getClassName?: GetInputClassName<Field>;
+  getClassName?: GetControlClassName<Field>;
   style?: React.CSSProperties;
-  getStyle?: GetInputStyle<Field>;
+  getStyle?: GetControlStyle<Field>;
   disabled?: boolean;
   disabledWhenExcluded?: Field extends Excludable ? boolean : never;
   readOnly?: boolean;

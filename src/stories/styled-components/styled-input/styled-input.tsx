@@ -11,12 +11,10 @@ import './styles.css';
 type StyledInputProps<
   Form extends AnyForm,
   Field extends AnyStringTypeField & ChildOfForm<Form>,
-> = InputProps<Form, Field> & {
-  className?: never;
-  getClassName?: never;
-  style?: never;
-  getStyle?: never;
-};
+> = Omit<
+  InputProps<Form, Field>,
+  'className' | 'getClassName' | 'style' | 'getStyle'
+>;
 
 export function StyledInput<
   Form extends AnyForm,

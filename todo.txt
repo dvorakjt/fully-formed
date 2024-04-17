@@ -1,11 +1,11 @@
 create, test, document components
-create ComponentFactory
 test with various react frameworks:
   -cra
 readme
 update scripts and other info in package.json
 update gh actions to publish on creation of new release
 update env variables
-add license
+add a couple more string validators
+  -pattern, minLength, maxLength, inLengthRange, min, max, inRange
 
 clean up node modules/remove storybook?

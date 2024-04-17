@@ -4,7 +4,11 @@ import {
   useFieldState,
   useGroupValidation,
 } from '../../../hooks';
-import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
+import {
+  getDisabled,
+  getFieldMessagesContainerId,
+  joinClassNames,
+} from '../../utils';
 import type { InputProps } from './input-props.type';
 import {
   Validity,
@@ -63,14 +67,7 @@ export function Input<
         ...(getStyle &&
           getStyle({ fieldState, confirmationAttempted, groupValidity })),
       }}
-      disabled={
-        !!(
-          disabled ||
-          (disabledWhenExcluded &&
-            'exclude' in fieldState &&
-            fieldState.exclude)
-        )
-      }
+      disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
       readOnly={readOnly}
       aria-readonly={readOnly}
       aria-required={ariaRequired}
