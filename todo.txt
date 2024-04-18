@@ -1,4 +1,6 @@
 create, test, document components
+  -radio needs refinement--> can I use context to provide useConfirmationAttempted/fieldState/groupValidity ?
+  -need to be able to disable radio inputs
 test with various react frameworks:
   -cra
 readme

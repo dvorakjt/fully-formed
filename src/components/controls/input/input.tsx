@@ -5,17 +5,13 @@ import {
   useGroupValidation,
 } from '../../../hooks';
 import {
+  getAriaInvalid,
   getDisabled,
   getFieldMessagesContainerId,
   joinClassNames,
 } from '../../utils';
 import type { InputProps } from './input-props.type';
-import {
-  Validity,
-  type AnyForm,
-  type AnyStringTypeField,
-  type ChildOfForm,
-} from '../../../model';
+import type { AnyForm, AnyStringTypeField, ChildOfForm } from '../../../model';
 
 export function Input<
   Form extends AnyForm,
@@ -72,11 +68,11 @@ export function Input<
       aria-readonly={readOnly}
       aria-required={ariaRequired}
       aria-describedby={getFieldMessagesContainerId(field.id)}
-      aria-invalid={
-        (fieldState.visited || fieldState.modified || confirmationAttempted) &&
-        (fieldState.validity === Validity.Invalid ||
-          groupValidity === Validity.Invalid)
-      }
+      aria-invalid={getAriaInvalid(
+        fieldState,
+        confirmationAttempted,
+        groupValidity,
+      )}
       autoFocus={autoFocus}
       autoCapitalize={autoCapitalize}
       autoComplete={autoComplete}

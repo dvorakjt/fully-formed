@@ -1,13 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
-import type {
-  AnyForm,
-  AnyStringTypeField,
-  ChildOfForm,
-  Excludable,
-} from '../../../model';
+import type { ReactNode, CSSProperties } from 'react';
+import type { AnyForm, AnyStringTypeField, ChildOfForm } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
-export type StringCheckboxProps<
+export type RadioProps<
   Form extends AnyForm,
   Field extends AnyStringTypeField & ChildOfForm<Form>,
 > = {
@@ -20,15 +15,12 @@ export type StringCheckboxProps<
   getContainerClassName?: GetControlClassName<Field>;
   containerStyle?: CSSProperties;
   getContainerStyle?: GetControlStyle<Field>;
-  checkboxClassName?: string;
-  getCheckboxClassName?: GetControlClassName<Field>;
-  checkboxStyle?: CSSProperties;
-  getCheckboxStyle?: GetControlStyle<Field>;
+  radioClassName?: string;
+  getRadioClassName?: GetControlClassName<Field>;
+  radioStyle?: CSSProperties;
+  getRadioStyle?: GetControlStyle<Field>;
   labelClassName?: string;
   getLabelClassName?: GetControlClassName<Field>;
   labelStyle?: CSSProperties;
   getLabelStyle?: GetControlStyle<Field>;
-  disabled?: boolean;
-  disabledWhenExcluded?: Field extends Excludable ? boolean : never;
-  ['aria-required']?: boolean;
 };

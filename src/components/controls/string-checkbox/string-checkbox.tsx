@@ -1,11 +1,6 @@
 import React from 'react';
 import type { StringCheckboxProps } from './string-checkbox-props.type';
-import {
-  Validity,
-  type AnyForm,
-  type AnyStringTypeField,
-  type ChildOfForm,
-} from '../../../model';
+import type { AnyForm, AnyStringTypeField, ChildOfForm } from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -15,6 +10,7 @@ import {
   getFieldMessagesContainerId,
   joinClassNames,
   getDisabled,
+  getAriaInvalid,
 } from '../../utils';
 
 export function StringCheckbox<
@@ -26,6 +22,10 @@ export function StringCheckbox<
   groups = [],
   value,
   labelContent,
+  containerClassName,
+  getContainerClassName,
+  containerStyle,
+  getContainerStyle,
   checkboxClassName,
   getCheckboxClassName,
   checkboxStyle,
@@ -43,7 +43,26 @@ export function StringCheckbox<
   const groupValidity = useGroupValidation(...groups);
 
   return (
-    <>
+    <div
+      className={joinClassNames(
+        containerClassName,
+        getContainerClassName &&
+          getContainerClassName({
+            fieldState,
+            confirmationAttempted,
+            groupValidity,
+          }),
+      )}
+      style={{
+        ...containerStyle,
+        ...(getContainerStyle &&
+          getContainerStyle({
+            fieldState,
+            confirmationAttempted,
+            groupValidity,
+          })),
+      }}
+    >
       <input
         type="checkbox"
         name={field.name}
@@ -75,13 +94,11 @@ export function StringCheckbox<
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}
         aria-required={ariaRequired}
-        aria-invalid={
-          (fieldState.visited ||
-            fieldState.modified ||
-            confirmationAttempted) &&
-          (fieldState.validity === Validity.Invalid ||
-            groupValidity === Validity.Invalid)
-        }
+        aria-invalid={getAriaInvalid(
+          fieldState,
+          confirmationAttempted,
+          groupValidity,
+        )}
       />
       <label
         htmlFor={field.id}
@@ -106,6 +123,6 @@ export function StringCheckbox<
       >
         {labelContent}
       </label>
-    </>
+    </div>
   );
 }

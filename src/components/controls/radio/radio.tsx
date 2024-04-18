@@ -1,42 +1,35 @@
 import React from 'react';
-import type { BooleanCheckboxProps } from './boolean-checkbox-props.type';
-import type { AnyForm, AnyBooleanTypeField, ChildOfForm } from '../../../model';
 import {
-  useFieldState,
   useConfirmationAttempted,
+  useFieldState,
   useGroupValidation,
 } from '../../../hooks';
-import {
-  getFieldMessagesContainerId,
-  joinClassNames,
-  getDisabled,
-  getAriaInvalid,
-} from '../../utils';
+import { joinClassNames } from '../../utils';
+import type { AnyForm, AnyStringTypeField, ChildOfForm } from '../../../model';
+import type { RadioProps } from './radio-props.type';
 
-export function BooleanCheckbox<
+export function Radio<
   Form extends AnyForm,
-  Field extends AnyBooleanTypeField & ChildOfForm<Form>,
+  Field extends AnyStringTypeField & ChildOfForm<Form>,
 >({
   form,
   field,
   groups = [],
+  value,
   labelContent,
   containerClassName,
   getContainerClassName,
   containerStyle,
   getContainerStyle,
-  checkboxClassName,
-  getCheckboxClassName,
-  checkboxStyle,
-  getCheckboxStyle,
+  radioClassName,
+  getRadioClassName,
+  radioStyle,
+  getRadioStyle,
   labelClassName,
   getLabelClassName,
   labelStyle,
   getLabelStyle,
-  disabled,
-  disabledWhenExcluded,
-  ['aria-required']: ariaRequired,
-}: BooleanCheckboxProps<Form, Field>): React.JSX.Element {
+}: RadioProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);
@@ -63,44 +56,35 @@ export function BooleanCheckbox<
       }}
     >
       <input
-        type="checkbox"
+        type="radio"
         name={field.name}
-        id={field.id}
-        checked={fieldState.value}
+        id={`${field.id}-${value}`}
+        value={value}
+        checked={fieldState.value === value}
+        onFocus={() => field.focus()}
+        onBlur={() => field.visit()}
+        onChange={() => field.setValue(value)}
         className={joinClassNames(
-          checkboxClassName,
-          getCheckboxClassName &&
-            getCheckboxClassName({
+          radioClassName,
+          getRadioClassName &&
+            getRadioClassName({
               fieldState,
               confirmationAttempted,
               groupValidity,
             }),
         )}
         style={{
-          ...checkboxStyle,
-          ...(getCheckboxStyle &&
-            getCheckboxStyle({
+          ...radioStyle,
+          ...(getRadioStyle &&
+            getRadioStyle({
               fieldState,
               confirmationAttempted,
               groupValidity,
             })),
         }}
-        onFocus={() => field.focus()}
-        onBlur={() => field.visit()}
-        onInput={e => {
-          field.setValue(!(e.target as HTMLInputElement).checked);
-        }}
-        disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
-        aria-describedby={getFieldMessagesContainerId(field.id)}
-        aria-required={ariaRequired}
-        aria-invalid={getAriaInvalid(
-          fieldState,
-          confirmationAttempted,
-          groupValidity,
-        )}
       />
       <label
-        htmlFor={field.id}
+        htmlFor={`${field.id}-${value}`}
         className={joinClassNames(
           labelClassName,
           getLabelClassName &&

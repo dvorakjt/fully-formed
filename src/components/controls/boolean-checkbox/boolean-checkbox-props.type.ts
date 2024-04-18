@@ -15,6 +15,10 @@ export type BooleanCheckboxProps<
   field: Field;
   groups?: Array<Form['groups'][keyof Form['groups']]>;
   labelContent: ReactNode;
+  containerClassName?: string;
+  getContainerClassName?: GetControlClassName<Field>;
+  containerStyle?: CSSProperties;
+  getContainerStyle?: GetControlStyle<Field>;
   checkboxClassName?: string;
   getCheckboxClassName?: GetControlClassName<Field>;
   checkboxStyle?: CSSProperties;
