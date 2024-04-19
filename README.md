@@ -4,27 +4,27 @@
 
 Fully Formed provides powerful, type-safe, style-agnostic form state management for React with TypeScript. Fully Formed embraces the following principles:
 
- ### Forms are completely type-safe. 
+ ### <u>Forms are completely type-safe.</u>
  
  Forms are aware of the names of their constituents and the types of values each of those constituents contain, and construct a type representing their own value based on the types of these constituents. This makes it possible to verify the structure of the data of the form against the structure that an API route expects to receive.
  
- ### Value and validity are synchronized.
+ ### <u>Value and validity are synchronized.</u>
  
   The value of a field is always set simultaneously with its validity.
   
- ### Forms are instantiated in a declarative manner.
+ ### <u>Forms are instantiated in a declarative manner.</u>
 
 This improves code readability and facilitates a layered approach to forms, in which their data and the components that present it are distinct.
 
-### Forms should be powerful and flexible. 
+### <u>Forms should be powerful and flexible.</u> 
 
 With Fully Formed, fields can control other fields, groups of fields can be created to provide an additional layer of validation, values of form elements can be adapted prior to their inclusion in value of a parent form, values to be displayed to the user or to control the UI can be derived from the state of the form and its constituents, and forms can be nested within other forms. This power and flexibility can be harnessed to provide a rich and pain-free user experience to end-users and developers alike.
 
-### Accessibility is provided out-of-the-box. 
+### <u>Accessibility is provided out-of-the-box. </u>
 
 Components provided by Fully Formed are designed to work together to provide a positive experience for all users with little-to-no additional configuration required by developers.
 
-### Style agnosticism. 
+### <u>Style agnosticism.</u> 
 
 Fully Formed provides convenient means of applying any styles or CSS classes you wish to our components based on the state of the corresponding field. No styles are applied by the library: we give you a completely clean slate, allowing you to use whatever CSS framework or custom styles you so choose.
 
@@ -47,7 +47,7 @@ First, we need to define the data model for our form. We do this by extending th
     
     class SignUpTemplate extends FormTemplate {}
 
-`FormTemplate` is an abstract class that provides certain useful defaults for properties that might not always be customized by developers, but at minimum, requires that a `name`and array of form elements be provided. Let's provide those now:
+`FormTemplate` is an abstract class that provides certain useful defaults for properties that might not always be customized by developers, but at minimum, requires that a `name` and array of form elements be provided. Let's provide those now:
 
     import { FormTemplate, Field, StringValidators } from 'fully-formed';
 	
@@ -67,7 +67,7 @@ First, we need to define the data model for our form. We do this by extending th
 	  ] as const;
 	}
 
-Great! We now have a template for a form with one field! We imported the `Field` class to create this field, and the `StringValidators`class to add a validator to the field indicating that it must be an email address. `StringValidators`provides lots of convenient methods that create validator instances with pre-defined predicates for common string validation operations.
+Great! We now have a template for a form with one field! We imported the `Field` class to create this field, and the `StringValidators` class to add a validator to the field indicating that it must be an email address. `StringValidators` provides lots of convenient methods that create validator instances with pre-defined predicates for common string validation operations.
 
 The particular validator we will be instantiating here returns an object containing the validity of a value it examines, together with the message we provided if that value is not valid. Additionally, before validating the value, it will trim it, because we set `trimBeforeValidation` to true. This setting is useful because you can very easily tell your form that you would like it to auto-trim certain fields:
 
@@ -97,7 +97,7 @@ The particular validator we will be instantiating here returns an object contain
 	  }
 	}
 
-`autoTrim` can also be a boolean, in which case it will affect all non-transient (more on transience later!), string-type fields, or an object with an `exclude`property containing an array of field names, in which case it will affect all non-transient, string-type fields, *except* those specified in the array.
+`autoTrim` can also be a boolean, in which case it will affect all non-transient (more on transience later!), string-type fields, or an object with an `exclude` property containing an array of field names, in which case it will affect all non-transient, string-type fields, *except* those specified in the array.
 
 Since this is a sign up form, let's add password and confirm password fields.
 
@@ -157,7 +157,7 @@ Since this is a sign up form, let's add password and confirm password fields.
 	  }
 	}
 
-You'll notice that we set `transient`to `true` in the object provided to the constructor of our confirm password field. Transient fields are not included in the value of a form, but they do contribute to the form's overall validity.
+You'll notice that we set `transient` to `true` in the object provided to the constructor of our confirm password field. Transient fields are not included in the value of a form, but they do contribute to the form's overall validity.
 
 You'll also notice that we applied several validators to the password and confirm password fields. The password must contain a lowercase letter, an uppercase letter, a digit and a symbol. The confirmed password is simply required. But what about checking if they are the same? This is where groups come in.
 
@@ -238,7 +238,7 @@ Groups allow you to group together fields (or even other groups) in order to val
 	  } 
 	}
 
-Perfect, we now have a group which will compare the password against the re-entered password once both are valid and will determine if they are the same! Note that we used `validatorTemplates`rather than `validators`. Using `validatorTemplates` allows us to provide a predicate, and optionally a `validMessage` and/or `invalidMessage`, and the library will create a validator for us.
+Perfect, we now have a group which will compare the password against the re-entered password once both are valid and will determine if they are the same! Note that we used `validatorTemplates` rather than `validators`. Using `validatorTemplates` allows us to provide a predicate, and optionally a `validMessage` and/or `invalidMessage`, and the library will create a validator for us.
 
 Next, let's use this template to create a subclass of `AbstractForm` that we can instantiate in our components.
 
@@ -265,7 +265,7 @@ Fully Formed provides a number of components and hooks that are pre-configured t
     style
     getStyle
     
-`getClassName` and `getStyle` are functions that allow you to destructure an object which contains properties representing the state of the field, whether or not the `confirm()` method of the parent form was called, and, if you provided an array of groups to the component, a reduced `groupValidity`property. Here is an example of using `getClassName` to style a component:
+`getClassName` and `getStyle` are functions that allow you to destructure an object which contains properties representing the state of the field, whether or not the `confirm()` method of the parent form was called, and, if you provided an array of groups to the component, a reduced `groupValidity` property. Here is an example of using `getClassName` to style a component:
 
     import React from 'react';
     import {
