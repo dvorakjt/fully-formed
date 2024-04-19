@@ -37,5 +37,6 @@ export type {
   NonExcludableAdapterValues,
 } from './form-value.type';
 export type { NonExcludableFormElementValues } from './non-excludable-form-element-values.type';
-export type { PickSingleTypeFormElements } from './pick-single-type-form-elements.type';
+export type { NonTransientField } from './non-transient-field.type';
 export type { SubFormConstructorArgs } from './subform-constructor-args.type';
+export type { TransientField } from './transient-field.type';
