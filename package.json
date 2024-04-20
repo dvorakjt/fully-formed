@@ -12,7 +12,8 @@
     "build": "node src-exists.cjs && tsup"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "src-exists.cjs"
   ],
   "keywords": [
     "react",
@@ -20,6 +21,14 @@
   ],
   "author": "Joseph Dvorak",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvorakjt/fully-formed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dvorakjt/fully-formed/issues"
+  },
+  "homepage": "https://github.com/dvorakjt/fully-formed#readme",
   "devDependencies": {
     "@testing-library/react": "^15.0.1",
     "@testing-library/user-event": "^14.5.2",
