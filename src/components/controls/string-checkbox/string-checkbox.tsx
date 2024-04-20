@@ -16,6 +16,7 @@ import {
   getDisabled,
   getAriaInvalid,
 } from '../../utils';
+import type { Checkbox } from '../../types';
 
 export function StringCheckbox<
   Form extends AnyForm,
@@ -93,7 +94,7 @@ export function StringCheckbox<
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
         onInput={e => {
-          field.setValue(!(e.target as HTMLInputElement).checked ? value : '');
+          field.setValue(!(e.target as Checkbox).checked ? value : '');
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}

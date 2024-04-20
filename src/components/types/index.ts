@@ -1,4 +1,5 @@
 export type { AutoCapitalize } from './auto-capitalize.type';
+export type { Checkbox } from './checkbox.type';
 export type {
   GetControlClassName,
   GetControlClassNameArgs,
