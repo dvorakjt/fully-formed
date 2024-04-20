@@ -54,7 +54,7 @@ export function Input<
       id={field.id}
       type={type}
       value={fieldState.value}
-      onChange={e => field.setValue(e.target.value)}
+      onChange={e => field.setValue((e.target as HTMLInputElement).value)}
       onFocus={() => field.focus()}
       onBlur={() => field.visit()}
       className={joinClassNames(
