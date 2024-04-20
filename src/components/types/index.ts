@@ -8,3 +8,4 @@ export type {
   GetControlStyle,
   GetControlStyleArgs,
 } from './get-control-style.type';
+export type { InputElement } from './input-element.type';

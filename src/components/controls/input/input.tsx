@@ -16,6 +16,7 @@ import type {
   AnyStringTypeField,
   ConstituentOfForm,
 } from '../../../model';
+import type { InputElement } from '../../types';
 
 export function Input<
   Form extends AnyForm,
@@ -54,7 +55,9 @@ export function Input<
       id={field.id}
       type={type}
       value={fieldState.value}
-      onChange={e => field.setValue((e.target as HTMLInputElement).value)}
+      onChange={e =>
+        field.setValue((e.target as unknown as InputElement).value)
+      }
       onFocus={() => field.focus()}
       onBlur={() => field.visit()}
       className={joinClassNames(

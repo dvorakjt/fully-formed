@@ -1,3 +1,3 @@
-export type Checkbox = HTMLInputElement & {
+export type Checkbox = {
   checked: boolean;
 };

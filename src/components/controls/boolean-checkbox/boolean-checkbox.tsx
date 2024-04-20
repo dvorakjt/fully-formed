@@ -93,7 +93,7 @@ export function BooleanCheckbox<
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
         onInput={e => {
-          field.setValue(!(e.target as Checkbox).checked);
+          field.setValue(!(e.target as unknown as Checkbox).checked);
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}

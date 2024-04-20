@@ -94,7 +94,9 @@ export function StringCheckbox<
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
         onInput={e => {
-          field.setValue(!(e.target as Checkbox).checked ? value : '');
+          field.setValue(
+            !(e.target as unknown as Checkbox).checked ? value : '',
+          );
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}
