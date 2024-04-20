@@ -1,6 +1,10 @@
 import React from 'react';
 import type { StringCheckboxProps } from './string-checkbox-props.type';
-import type { AnyForm, AnyStringTypeField, ChildOfForm } from '../../../model';
+import type {
+  AnyForm,
+  AnyStringTypeField,
+  ConstituentOfForm,
+} from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -15,12 +19,12 @@ import {
 
 export function StringCheckbox<
   Form extends AnyForm,
-  Field extends AnyStringTypeField & ChildOfForm<Form>,
+  Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
 >({
   form,
   field,
   groups = [],
-  value,
+  value = 'on',
   labelContent,
   containerClassName,
   getContainerClassName,

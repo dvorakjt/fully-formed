@@ -2,14 +2,14 @@ import type { CSSProperties, ReactNode } from 'react';
 import type {
   AnyForm,
   AnyBooleanTypeField,
-  ChildOfForm,
+  ConstituentOfForm,
   Excludable,
 } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
 export type BooleanCheckboxProps<
   Form extends AnyForm,
-  Field extends AnyBooleanTypeField & ChildOfForm<Form>,
+  Field extends AnyBooleanTypeField & ConstituentOfForm<Form, 'formElements'>,
 > = {
   form: Form;
   field: Field;

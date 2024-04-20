@@ -2,20 +2,20 @@ import type { CSSProperties, ReactNode } from 'react';
 import type {
   AnyForm,
   AnyStringTypeField,
-  ChildOfForm,
+  ConstituentOfForm,
   Excludable,
 } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
 export type StringCheckboxProps<
   Form extends AnyForm,
-  Field extends AnyStringTypeField & ChildOfForm<Form>,
+  Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
 > = {
   form: Form;
   field: Field;
   groups?: Array<Form['groups'][keyof Form['groups']]>;
-  value: string;
   labelContent: ReactNode;
+  value?: string;
   containerClassName?: string;
   getContainerClassName?: GetControlClassName<Field>;
   containerStyle?: CSSProperties;

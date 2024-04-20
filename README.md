@@ -28,9 +28,9 @@ Components provided by Fully Formed are designed to work together to provide a p
 
 Fully Formed provides convenient means of applying any styles or CSS classes you wish to our components based on the state of the corresponding field. No styles are applied by the library: we give you a completely clean slate, allowing you to use whatever CSS framework or custom styles you so choose.
 
-## This Version
+## Current Version (Alpha)
 
-At the time of writing, Fully Formed is in alpha. A comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features. Additional components are also in development and will be released prior to the first production-ready build.
+At the time of writing, Fully Formed is in alpha. While a great many features are available, and these features have been thoroughly tested, there are still a few components in development (Radio/RadioGroup, Textarea, Select, GroupMessages, FormMessages). Additionally, a comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features.
 
 ## Requirements
 
@@ -275,13 +275,13 @@ Fully Formed provides a number of components and hooks that are pre-configured t
       type InputProps,
       type  AnyForm,
       type  AnyStringTypeField,
-      type  ChildOfForm,
+      type  ConstituentOfForm,
     } from 'fully-formed';
     import './styles.css';
 
     type StyledInputProps<
       Form extends AnyForm,
-      Field extends AnyStringTypeField & ChildOfForm<Form>,
+      Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
     > = Omit<
       InputProps<Form, Field>,
       'className' | 'getClassName' | 'style' | 'getStyle'
@@ -289,7 +289,7 @@ Fully Formed provides a number of components and hooks that are pre-configured t
 
     export function StyledInput<
       Form extends AnyForm,
-      Field extends AnyStringTypeField & ChildOfForm<Form>,
+      Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
     >(props: StyledInputProps<Form, Field>): React.JSX.Element {
       return (
         <Input

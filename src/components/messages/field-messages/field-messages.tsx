@@ -1,7 +1,7 @@
 import React from 'react';
 import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
 import type { FieldMessagesProps } from './field-messages-props.type';
-import type { AnyForm, AnyField, ChildOfForm } from '../../../model';
+import type { AnyForm, AnyField, ConstituentOfForm } from '../../../model';
 import {
   useCombinedMessages,
   useFieldState,
@@ -12,7 +12,7 @@ import { MessageComponent } from '../message';
 
 export function FieldMessages<
   Form extends AnyForm,
-  Field extends AnyField & ChildOfForm<Form>,
+  Field extends AnyField & ConstituentOfForm<Form, 'formElements'>,
 >({
   form,
   field,

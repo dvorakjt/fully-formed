@@ -1,3 +1,4 @@
+export type { AnyGroup } from './any-group.type';
 export type { GroupConstructorArgs } from './group-constructor-args.type';
 export type { GroupMember, GroupMembers } from './group-members.type';
 export type { GroupState } from './group-state.type';

@@ -1,7 +1,7 @@
 {
   "name": "fully-formed",
   "version": "0.0.0",
-  "description": "",
+  "description": "Powerful, type-safe, style-agnostic forms for React.",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "type": "module",
@@ -9,27 +9,18 @@
     "test": "node src-exists.cjs && vitest",
     "lint": "node src-exists.cjs && eslint --ext .js,.ts,.tsx .",
     "format": "node src-exists.cjs && prettier --write \"**/*.+(js|ts|tsx|json)\"",
-    "storybook": "node src-exists.cjs && storybook dev -p 6006",
-    "build-storybook": "node src-exists.cjs && storybook build",
     "build": "node src-exists.cjs && tsup"
   },
   "files": [
     "/dist"
   ],
-  "keywords": [],
+  "keywords": [
+    "react",
+    "form"
+  ],
   "author": "Joseph Dvorak",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.3.1",
-    "@storybook/addon-essentials": "^8.0.6",
-    "@storybook/addon-interactions": "^8.0.6",
-    "@storybook/addon-links": "^8.0.6",
-    "@storybook/addon-onboarding": "^8.0.6",
-    "@storybook/addon-webpack5-compiler-swc": "^1.0.2",
-    "@storybook/blocks": "^8.0.6",
-    "@storybook/react": "^8.0.6",
-    "@storybook/react-webpack5": "^8.0.6",
-    "@storybook/test": "^8.0.6",
     "@testing-library/react": "^15.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.2.74",
@@ -41,16 +32,12 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-storybook": "^0.8.0",
     "eslint-plugin-tsdoc": "^0.2.17",
     "jsdom": "^24.0.0",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "storybook": "^8.0.6",
     "tsup": "^8.0.2",
-    "typedoc": "^0.25.12",
-    "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.3.3",
     "vitest": "^1.3.0"
   },
