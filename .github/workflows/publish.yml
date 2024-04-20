@@ -3,14 +3,14 @@ on:
   release:
     types: [created]
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: 18
           registry-url: 'https://registry.npmjs.org/'
       - run: npm ci
       - run: npm run build
