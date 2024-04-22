@@ -2,14 +2,14 @@ import type { CSSProperties, ReactNode } from 'react';
 import type {
   AnyForm,
   AnyStringTypeField,
-  ConstituentOfForm,
+  FormChild,
   Excludable,
 } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
 export type StringCheckboxProps<
   Form extends AnyForm,
-  Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
+  Field extends FormChild<Form, AnyStringTypeField>,
 > = {
   form: Form;
   field: Field;

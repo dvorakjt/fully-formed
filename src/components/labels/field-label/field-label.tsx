@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AnyForm, AnyField, ConstituentOfForm } from '../../../model';
+import type { AnyForm, AnyField, FormChild } from '../../../model';
 import type { FieldLabelProps } from './field-label-props.type';
 import {
   useConfirmationAttempted,
@@ -10,7 +10,7 @@ import { joinClassNames } from '../../utils';
 
 export function FieldLabel<
   Form extends AnyForm,
-  Field extends AnyField & ConstituentOfForm<Form, 'formElements'>,
+  Field extends FormChild<Form, AnyField>,
 >({
   field,
   form,

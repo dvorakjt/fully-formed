@@ -11,16 +11,12 @@ import {
   joinClassNames,
 } from '../../utils';
 import type { InputProps } from './input-props.type';
-import type {
-  AnyForm,
-  AnyStringTypeField,
-  ConstituentOfForm,
-} from '../../../model';
+import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
 import type { InputElement } from '../../types';
 
 export function Input<
   Form extends AnyForm,
-  Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
+  Field extends FormChild<Form, AnyStringTypeField>,
 >({
   field,
   form,

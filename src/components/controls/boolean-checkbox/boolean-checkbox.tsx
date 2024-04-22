@@ -1,10 +1,6 @@
 import React from 'react';
 import type { BooleanCheckboxProps } from './boolean-checkbox-props.type';
-import type {
-  AnyForm,
-  AnyBooleanTypeField,
-  ConstituentOfForm,
-} from '../../../model';
+import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -20,7 +16,7 @@ import type { Checkbox } from '../../types';
 
 export function BooleanCheckbox<
   Form extends AnyForm,
-  Field extends AnyBooleanTypeField & ConstituentOfForm<Form, 'formElements'>,
+  Field extends FormChild<Form, AnyBooleanTypeField>,
 >({
   form,
   field,

@@ -272,16 +272,17 @@ Fully Formed provides a number of components and hooks that are pre-configured t
     import {
       Input,
       Validity,
+      Utils,
       type InputProps,
       type  AnyForm,
       type  AnyStringTypeField,
-      type  ConstituentOfForm,
+      type  FormChild,
     } from 'fully-formed';
     import './styles.css';
 
     type StyledInputProps<
       Form extends AnyForm,
-      Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
+      Field extends FormChild<Form, AnyStringTypeField>,
     > = Omit<
       InputProps<Form, Field>,
       'className' | 'getClassName' | 'style' | 'getStyle'
@@ -289,20 +290,15 @@ Fully Formed provides a number of components and hooks that are pre-configured t
 
     export function StyledInput<
       Form extends AnyForm,
-      Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
+      Field extends FormChild<Form, AnyStringTypeField>,
     >(props: StyledInputProps<Form, Field>): React.JSX.Element {
       return (
         <Input
           {...props}
           className="input"
           getClassName={({ fieldState, confirmationAttempted, groupValidity }) => {
-            if (
-              !(fieldState.visited || fieldState.modified || confirmationAttempted)
-            )  return;
-            if (
-              fieldState.validity === Validity.Invalid ||
-              groupValidity === Validity.Invalid
-            ) {
+            if (Utils.isClean(fieldState) || !confirmationAttempted) return;
+            if (Utils.reduceValidity(fieldState.validity, groupValidity) === Validity.Invalid) {
               return 'invalidInput';
             }
             return 'validInput';

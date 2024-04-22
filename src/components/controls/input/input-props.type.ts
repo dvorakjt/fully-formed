@@ -1,7 +1,7 @@
 import type {
   AnyForm,
   AnyStringTypeField,
-  ConstituentOfForm,
+  FormChild,
   Excludable,
 } from '../../../model';
 import type { AutoCapitalize } from '../../types';
@@ -10,7 +10,7 @@ import type { StringInputTypes } from './string-input-types.type';
 
 export type InputProps<
   Form extends AnyForm,
-  Field extends AnyStringTypeField & ConstituentOfForm<Form, 'formElements'>,
+  Field extends FormChild<Form, AnyStringTypeField>,
 > = {
   field: Field;
   form: Form;
