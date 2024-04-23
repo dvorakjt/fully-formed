@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react';
 import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
-import type { BooleanCheckboxProps } from './boolean-checkbox-props.type';
+import type { CheckboxProps } from './checkbox-props.type';
 
-export type FFBooleanCheckboxProps<
+export type FFCheckboxProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyBooleanTypeField>,
-> = BooleanCheckboxProps<Form, Field> & {
+> = CheckboxProps<Form, Field> & {
   containerClassName?: string;
   getContainerClassName?: GetControlClassName<Field>;
   containerStyle?: CSSProperties;

@@ -6,7 +6,7 @@ import { useForm } from '../../../hooks';
 import { FFLabel } from '../../../components';
 import { removeEmptyTextNodes } from '../../../test-utils';
 
-describe('FieldLabel', () => {
+describe('FFLabel', () => {
   afterEach(cleanup);
 
   test('It renders a label element.', () => {

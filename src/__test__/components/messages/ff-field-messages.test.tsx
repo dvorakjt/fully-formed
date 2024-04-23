@@ -9,15 +9,15 @@ import {
   StringValidators,
   Group,
   Validity,
-} from '../../../../model';
+} from '../../../model';
 import {
   FFFieldMessages,
   FFInput,
   getFieldMessagesContainerId,
-} from '../../../../components';
-import { useForm } from '../../../../hooks';
+} from '../../../components';
+import { useForm } from '../../../hooks';
 
-describe('FieldMessages', () => {
+describe('FFFieldMessages', () => {
   afterEach(cleanup);
 
   test(`It renders a div element with an id derived from the id of the field it 

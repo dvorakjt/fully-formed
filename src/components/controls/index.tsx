@@ -1,3 +1,2 @@
-export * from './ff-boolean-checkbox';
+export * from './ff-checkbox';
 export * from './ff-input';
-export * from './ff-string-checkbox';

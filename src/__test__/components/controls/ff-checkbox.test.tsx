@@ -4,9 +4,9 @@ import { render, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormTemplate, Field, FormFactory } from '../../../model';
 import { useForm } from '../../../hooks';
-import { FFBooleanCheckbox } from '../../../components';
+import { FFCheckbox } from '../../../components';
 
-describe('BooleanCheckbox', () => {
+describe('FFCheckbox', () => {
   afterEach(cleanup);
 
   test('It renders an input component and a label inside a div.', () => {
@@ -26,7 +26,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -69,7 +69,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -102,7 +102,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -135,7 +135,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -167,7 +167,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent={<span>Test content</span>}
@@ -207,12 +207,12 @@ describe('BooleanCheckbox', () => {
 
       return (
         <>
-          <FFBooleanCheckbox
+          <FFCheckbox
             form={form}
             field={form.formElements.trueByDefault}
             labelContent="Checked"
           />
-          <FFBooleanCheckbox
+          <FFCheckbox
             form={form}
             field={form.formElements.falseByDefault}
             labelContent="Unchecked"
@@ -245,7 +245,7 @@ describe('BooleanCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -280,7 +280,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -318,7 +318,7 @@ describe('BooleanCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -356,7 +356,7 @@ describe('BooleanCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -391,7 +391,7 @@ describe('BooleanCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -430,7 +430,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -464,7 +464,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -499,7 +499,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -534,7 +534,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -574,7 +574,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -615,7 +615,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -657,7 +657,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -690,7 +690,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -724,7 +724,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -758,7 +758,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -795,7 +795,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -833,7 +833,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -872,7 +872,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -905,7 +905,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -939,7 +939,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -973,7 +973,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -1010,7 +1010,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -1048,7 +1048,7 @@ describe('BooleanCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <FFBooleanCheckbox
+        <FFCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""

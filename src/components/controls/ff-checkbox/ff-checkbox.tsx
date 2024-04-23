@@ -1,6 +1,6 @@
 import React from 'react';
-import type { FFStringCheckboxProps } from './ff-string-checkbox-props.type';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { FFCheckboxProps } from './ff-checkbox-props.type';
+import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -14,14 +14,13 @@ import {
 } from '../../utils';
 import type { Checkbox } from '../../types';
 
-export function FFStringCheckbox<
+export function FFCheckbox<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, AnyBooleanTypeField>,
 >({
   form,
   field,
   groups = [],
-  value = 'on',
   labelContent,
   containerClassName,
   getContainerClassName,
@@ -38,7 +37,7 @@ export function FFStringCheckbox<
   disabled,
   disabledWhenExcluded,
   ['aria-required']: ariaRequired,
-}: FFStringCheckboxProps<Form, Field>): React.JSX.Element {
+}: FFCheckboxProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);
@@ -68,7 +67,7 @@ export function FFStringCheckbox<
         type="checkbox"
         name={field.name}
         id={field.id}
-        checked={fieldState.value === value}
+        checked={fieldState.value}
         className={joinClassNames(
           checkboxClassName,
           getCheckboxClassName &&
@@ -90,9 +89,7 @@ export function FFStringCheckbox<
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
         onInput={e => {
-          field.setValue(
-            !(e.target as unknown as Checkbox).checked ? value : '',
-          );
+          field.setValue(!(e.target as unknown as Checkbox).checked);
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}

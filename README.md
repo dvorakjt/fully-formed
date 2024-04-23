@@ -563,6 +563,51 @@ Derived values allow you to produce values from your form constituents. You can 
 
     export const ExampleForm = FormFactory.createForm(ExampleTemplate);
 
+## Checkboxes
+
+The `FFCheckbox` component accepts a field whose value is of type boolean. When checked, the field's value will be true. When unchecked, the field's value will be false. You can very easily leverage this behavior together with an `ExcludableAdapter` to emulate the behavior of traditional HTML checkboxes in which the value submitted with the form is a string when the checkbox is checked, and both the name and value are excluded from the form when it is unchecked. This approach also allows you to apply validators to the field, such as a validator that causes the field to be required. Here is an example of this approach:
+
+    import {
+      FormTemplate,
+      Field,
+      ExcludableAdapter,
+      FormFactory,
+    } from "fully-formed";
+
+    class CheckboxExampleTemplate extends FormTemplate {
+      public readonly name = "checkboxExample";
+      public readonly formElements = [
+        new Field({
+          name: "acceptTerms",
+          defaultValue: false,
+          validatorTemplates: [
+            {
+              predicate: (value) => value,
+              invalidMessage: "You must accept the terms and conditions to continue.",
+            },
+          ],
+          transient: true,
+        }),
+      ] as const;
+
+      public readonly adapters = [
+        new ExcludableAdapter({
+          name: "acceptTerms",
+          source: this.formElements[0],
+          adaptFn: ({ value }) => {
+            return {
+              exclude: !value,
+              value: "yes",
+            };
+          },
+        }),
+      ] as const;
+    }
+
+    export const CheckboxExampleForm = FormFactory.createForm(
+      CheckboxExampleTemplate
+    );
+
 ## Compatibility
 
 Fully Formed has been verified to be compatible with Next.js (both the app router and the pages router), Vite.js and Remix, provided that TypeScript 5 or higher is installed. Please note that to use components and hooks in Next.js with the app router, you will need to include the `'use client'` directive at the top of any files that import them.

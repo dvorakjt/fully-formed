@@ -6,7 +6,7 @@ import type {
   Excludable,
 } from '../../../model';
 
-export type BooleanCheckboxProps<
+export type CheckboxProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyBooleanTypeField>,
 > = {

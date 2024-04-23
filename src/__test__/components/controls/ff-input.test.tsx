@@ -15,7 +15,7 @@ import {
 import { useForm } from '../../../hooks';
 import { FFInput, type StringInputTypes } from '../../../components';
 
-describe('Input', () => {
+describe('FFInput', () => {
   afterEach(cleanup);
 
   test('It renders an input element.', () => {

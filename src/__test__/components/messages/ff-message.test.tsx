@@ -1,9 +1,9 @@
 import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
-import { FFMessage } from '../../../../components';
+import { FFMessage } from '../../../components';
 
-describe('MessageComponent', () => {
+describe('FFMessage', () => {
   afterEach(cleanup);
 
   test('It renders a span element.', () => {
