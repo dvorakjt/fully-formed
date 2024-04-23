@@ -1,20 +1,12 @@
-import type { CSSProperties, ReactNode } from 'react';
-import type {
-  AnyForm,
-  AnyBooleanTypeField,
-  FormChild,
-  Excludable,
-} from '../../../model';
+import type { CSSProperties } from 'react';
+import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
+import type { BooleanCheckboxProps } from './boolean-checkbox-props.type';
 
-export type BooleanCheckboxProps<
+export type FFBooleanCheckboxProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyBooleanTypeField>,
-> = {
-  form: Form;
-  field: Field;
-  groups?: Array<Form['groups'][keyof Form['groups']]>;
-  labelContent: ReactNode;
+> = BooleanCheckboxProps<Form, Field> & {
   containerClassName?: string;
   getContainerClassName?: GetControlClassName<Field>;
   containerStyle?: CSSProperties;
@@ -27,7 +19,4 @@ export type BooleanCheckboxProps<
   getLabelClassName?: GetControlClassName<Field>;
   labelStyle?: CSSProperties;
   getLabelStyle?: GetControlStyle<Field>;
-  disabled?: boolean;
-  disabledWhenExcluded?: Field extends Excludable ? boolean : never;
-  ['aria-required']?: boolean;
 };

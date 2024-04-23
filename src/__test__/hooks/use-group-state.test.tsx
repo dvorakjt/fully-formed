@@ -4,7 +4,7 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormTemplate, Field, Group, FormFactory } from '../../model';
 import { useGroupState } from '../../hooks';
-import { Input } from '../../components';
+import { FFInput } from '../../components';
 
 describe('useGroupState()', () => {
   afterEach(cleanup);
@@ -50,7 +50,7 @@ describe('useGroupState()', () => {
 
       return (
         <>
-          <Input
+          <FFInput
             form={form}
             field={form.formElements.confirmPassword}
             type="password"

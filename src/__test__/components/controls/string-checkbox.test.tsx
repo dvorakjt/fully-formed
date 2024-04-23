@@ -4,7 +4,7 @@ import { render, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormTemplate, Field, FormFactory } from '../../../model';
 import { useForm } from '../../../hooks';
-import { StringCheckbox } from '../../../components';
+import { FFStringCheckbox } from '../../../components';
 
 describe('StringCheckbox', () => {
   afterEach(cleanup);
@@ -26,7 +26,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -69,7 +69,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -102,7 +102,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -135,7 +135,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -167,7 +167,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent={<span>Test content</span>}
@@ -208,12 +208,12 @@ describe('StringCheckbox', () => {
 
       return (
         <>
-          <StringCheckbox
+          <FFStringCheckbox
             form={form}
             field={form.formElements.trueByDefault}
             labelContent="Checked"
           />
-          <StringCheckbox
+          <FFStringCheckbox
             form={form}
             field={form.formElements.falseByDefault}
             labelContent="Unchecked"
@@ -246,7 +246,7 @@ describe('StringCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -281,7 +281,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -319,7 +319,7 @@ describe('StringCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -357,7 +357,7 @@ describe('StringCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -392,7 +392,7 @@ describe('StringCheckbox', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -431,7 +431,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -465,7 +465,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -500,7 +500,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -535,7 +535,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -575,7 +575,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -616,7 +616,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -658,7 +658,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -691,7 +691,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -725,7 +725,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -759,7 +759,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -796,7 +796,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -834,7 +834,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -873,7 +873,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -906,7 +906,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -940,7 +940,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -974,7 +974,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -1011,7 +1011,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""
@@ -1049,7 +1049,7 @@ describe('StringCheckbox', () => {
       const form = useForm(new Form());
 
       return (
-        <StringCheckbox
+        <FFStringCheckbox
           form={form}
           field={form.formElements.testCheckbox}
           labelContent=""

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { AnyForm, AnyField, FormChild } from '../../../model';
-import type { FieldLabelProps } from './field-label-props.type';
+import type { FFLabelProps } from './ff-label-props.type';
 import {
   useConfirmationAttempted,
   useFieldState,
@@ -8,7 +8,7 @@ import {
 } from '../../../hooks';
 import { joinClassNames } from '../../utils';
 
-export function FieldLabel<
+export function FFLabel<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyField>,
 >({
@@ -20,7 +20,7 @@ export function FieldLabel<
   style,
   getStyle,
   children,
-}: FieldLabelProps<Form, Field>): React.JSX.Element {
+}: FFLabelProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);

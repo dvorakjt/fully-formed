@@ -1,4 +1,5 @@
-export { FieldMessages } from './field-messages';
+export { FFFieldMessages } from './ff-field-messages';
+export type { FFFieldMessagesProps } from './ff-field-messages-props.type';
 export type { FieldMessagesProps } from './field-messages-props.type';
 export type {
   GetFieldMessageClassName,

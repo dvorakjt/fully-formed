@@ -11,7 +11,7 @@ import {
   StringValidators,
 } from '../../model';
 import { useFormState } from '../../hooks';
-import { Input } from '../../components';
+import { FFInput } from '../../components';
 
 describe('useFormState()', () => {
   afterEach(cleanup);
@@ -61,8 +61,12 @@ describe('useFormState()', () => {
 
       return (
         <>
-          <Input form={form} field={form.formElements.firstName} type="text" />
-          <Input form={form} field={form.formElements.lastName} type="text" />
+          <FFInput
+            form={form}
+            field={form.formElements.firstName}
+            type="text"
+          />
+          <FFInput form={form} field={form.formElements.lastName} type="text" />
           <p>{JSON.stringify(formState)}</p>
         </>
       );

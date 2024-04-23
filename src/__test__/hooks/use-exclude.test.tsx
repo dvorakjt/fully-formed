@@ -11,7 +11,7 @@ import {
   type AbstractExcludableField,
   type ControlledExcludableFieldState,
 } from '../../model';
-import { Input } from '../../components';
+import { FFInput } from '../../components';
 import { useExclude, useFieldState } from '../../hooks';
 
 describe('useExclude()', () => {
@@ -71,7 +71,7 @@ describe('useExclude()', () => {
             }}
           />
           {!exclude && (
-            <Input
+            <FFInput
               form={form}
               field={form.formElements.previousName}
               type="text"

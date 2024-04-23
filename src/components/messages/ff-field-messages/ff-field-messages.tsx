@@ -1,6 +1,6 @@
 import React from 'react';
 import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
-import type { FieldMessagesProps } from './field-messages-props.type';
+import type { FFFieldMessagesProps } from './ff-field-messages-props.type';
 import type { AnyForm, AnyField, FormChild } from '../../../model';
 import {
   useCombinedMessages,
@@ -8,9 +8,9 @@ import {
   useConfirmationAttempted,
   useGroupValidation,
 } from '../../../hooks';
-import { MessageComponent } from '../message';
+import { FFMessage } from '../ff-message';
 
-export function FieldMessages<
+export function FFFieldMessages<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyField>,
 >({
@@ -25,7 +25,7 @@ export function FieldMessages<
   getMessageClassName,
   messageStyle,
   getMessageStyle,
-}: FieldMessagesProps<Form, Field>): React.JSX.Element {
+}: FFFieldMessagesProps<Form, Field>): React.JSX.Element {
   const messages = useCombinedMessages(field, ...groups);
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
@@ -55,7 +55,7 @@ export function FieldMessages<
     >
       {messages.map(({ text, validity }, index) => {
         return (
-          <MessageComponent
+          <FFMessage
             text={text}
             key={index}
             className={joinClassNames(

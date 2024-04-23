@@ -1,6 +1,6 @@
 {
   "name": "fully-formed",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Powerful, type-safe, style-agnostic forms for React.",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

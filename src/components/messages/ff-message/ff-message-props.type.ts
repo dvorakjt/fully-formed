@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-export type MessageProps = {
+export type FFMessageProps = {
   text: string;
   className?: string;
   style?: CSSProperties;

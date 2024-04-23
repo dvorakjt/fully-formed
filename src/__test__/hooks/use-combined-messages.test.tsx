@@ -4,7 +4,7 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Field, FormFactory, FormTemplate, Group } from '../../model';
 import { useCombinedMessages, useForm } from '../../hooks';
-import { Input } from '../../components';
+import { FFInput } from '../../components';
 
 describe('useCombinedMessages()', () => {
   afterEach(cleanup);
@@ -60,7 +60,7 @@ describe('useCombinedMessages()', () => {
 
       return (
         <form>
-          <Input form={form} field={form.formElements.zip} type="number" />
+          <FFInput form={form} field={form.formElements.zip} type="number" />
           <div>
             {messages.map((message, index) => {
               return <span key={index}>{message.text}</span>;

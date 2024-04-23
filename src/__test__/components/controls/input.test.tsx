@@ -13,7 +13,7 @@ import {
   type ControlledFieldState,
 } from '../../../model';
 import { useForm } from '../../../hooks';
-import { Input, type StringInputTypes } from '../../../components';
+import { FFInput, type StringInputTypes } from '../../../components';
 
 describe('Input', () => {
   afterEach(cleanup);
@@ -32,7 +32,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -55,7 +55,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -81,8 +81,16 @@ describe('Input', () => {
 
       return (
         <>
-          <Input form={form} field={form.formElements.testField1} type="text" />
-          <Input form={form} field={form.formElements.testField2} type="text" />
+          <FFInput
+            form={form}
+            field={form.formElements.testField1}
+            type="text"
+          />
+          <FFInput
+            form={form}
+            field={form.formElements.testField2}
+            type="text"
+          />
         </>
       );
     }
@@ -112,7 +120,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type={type} />
+        <FFInput form={form} field={form.formElements.testField} type={type} />
       );
     }
 
@@ -157,7 +165,7 @@ describe('Input', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <Input form={form} field={form.formElements.name} type="text" />;
+      return <FFInput form={form} field={form.formElements.name} type="text" />;
     }
 
     render(<TestForm />);
@@ -179,7 +187,7 @@ describe('Input', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <Input form={form} field={form.formElements.name} type="text" />;
+      return <FFInput form={form} field={form.formElements.name} type="text" />;
     }
 
     const user = userEvent.setup();
@@ -249,12 +257,12 @@ describe('Input', () => {
 
       return (
         <>
-          <Input
+          <FFInput
             form={form}
             field={form.formElements.brandPrimary}
             type="text"
           />
-          <Input
+          <FFInput
             form={form}
             field={form.formElements.brandSecondary}
             type="text"
@@ -287,7 +295,7 @@ describe('Input', () => {
     const form = new Form();
 
     function TestForm(): React.JSX.Element {
-      return <Input form={form} field={form.formElements.name} type="text" />;
+      return <FFInput form={form} field={form.formElements.name} type="text" />;
     }
 
     const user = userEvent.setup();
@@ -312,7 +320,7 @@ describe('Input', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -338,7 +346,7 @@ describe('Input', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -368,7 +376,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -397,7 +405,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -426,7 +434,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -456,7 +464,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -493,7 +501,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -532,7 +540,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -573,7 +581,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -601,7 +609,7 @@ describe('Input', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -633,7 +641,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input
+        <FFInput
           form={form}
           field={form.formElements.testField}
           type="text"
@@ -667,7 +675,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -694,7 +702,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -726,7 +734,7 @@ describe('Input', () => {
       const form = useForm(new Form());
 
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 
@@ -757,7 +765,7 @@ describe('Input', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <Input form={form} field={form.formElements.testField} type="text" />
+        <FFInput form={form} field={form.formElements.testField} type="text" />
       );
     }
 

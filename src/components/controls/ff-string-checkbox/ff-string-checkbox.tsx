@@ -1,6 +1,6 @@
 import React from 'react';
-import type { BooleanCheckboxProps } from './boolean-checkbox-props.type';
-import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
+import type { FFStringCheckboxProps } from './ff-string-checkbox-props.type';
+import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -14,13 +14,14 @@ import {
 } from '../../utils';
 import type { Checkbox } from '../../types';
 
-export function BooleanCheckbox<
+export function FFStringCheckbox<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyBooleanTypeField>,
+  Field extends FormChild<Form, AnyStringTypeField>,
 >({
   form,
   field,
   groups = [],
+  value = 'on',
   labelContent,
   containerClassName,
   getContainerClassName,
@@ -37,7 +38,7 @@ export function BooleanCheckbox<
   disabled,
   disabledWhenExcluded,
   ['aria-required']: ariaRequired,
-}: BooleanCheckboxProps<Form, Field>): React.JSX.Element {
+}: FFStringCheckboxProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);
@@ -67,7 +68,7 @@ export function BooleanCheckbox<
         type="checkbox"
         name={field.name}
         id={field.id}
-        checked={fieldState.value}
+        checked={fieldState.value === value}
         className={joinClassNames(
           checkboxClassName,
           getCheckboxClassName &&
@@ -89,7 +90,9 @@ export function BooleanCheckbox<
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
         onInput={e => {
-          field.setValue(!(e.target as unknown as Checkbox).checked);
+          field.setValue(
+            !(e.target as unknown as Checkbox).checked ? value : '',
+          );
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getFieldMessagesContainerId(field.id)}

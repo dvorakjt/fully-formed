@@ -1,11 +1,11 @@
 import React from 'react';
-import type { MessageProps } from './message-props.type';
+import type { FFMessageProps } from './ff-message-props.type';
 
-export function MessageComponent({
+export function FFMessage({
   text,
   className,
   style,
-}: MessageProps): React.JSX.Element {
+}: FFMessageProps): React.JSX.Element {
   return (
     <span className={className} style={style}>
       {text}

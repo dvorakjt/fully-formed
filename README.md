@@ -270,7 +270,7 @@ Fully Formed provides a number of components and hooks that are pre-configured t
 
     import React from 'react';
     import {
-      Input,
+      FFInput,
       Validity,
       Utils,
       type InputProps,
@@ -280,42 +280,32 @@ Fully Formed provides a number of components and hooks that are pre-configured t
     } from 'fully-formed';
     import './styles.css';
 
-    type StyledInputProps<
+    export function Input<
       Form extends AnyForm,
       Field extends FormChild<Form, AnyStringTypeField>,
-    > = Omit<
-      InputProps<Form, Field>,
-      'className' | 'getClassName' | 'style' | 'getStyle'
-    >;
-
-    export function StyledInput<
-      Form extends AnyForm,
-      Field extends FormChild<Form, AnyStringTypeField>,
-    >(props: StyledInputProps<Form, Field>): React.JSX.Element {
+    >(props: InputProps<Form, Field>): React.JSX.Element {
       return (
-        <Input
+        <FFInput
           {...props}
           className="input"
           getClassName={({ fieldState, confirmationAttempted, groupValidity }) => {
-            if (Utils.isClean(fieldState) || !confirmationAttempted) return;
-            if (Utils.reduceValidity(fieldState.validity, groupValidity) === Validity.Invalid) {
-              return 'invalidInput';
-            }
-            return 'validInput';
+            if (Utils.isClean(fieldState) && !confirmationAttempted) return;
+
+            return Utils.reduceValidity(fieldState.validity, groupValidity);
           }}
         />
       );
     }
 
-In the example above, the "input" class is always applied to this component. If the field has not been visited (focused then blurred) or modified, or if the parent form has not been confirmed, no other class will be applied. Otherwise, if the field or any groups passed to this component as props are invalid, the input element will receive the "invalidInput" class. Finally, if none of these conditions are met, the input has been interacted with or the form has been confirmed, and the underlying field is valid, so the input element receives the "validInput" class. You could now use this component throughout your project anywhere you need a customized input that interacts with the model layer of Fully Formed.
+In the example above, the "input" class is always applied to this component. If the field has not been visited (focused then blurred) or modified, and the parent form has not been confirmed, no other class will be applied. Otherwise, if the field or any groups passed to this component as props are invalid, the input element will receive the "invalid" class. Finally, if none of these conditions are met, the input has been interacted with or the form has been confirmed, and the underlying field is valid, so the input element receives the "valid" class. You could now use this component throughout your project anywhere you need a customized input that interacts with the model layer of Fully Formed.
 
 For the purposes of our sign up form we will just the components directly. Let's create a separate file and import the form we created, plus a few components and hooks:
 
     import React from 'react';
     import {
-      FieldLabel,
-      Input,
-      FieldMessages,
+      FFLabel,
+      FFInput,
+      FFFieldMessages,
       useForm
     } from 'fully-formed';
     import { SignUpForm } from './signup-form';
@@ -324,9 +314,9 @@ Now, let's create our presentation layer component!
 
     import React from 'react';
     import {
-      FieldLabel,
-      Input,
-      FieldMessages,
+      FFLabel,
+      FFInput,
+      FFFieldMessages,
       useForm
     } from 'fully-formed';
     import { SignUpForm } from './signup-form';
@@ -336,38 +326,38 @@ Now, let's create our presentation layer component!
 
       return (
         <form id={form.id}>
-          <FieldLabel form={form} field={form.formElements.email} />
-          <Input
+          <FFLabel form={form} field={form.formElements.email} />
+          <FFInput
             form={form}
             field={form.formElements.email}
             type="email"
             aria-required={true}
             placeholder="user@example.com"
           />
-          <FieldMessages form={form} field={form.formElements.email} />
+          <FFFieldMessages form={form} field={form.formElements.email} />
 
-          <FieldLabel form={form} field={form.formElements.password} />
-          <Input
+          <FFLabel form={form} field={form.formElements.password} />
+          <FFInput
             form={form}
             field={form.formElements.password}
             type="password"
             aria-required={true}
           />
-          <FieldMessages form={form} field={form.formElements.password} />
+          <FFFieldMessages form={form} field={form.formElements.password} />
 
-    	  <FieldLabel
-    	    form={form}
-    	    field={form.formElements.confirmPassword}
-    	    groups={[form.groups.passwordGroup]}
-    	  />
-          <Input
+      	  <FFLabel
+      	    form={form}
+      	    field={form.formElements.confirmPassword}
+      	    groups={[form.groups.passwordGroup]}
+      	  />
+          <FFInput
             form={form}
             field={form.formElements.confirmPassword}
             groups={[form.groups.passwordGroup]}
             type="password"
             aria-required={true}
           />
-          <FieldMessages
+          <FFFieldMessages
             form={form}
             field={form.formElements.password}
             groups={[form.groups.passwordGroup]}

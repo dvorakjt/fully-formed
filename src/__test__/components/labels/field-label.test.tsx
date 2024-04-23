@@ -3,7 +3,7 @@ import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
 import { FormTemplate, Field, FormFactory } from '../../../model';
 import { useForm } from '../../../hooks';
-import { FieldLabel } from '../../../components';
+import { FFLabel } from '../../../components';
 import { removeEmptyTextNodes } from '../../../test-utils';
 
 describe('FieldLabel', () => {
@@ -22,7 +22,7 @@ describe('FieldLabel', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <FieldLabel form={form} field={form.formElements.testField} />;
+      return <FFLabel form={form} field={form.formElements.testField} />;
     }
 
     render(<TestForm />);
@@ -44,7 +44,7 @@ describe('FieldLabel', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <FieldLabel form={form} field={form.formElements.testField} />;
+      return <FFLabel form={form} field={form.formElements.testField} />;
     }
 
     render(<TestForm />);
@@ -67,12 +67,12 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel form={form} field={form.formElements.testField}>
+        <FFLabel form={form} field={form.formElements.testField}>
           Test Field{' '}
           <small>
             <i>(optional)</i>
           </small>
-        </FieldLabel>
+        </FFLabel>
       );
     }
 
@@ -105,7 +105,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           className="test-field"
@@ -134,7 +134,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           getClassName={() => 'test-field'}
@@ -164,7 +164,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           className="class-1"
@@ -194,7 +194,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           style={{
@@ -229,7 +229,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           getStyle={() => ({
@@ -265,7 +265,7 @@ describe('FieldLabel', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldLabel
+        <FFLabel
           form={form}
           field={form.formElements.testField}
           style={{

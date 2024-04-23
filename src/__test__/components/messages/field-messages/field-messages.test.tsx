@@ -11,8 +11,8 @@ import {
   Validity,
 } from '../../../../model';
 import {
-  FieldMessages,
-  Input,
+  FFFieldMessages,
+  FFInput,
   getFieldMessagesContainerId,
 } from '../../../../components';
 import { useForm } from '../../../../hooks';
@@ -33,7 +33,9 @@ describe('FieldMessages', () => {
     const form = new Form();
 
     function TestForm(): React.JSX.Element {
-      return <FieldMessages form={form} field={form.formElements.testField} />;
+      return (
+        <FFFieldMessages form={form} field={form.formElements.testField} />
+      );
     }
 
     render(<TestForm />);
@@ -59,7 +61,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           containerClassName="test-field-messages"
@@ -89,7 +91,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           getContainerClassName={() => 'test-field-messages'}
@@ -121,7 +123,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           containerClassName="class-1"
@@ -152,7 +154,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           containerStyle={{
@@ -186,7 +188,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           getContainerStyle={() => ({
@@ -221,7 +223,7 @@ describe('FieldMessages', () => {
 
     function TestForm(): React.JSX.Element {
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.testField}
           containerStyle={{
@@ -283,7 +285,7 @@ describe('FieldMessages', () => {
     const form = new Form();
 
     function TestForm(): React.JSX.Element {
-      return <FieldMessages form={form} field={form.formElements.password} />;
+      return <FFFieldMessages form={form} field={form.formElements.password} />;
     }
 
     render(<TestForm />);
@@ -323,8 +325,8 @@ describe('FieldMessages', () => {
     function TestForm(): React.JSX.Element {
       return (
         <>
-          <Input form={form} field={form.formElements.email} type="email" />
-          <FieldMessages form={form} field={form.formElements.email} />
+          <FFInput form={form} field={form.formElements.email} type="email" />
+          <FFFieldMessages form={form} field={form.formElements.email} />
         </>
       );
     }
@@ -402,7 +404,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.confirmPassword}
           groups={[form.groups.passwordGroup]}
@@ -476,12 +478,12 @@ describe('FieldMessages', () => {
     function TestForm(): React.JSX.Element {
       return (
         <>
-          <Input
+          <FFInput
             form={form}
             field={form.formElements.confirmPassword}
             type="password"
           />
-          <FieldMessages
+          <FFFieldMessages
             form={form}
             field={form.formElements.confirmPassword}
             groups={[form.groups.passwordGroup]}
@@ -528,7 +530,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.name}
           messageClassName="test-message"
@@ -567,7 +569,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.name}
           getMessageClassName={() => 'test-message'}
@@ -608,7 +610,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.name}
           messageClassName="class-1"
@@ -648,7 +650,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.name}
           messageStyle={{
@@ -702,7 +704,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.password}
           getMessageStyle={({ validity }) => ({
@@ -753,7 +755,7 @@ describe('FieldMessages', () => {
       const form = useForm(new Form());
 
       return (
-        <FieldMessages
+        <FFFieldMessages
           form={form}
           field={form.formElements.password}
           messageStyle={{

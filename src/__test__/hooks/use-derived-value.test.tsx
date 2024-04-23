@@ -4,7 +4,7 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormTemplate, Field, DerivedValue, FormFactory } from '../../model';
 import { useDerivedValue, useForm } from '../../hooks';
-import { Input } from '../../components';
+import { FFInput } from '../../components';
 
 describe('useDerivedValue()', () => {
   afterEach(cleanup);
@@ -54,7 +54,7 @@ describe('useDerivedValue()', () => {
 
       return (
         <>
-          <Input form={form} field={form.formElements.birthday} type="date" />
+          <FFInput form={form} field={form.formElements.birthday} type="date" />
           <span>{birthdayMessage}</span>
         </>
       );

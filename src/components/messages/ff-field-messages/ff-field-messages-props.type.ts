@@ -4,14 +4,12 @@ import type { GetFieldMessagesContainerClassName } from './get-field-messages-co
 import type { GetFieldMessagesContainerStyle } from './get-field-messages-container-style.type';
 import type { GetFieldMessageClassName } from './get-field-message-classname.type';
 import type { GetFieldMessageStyle } from './get-field-message-style.type';
+import type { FieldMessagesProps } from './field-messages-props.type';
 
-export type FieldMessagesProps<
+export type FFFieldMessagesProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyField>,
-> = {
-  form: Form;
-  field: Field;
-  groups?: Array<Form['groups'][keyof Form['groups']]>;
+> = FieldMessagesProps<Form, Field> & {
   containerClassName?: string;
   getContainerClassName?: GetFieldMessagesContainerClassName<Field>;
   containerStyle?: CSSProperties;

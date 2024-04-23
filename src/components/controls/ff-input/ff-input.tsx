@@ -10,11 +10,11 @@ import {
   getFieldMessagesContainerId,
   joinClassNames,
 } from '../../utils';
-import type { InputProps } from './input-props.type';
+import type { FFInputProps } from './ff-input-props.type';
 import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
 import type { InputElement } from '../../types';
 
-export function Input<
+export function FFInput<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyStringTypeField>,
 >({
@@ -40,7 +40,7 @@ export function Input<
   size,
   step,
   ['aria-required']: ariaRequired,
-}: InputProps<Form, Field>): React.JSX.Element {
+}: FFInputProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);
