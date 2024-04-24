@@ -6,7 +6,7 @@ import type {
   Excludable,
 } from '../../../model';
 
-export type RadioButtonProps<
+export type RadioProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyStringTypeField>,
 > = {

@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react';
 import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
-import type { RadioButtonProps } from './radio-props.type';
+import type { RadioProps } from './radio-props.type';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
 export type FFRadioProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyStringTypeField>,
-> = RadioButtonProps<Form, Field> & {
+> = RadioProps<Form, Field> & {
   containerClassName?: string;
   getContainerClassName?: GetControlClassName<Field>;
   containerStyle?: CSSProperties;
