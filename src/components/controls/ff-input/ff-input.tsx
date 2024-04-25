@@ -12,7 +12,6 @@ import {
 } from '../../utils';
 import type { FFInputProps } from './ff-input-props.type';
 import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
-import type { InputElement } from '../../types';
 
 export function FFInput<
   Form extends AnyForm,
@@ -51,9 +50,7 @@ export function FFInput<
       id={field.id}
       type={type}
       value={fieldState.value}
-      onChange={e =>
-        field.setValue((e.target as unknown as InputElement).value)
-      }
+      onChange={e => field.setValue((e.target as HTMLInputElement).value)}
       onFocus={() => field.focus()}
       onBlur={() => field.visit()}
       className={joinClassNames(
