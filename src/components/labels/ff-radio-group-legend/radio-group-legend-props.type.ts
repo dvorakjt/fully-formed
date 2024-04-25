@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { AnyForm, AnyField, FormChild } from '../../../model';
 
-export type LegendProps<
+export type RadioGroupLegendProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyField>,
 > = {

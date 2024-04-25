@@ -7,7 +7,7 @@ import {
 import {
   getAriaInvalid,
   getDisabled,
-  getFieldMessagesContainerId,
+  getMessagesContainerId,
   joinClassNames,
 } from '../../utils';
 import type { FFInputProps } from './ff-input-props.type';
@@ -67,7 +67,7 @@ export function FFInput<
       readOnly={readOnly}
       aria-readonly={readOnly}
       aria-required={ariaRequired}
-      aria-describedby={getFieldMessagesContainerId(field.id)}
+      aria-describedby={getMessagesContainerId(field.id)}
       aria-invalid={getAriaInvalid(
         fieldState,
         confirmationAttempted,

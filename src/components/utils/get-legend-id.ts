@@ -1,3 +1,3 @@
-export function getLegendId(fieldId: string): string {
-  return `${fieldId}-legend`;
+export function getLegendId(formElementId: string): string {
+  return `${formElementId}-legend`;
 }

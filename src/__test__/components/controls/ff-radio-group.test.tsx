@@ -13,7 +13,7 @@ import {
 import {
   FFRadio,
   FFRadioGroup,
-  getFieldMessagesContainerId,
+  getMessagesContainerId,
   getLegendId,
 } from '../../../components';
 import { useForm } from '../../../hooks';
@@ -131,7 +131,7 @@ describe('FFRadioGroup', () => {
     );
   });
 
-  test(`It calls getFieldMessagesContainerId() with the id of the field it 
+  test(`It calls getMessagesContainerId() with the id of the field it 
   receives and set the aria-describedby attribute of the fieldset to the 
   result.`, () => {
     class Template extends FormTemplate {
@@ -156,7 +156,7 @@ describe('FFRadioGroup', () => {
 
     const fieldset = document.getElementsByTagName('fieldset')[0];
     expect(fieldset.getAttribute('aria-describedby')).toBe(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
   });
 

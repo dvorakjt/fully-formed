@@ -2,12 +2,12 @@ import type { CSSProperties } from 'react';
 import type { AnyForm, AnyField, FormChild } from '../../../model';
 import type { GetControlClassName } from '../../types';
 import type { GetControlStyle } from '../../types';
-import type { LegendProps } from './legend-props.type';
+import type { RadioGroupLegendProps } from './radio-group-legend-props.type';
 
-export type FFLegendProps<
+export type FFRadioGroupLegendProps<
   Form extends AnyForm,
   Field extends FormChild<Form, AnyField>,
-> = LegendProps<Form, Field> & {
+> = RadioGroupLegendProps<Form, Field> & {
   className?: string;
   getClassName?: GetControlClassName<Field>;
   style?: CSSProperties;

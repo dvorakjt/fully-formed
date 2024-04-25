@@ -13,7 +13,7 @@ import {
 import {
   FFFieldMessages,
   FFInput,
-  getFieldMessagesContainerId,
+  getMessagesContainerId,
 } from '../../../components';
 import { useForm } from '../../../hooks';
 
@@ -42,7 +42,7 @@ describe('FFFieldMessages', () => {
 
     expect(
       document.getElementById(
-        getFieldMessagesContainerId(form.formElements.testField.id),
+        getMessagesContainerId(form.formElements.testField.id),
       )?.nodeName,
     ).toBe('DIV');
   });
@@ -72,7 +72,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.className).toBe('test-field-messages');
   });
@@ -102,7 +102,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.className).toBe('test-field-messages');
   });
@@ -135,7 +135,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.className).toBe('class-1 class-2');
   });
@@ -168,7 +168,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.style.display).toBe('flex');
     expect(container?.style.flexDirection).toBe('column');
@@ -202,7 +202,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.style.display).toBe('flex');
     expect(container?.style.flexDirection).toBe('column');
@@ -241,7 +241,7 @@ describe('FFFieldMessages', () => {
     render(<TestForm />);
 
     const container = document.getElementById(
-      getFieldMessagesContainerId(form.formElements.testField.id),
+      getMessagesContainerId(form.formElements.testField.id),
     );
     expect(container?.style.display).toBe('grid');
     expect(container?.style.gridTemplateColumns).toBe('repeat(3, 1fr)');

@@ -1,5 +1,4 @@
 export type { AutoCapitalize } from './auto-capitalize.type';
-export type { Checkbox } from './checkbox.type';
 export type {
   GetControlClassName,
   GetControlClassNameArgs,
@@ -8,4 +7,8 @@ export type {
   GetControlStyle,
   GetControlStyleArgs,
 } from './get-control-style.type';
-export type { InputElement } from './input-element.type';
+export type {
+  GetFormClassName,
+  GetFormClassNameArgs,
+} from './get-form-classname.type';
+export type { GetFormStyle, GetFormStyleArgs } from './get-form-style.type';

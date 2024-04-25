@@ -1,2 +1,2 @@
 export * from './ff-label';
-export * from './ff-legend';
+export * from './ff-radio-group-legend';

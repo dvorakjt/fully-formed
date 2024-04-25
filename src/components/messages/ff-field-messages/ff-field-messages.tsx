@@ -1,5 +1,5 @@
 import React from 'react';
-import { getFieldMessagesContainerId, joinClassNames } from '../../utils';
+import { getMessagesContainerId, joinClassNames } from '../../utils';
 import type { FFFieldMessagesProps } from './ff-field-messages-props.type';
 import type { AnyForm, AnyField, FormChild } from '../../../model';
 import {
@@ -33,7 +33,7 @@ export function FFFieldMessages<
 
   return (
     <div
-      id={getFieldMessagesContainerId(field.id)}
+      id={getMessagesContainerId(field.id)}
       className={joinClassNames(
         containerClassName,
         getContainerClassName &&

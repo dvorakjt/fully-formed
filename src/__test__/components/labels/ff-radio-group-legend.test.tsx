@@ -3,10 +3,10 @@ import { describe, test, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
 import { FormTemplate, Field, FormFactory } from '../../../model';
 import { useForm } from '../../../hooks';
-import { FFLegend } from '../../../components';
+import { FFRadioGroupLegend } from '../../../components';
 import { removeEmptyTextNodes } from '../../../test-utils';
 
-describe('FFLegend', () => {
+describe('FFRadioGroupLegend', () => {
   afterEach(cleanup);
 
   test('It renders a legend element.', () => {
@@ -22,7 +22,9 @@ describe('FFLegend', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <FFLegend form={form} field={form.formElements.testField} />;
+      return (
+        <FFRadioGroupLegend form={form} field={form.formElements.testField} />
+      );
     }
 
     render(<TestForm />);
@@ -44,7 +46,9 @@ describe('FFLegend', () => {
     function TestForm(): React.JSX.Element {
       const form = useForm(new Form());
 
-      return <FFLegend form={form} field={form.formElements.testField} />;
+      return (
+        <FFRadioGroupLegend form={form} field={form.formElements.testField} />
+      );
     }
 
     render(<TestForm />);
@@ -67,12 +71,12 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend form={form} field={form.formElements.testField}>
+        <FFRadioGroupLegend form={form} field={form.formElements.testField}>
           Test Field{' '}
           <small>
             <i>(optional)</i>
           </small>
-        </FFLegend>
+        </FFRadioGroupLegend>
       );
     }
 
@@ -105,7 +109,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           className="test-field"
@@ -134,7 +138,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           getClassName={() => 'test-field'}
@@ -164,7 +168,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           className="class-1"
@@ -194,7 +198,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           style={{
@@ -229,7 +233,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           getStyle={() => ({
@@ -265,7 +269,7 @@ describe('FFLegend', () => {
       const form = useForm(new Form());
 
       return (
-        <FFLegend
+        <FFRadioGroupLegend
           form={form}
           field={form.formElements.testField}
           style={{

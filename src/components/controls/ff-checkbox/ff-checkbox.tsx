@@ -7,7 +7,7 @@ import {
   useGroupValidation,
 } from '../../../hooks';
 import {
-  getFieldMessagesContainerId,
+  getMessagesContainerId,
   joinClassNames,
   getDisabled,
   getAriaInvalid,
@@ -91,7 +91,7 @@ export function FFCheckbox<
           field.setValue(!(e.target as HTMLInputElement).checked);
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
-        aria-describedby={getFieldMessagesContainerId(field.id)}
+        aria-describedby={getMessagesContainerId(field.id)}
         aria-required={ariaRequired}
         aria-invalid={getAriaInvalid(
           fieldState,

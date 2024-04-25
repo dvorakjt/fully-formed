@@ -1,6 +1,6 @@
 import React from 'react';
-import type { AnyForm, AnyField, FormChild } from '../../../model';
-import type { FFLegendProps } from './ff-legend-props.type';
+import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { FFRadioGroupLegendProps } from './ff-radio-group-legend-props.type';
 import {
   useConfirmationAttempted,
   useFieldState,
@@ -8,9 +8,9 @@ import {
 } from '../../../hooks';
 import { getLegendId, joinClassNames } from '../../utils';
 
-export function FFLegend<
+export function FFRadioGroupLegend<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyField>,
+  Field extends FormChild<Form, AnyStringTypeField>,
 >({
   field,
   form,
@@ -20,7 +20,7 @@ export function FFLegend<
   style,
   getStyle,
   children,
-}: FFLegendProps<Form, Field>): React.JSX.Element {
+}: FFRadioGroupLegendProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
   const groupValidity = useGroupValidation(...groups);

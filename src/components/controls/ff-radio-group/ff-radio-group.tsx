@@ -3,7 +3,7 @@ import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
 import type { FFRadioGroupProps } from './ff-radio-group-props.type';
 import {
   getAriaInvalid,
-  getFieldMessagesContainerId,
+  getMessagesContainerId,
   getLegendId,
   joinClassNames,
 } from '../../utils';
@@ -35,7 +35,7 @@ export function FFRadioGroup<
     <fieldset
       role="radiogroup"
       aria-labelledby={getLegendId(field.id)}
-      aria-describedby={getFieldMessagesContainerId(field.id)}
+      aria-describedby={getMessagesContainerId(field.id)}
       aria-required={ariaRequired}
       aria-invalid={getAriaInvalid(
         fieldState,
