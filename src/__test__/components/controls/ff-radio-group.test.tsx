@@ -13,7 +13,7 @@ import {
 import {
   FFRadio,
   FFRadioGroup,
-  getMessagesContainerId,
+  getAriaDescribedBy,
   getLegendId,
 } from '../../../components';
 import { useForm } from '../../../hooks';
@@ -131,7 +131,7 @@ describe('FFRadioGroup', () => {
     );
   });
 
-  test(`It calls getMessagesContainerId() with the id of the field it 
+  test(`It calls getAriaDescribedBy() with the id of the field it 
   receives and set the aria-describedby attribute of the fieldset to the 
   result.`, () => {
     class Template extends FormTemplate {
@@ -156,7 +156,46 @@ describe('FFRadioGroup', () => {
 
     const fieldset = document.getElementsByTagName('fieldset')[0];
     expect(fieldset.getAttribute('aria-describedby')).toBe(
-      getMessagesContainerId(form.formElements.testField.id),
+      getAriaDescribedBy(form.formElements.testField.id),
+    );
+  });
+
+  test(`If it receives "aria-describedby" as a prop, that string is provided as 
+  an argument to getAriaDescribedBy(), together with the id of the underlying 
+  field, and the aria-describedby property of the fieldset is set to the 
+  result.`, () => {
+    class Template extends FormTemplate {
+      public readonly name = 'myFormTemplate';
+      public readonly formElements = [
+        new Field({
+          name: 'testField',
+          defaultValue: '',
+          id: 'test-field',
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestComponent(): React.JSX.Element {
+      return (
+        <FFRadioGroup
+          form={form}
+          field={form.formElements.testField}
+          aria-describedby="some-id some-other-id"
+        />
+      );
+    }
+
+    render(<TestComponent />);
+
+    const fieldset = document.getElementsByTagName('fieldset')[0];
+    expect(fieldset.getAttribute('aria-describedby')).toBe(
+      getAriaDescribedBy(
+        form.formElements.testField.id,
+        'some-id some-other-id',
+      ),
     );
   });
 

@@ -29,4 +29,5 @@ export type InputProps<
   size?: number;
   step?: number;
   ['aria-required']?: boolean;
+  ['aria-describedby']?: string;
 };

@@ -30,7 +30,7 @@ Fully Formed provides convenient means of applying any styles or CSS classes you
 
 ## Current Version (Alpha)
 
-At the time of writing, Fully Formed is in alpha. While a great many features are available, and these features have been thoroughly tested, there are still a few components in development (Textarea, Select, GroupMessages, FormMessages), and the shape of the API should not be considered fully stable as of yet, as with further usage, it may be adapted to improve its ergonomics. Additionally, a comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features.
+At the time of writing, Fully Formed is in alpha. While a great many features are available, and these features have been thoroughly tested, there are still a few components in development (Textarea, Select), and the shape of the API should not be considered fully stable as of yet, as with further usage, it may be adapted to improve its ergonomics. Additionally, a comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features.
 
 ## Requirements
 

@@ -1,4 +1,5 @@
 import { Validity, type FieldState } from '../../model';
+import { Utils } from '../../utils';
 
 export function getAriaInvalid(
   fieldState: FieldState<unknown>,
@@ -6,8 +7,8 @@ export function getAriaInvalid(
   groupValidity: Validity,
 ): boolean {
   return (
-    (fieldState.visited || fieldState.modified || confirmationAttempted) &&
-    (fieldState.validity === Validity.Invalid ||
-      groupValidity === Validity.Invalid)
+    (!Utils.isClean(fieldState) || confirmationAttempted) &&
+    Utils.reduceValidity(fieldState.validity, groupValidity) ===
+      Validity.Invalid
   );
 }

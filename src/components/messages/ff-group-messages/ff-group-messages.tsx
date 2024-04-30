@@ -1,21 +1,14 @@
 import React from 'react';
-import { getMessagesContainerId, joinClassNames } from '../../utils';
-import type { FFFieldMessagesProps } from './ff-field-messages-props.type';
-import type { AnyForm, AnyField, FormChild } from '../../../model';
-import {
-  useCombinedMessages,
-  useFieldState,
-  useConfirmationAttempted,
-} from '../../../hooks';
+import { useConfirmationAttempted, useCombinedMessages } from '../../../hooks';
+import { joinClassNames } from '../../utils';
 import { FFMessage } from '../ff-message';
+import type { AnyForm } from '../../../model';
+import type { FFGroupMessagesProps } from './ff-group-messages-props.type';
 
-export function FFFieldMessages<
-  Form extends AnyForm,
-  Field extends FormChild<Form, AnyField>,
->({
+export function FFGroupMessages<Form extends AnyForm>({
   form,
-  field,
-  groups = [],
+  groups,
+  containerId,
   containerClassName,
   getContainerClassName,
   containerStyle,
@@ -24,19 +17,17 @@ export function FFFieldMessages<
   getMessageClassName,
   messageStyle,
   getMessageStyle,
-}: FFFieldMessagesProps<Form, Field>): React.JSX.Element {
-  const messages = useCombinedMessages(field, ...groups);
-  const fieldState = useFieldState(field);
+}: FFGroupMessagesProps<Form>): React.JSX.Element {
   const confirmationAttempted = useConfirmationAttempted(form);
+  const messages = useCombinedMessages(...groups);
 
   return (
     <div
-      id={getMessagesContainerId(field.id)}
+      id={containerId}
       className={joinClassNames(
         containerClassName,
         getContainerClassName &&
           getContainerClassName({
-            fieldState,
             confirmationAttempted,
           }),
       )}
@@ -44,7 +35,6 @@ export function FFFieldMessages<
         ...containerStyle,
         ...(getContainerStyle &&
           getContainerStyle({
-            fieldState,
             confirmationAttempted,
           })),
       }}
@@ -59,7 +49,6 @@ export function FFFieldMessages<
               getMessageClassName &&
                 getMessageClassName({
                   messageValidity,
-                  fieldState,
                   confirmationAttempted,
                 }),
             )}
@@ -68,7 +57,6 @@ export function FFFieldMessages<
               ...(getMessageStyle &&
                 getMessageStyle({
                   messageValidity,
-                  fieldState,
                   confirmationAttempted,
                 })),
             }}

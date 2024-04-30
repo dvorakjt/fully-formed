@@ -17,4 +17,5 @@ export type CheckboxProps<
   disabled?: boolean;
   disabledWhenExcluded?: Field extends Excludable ? boolean : never;
   ['aria-required']?: boolean;
+  ['aria-describedby']?: string;
 };

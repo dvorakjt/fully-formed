@@ -1,7 +1,7 @@
 import type { AnyField, Validity } from '../../../model';
 
 export type GetFieldMessageClassNameArgs<Field extends AnyField> = {
-  validity: Validity;
+  messageValidity: Validity;
   fieldState: Field['state'];
   confirmationAttempted: boolean;
 };

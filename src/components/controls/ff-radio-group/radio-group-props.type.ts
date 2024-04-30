@@ -10,4 +10,5 @@ export type RadioGroupProps<
   groups?: Array<Form['groups'][keyof Form['groups']]>;
   children?: ReactNode;
   ['aria-required']?: boolean;
+  ['aria-describedby']?: string;
 };

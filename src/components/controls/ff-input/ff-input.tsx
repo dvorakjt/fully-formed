@@ -5,9 +5,9 @@ import {
   useGroupValidation,
 } from '../../../hooks';
 import {
+  getAriaDescribedBy,
   getAriaInvalid,
   getDisabled,
-  getMessagesContainerId,
   joinClassNames,
 } from '../../utils';
 import type { FFInputProps } from './ff-input-props.type';
@@ -39,6 +39,7 @@ export function FFInput<
   size,
   step,
   ['aria-required']: ariaRequired,
+  ['aria-describedby']: ariaDescribedBy,
 }: FFInputProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
@@ -67,7 +68,7 @@ export function FFInput<
       readOnly={readOnly}
       aria-readonly={readOnly}
       aria-required={ariaRequired}
-      aria-describedby={getMessagesContainerId(field.id)}
+      aria-describedby={getAriaDescribedBy(field.id, ariaDescribedBy)}
       aria-invalid={getAriaInvalid(
         fieldState,
         confirmationAttempted,

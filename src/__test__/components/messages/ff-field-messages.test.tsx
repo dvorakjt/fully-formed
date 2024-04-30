@@ -249,7 +249,7 @@ describe('FFFieldMessages', () => {
     expect(container?.style.rowGap).toBe('8px');
   });
 
-  test(`It maps the underlying field's messages to Message components.`, () => {
+  test(`It maps the underlying field's messages to FFMessage components.`, () => {
     const validatorMessages = {
       includesLower: 'The password must include a lowercase letter.',
       includesUpper: 'The password must include an uppercase letter.',
@@ -343,7 +343,7 @@ describe('FFFieldMessages', () => {
     expect(screen.queryByText(invalidMessage)).toBeNull();
   });
 
-  test(`It maps the messages of groups it receives in its props to Message 
+  test(`It maps the messages of groups it receives in its props to FFMessage 
   components.`, () => {
     const passwordsDoNotMatch =
       'Please ensure the re-entered password matches the password.';
@@ -707,8 +707,8 @@ describe('FFFieldMessages', () => {
         <FFFieldMessages
           form={form}
           field={form.formElements.password}
-          getMessageStyle={({ validity }) => ({
-            color: validity === Validity.Valid ? 'green' : 'red',
+          getMessageStyle={({ messageValidity }) => ({
+            color: messageValidity === Validity.Valid ? 'green' : 'red',
           })}
         />
       );
@@ -764,8 +764,8 @@ describe('FFFieldMessages', () => {
             fontSize: '12px',
             fontStyle: 'italic',
           }}
-          getMessageStyle={({ validity }) => ({
-            color: validity === Validity.Valid ? 'green' : 'red',
+          getMessageStyle={({ messageValidity }) => ({
+            color: messageValidity === Validity.Valid ? 'green' : 'red',
           })}
         />
       );

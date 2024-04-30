@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import type { AnyField, Validity } from '../../../model';
 
 export type GetFieldMessageStyleArgs<Field extends AnyField> = {
-  validity: Validity;
+  messageValidity: Validity;
   fieldState: Field['state'];
   confirmationAttempted: boolean;
 };

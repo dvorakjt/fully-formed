@@ -7,7 +7,7 @@ import {
   useGroupValidation,
 } from '../../../hooks';
 import {
-  getMessagesContainerId,
+  getAriaDescribedBy,
   joinClassNames,
   getDisabled,
   getAriaInvalid,
@@ -36,6 +36,7 @@ export function FFCheckbox<
   disabled,
   disabledWhenExcluded,
   ['aria-required']: ariaRequired,
+  ['aria-describedby']: ariaDescribedBy,
 }: FFCheckboxProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
@@ -91,7 +92,7 @@ export function FFCheckbox<
           field.setValue(!(e.target as HTMLInputElement).checked);
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
-        aria-describedby={getMessagesContainerId(field.id)}
+        aria-describedby={getAriaDescribedBy(field.id, ariaDescribedBy)}
         aria-required={ariaRequired}
         aria-invalid={getAriaInvalid(
           fieldState,

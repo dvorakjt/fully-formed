@@ -2,8 +2,8 @@ import React from 'react';
 import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
 import type { FFRadioGroupProps } from './ff-radio-group-props.type';
 import {
+  getAriaDescribedBy,
   getAriaInvalid,
-  getMessagesContainerId,
   getLegendId,
   joinClassNames,
 } from '../../utils';
@@ -26,6 +26,7 @@ export function FFRadioGroup<
   getStyle,
   children,
   ['aria-required']: ariaRequired,
+  ['aria-describedby']: ariaDescribedBy,
 }: FFRadioGroupProps<Form, Field>): React.JSX.Element {
   const fieldState = useFieldState(field);
   const confirmationAttempted = useConfirmationAttempted(form);
@@ -35,7 +36,7 @@ export function FFRadioGroup<
     <fieldset
       role="radiogroup"
       aria-labelledby={getLegendId(field.id)}
-      aria-describedby={getMessagesContainerId(field.id)}
+      aria-describedby={getAriaDescribedBy(field.id, ariaDescribedBy)}
       aria-required={ariaRequired}
       aria-invalid={getAriaInvalid(
         fieldState,
