@@ -30,7 +30,7 @@ Fully Formed provides convenient means of applying any styles or CSS classes you
 
 ## Current Version (Alpha)
 
-At the time of writing, Fully Formed is in alpha. All planned components, hooks and data model elements have been implemented and tested. There are a few small changes that will be made to the API, but it is for the most part now stable. The most notable exception is that messages will be removed from the state of a form, as forms will not have validators that can produce them (use Groups for this purpose). Further inline documentation (according to the TSDoc spec) is being added. Finally, a comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features.
+At the time of writing, Fully Formed is in alpha. All planned components, hooks and data model elements have been implemented and tested. Further inline documentation (according to the TSDoc spec) is being added. Finally, a comprehensive documentation site is in development and will be released together with the first production-ready release of the library. In the meantime, this document serves to provide an overview of how to use the library and some of its notable features.
 
 ## Requirements
 
