@@ -275,14 +275,14 @@ Fully Formed provides a number of components and hooks that are pre-configured t
       Utils,
       type InputProps,
       type  AnyForm,
-      type  AnyStringTypeField,
+      type  TypedField,
       type  FormChild,
     } from 'fully-formed';
     import './styles.css';
 
     export function Input<
       Form extends AnyForm,
-      Field extends FormChild<Form, AnyStringTypeField>,
+      Field extends FormChild<Form, TypedField<string>>,
     >(props: InputProps<Form, Field>): React.JSX.Element {
       return (
         <FFInput
