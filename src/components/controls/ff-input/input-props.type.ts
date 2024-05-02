@@ -1,6 +1,6 @@
 import type {
   AnyForm,
-  AnyStringTypeField,
+  TypedField,
   FormChild,
   Excludable,
 } from '../../../model';
@@ -9,7 +9,7 @@ import type { StringInputTypes } from './string-input-types.type';
 
 export type InputProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 > = {
   field: Field;
   form: Form;

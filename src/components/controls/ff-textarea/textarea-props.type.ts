@@ -1,6 +1,6 @@
 import type {
   AnyForm,
-  AnyStringTypeField,
+  TypedField,
   Excludable,
   FormChild,
 } from '../../../model';
@@ -8,7 +8,7 @@ import type { AutoCapitalize } from '../../types';
 
 export type TextAreaProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 > = {
   form: Form;
   field: Field;

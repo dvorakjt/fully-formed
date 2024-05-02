@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import type { RadioProps } from './radio-props.type';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 
 export type FFRadioProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 > = RadioProps<Form, Field> & {
   containerClassName?: string;
   getContainerClassName?: GetControlClassName<Field>;

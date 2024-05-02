@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
-import type { TextAreaProps } from './textarea-props.type';
+import type { MultiSelectProps } from './multi-select-props.type';
 
-export type FFTextAreaProps<
+export type FFMultiSelectProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
-> = TextAreaProps<Form, Field> & {
+  Field extends FormChild<Form, TypedField<string[]>>,
+> = MultiSelectProps<Form, Field> & {
   className?: string;
   getClassName?: GetControlClassName<Field>;
   style?: CSSProperties;

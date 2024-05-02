@@ -1,18 +1,14 @@
 import type { CSSProperties } from 'react';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import type { GetControlClassName, GetControlStyle } from '../../types';
 import type { SelectProps } from './select-props.type';
 
 export type FFSelectProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 > = SelectProps<Form, Field> & {
-  selectClassName?: string;
-  getSelectClassName?: GetControlClassName<Field>;
-  selectStyle?: CSSProperties;
-  getSelectStyle?: GetControlStyle<Field>;
-  optionClassName?: string;
-  getOptionClassName?: GetControlClassName<Field>;
-  optionStyle?: CSSProperties;
-  getOptionStyle?: GetControlStyle<Field>;
+  className?: string;
+  getClassName?: GetControlClassName<Field>;
+  style?: CSSProperties;
+  getStyle?: GetControlStyle<Field>;
 };

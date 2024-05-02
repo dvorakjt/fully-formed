@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FFCheckboxProps } from './ff-checkbox-props.type';
-import type { AnyForm, AnyBooleanTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import {
   useFieldState,
   useConfirmationAttempted,
@@ -15,7 +15,7 @@ import {
 
 export function FFCheckbox<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyBooleanTypeField>,
+  Field extends FormChild<Form, TypedField<boolean>>,
 >({
   form,
   field,

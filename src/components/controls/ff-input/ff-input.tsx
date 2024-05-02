@@ -11,11 +11,11 @@ import {
   joinClassNames,
 } from '../../utils';
 import type { FFInputProps } from './ff-input-props.type';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 
 export function FFInput<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 >({
   field,
   form,

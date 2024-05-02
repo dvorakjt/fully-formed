@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import type { FFRadioProps } from './ff-radio-props.type';
 import {
   useConfirmationAttempted,
@@ -10,7 +10,7 @@ import { getDisabled, joinClassNames } from '../../utils';
 
 export function FFRadio<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 >({
   form,
   field,

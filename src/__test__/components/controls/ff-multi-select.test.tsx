@@ -4,18 +4,19 @@ import { render, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormTemplate, Field, FormFactory } from '../../../model';
 import { useForm } from '../../../hooks';
-import { FFSelect } from '../../../components';
+import { FFMultiSelect } from '../../../components';
+import { getSelectedOptionValues } from '../../../test-utils';
 
-describe('FFSelect', () => {
+describe('FFMultiSelect', () => {
   afterEach(cleanup);
 
   test('It renders an html select element.', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['apple'],
         }),
       ] as const;
     }
@@ -26,13 +27,13 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -47,9 +48,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['apple'],
         }),
       ] as const;
     }
@@ -59,20 +60,20 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
     render(<TestComponent />);
 
     const select = document.getElementsByTagName('select')[0];
-    expect(select.name).toBe(form.formElements.favoriteFruit.name);
+    expect(select.name).toBe(form.formElements.favoriteFruits.name);
   });
 
   test(`The id property of the select element it renders is set to the id 
@@ -80,10 +81,10 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
-          id: 'favorite-fruit',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['apple'],
+          id: 'favorite-fruits',
         }),
       ] as const;
     }
@@ -93,20 +94,20 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
     render(<TestComponent />);
 
     const select = document.getElementsByTagName('select')[0];
-    expect(select.id).toBe(form.formElements.favoriteFruit.id);
+    expect(select.id).toBe(form.formElements.favoriteFruits.id);
   });
 
   test(`Any options or optgroups it receives are rendered inside the select 
@@ -114,9 +115,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteInstrument',
-          defaultValue: 'clarinet',
+        new Field<'favoriteInstruments', string[], false>({
+          name: 'favoriteInstruments',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -133,7 +134,10 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect form={form} field={form.formElements.favoriteInstrument}>
+        <FFMultiSelect
+          form={form}
+          field={form.formElements.favoriteInstruments}
+        >
           <optgroup label="Strings">
             {options.strings.map((instrument, index) => (
               <option value={instrument} key={index}>
@@ -156,7 +160,7 @@ describe('FFSelect', () => {
             ))}
           </optgroup>
           <option value="intonarumori">Intonarumori</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -190,14 +194,14 @@ describe('FFSelect', () => {
     expect((intonarumori as HTMLOptionElement).value).toBe('intonarumori');
   });
 
-  test(`The value of the select element is set to the value of the underlying 
-  field.`, () => {
+  test(`The value of the select element is the first option that is included 
+  in the value of the underlying field.`, () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'mango',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['mango', 'watermelon'],
         }),
       ] as const;
     }
@@ -208,13 +212,13 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -224,14 +228,14 @@ describe('FFSelect', () => {
     expect(select.value).toBe('mango');
   });
 
-  test(`When the value of the underlying field is updated, the value of the
-  select element is updated.`, async () => {
+  test(`The values of the selectedOptions of the select element are the values 
+  included in the value array of the underlying field.`, () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['watermelon', 'mango'],
         }),
       ] as const;
     }
@@ -241,13 +245,52 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
+      );
+    }
+
+    render(<TestComponent />);
+
+    const select = document.getElementsByTagName('select')[0];
+    const selectedValues = getSelectedOptionValues(select);
+    expect(selectedValues.length).toBe(
+      form.formElements.favoriteFruits.state.value.length,
+    );
+    expect(selectedValues).toEqual(
+      expect.arrayContaining(form.formElements.favoriteFruits.state.value),
+    );
+  });
+
+  test(`When the value of the underlying field is updated, the value of the
+  select element is updated.`, async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['apple'],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestComponent(): React.JSX.Element {
+      return (
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
+          <option value="apple">Apple</option>
+          <option value="banana">Banana</option>
+          <option value="mango">Mango</option>
+          <option value="peach">Peach</option>
+          <option value="watermelon">Watermelon</option>
+        </FFMultiSelect>
       );
     }
 
@@ -256,8 +299,50 @@ describe('FFSelect', () => {
     const select = document.getElementsByTagName('select')[0];
     expect(select.value).toBe('apple');
 
-    form.formElements.favoriteFruit.setValue('watermelon');
+    form.formElements.favoriteFruits.setValue(['watermelon']);
     await waitFor(() => expect(select.value).toBe('watermelon'));
+  });
+
+  test(`When the value of the underlying field is updated, the selectedOptions
+  property of the select element is updated.`, async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['apple', 'banana'],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestComponent(): React.JSX.Element {
+      return (
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
+          <option value="apple">Apple</option>
+          <option value="banana">Banana</option>
+          <option value="mango">Mango</option>
+          <option value="peach">Peach</option>
+          <option value="watermelon">Watermelon</option>
+        </FFMultiSelect>
+      );
+    }
+
+    render(<TestComponent />);
+
+    const select = document.getElementsByTagName('select')[0];
+    const selectedValues = getSelectedOptionValues(select);
+    expect(selectedValues).toStrictEqual(['apple', 'banana']);
+
+    form.formElements.favoriteFruits.setValue(['peach', 'watermelon']);
+    await waitFor(() =>
+      expect(getSelectedOptionValues(select)).toStrictEqual([
+        'peach',
+        'watermelon',
+      ]),
+    );
   });
 
   test(`When the user selects an option, the value of the underlying field is 
@@ -265,9 +350,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -277,23 +362,78 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
     const user = userEvent.setup();
     render(<TestComponent />);
-    expect(form.formElements.favoriteFruit.state.value).toBe('apple');
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([]);
 
     const select = document.getElementsByTagName('select')[0];
-    await user.selectOptions(select, 'banana');
-    expect(form.formElements.favoriteFruit.state.value).toBe('banana');
+    await user.selectOptions(select, ['apple', 'banana', 'watermelon']);
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([
+      'apple',
+      'banana',
+      'watermelon',
+    ]);
+  });
+
+  test(`When the user deselects an option, the value of the underlying field is
+  updated.`, async () => {
+    class Template extends FormTemplate {
+      public readonly name = 'testForm';
+      public readonly formElements = [
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: ['banana', 'mango', 'peach'],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const form = new Form();
+
+    function TestComponent(): React.JSX.Element {
+      return (
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
+          <option value="apple">Apple</option>
+          <option value="banana">Banana</option>
+          <option value="mango">Mango</option>
+          <option value="peach">Peach</option>
+          <option value="watermelon">Watermelon</option>
+        </FFMultiSelect>
+      );
+    }
+
+    const user = userEvent.setup();
+    render(<TestComponent />);
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([
+      'banana',
+      'mango',
+      'peach',
+    ]);
+
+    const select = document.getElementsByTagName('select')[0];
+    await user.deselectOptions(select, 'banana');
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([
+      'mango',
+      'peach',
+    ]);
+
+    await user.deselectOptions(select, 'mango');
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([
+      'peach',
+    ]);
+
+    await user.deselectOptions(select, 'peach');
+    expect(form.formElements.favoriteFruits.state.value).toStrictEqual([]);
   });
 
   test(`When the select element receives focus, the focused property of the 
@@ -301,9 +441,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -313,22 +453,22 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
     render(<TestComponent />);
-    expect(form.formElements.favoriteFruit.state.focused).toBe(false);
+    expect(form.formElements.favoriteFruits.state.focused).toBe(false);
 
     const select = document.getElementsByTagName('select')[0];
     select.focus();
-    expect(form.formElements.favoriteFruit.state.focused).toBe(true);
+    expect(form.formElements.favoriteFruits.state.focused).toBe(true);
   });
 
   test(`When the select element receives focus and is then blurred, the 
@@ -336,9 +476,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -348,25 +488,25 @@ describe('FFSelect', () => {
 
     function TestComponent(): React.JSX.Element {
       return (
-        <FFSelect form={form} field={form.formElements.favoriteFruit}>
+        <FFMultiSelect form={form} field={form.formElements.favoriteFruits}>
           <option value="apple">Apple</option>
           <option value="banana">Banana</option>
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
     render(<TestComponent />);
-    expect(form.formElements.favoriteFruit.state.visited).toBe(false);
+    expect(form.formElements.favoriteFruits.state.visited).toBe(false);
 
     const select = document.getElementsByTagName('select')[0];
     select.focus();
-    expect(form.formElements.favoriteFruit.state.visited).toBe(false);
+    expect(form.formElements.favoriteFruits.state.visited).toBe(false);
 
     select.blur();
-    expect(form.formElements.favoriteFruit.state.visited).toBe(true);
+    expect(form.formElements.favoriteFruits.state.visited).toBe(true);
   });
 
   test(`If its props include className, the select element it renders receives 
@@ -374,9 +514,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -387,9 +527,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           className="test-select"
         >
           <option value="apple">Apple</option>
@@ -397,7 +537,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -412,9 +552,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -425,9 +565,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           getClassName={() => 'test-select'}
         >
           <option value="apple">Apple</option>
@@ -435,7 +575,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -450,9 +590,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -463,9 +603,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           className="class1"
           getClassName={() => 'class2'}
         >
@@ -474,7 +614,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -489,9 +629,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -502,9 +642,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           style={{
             fontFamily: 'Arial',
             fontSize: '12px',
@@ -517,7 +657,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -535,9 +675,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -548,9 +688,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           getStyle={() => ({
             fontFamily: 'Arial',
             fontSize: '12px',
@@ -563,7 +703,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 
@@ -582,9 +722,9 @@ describe('FFSelect', () => {
     class Template extends FormTemplate {
       public readonly name = 'testForm';
       public readonly formElements = [
-        new Field({
-          name: 'favoriteFruit',
-          defaultValue: 'apple',
+        new Field<'favoriteFruits', string[], false>({
+          name: 'favoriteFruits',
+          defaultValue: [],
         }),
       ] as const;
     }
@@ -595,9 +735,9 @@ describe('FFSelect', () => {
       const form = useForm(new Form());
 
       return (
-        <FFSelect
+        <FFMultiSelect
           form={form}
-          field={form.formElements.favoriteFruit}
+          field={form.formElements.favoriteFruits}
           style={{
             fontFamily: 'Arial',
             fontSize: '12px',
@@ -612,7 +752,7 @@ describe('FFSelect', () => {
           <option value="mango">Mango</option>
           <option value="peach">Peach</option>
           <option value="watermelon">Watermelon</option>
-        </FFSelect>
+        </FFMultiSelect>
       );
     }
 

@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import type {
   AnyForm,
-  AnyStringTypeField,
+  TypedField,
   FormChild,
   Excludable,
 } from '../../../model';
 
 export type RadioProps<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 > = {
   form: Form;
   field: Field;

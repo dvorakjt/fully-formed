@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AnyForm, AnyStringTypeField, FormChild } from '../../../model';
+import type { AnyForm, TypedField, FormChild } from '../../../model';
 import type { FFRadioGroupLegendProps } from './ff-radio-group-legend-props.type';
 import {
   useConfirmationAttempted,
@@ -10,7 +10,7 @@ import { getLegendId, joinClassNames } from '../../utils';
 
 export function FFRadioGroupLegend<
   Form extends AnyForm,
-  Field extends FormChild<Form, AnyStringTypeField>,
+  Field extends FormChild<Form, TypedField<string>>,
 >({
   field,
   form,

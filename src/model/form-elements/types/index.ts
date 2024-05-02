@@ -6,10 +6,8 @@ export type {
   GroupNamesAreUnique,
   DerivedValueNamesAreUnique,
 } from './allowed-constituents.type';
-export type { AnyBooleanTypeField } from './any-boolean-type-field.type';
 export type { AnyField } from './any-field.type';
 export type { AnyForm } from './any-form.type';
-export type { AnyStringTypeField } from './any-string-type-field.type';
 export type { AutoTrim } from './auto-trim.type';
 export type { FormChild } from './form-child.type';
 export type { ConfirmMethodArgs } from './confirm-method-args.type';
@@ -40,3 +38,4 @@ export type { NonExcludableFormElementValues } from './non-excludable-form-eleme
 export type { NonTransientField } from './non-transient-field.type';
 export type { SubFormConstructorArgs } from './subform-constructor-args.type';
 export type { TransientField } from './transient-field.type';
+export type { TypedField } from './typed-field.type';
