@@ -88,8 +88,8 @@ export function FFCheckbox<
         }}
         onFocus={() => field.focus()}
         onBlur={() => field.visit()}
-        onInput={e => {
-          field.setValue(!(e.target as HTMLInputElement).checked);
+        onChange={e => {
+          field.setValue((e.target as HTMLInputElement).checked);
         }}
         disabled={getDisabled({ fieldState, disabled, disabledWhenExcluded })}
         aria-describedby={getAriaDescribedBy(field.id, ariaDescribedBy)}
