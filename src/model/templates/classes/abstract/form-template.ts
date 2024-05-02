@@ -39,7 +39,4 @@ export abstract class FormTemplate {
   > = [];
   public autoTrim: AutoTrim = false;
   public id?: string;
-  public invalidMessage?: string;
-  public pendingMessage?: string;
-  public validMessage?: string;
 }

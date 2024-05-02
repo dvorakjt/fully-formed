@@ -292,96 +292,6 @@ describe('Form', () => {
     expect(instance.state.validity).toBe(Validity.Valid);
   });
 
-  test('If its validity is invalid and it has an invalid message, that message is included the messages array of its state.', () => {
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public formElements = <const>[
-        new Field({
-          name: 'requiredField',
-          defaultValue: '',
-          validators: [StringValidators.required()],
-        }),
-      ];
-      public invalidMessage = 'The form has invalid fields.';
-    }
-    const TestForm = FormFactory.createExcludableSubForm(Template);
-    const instance = new TestForm();
-    expect(instance.state.messages).toStrictEqual([
-      {
-        text: 'The form has invalid fields.',
-        validity: Validity.Invalid,
-      },
-    ]);
-  });
-
-  test('If its validity is pending and it has a pending message, that message is included in the messages array of its state.', () => {
-    const promiseScheduler = new PromiseScheduler();
-    const requiredAsync = new AsyncValidator<string>({
-      predicate: (value): Promise<boolean> => {
-        return promiseScheduler.createScheduledPromise(value.length > 0);
-      },
-    });
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public formElements = <const>[
-        new Field({
-          name: 'pendingField',
-          defaultValue: '',
-          asyncValidators: [requiredAsync],
-        }),
-      ];
-      public pendingMessage = 'Checking fields...';
-    }
-    const TestForm = FormFactory.createExcludableSubForm(Template);
-    const instance = new TestForm();
-    expect(instance.state.messages).toStrictEqual([
-      {
-        text: 'Checking fields...',
-        validity: Validity.Pending,
-      },
-    ]);
-  });
-
-  test('If its validity is valid and it has a valid message, that message is included in the messages array of its state.', () => {
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public formElements = <const>[
-        new Field({
-          name: 'password',
-          defaultValue: 'password',
-          validators: [StringValidators.required()],
-        }),
-        new Field({
-          name: 'confirmPassword',
-          defaultValue: 'password',
-          validators: [StringValidators.required()],
-        }),
-      ];
-      public groups = <const>[
-        new Group({
-          name: 'passwordGroup',
-          members: this.formElements,
-          validatorTemplates: [
-            {
-              predicate: ({ password, confirmPassword }): boolean => {
-                return password === confirmPassword;
-              },
-            },
-          ],
-        }),
-      ];
-      public validMessage = 'All fields are valid!';
-    }
-    const TestForm = FormFactory.createExcludableSubForm(Template);
-    const instance = new TestForm();
-    expect(instance.state.messages).toStrictEqual([
-      {
-        text: 'All fields are valid!',
-        validity: Validity.Valid,
-      },
-    ]);
-  });
-
   test('Its exclude property defaults to excludeByDefault.', () => {
     class Template extends FormTemplate implements ExcludableTemplate {
       public readonly name = 'TestForm';
@@ -827,9 +737,6 @@ describe('Form', () => {
           asyncValidators: [emailIsAvailable],
         }),
       ];
-      public validMessage = 'All fields are valid!';
-      public pendingMessage = 'Checking fields...';
-      public invalidMessage = 'The form has invalid fields.';
     }
     const TestForm = FormFactory.createExcludableSubForm(Template);
     const instance = new TestForm();
@@ -838,12 +745,6 @@ describe('Form', () => {
         email: '',
       },
       validity: Validity.Invalid,
-      messages: [
-        {
-          text: 'The form has invalid fields.',
-          validity: Validity.Invalid,
-        },
-      ],
       exclude: false,
     });
 
@@ -855,12 +756,6 @@ describe('Form', () => {
             email: 'user@example.com',
           },
           validity: Validity.Pending,
-          messages: [
-            {
-              text: 'Checking fields...',
-              validity: Validity.Pending,
-            },
-          ],
           exclude: false,
         });
       } else {
@@ -869,12 +764,6 @@ describe('Form', () => {
             email: 'user@example.com',
           },
           validity: Validity.Valid,
-          messages: [
-            {
-              text: 'All fields are valid!',
-              validity: Validity.Valid,
-            },
-          ],
           exclude: false,
         });
       }
@@ -900,68 +789,5 @@ describe('Form', () => {
 
     expect(subscribe).toHaveBeenNthCalledWith(1, true);
     expect(subscribe).toHaveBeenNthCalledWith(2, false);
-  });
-
-  test("When setMessages(), the messages property of the form's state is set.", () => {
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public readonly formElements = [];
-    }
-    const TestForm = FormFactory.createExcludableSubForm(Template);
-    const instance = new TestForm();
-    instance.setMessages([
-      {
-        text: 'Custom message',
-        validity: Validity.Valid,
-      },
-      {
-        text: 'Another custom message',
-        validity: Validity.Valid,
-      },
-    ]);
-    expect(instance.state.messages).toStrictEqual([
-      {
-        text: 'Custom message',
-        validity: Validity.Valid,
-      },
-      {
-        text: 'Another custom message',
-        validity: Validity.Valid,
-      },
-    ]);
-  });
-
-  test('When the state of the form changes, any messages added with setMessage() are removed.', () => {
-    class Template extends FormTemplate {
-      public readonly name = 'TestForm';
-      public readonly formElements = <const>[
-        new Field({ name: 'myField', defaultValue: '' }),
-      ];
-    }
-    const TestForm = FormFactory.createExcludableSubForm(Template);
-    const instance = new TestForm();
-    instance.setMessages([
-      {
-        text: 'Custom message',
-        validity: Validity.Valid,
-      },
-      {
-        text: 'Another custom message',
-        validity: Validity.Valid,
-      },
-    ]);
-    expect(instance.state.messages).toStrictEqual([
-      {
-        text: 'Custom message',
-        validity: Validity.Valid,
-      },
-      {
-        text: 'Another custom message',
-        validity: Validity.Valid,
-      },
-    ]);
-
-    instance.formElements.myField.setValue('test');
-    expect(instance.state.messages).toStrictEqual([]);
   });
 });

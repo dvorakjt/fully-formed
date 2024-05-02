@@ -15,11 +15,12 @@ import type { Subscription } from 'rxjs';
 import type {
   FormConstituents,
   FormElement,
+  FormState,
   FormValue,
 } from '../../../form-elements';
 import type { AbstractAdapter } from '../../../adapters';
 import type { AbstractGroup, GroupMembers } from '../../../groups';
-import type { FormReducerConstructorArgs, FormReducerState } from '../../types';
+import type { FormReducerConstructorArgs } from '../../types';
 
 /**
  * Produces a {@link FormValue} object and corresponding {@link Validity} based
@@ -28,7 +29,7 @@ import type { FormReducerConstructorArgs, FormReducerState } from '../../types';
 export class FormReducer<
   Constituents extends FormConstituents,
 > extends AbstractFormReducer<Constituents> {
-  private stateManager: AbstractStateManager<FormReducerState<Constituents>>;
+  private stateManager: AbstractStateManager<FormState<Constituents>>;
   private valueReducer: AbstractValueReducer<FormValue<Constituents>>;
   private validityReducer: AbstractFormValidityReducer;
   private adapters: Array<
@@ -41,11 +42,11 @@ export class FormReducer<
   private transientFormElements: FormElement[];
   private groups: ReadonlyArray<AbstractGroup<string, GroupMembers>>;
 
-  public get state(): FormReducerState<Constituents> {
+  public get state(): FormState<Constituents> {
     return this.stateManager.state;
   }
 
-  private set state(state: FormReducerState<Constituents>) {
+  private set state(state: FormState<Constituents>) {
     this.stateManager.state = state;
   }
 
@@ -63,7 +64,7 @@ export class FormReducer<
       transientFormElements,
       groups,
     });
-    this.stateManager = new StateManager<FormReducerState<Constituents>>({
+    this.stateManager = new StateManager<FormState<Constituents>>({
       value: this.valueReducer.value,
       validity: this.validityReducer.validity,
     });
@@ -83,7 +84,7 @@ export class FormReducer<
    * @returns An RxJS {@link Subscription}.
    */
   public subscribeToState(
-    cb: (state: FormReducerState<Constituents>) => void,
+    cb: (state: FormState<Constituents>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }

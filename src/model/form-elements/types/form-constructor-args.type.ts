@@ -21,7 +21,4 @@ export type FormConstructorArgs<
   derivedValues: Constituents['derivedValues'];
   autoTrim?: AutoTrim;
   id?: string;
-  invalidMessage?: string;
-  pendingMessage?: string;
-  validMessage?: string;
 };

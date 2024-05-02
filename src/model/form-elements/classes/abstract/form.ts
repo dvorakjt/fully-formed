@@ -9,7 +9,6 @@ import {
 import {
   StateManager,
   type AbstractStateManager,
-  type Message,
   Validity,
 } from '../../../state';
 import type { AbstractFormReducer } from '../../../reducers';
@@ -42,19 +41,11 @@ export abstract class Form<
   public readonly formElements: NameableObject<Constituents['formElements']>;
   public readonly groups: NameableObject<Constituents['groups']>;
   public readonly derivedValues: NameableObject<Constituents['derivedValues']>;
-  private stateManager: AbstractStateManager<FormState<Constituents>>;
-  private confirmationAttemptedManager: AbstractStateManager<boolean>;
   private reducer: AbstractFormReducer<Constituents>;
-  private validMessage?: string;
-  private pendingMessage?: string;
-  private invalidMessage?: string;
+  private confirmationAttemptedManager: AbstractStateManager<boolean>;
 
   public get state(): FormState<Constituents> {
-    return this.stateManager.state;
-  }
-
-  private set state(state: FormState<Constituents>) {
-    this.stateManager.state = state;
+    return this.reducer.state;
   }
 
   public get confirmationAttempted(): boolean {
@@ -72,9 +63,6 @@ export abstract class Form<
     adapters,
     groups,
     derivedValues,
-    validMessage,
-    pendingMessage,
-    invalidMessage,
     autoTrim = false,
   }: FormConstructorArgs<Name, Constituents>) {
     super();
@@ -85,20 +73,13 @@ export abstract class Form<
     this.groups = NameableObjectFactory.createNameableObjectFromArray(groups);
     this.derivedValues =
       NameableObjectFactory.createNameableObjectFromArray(derivedValues);
-    this.validMessage = validMessage;
-    this.pendingMessage = pendingMessage;
-    this.invalidMessage = invalidMessage;
     this.reducer = FormReducerFactory.createFormReducer<Constituents>({
       formElements,
       customAdapters: adapters,
       groups,
       autoTrim,
     });
-    this.stateManager = new StateManager<FormState<Constituents>>(
-      this.getInitialState(),
-    );
     this.confirmationAttemptedManager = new StateManager<boolean>(false);
-    this.subscribeToReducer();
   }
 
   /**
@@ -112,7 +93,7 @@ export abstract class Form<
   public subscribeToState(
     cb: (state: FormState<Constituents>) => void,
   ): Subscription {
-    return this.stateManager.subscribeToState(cb);
+    return this.reducer.subscribeToState(cb);
   }
 
   /**
@@ -128,19 +109,6 @@ export abstract class Form<
     cb: (confirmationAttempted: boolean) => void,
   ): Subscription {
     return this.confirmationAttemptedManager.subscribeToState(cb);
-  }
-
-  /**
-   * Sets the `messages` property of the state of the form.
-   *
-   * @param messages - The array of {@link Message}s to set to the `messages`
-   * property of the state of the form.
-   */
-  public setMessages(messages: Message[]): void {
-    this.state = {
-      ...this.state,
-      messages,
-    };
   }
 
   /**
@@ -182,53 +150,6 @@ export abstract class Form<
     for (const formElement of Object.values(this.formElements)) {
       (formElement as Resettable).reset();
     }
-  }
-
-  private getInitialState(): FormState<Constituents> {
-    return {
-      ...this.reducer.state,
-      messages: this.getAutomaticMessages(this.reducer.state.validity),
-    };
-  }
-
-  private subscribeToReducer(): void {
-    this.reducer.subscribeToState(state => {
-      this.state = {
-        ...state,
-        messages: this.getAutomaticMessages(state.validity),
-      };
-    });
-  }
-
-  private getAutomaticMessages(validity: Validity): Message[] {
-    const messages: Message[] = [];
-    switch (validity) {
-      case Validity.Valid:
-        if (this.validMessage) {
-          messages.push({
-            text: this.validMessage,
-            validity: Validity.Valid,
-          });
-        }
-        break;
-      case Validity.Pending:
-        if (this.pendingMessage) {
-          messages.push({
-            text: this.pendingMessage,
-            validity: Validity.Pending,
-          });
-        }
-        break;
-      case Validity.Invalid:
-        if (this.invalidMessage) {
-          messages.push({
-            text: this.invalidMessage,
-            validity: Validity.Invalid,
-          });
-        }
-        break;
-    }
-    return messages;
   }
 
   private confirmSubForms(): void {

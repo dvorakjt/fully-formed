@@ -12,7 +12,6 @@ import type {
   FormConstituents,
   FormState,
 } from '../../types';
-import type { Message } from '../../../state';
 
 /**
  * Defines the structure of a form and maintains its state.
@@ -61,13 +60,6 @@ export abstract class AbstractForm<
   public abstract subscribeToConfirmationAttempted(
     cb: (confirmationAttempted: boolean) => void,
   ): Subscription;
-  /**
-   * Sets the `messages` property of the state of the form.
-   *
-   * @param messages - The array of {@link Message}s to set to the `messages`
-   * property of the state of the form.
-   */
-  public abstract setMessages(messages: Message[]): void;
   /**
    * If the form is valid and the object provided as an argument contains an
    * `onSuccess()` method, the `onSuccess()` method is called with the

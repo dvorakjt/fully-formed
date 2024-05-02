@@ -1,8 +1,8 @@
 import type { Subscription } from 'rxjs';
 import type { Stateful } from '../../../shared';
-import type { FormReducerState } from '../../types';
 import type {
   FormConstituents,
+  FormState,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   FormValue,
 } from '../../../form-elements';
@@ -14,9 +14,9 @@ import type { Validity } from '../../../state';
  * on the states of {@link FormConstituents}.
  */
 export abstract class AbstractFormReducer<Constituents extends FormConstituents>
-  implements Stateful<FormReducerState<Constituents>>
+  implements Stateful<FormState<Constituents>>
 {
-  public abstract state: FormReducerState<Constituents>;
+  public abstract state: FormState<Constituents>;
   /**
    * Executes a callback function whenever the state of the
    * {@link AbstractFormReducer} changes.
@@ -27,6 +27,6 @@ export abstract class AbstractFormReducer<Constituents extends FormConstituents>
    * @returns An RxJS {@link Subscription}.
    */
   public abstract subscribeToState(
-    cb: (state: FormReducerState<Constituents>) => void,
+    cb: (state: FormState<Constituents>) => void,
   ): Subscription;
 }

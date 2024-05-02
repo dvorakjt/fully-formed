@@ -4,7 +4,6 @@ import {
   StateManager,
   Validity,
   type AbstractStateManager,
-  type Message,
 } from '../../../state';
 import {
   NameableObjectFactory,
@@ -64,9 +63,6 @@ export class ExcludableSubForm<
   private confirmationAttemptedManager: AbstractStateManager<boolean>;
   private reducer: AbstractFormReducer<Constituents>;
   private excludeByDefault: boolean;
-  private validMessage?: string;
-  private pendingMessage?: string;
-  private invalidMessage?: string;
   private controller?: Controller;
   private controlFn?: ExcludableSubFormControlFn<Controller>;
 
@@ -95,9 +91,6 @@ export class ExcludableSubForm<
     derivedValues,
     transient,
     excludeByDefault,
-    validMessage,
-    pendingMessage,
-    invalidMessage,
     controlledBy,
     autoTrim = false,
   }: ExcludableSubFormConstructorArgs<
@@ -116,9 +109,6 @@ export class ExcludableSubForm<
     this.derivedValues =
       NameableObjectFactory.createNameableObjectFromArray(derivedValues);
     this.excludeByDefault = !!excludeByDefault;
-    this.validMessage = validMessage;
-    this.pendingMessage = pendingMessage;
-    this.invalidMessage = invalidMessage;
     this.reducer = FormReducerFactory.createFormReducer<Constituents>({
       formElements,
       customAdapters: adapters,
@@ -168,19 +158,6 @@ export class ExcludableSubForm<
     cb: (confirmationAttempted: boolean) => void,
   ): Subscription {
     return this.confirmationAttemptedManager.subscribeToState(cb);
-  }
-
-  /**
-   * Sets the `messages` property of the state of the form.
-   *
-   * @param messages - The array of {@link Message}s to set to the `messages`
-   * property of the state of the form.
-   */
-  public setMessages(messages: Message[]): void {
-    this.state = {
-      ...this.state,
-      messages,
-    };
   }
 
   /**
@@ -252,7 +229,6 @@ export class ExcludableSubForm<
     return {
       ...this.reducer.state,
       exclude: this.excludeByDefault,
-      messages: this.getAutomaticMessages(this.reducer.state.validity),
     };
   }
 
@@ -261,40 +237,8 @@ export class ExcludableSubForm<
       this.state = {
         ...state,
         exclude: this.state.exclude,
-        messages: this.getAutomaticMessages(state.validity),
       };
     });
-  }
-
-  private getAutomaticMessages(validity: Validity): Message[] {
-    const messages: Message[] = [];
-    switch (validity) {
-      case Validity.Valid:
-        if (this.validMessage) {
-          messages.push({
-            text: this.validMessage,
-            validity: Validity.Valid,
-          });
-        }
-        break;
-      case Validity.Pending:
-        if (this.pendingMessage) {
-          messages.push({
-            text: this.pendingMessage,
-            validity: Validity.Pending,
-          });
-        }
-        break;
-      case Validity.Invalid:
-        if (this.invalidMessage) {
-          messages.push({
-            text: this.invalidMessage,
-            validity: Validity.Invalid,
-          });
-        }
-        break;
-    }
-    return messages;
   }
 
   private confirmSubForms(): void {
