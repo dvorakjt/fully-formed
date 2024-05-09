@@ -50,12 +50,11 @@ First, we need to define the data model for our form. We do this by extending th
 
     class SignUpTemplate extends FormTemplate {}
 
-`FormTemplate` is an abstract class that provides certain useful defaults for properties that might not always be customized by developers, but at minimum, requires that a `name` and array of form elements be provided. Let's provide those now:
+`FormTemplate` is an abstract class that provides certain useful defaults for properties that might not always be customized by developers, but at minimum, requires that an array of form elements be provided. Let's extend the FormTemplate class:
 
     import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
     class SignUpTemplate extends FormTemplate {
-      public readonly name = 'signUpForm';
       public readonly formElements = [
         new Field({
           name : 'email',
@@ -77,7 +76,6 @@ The particular validator we will be instantiating here returns an object contain
     import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
     class SignUpTemplate extends FormTemplate {
-      public readonly name = 'signUpForm';
       public readonly formElements = [
         new Field({
           name : 'email',
@@ -107,7 +105,6 @@ Since this is a sign up form, let's add password and confirm password fields.
     import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
     class SignUpTemplate extends FormTemplate {
-      public readonly name = 'signUpForm';
       public readonly formElements = [
         new Field({
           name : 'email',
@@ -174,7 +171,6 @@ Groups allow you to group together fields (or even other groups) in order to val
     } from 'fully-formed';
 
     class SignUpTemplate extends FormTemplate {
-      public readonly name = 'signUpForm';
       public readonly formElements = [
         new Field({
           name : 'email',
@@ -432,7 +428,6 @@ Here is an example in which we adapt a string-type field so that the value inclu
     } from 'fully-formed';
 
     class ExampleTemplate extends FormTemplate {
-      public readonly name = 'exampleForm';
       public readonly formElements = [
         new Field({
           name : 'age',
@@ -486,7 +481,6 @@ One field may control another. This is useful if certain information collected f
     import { zipToState } from './zip-to-state.ts';
 
     class AddressTemplate extends FormTemplate {
-      public readonly name = 'addressForm';
       public readonly formElements : [
         NonTransientField<'zip', string>,
         NonTransientField<'state', string>
@@ -543,7 +537,6 @@ Derived values allow you to produce values from your form constituents. You can 
     } from 'fully-formed';
 
     class ExampleTemplate extends FormTemplate {
-      public readonly name = 'exampleForm';
       public readonly formElements = [
         new Field({
           name : 'firstName',
@@ -577,7 +570,6 @@ The `FFCheckbox` component accepts a field whose value is of type boolean. When 
     } from "fully-formed";
 
     class CheckboxExampleTemplate extends FormTemplate {
-      public readonly name = "checkboxExample";
       public readonly formElements = [
         new Field({
           name: "acceptTerms",

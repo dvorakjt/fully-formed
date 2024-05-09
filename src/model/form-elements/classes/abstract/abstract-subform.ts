@@ -1,5 +1,5 @@
 import { AbstractForm } from './abstract-form';
-import type { PossiblyTransient } from '../../../shared';
+import type { Nameable, PossiblyTransient } from '../../../shared';
 import type { FormConstituents } from '../../types';
 
 /**
@@ -17,8 +17,10 @@ export abstract class AbstractSubForm<
     Constituents extends FormConstituents,
     Transient extends boolean,
   >
-  extends AbstractForm<Name, Constituents>
-  implements PossiblyTransient<Transient>
+  extends AbstractForm<Constituents>
+  implements Nameable<Name>, PossiblyTransient<Transient>
 {
+  public abstract name: Name;
+  public abstract id: string;
   public abstract transient: Transient;
 }

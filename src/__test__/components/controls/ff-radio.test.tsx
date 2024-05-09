@@ -11,7 +11,6 @@ describe('FFRadio', () => {
 
   test(`It renders a radio button and a label inside a div.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -55,7 +54,6 @@ describe('FFRadio', () => {
   test(`The name property of the field it receives is assigned to the name 
   attribute of the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -88,7 +86,6 @@ describe('FFRadio', () => {
   test(`The value prop it receives is assigned to the value attribute of the 
   input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field<'favoriteColor', 'red' | 'green' | 'blue', false>({
           name: 'favoriteColor',
@@ -137,7 +134,6 @@ describe('FFRadio', () => {
   test(`The htmlFor attribute of the label it renders matches the id attribute 
   of the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -172,7 +168,6 @@ describe('FFRadio', () => {
   test(`It renders the content it receives in the labelContent prop inside the 
   label element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -208,7 +203,6 @@ describe('FFRadio', () => {
   test(`The input it renders is checked when the value of the field matches that 
   of the input.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field<'favoriteColor', 'red' | 'green' | 'blue', false>({
           name: 'favoriteColor',
@@ -269,7 +263,6 @@ describe('FFRadio', () => {
   test(`When the user clicks on the radio input, it updates the value of the
   underlying field.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -305,7 +298,6 @@ describe('FFRadio', () => {
   test(`The input it renders is checked when the value of the field matches that 
   of the input.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field<'favoriteColor', '' | 'red' | 'green' | 'blue', false>({
           name: 'favoriteColor',
@@ -363,7 +355,6 @@ describe('FFRadio', () => {
   test(`When the user presses the spacebar on an unchecked radio button, it
   becomes checked.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field<'favoriteColor', '' | 'red' | 'green' | 'blue', false>({
           name: 'favoriteColor',
@@ -413,7 +404,6 @@ describe('FFRadio', () => {
   test(`When the radio button it renders receives focus, the focused property of
   the state of the underlying field is set to true.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -449,7 +439,6 @@ describe('FFRadio', () => {
   the visited property of the state of the underlying field becomes 
   true.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -485,7 +474,6 @@ describe('FFRadio', () => {
   test(`If it received containerClassName in its props, that className is 
   applied to the div it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -520,7 +508,6 @@ describe('FFRadio', () => {
   test(`If it received getContainerClassName() is its props, that function is 
   called, and the div it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -556,7 +543,6 @@ describe('FFRadio', () => {
   getContainerClassName() is called, the resultant className is joined with 
   containerClassName, and the result is applied to the div it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -592,7 +578,6 @@ describe('FFRadio', () => {
   test(`If it received containerStyle, those styles are applied to the div 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -633,7 +618,6 @@ describe('FFRadio', () => {
   test(`If it received getContainerStyle(), that function is called and the
   resultant styles are applied to the div element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -675,7 +659,6 @@ describe('FFRadio', () => {
   getContainerStyle() is called, and the result is merged with containerStyle
   and then applied to the div element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -718,7 +701,6 @@ describe('FFRadio', () => {
   test(`If it received radioClassName in its props, that className is 
   applied to the input it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -752,7 +734,6 @@ describe('FFRadio', () => {
   test(`If it received getRadioClassName() is its props, that function is 
   called, and the input it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -787,7 +768,6 @@ describe('FFRadio', () => {
   getRadioClassName() is called, the resultant className is joined with 
   radioClassName, and the result is applied to the input it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -822,7 +802,6 @@ describe('FFRadio', () => {
   test(`If it received radioStyle, those styles are applied to the input 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -860,7 +839,6 @@ describe('FFRadio', () => {
   test(`If it received getRadioStyle(), that function is called and the
   resultant styles are applied to the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -899,7 +877,6 @@ describe('FFRadio', () => {
   getRadioStyle() is called, and the result is merged with radioStyle
   and then applied to the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -939,7 +916,6 @@ describe('FFRadio', () => {
   test(`If it received labelClassName in its props, that className is 
   applied to the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -973,7 +949,6 @@ describe('FFRadio', () => {
   test(`If it received getLabelClassName() is its props, that function is 
   called, and the label it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -1008,7 +983,6 @@ describe('FFRadio', () => {
   getLabelClassName() is called, the resultant className is joined with 
   labelClassName, and the result is applied to the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -1043,7 +1017,6 @@ describe('FFRadio', () => {
   test(`If it received labelStyle, those styles are applied to the label 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -1081,7 +1054,6 @@ describe('FFRadio', () => {
   test(`If it received getLabelStyle(), that function is called and the
   resultant styles are applied to the label element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -1120,7 +1092,6 @@ describe('FFRadio', () => {
   getLabelStyle() is called, and the result is merged with labelStyle
   and then applied to the label element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',

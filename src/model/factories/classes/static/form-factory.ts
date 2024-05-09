@@ -1,5 +1,9 @@
 import { Form, SubForm, ExcludableSubForm } from '../../../form-elements';
-import type { ControllableTemplate, FormTemplate } from '../../../templates';
+import type {
+  ControllableTemplate,
+  FormTemplate,
+  SubFormTemplate,
+} from '../../../templates';
 import type { Constructor } from '../../../shared';
 import type {
   AbstractExcludableSubForm,
@@ -35,10 +39,8 @@ export class FormFactory {
   public static createForm<
     Args extends unknown[],
     T extends FormTemplate & AllowedConstituents<T>,
-  >(
-    Template: Constructor<Args, T>,
-  ): Constructor<Args, AbstractForm<T['name'], T>> {
-    return class extends Form<T['name'], T> {
+  >(Template: Constructor<Args, T>): Constructor<Args, AbstractForm<T>> {
+    return class extends Form<T> {
       public constructor(...args: Args) {
         super(new Template(...args));
       }
@@ -62,7 +64,7 @@ export class FormFactory {
    */
   public static createSubForm<
     Args extends unknown[],
-    T extends FormTemplate & AllowedConstituents<T>,
+    T extends SubFormTemplate & AllowedConstituents<T>,
   >(
     Template: Constructor<Args, T>,
   ): Constructor<
@@ -101,8 +103,8 @@ export class FormFactory {
     Args extends unknown[],
     Controller extends FormElement | AbstractGroup<string, GroupMembers>,
     T extends
-      | (FormTemplate & AllowedConstituents<T>)
-      | (FormTemplate &
+      | (SubFormTemplate & AllowedConstituents<T>)
+      | (SubFormTemplate &
           AllowedConstituents<T> &
           ControllableTemplate<Controller>),
   >(

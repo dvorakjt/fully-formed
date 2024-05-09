@@ -10,7 +10,6 @@ describe('useForm()', () => {
   afterEach(cleanup);
 
   class Template extends FormTemplate {
-    public readonly name = 'testForm';
     public readonly formElements = [];
   }
 

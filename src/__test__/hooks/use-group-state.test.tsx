@@ -12,7 +12,6 @@ describe('useGroupState()', () => {
   test(`It returns the state of a group, which is updated when the state of the
   group changes.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'password',

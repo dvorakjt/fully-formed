@@ -11,7 +11,6 @@ describe('FFRadioGroupLegend', () => {
 
   test('It renders a legend element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -35,7 +34,6 @@ describe('FFRadioGroupLegend', () => {
   test(`getLegendId() is called with the id of the field it receives and 
   assigned to its id property.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '', id: 'test-field' }),
       ] as const;
@@ -59,7 +57,6 @@ describe('FFRadioGroupLegend', () => {
 
   test('It renders child components inside the legend.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -97,7 +94,6 @@ describe('FFRadioGroupLegend', () => {
   test(`If it received a className as a prop, the legend it returns receives 
   that className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -126,7 +122,6 @@ describe('FFRadioGroupLegend', () => {
   test(`If it received getClassName() as a prop, getClassName() is called and 
   the legend it returns receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -156,7 +151,6 @@ describe('FFRadioGroupLegend', () => {
   getClassName() is called and merged with className, and the legend it returns 
   receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -186,7 +180,6 @@ describe('FFRadioGroupLegend', () => {
   test(`If it received style as a prop, those styles are applied to the legend 
   element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -221,7 +214,6 @@ describe('FFRadioGroupLegend', () => {
   test(`If it received getStyle() as a prop, that function is called and the
   resultant styles are applied to the legend element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -257,7 +249,6 @@ describe('FFRadioGroupLegend', () => {
   called and the resultant styles are merged with style and applied to the 
   legend element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;

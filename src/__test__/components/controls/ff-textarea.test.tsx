@@ -11,7 +11,6 @@ describe('FFTextArea', () => {
 
   test('It renders a textarea element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -33,7 +32,6 @@ describe('FFTextArea', () => {
   test(`It renders a textarea element whose name matches that of the field it 
   receives as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -56,7 +54,6 @@ describe('FFTextArea', () => {
   test(`It renders a textarea element whose id matches that of the field it 
   receives as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -83,7 +80,6 @@ describe('FFTextArea', () => {
   test(`It renders a textarea element whose value is initialized to the default 
   value of the field it received as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'comments', defaultValue: 'Lorem ipsum dolor est' }),
       ] as const;
@@ -106,7 +102,6 @@ describe('FFTextArea', () => {
   test(`Its value is updated when text is entered into the textarea element it 
   renders.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'comments', defaultValue: '' }),
       ] as const;
@@ -133,7 +128,6 @@ describe('FFTextArea', () => {
   test(`When its value is updated, the modified property of the state of the 
   underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'comments', defaultValue: '' }),
       ] as const;
@@ -158,7 +152,6 @@ describe('FFTextArea', () => {
   test(`When it receives focus, the focused property of the state of the 
   underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -183,7 +176,6 @@ describe('FFTextArea', () => {
   test(`When it is blurred, the visited property of the state of the underlying 
   field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -211,7 +203,6 @@ describe('FFTextArea', () => {
   test(`If its props include className, the textarea it renders receives that 
   className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -240,7 +231,6 @@ describe('FFTextArea', () => {
   test(`If its props include getClassName that function is called the textarea 
   element it renders receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -269,7 +259,6 @@ describe('FFTextArea', () => {
   test(`If its props include both className and getClassName, getClassName() is 
   called and then merged with className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -299,7 +288,6 @@ describe('FFTextArea', () => {
   test(`If its props include style, those styles are applied to the textarea 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -336,7 +324,6 @@ describe('FFTextArea', () => {
   test(`If its props include getStyle(), getStyle() is called and the result is 
   applied to the style of the textarea element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -374,7 +361,6 @@ describe('FFTextArea', () => {
   the result is merged with the style prop and applied to the style of the  
   textarea element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;

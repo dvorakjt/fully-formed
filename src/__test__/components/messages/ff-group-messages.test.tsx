@@ -17,7 +17,6 @@ describe('FFGroupMessages', () => {
   test(`It renders a div element whose id is the containerId it received as a 
   prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -72,7 +71,6 @@ describe('FFGroupMessages', () => {
     };
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -163,7 +161,6 @@ describe('FFGroupMessages', () => {
   test(`If its props contain containerClassName, that className is applied to 
   the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -207,7 +204,6 @@ describe('FFGroupMessages', () => {
   test(`If its props contain getContainerClassName(), that function is called
   and the resultant className is applied to the the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -253,7 +249,6 @@ describe('FFGroupMessages', () => {
   returns is merged with containerClassName, and the result is applied to the 
   div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -298,7 +293,6 @@ describe('FFGroupMessages', () => {
   test(`If its props contain containerStyle, those styles are applied to the 
   div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -346,7 +340,6 @@ describe('FFGroupMessages', () => {
   test(`If its props contain getContainerStyle(), that function is called and 
   the resultant styles are applied to the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -395,7 +388,6 @@ describe('FFGroupMessages', () => {
   getContainerStyle() is called and the resultant styles are merged with 
   containerStyle and applied to the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -446,14 +438,11 @@ describe('FFGroupMessages', () => {
     expect(container?.style.rowGap).toBe('8px');
   });
 
-  //////////////////////////////
-
   test(`If its props contain messageClassName, that className is applied to any 
   Message components it renders.`, () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -505,7 +494,6 @@ describe('FFGroupMessages', () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -559,7 +547,6 @@ describe('FFGroupMessages', () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -612,7 +599,6 @@ describe('FFGroupMessages', () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -674,7 +660,6 @@ describe('FFGroupMessages', () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -738,7 +723,6 @@ describe('FFGroupMessages', () => {
     const messageText = 'Please ensure that the email addresses match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',

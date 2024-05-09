@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { AbstractForm, FormConstituents } from '../model';
+import type { AnyForm, AbstractForm } from '../model';
 
 /**
  * Persists an instance of {@link AbstractForm} across component re-renders.
@@ -8,8 +8,6 @@ import type { AbstractForm, FormConstituents } from '../model';
  *
  * @returns The persisted {@link AbstractForm} instance.
  */
-export function useForm<T extends AbstractForm<string, FormConstituents>>(
-  form: T,
-): T {
+export function useForm<T extends AnyForm>(form: T): T {
   return useRef(form).current;
 }

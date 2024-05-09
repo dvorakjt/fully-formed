@@ -10,7 +10,6 @@ describe('useConfirmationAttempted()', () => {
   test(`It returns a boolean value that indicates whether or not the confirm() 
   method of the form it receives has been called.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [];
     }
 

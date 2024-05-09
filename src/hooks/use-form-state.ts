@@ -1,5 +1,6 @@
 import { useStatefulEntityState } from './use-stateful-entity-state';
-import type { AbstractForm, FormConstituents } from '../model';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { AnyForm, AbstractForm } from '../model';
 
 /**
  * Takes in an {@link AbstractForm} and returns a React state variable
@@ -14,8 +15,6 @@ import type { AbstractForm, FormConstituents } from '../model';
  * The variable returned by this hook will be updated whenever the `state`
  * property of the form changes.
  */
-export function useFormState<T extends AbstractForm<string, FormConstituents>>(
-  form: T,
-): T['state'] {
+export function useFormState<T extends AnyForm>(form: T): T['state'] {
   return useStatefulEntityState(form);
 }

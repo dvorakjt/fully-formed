@@ -23,7 +23,6 @@ import type { FormFactory } from '../../../factories';
  * `formElements` properties to be defined by subclasses.
  */
 export abstract class FormTemplate {
-  public abstract name: string;
   public abstract formElements: readonly FormElement[];
   public readonly adapters: ReadonlyArray<
     AbstractAdapter<
@@ -38,5 +37,4 @@ export abstract class FormTemplate {
     AbstractDerivedValue<string, unknown>
   > = [];
   public autoTrim: AutoTrim = false;
-  public id?: string;
 }

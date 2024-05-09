@@ -20,7 +20,6 @@ describe('FFInput', () => {
 
   test('It renders an input element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -44,7 +43,6 @@ describe('FFInput', () => {
   test(`It renders an input element whose name matches that of the field it 
   receives as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -69,7 +67,6 @@ describe('FFInput', () => {
   test(`It renders an input element whose id matches that of the field it 
   receives as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField1', defaultValue: '' }),
         new Field({ name: 'testField2', defaultValue: '', id: 'test-field-2' }),
@@ -106,7 +103,6 @@ describe('FFInput', () => {
 
   test('It renders an input element of the type specified by its type prop.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -157,7 +153,6 @@ describe('FFInput', () => {
   test(`It renders an input element whose value is initialized to the default 
   value of the field it received as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'name', defaultValue: 'Joan Tower' }),
       ] as const;
@@ -180,7 +175,6 @@ describe('FFInput', () => {
   test(`Its value is updated when text is entered into the input element it 
   renders.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'name', defaultValue: '' }),
       ] as const;
@@ -216,7 +210,6 @@ describe('FFInput', () => {
     };
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements: [
         AbstractField<'brandPrimary', string, false>,
         AbstractField<'brandSecondary', string, false>,
@@ -291,7 +284,6 @@ describe('FFInput', () => {
   test(`When its value is updated, the modified property of the state of the 
   underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'name', defaultValue: '' }),
       ] as const;
@@ -316,7 +308,6 @@ describe('FFInput', () => {
   test(`When it receives focus, the focused property of the state of the 
   underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -343,7 +334,6 @@ describe('FFInput', () => {
   test(`When it is blurred, the visited property of the state of the underlying 
   field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -372,7 +362,6 @@ describe('FFInput', () => {
 
   test('If its props include className, the input it renders receives that className.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -402,7 +391,6 @@ describe('FFInput', () => {
   test(`If its props include getClassName that function is called the input 
   element it renders receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -432,7 +420,6 @@ describe('FFInput', () => {
   test(`If its props include both className and getClassName, getClassName() is 
   called and then merged with className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -463,7 +450,6 @@ describe('FFInput', () => {
   test(`If its props include style, those styles are applied to the input 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -501,7 +487,6 @@ describe('FFInput', () => {
   test(`If its props include getStyle(), getStyle() is called and the result is 
   applied to the style of the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -542,7 +527,6 @@ describe('FFInput', () => {
   the result is merged with the style prop and applied to the style of the input 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -583,7 +567,6 @@ describe('FFInput', () => {
 
   test('If props.disabled is true, the input element it renders is disabled.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -613,7 +596,6 @@ describe('FFInput', () => {
   test(`If props.disableWhenExcluded is true, the input element it renders is 
   disabled when the underlying field is excluded.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new ExcludableField({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -645,7 +627,6 @@ describe('FFInput', () => {
   test(`If props.disabled and props.disabledWhenExcluded are both true, but the 
   field is not currently excluded, it is still disabled.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new ExcludableField({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -676,7 +657,6 @@ describe('FFInput', () => {
   test(`If the field has not been modified or visited and the confirm() method 
   of the form has not been called, its aria-invalid property is false.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -704,7 +684,6 @@ describe('FFInput', () => {
   test(`If the field has been modified and the underlying field is invalid, its 
   aria-invalid property is true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -737,7 +716,6 @@ describe('FFInput', () => {
   test(`If the field has been visited and the underlying field is invalid, its 
   aria-invalid property is true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -770,7 +748,6 @@ describe('FFInput', () => {
   test(`If the confirm() method of the form has been called and the underlying 
   field is invalid, its aria-invalid property is true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testField',

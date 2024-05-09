@@ -23,7 +23,6 @@ describe('FFRadioGroup', () => {
 
   test('It renders a fieldset element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -48,7 +47,6 @@ describe('FFRadioGroup', () => {
 
   test('It renders child components inside the fieldset element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field<'favoriteColor', 'red' | 'green' | 'blue', false>({
           name: 'favoriteColor',
@@ -106,7 +104,6 @@ describe('FFRadioGroup', () => {
   test(`It calls getLegendId() with the id of the field it receives and sets the 
   aria-labelledby attribute of the fieldset to the result.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -135,7 +132,6 @@ describe('FFRadioGroup', () => {
   receives and set the aria-describedby attribute of the fieldset to the 
   result.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -165,7 +161,6 @@ describe('FFRadioGroup', () => {
   field, and the aria-describedby property of the fieldset is set to the 
   result.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -203,7 +198,6 @@ describe('FFRadioGroup', () => {
   underlying field is clean and the confirm() method of the form has not been 
   called, even if the validity of the field is invalid.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -230,7 +224,6 @@ describe('FFRadioGroup', () => {
   test(`The aria-invalid attribute of the fieldset is true if the underlying 
   field is invalid and the field has been visited.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -259,7 +252,6 @@ describe('FFRadioGroup', () => {
   test(`The aria-invalid attribute of the fieldset is true if the underlying 
   field is invalid and the field has been modified.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -289,7 +281,6 @@ describe('FFRadioGroup', () => {
   field is invalid and the confirm() method of the parent form has been 
   called.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'testField',
@@ -318,7 +309,6 @@ describe('FFRadioGroup', () => {
   test(`If any groups are passed into the component, their validity impacts the 
   aria-invalid attribute of the fieldset.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'myFormTemplate';
       public readonly formElements = [
         new Field({
           name: 'fieldOne',
@@ -368,12 +358,9 @@ describe('FFRadioGroup', () => {
     expect(fieldset.ariaInvalid).toBe('true');
   });
 
-  //////
-
   test(`If its props include className, the fieldset it renders receives that 
   className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -402,7 +389,6 @@ describe('FFRadioGroup', () => {
   test(`If its props include getClassName(), that function is called and the 
   fieldset element it renders receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -431,7 +417,6 @@ describe('FFRadioGroup', () => {
   test(`If its props include both className and getClassName, getClassName() is 
   called and then merged with className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -461,7 +446,6 @@ describe('FFRadioGroup', () => {
   test(`If its props include style, those styles are applied to the fieldset 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -498,7 +482,6 @@ describe('FFRadioGroup', () => {
   test(`If its props include getStyle(), getStyle() is called and the fieldset 
   receives the resultant styles.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -536,7 +519,6 @@ describe('FFRadioGroup', () => {
   the result is merged with the style prop and applied to the style of the 
   fieldset`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;

@@ -28,16 +28,11 @@ import type { AllowedConstituents } from '../../types';
  * completed with constituents and other settings by passing a template to the
  * `createForm()` method of the {@link FormFactory} class.
  *
- * @typeParam Name - A string literal representing the name of the form.
- *
  * @typeParam Contituents - An object extending {@link FormConstituents}.
  */
 export abstract class Form<
-  Name extends string,
   Constituents extends FormConstituents & AllowedConstituents<Constituents>,
-> extends AbstractForm<Name, Constituents> {
-  public readonly name: Name;
-  public readonly id: string;
+> extends AbstractForm<Constituents> {
   public readonly formElements: NameableObject<Constituents['formElements']>;
   public readonly groups: NameableObject<Constituents['groups']>;
   public readonly derivedValues: NameableObject<Constituents['derivedValues']>;
@@ -57,17 +52,13 @@ export abstract class Form<
   }
 
   public constructor({
-    name,
-    id = name,
     formElements,
     adapters,
     groups,
     derivedValues,
     autoTrim = false,
-  }: FormConstructorArgs<Name, Constituents>) {
+  }: FormConstructorArgs<Constituents>) {
     super();
-    this.name = name;
-    this.id = id;
     this.formElements =
       NameableObjectFactory.createNameableObjectFromArray(formElements);
     this.groups = NameableObjectFactory.createNameableObjectFromArray(groups);
