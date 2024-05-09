@@ -323,7 +323,7 @@ Now, let's create our presentation layer component!
       const form = useForm(new SignUpForm());
 
       return (
-        <form id={form.id}>
+        <form>
           <FFLabel form={form} field={form.formElements.email} />
           <FFInput
             form={form}
