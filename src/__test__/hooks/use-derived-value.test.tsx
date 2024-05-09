@@ -18,8 +18,6 @@ describe('useDerivedValue()', () => {
     };
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
-
       public readonly formElements = [
         new Field({ name: 'birthday', defaultValue: '' }),
       ] as const;

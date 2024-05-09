@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { AbstractForm, FormConstituents } from '../model';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { AnyForm, AbstractForm } from '../model';
 
 /**
  * Takes in an {@link AbstractForm} and returns a React state variable of type
@@ -15,9 +16,7 @@ import type { AbstractForm, FormConstituents } from '../model';
  * The variable returned by this hook will be updated whenever the
  * `confirmationAttempted` property of the form is updated.
  */
-export function useConfirmationAttempted<
-  T extends AbstractForm<string, FormConstituents>,
->(form: T): boolean {
+export function useConfirmationAttempted<T extends AnyForm>(form: T): boolean {
   const [confirmationAttempted, setConfirmationAttempted] = useState<boolean>(
     form.confirmationAttempted,
   );

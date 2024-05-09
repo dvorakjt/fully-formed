@@ -20,7 +20,6 @@ describe('useExclude()', () => {
   test(`It returns a boolean value indicating whether or not an Excludable 
   form element is excluded.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements: [
         AbstractField<'changedName', boolean, false>,
         AbstractExcludableField<'previousName', string, false>,

@@ -23,7 +23,6 @@ describe('FFFieldMessages', () => {
   test(`It renders a div element with an id derived from the id of the field it 
   received as a prop.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -50,7 +49,6 @@ describe('FFFieldMessages', () => {
   test(`If its props contain containerClassName, that className is applied to 
   the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -80,7 +78,6 @@ describe('FFFieldMessages', () => {
   test(`If its props contain getContainerClassName(), that function is called
   and the resultant className is applied to the the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -112,7 +109,6 @@ describe('FFFieldMessages', () => {
   returns is merged with containerClassName, and the result is applied to the 
   div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -143,7 +139,6 @@ describe('FFFieldMessages', () => {
   test(`If its props contain containerStyle, those styles are applied to the 
   div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -177,7 +172,6 @@ describe('FFFieldMessages', () => {
   test(`If its props contain getContainerStyle(), that function is called and 
   the resultant styles are applied to the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -212,7 +206,6 @@ describe('FFFieldMessages', () => {
   getContainerStyle() is called and the resultant styles are merged with 
   containerStyle and applied to the div it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -258,7 +251,6 @@ describe('FFFieldMessages', () => {
     };
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'password',
@@ -304,7 +296,6 @@ describe('FFFieldMessages', () => {
     const invalidMessage = 'The email address is valid.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -349,8 +340,6 @@ describe('FFFieldMessages', () => {
       'Please ensure the re-entered password matches the password.';
 
     class Template extends FormTemplate {
-      public readonly name = 'signUpForm';
-
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -423,8 +412,6 @@ describe('FFFieldMessages', () => {
     const passwordsMatch = 'The passwords match.';
 
     class Template extends FormTemplate {
-      public readonly name = 'signUpForm';
-
       public readonly formElements = [
         new Field({
           name: 'email',
@@ -510,7 +497,6 @@ describe('FFFieldMessages', () => {
     const messageText = 'Name is required';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'name',
@@ -549,7 +535,6 @@ describe('FFFieldMessages', () => {
     const messageText = 'Name is required';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'name',
@@ -590,7 +575,6 @@ describe('FFFieldMessages', () => {
     const messageText = 'Name is required';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'name',
@@ -630,7 +614,6 @@ describe('FFFieldMessages', () => {
     const messageText = 'Name is required';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'name',
@@ -681,7 +664,6 @@ describe('FFFieldMessages', () => {
       'The password must include an uppercase letter.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'password',
@@ -732,7 +714,6 @@ describe('FFFieldMessages', () => {
       'The password must include an uppercase letter.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'password',

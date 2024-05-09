@@ -34,5 +34,5 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["src-exists.cjs"]
+  "ignorePatterns": ["src-exists.cjs", "dist"]
 }

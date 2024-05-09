@@ -17,6 +17,8 @@ export type SubFormConstructorArgs<
   Name extends string,
   Constituents extends FormConstituents,
   Transient extends boolean,
-> = FormConstructorArgs<Name, Constituents> & {
+> = FormConstructorArgs<Constituents> & {
+  name: Name;
+  id?: string;
   transient?: Transient;
 };

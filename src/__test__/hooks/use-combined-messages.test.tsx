@@ -12,7 +12,6 @@ describe('useCombinedMessages()', () => {
   test(`It returns an array containing the messages of all messageBearers it 
   receives.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'stateAndZip';
       public readonly formElements = [
         new Field({
           name: 'state',

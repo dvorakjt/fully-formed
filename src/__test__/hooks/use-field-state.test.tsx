@@ -18,7 +18,6 @@ describe('useFieldState()', () => {
     const validMessage = 'Email is valid.';
 
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'email',

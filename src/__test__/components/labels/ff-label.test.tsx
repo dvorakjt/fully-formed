@@ -11,7 +11,6 @@ describe('FFLabel', () => {
 
   test('It renders a label element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -33,7 +32,6 @@ describe('FFLabel', () => {
   test(`The id of the field it receives as a prop is assigned to the htmlFor
     attribute of the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '', id: 'test-field' }),
       ] as const;
@@ -55,7 +53,6 @@ describe('FFLabel', () => {
 
   test('It renders child components inside the label.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -93,7 +90,6 @@ describe('FFLabel', () => {
   test(`If it received a className as a prop, the label it returns receives that 
   className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -122,7 +118,6 @@ describe('FFLabel', () => {
   test(`If it received getClassName() as a prop, getClassName() is called and 
   the label it returns receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -152,7 +147,6 @@ describe('FFLabel', () => {
   getClassName() is called and merged with className, and the label it returns 
   receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -182,7 +176,6 @@ describe('FFLabel', () => {
   test(`If it received style as a prop, those styles are applied to the label 
   element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -217,7 +210,6 @@ describe('FFLabel', () => {
   test(`If it received getStyle() as a prop, that function is called and the
   resultant styles are applied to the label element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;
@@ -253,7 +245,6 @@ describe('FFLabel', () => {
   called and the resultant styles are merged with style and applied to the label 
   element it returns.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({ name: 'testField', defaultValue: '' }),
       ] as const;

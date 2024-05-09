@@ -1,11 +1,5 @@
 import type { Subscription } from 'rxjs';
-import type {
-  Identifiable,
-  Nameable,
-  NameableObject,
-  Resettable,
-  Stateful,
-} from '../../../shared';
+import type { NameableObject, Resettable, Stateful } from '../../../shared';
 import type {
   ConfirmMethodArgs,
   FormValue,
@@ -20,18 +14,9 @@ import type {
  *
  * @typeParam Contituents - An object extending {@link FormConstituents}.
  */
-export abstract class AbstractForm<
-    Name extends string,
-    Constituents extends FormConstituents,
-  >
-  implements
-    Nameable<Name>,
-    Identifiable,
-    Stateful<FormState<Constituents>>,
-    Resettable
+export abstract class AbstractForm<Constituents extends FormConstituents>
+  implements Stateful<FormState<Constituents>>, Resettable
 {
-  public abstract name: Name;
-  public abstract id: string;
   public abstract formElements: NameableObject<Constituents['formElements']>;
   public abstract groups: NameableObject<Constituents['groups']>;
   public abstract derivedValues: NameableObject<Constituents['derivedValues']>;

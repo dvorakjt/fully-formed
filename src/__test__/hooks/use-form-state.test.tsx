@@ -19,7 +19,6 @@ describe('useFormState()', () => {
   test(`It returns the state of a form, which is updated when the state of the
   form changes.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'firstName',

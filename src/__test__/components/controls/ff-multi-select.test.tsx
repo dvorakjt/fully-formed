@@ -12,7 +12,6 @@ describe('FFMultiSelect', () => {
 
   test('It renders an html select element.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -46,7 +45,6 @@ describe('FFMultiSelect', () => {
   test(`The name property of the select element it renders is set to the name 
   property of the underlying field.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -79,7 +77,6 @@ describe('FFMultiSelect', () => {
   test(`The id property of the select element it renders is set to the id 
   property of the underlying field.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -113,7 +110,6 @@ describe('FFMultiSelect', () => {
   test(`Any options or optgroups it receives are rendered inside the select 
   element.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteInstruments', string[], false>({
           name: 'favoriteInstruments',
@@ -197,7 +193,6 @@ describe('FFMultiSelect', () => {
   test(`The value of the select element is the first option that is included 
   in the value of the underlying field.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -231,7 +226,6 @@ describe('FFMultiSelect', () => {
   test(`The values of the selectedOptions of the select element are the values 
   included in the value array of the underlying field.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -270,7 +264,6 @@ describe('FFMultiSelect', () => {
   test(`When the value of the underlying field is updated, the value of the
   select element is updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -306,7 +299,6 @@ describe('FFMultiSelect', () => {
   test(`When the value of the underlying field is updated, the selectedOptions
   property of the select element is updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -348,7 +340,6 @@ describe('FFMultiSelect', () => {
   test(`When the user selects an option, the value of the underlying field is 
   updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -388,7 +379,6 @@ describe('FFMultiSelect', () => {
   test(`When the user deselects an option, the value of the underlying field is
   updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -439,7 +429,6 @@ describe('FFMultiSelect', () => {
   test(`When the select element receives focus, the focused property of the 
   state of the underlying field becomes true.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -474,7 +463,6 @@ describe('FFMultiSelect', () => {
   test(`When the select element receives focus and is then blurred, the 
   visited property of the underlying field becomes true.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -512,7 +500,6 @@ describe('FFMultiSelect', () => {
   test(`If its props include className, the select element it renders receives 
   that className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -550,7 +537,6 @@ describe('FFMultiSelect', () => {
   test(`If its props include getClassName, that function is called the select 
   element it renders receives the resulting className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -588,7 +574,6 @@ describe('FFMultiSelect', () => {
   test(`If its props include both className and getClassName, getClassName() is 
   called and then merged with className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -627,7 +612,6 @@ describe('FFMultiSelect', () => {
   test(`If its props include style, those styles are applied to the select 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -673,7 +657,6 @@ describe('FFMultiSelect', () => {
   test(`If its props include getStyle(), getStyle() is called and the result is 
   applied to the select element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',
@@ -720,7 +703,6 @@ describe('FFMultiSelect', () => {
   the result is merged with the style prop and applied to the select element it 
   renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field<'favoriteFruits', string[], false>({
           name: 'favoriteFruits',

@@ -13,11 +13,11 @@ import {
   type ExcludableAdaptFnReturnType,
 } from '../../../../../model';
 import { PromiseScheduler } from '../../../../../test-utils';
-import { FormTemplate } from '../../../../../model';
+import { SubFormTemplate } from '../../../../../model';
 
 describe('Form', () => {
   test('Its id defaults to its name.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
@@ -28,7 +28,7 @@ describe('Form', () => {
   });
 
   test('Its value consists of all included, non-transient fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: 'Georg' }),
@@ -46,7 +46,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include any transient fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: '' }),
@@ -65,7 +65,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include the values of any excluded excludable fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'primaryEmail', defaultValue: 'user@example.com' }),
@@ -84,7 +84,7 @@ describe('Form', () => {
   });
 
   test('Its value includes the values of any included user-defined adapters.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'birthYear', defaultValue: '1990', transient: true }),
@@ -107,7 +107,7 @@ describe('Form', () => {
   });
 
   test('Its value does not include the values of any excluded excludable adapters.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
@@ -144,7 +144,7 @@ describe('Form', () => {
   });
 
   test('If any included fields are invalid, its validity is invalid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -160,7 +160,7 @@ describe('Form', () => {
   });
 
   test('If any groups are invalid, its validity is invalid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
@@ -196,7 +196,7 @@ describe('Form', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -213,7 +213,7 @@ describe('Form', () => {
 
   test('If there is at least one pending group and no invalid fields or groups, its validity is pending.', () => {
     const promiseScheduler = new PromiseScheduler();
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'AddressForm';
       public formElements = <const>[
         new Field({ name: 'streetAddress', defaultValue: '1726 Locust St.' }),
@@ -256,7 +256,7 @@ describe('Form', () => {
   });
 
   test('If all fields and groups are valid, its validity is valid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -290,7 +290,7 @@ describe('Form', () => {
   });
 
   test('When the value of one of its form elements changes, its value is updated.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
@@ -319,7 +319,7 @@ describe('Form', () => {
   });
 
   test('When the value of one of its adapters changes, its value is updated.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -367,7 +367,7 @@ describe('Form', () => {
   });
 
   test('When the validity of one of its form elements changes, its validity is updated.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -386,7 +386,7 @@ describe('Form', () => {
   });
 
   test('When the validity of one of its groups changes, its validity is updated.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
@@ -417,7 +417,7 @@ describe('Form', () => {
   });
 
   test('When confirm() is called, confirmationAttempted is set to true.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
@@ -430,7 +430,7 @@ describe('Form', () => {
   });
 
   test("When confirm() is called with an onSuccess callback and the form is valid, that callback is called with the form's value.", () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -471,7 +471,7 @@ describe('Form', () => {
   });
 
   test('When confirm() is called with an onFailure callback and the form is invalid, that callback is called.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -497,7 +497,7 @@ describe('Form', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({
@@ -517,17 +517,17 @@ describe('Form', () => {
   });
 
   test('When confirm() is called, all of its subforms are confirmed as well.', () => {
-    class InnerFormTemplate extends FormTemplate {
+    class InnerSubFormTemplate extends SubFormTemplate {
       public readonly name = 'subForm';
       public readonly formElements = [];
     }
 
-    const InnerForm = FormFactory.createSubForm(InnerFormTemplate);
-    class OuterFormTemplate extends FormTemplate {
+    const InnerForm = FormFactory.createSubForm(InnerSubFormTemplate);
+    class OuterSubFormTemplate extends SubFormTemplate {
       public readonly name = 'outerForm';
       public readonly formElements = <const>[new InnerForm()];
     }
-    const OuterForm = FormFactory.createSubForm(OuterFormTemplate);
+    const OuterForm = FormFactory.createSubForm(OuterSubFormTemplate);
     const instance = new OuterForm();
     const spy = vi.spyOn(instance.formElements.subForm, 'confirm');
     instance.confirm();
@@ -535,7 +535,7 @@ describe('Form', () => {
   });
 
   test('When reset() is called, confirmationAttempted is set to false.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }
@@ -550,7 +550,7 @@ describe('Form', () => {
   });
 
   test('When reset() is called, reset is called on all of its form elements.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public formElements = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
@@ -603,7 +603,7 @@ describe('Form', () => {
         );
       },
     });
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = <const>[
         new Field({
@@ -648,7 +648,7 @@ describe('Form', () => {
   });
 
   test('After subscribeToConfirmationAttempted() has been called, updates to confirmationAttempted are emitted to subscribers.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'TestForm';
       public readonly formElements = [];
     }

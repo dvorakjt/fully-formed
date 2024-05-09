@@ -11,7 +11,6 @@ describe('FFCheckbox', () => {
 
   test('It renders an input component and a label inside a div.', () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -54,7 +53,6 @@ describe('FFCheckbox', () => {
   test(`It renders an input element whose name matches that of the field it 
   received.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -86,7 +84,6 @@ describe('FFCheckbox', () => {
   test(`It renders an input element whose id matches that of the field it 
   received.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -119,7 +116,6 @@ describe('FFCheckbox', () => {
   test(`It renders a label whose htmlFor attribute matches the id of the field 
   it received.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -152,7 +148,6 @@ describe('FFCheckbox', () => {
   test(`It renders the content it receives through the labelContent prop inside 
   the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -187,7 +182,6 @@ describe('FFCheckbox', () => {
   test(`The checked attribute of the input it renders defaults to the value of 
   the field it received.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'trueByDefault',
@@ -231,7 +225,6 @@ describe('FFCheckbox', () => {
   test(`When the value of the underlying field is updated, the checked attribute 
   of the input it renders is updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -265,7 +258,6 @@ describe('FFCheckbox', () => {
   test(`When the user clicks the checkbox, the checked attribute of the input it 
   renders changes.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -304,7 +296,6 @@ describe('FFCheckbox', () => {
   test(`When the user clicks the checkbox, the value of the underlying field is 
   updated.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -342,7 +333,6 @@ describe('FFCheckbox', () => {
   test(`When the user clicks on the input, the focused property of the state of 
   the underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -377,7 +367,6 @@ describe('FFCheckbox', () => {
   test(`When the input receives focus and is then blurred, the visited property 
   of the state of the underlying field becomes true.`, async () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -415,7 +404,6 @@ describe('FFCheckbox', () => {
   test(`If it received containerClassName in its props, that className is 
   applied to the div it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -449,7 +437,6 @@ describe('FFCheckbox', () => {
   test(`If it received getContainerClassName() is its props, that function is 
   called, and the div it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -484,7 +471,6 @@ describe('FFCheckbox', () => {
   getContainerClassName() is called, the resultant className is joined with 
   containerClassName, and the result is applied to the div it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -519,7 +505,6 @@ describe('FFCheckbox', () => {
   test(`If it received containerStyle, those styles are applied to the div 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -559,7 +544,6 @@ describe('FFCheckbox', () => {
   test(`If it received getContainerStyle(), that function is called and the
   resultant styles are applied to the div element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -600,7 +584,6 @@ describe('FFCheckbox', () => {
   getContainerStyle() is called, and the result is merged with containerStyle
   and then applied to the div element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -642,7 +625,6 @@ describe('FFCheckbox', () => {
   test(`If it received checkboxClassName in its props, that className is 
   applied to the input it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -675,7 +657,6 @@ describe('FFCheckbox', () => {
   test(`If it received getCheckboxClassName() is its props, that function is 
   called, and the input it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -709,7 +690,6 @@ describe('FFCheckbox', () => {
   getCheckboxClassName() is called, the resultant className is joined with 
   checkboxClassName, and the result is applied to the input it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -743,7 +723,6 @@ describe('FFCheckbox', () => {
   test(`If it received checkboxStyle, those styles are applied to the input 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -780,7 +759,6 @@ describe('FFCheckbox', () => {
   test(`If it received getCheckboxStyle(), that function is called and the
   resultant styles are applied to the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -818,7 +796,6 @@ describe('FFCheckbox', () => {
   getCheckboxStyle() is called, and the result is merged with checkboxStyle
   and then applied to the input element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -857,7 +834,6 @@ describe('FFCheckbox', () => {
   test(`If it received labelClassName in its props, that className is 
   applied to the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -890,7 +866,6 @@ describe('FFCheckbox', () => {
   test(`If it received getLabelClassName() is its props, that function is 
   called, and the label it renders receives the resultant className.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -924,7 +899,6 @@ describe('FFCheckbox', () => {
   getLabelClassName() is called, the resultant className is joined with 
   labelClassName, and the result is applied to the label it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -958,7 +932,6 @@ describe('FFCheckbox', () => {
   test(`If it received labelStyle, those styles are applied to the label 
   element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -995,7 +968,6 @@ describe('FFCheckbox', () => {
   test(`If it received getLabelStyle(), that function is called and the
   resultant styles are applied to the label element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
@@ -1033,7 +1005,6 @@ describe('FFCheckbox', () => {
   getLabelStyle() is called, and the result is merged with labelStyle
   and then applied to the label element it renders.`, () => {
     class Template extends FormTemplate {
-      public readonly name = 'testForm';
       public readonly formElements = [
         new Field({
           name: 'testCheckbox',
