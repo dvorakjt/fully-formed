@@ -180,4 +180,77 @@ export class StringValidators {
       invalidMessage: args?.invalidMessage,
     });
   }
+
+  /**
+   * Returns a validator that checks if a string matches the provided regular
+   * expression.
+   *
+   * @param args - An object with the required property `pattern` and optional
+   * properties `validMessage`, `invalidMessage`, and `trimBeforeValidation`.
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
+   */
+  public static pattern(
+    pattern: RegExp,
+    opts?: ValidatorMessages & TrimBeforeValidation,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      return pattern.test(opts?.trimBeforeValidation ? value.trim() : value);
+    };
+    return new Validator<string>({
+      predicate,
+      validMessage: opts?.validMessage,
+      invalidMessage: opts?.invalidMessage,
+    });
+  }
+
+  /**
+   * Returns a validator that checks if the length of a string is greater than
+   * or equal to the minimum length it receives.
+   *
+   * @param args - An object with the required property `minLength` and optional
+   * properties `validMessage`, `invalidMessage`, and `trimBeforeValidation`.
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
+   */
+  public static minLength(
+    minLength: number,
+    opts?: ValidatorMessages & TrimBeforeValidation,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      if (opts?.trimBeforeValidation) value = value.trim();
+      return value.length >= minLength;
+    };
+
+    return new Validator<string>({
+      predicate,
+      validMessage: opts?.validMessage,
+      invalidMessage: opts?.invalidMessage,
+    });
+  }
+
+  /**
+   * Returns a validator that checks if the length of a string is less than or
+   * equal to the maximum length it receives.
+   *
+   * @param args - An object with the required property `maxLength` and optional
+   * properties `validMessage`, `invalidMessage`, and `trimBeforeValidation`.
+   *
+   * @returns An instance of {@link AbstractValidator}\<string\>.
+   */
+  public static maxLength(
+    maxLength: number,
+    opts?: ValidatorMessages & TrimBeforeValidation,
+  ): AbstractValidator<string> {
+    const predicate: Predicate<string> = value => {
+      if (opts?.trimBeforeValidation) value = value.trim();
+      return value.length <= maxLength;
+    };
+
+    return new Validator<string>({
+      predicate,
+      validMessage: opts?.validMessage,
+      invalidMessage: opts?.invalidMessage,
+    });
+  }
 }

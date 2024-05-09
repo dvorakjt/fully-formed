@@ -1,4 +1,6 @@
-﻿# Fully Formed
+﻿![banner](https://github.com/dvorakjt/fully-formed/blob/main/banner.png)
+
+# Fully Formed
 
 ## About
 
