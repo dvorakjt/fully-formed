@@ -5,7 +5,14 @@ import {
   DefaultAdapter,
   ExcludableField,
   DefaultExcludableAdapter,
+  StateManager,
+  Validity,
+  type FormChild,
+  type FormChildState,
+  type Excludable,
+  type ExcludableState,
 } from '../../../model';
+import type { Subscription } from 'rxjs';
 
 describe('DefaultAdapterFactory', () => {
   test(`When createDefaultAdapters() is called, it returns default adapters for 
@@ -49,6 +56,90 @@ describe('DefaultAdapterFactory', () => {
       expect(adapter.name).toEqual(field.name);
       expect(adapter.state.value).toEqual(field.state.value);
     }
+  });
+
+  test(`When createDefaultAdapters() is called, it returns default adapters for 
+  all fields that do not implement Transient, PossiblyTransient or 
+  Excludable.`, () => {
+    class ReadonlyField<T extends string, V> implements FormChild<T, V> {
+      public readonly name: T;
+      private stateManager: StateManager<FormChildState<V>>;
+
+      public get state(): FormChildState<V> {
+        return this.stateManager.state;
+      }
+
+      public constructor(name: T, value: V) {
+        this.name = name;
+        this.stateManager = new StateManager<FormChildState<V>>({
+          value,
+          validity: Validity.Valid,
+        });
+      }
+
+      public subscribeToState(
+        cb: (state: FormChildState<V>) => void,
+      ): Subscription {
+        return this.stateManager.subscribeToState(cb);
+      }
+    }
+
+    const fields = [new ReadonlyField('testField', 'test')] as const;
+
+    const defaultAdapters = DefaultAdapterFactory.createDefaultAdapters({
+      fields,
+      autoTrim: false,
+    });
+
+    expect(defaultAdapters[0]).toBeInstanceOf(DefaultAdapter);
+    expect(defaultAdapters[0]).not.toBeInstanceOf(DefaultExcludableAdapter);
+    expect(defaultAdapters[0].name).toEqual(fields[0].name);
+    expect(defaultAdapters[0].state.value).toEqual(fields[0].state.value);
+  });
+
+  test(`When createDefaultAdapters() is called, it returns default adapters for 
+  all fields that implement Excludable and do not implement Transient or 
+  PossiblyTransient.`, () => {
+    class ExcludableNeverTransientField<T extends string, V>
+      implements FormChild<T, V>, Excludable
+    {
+      public readonly name: T;
+      private stateManager: StateManager<FormChildState<V> & ExcludableState>;
+
+      public get state(): FormChildState<V> & ExcludableState {
+        return this.stateManager.state;
+      }
+
+      public constructor(name: T, value: V) {
+        this.name = name;
+        this.stateManager = new StateManager<
+          FormChildState<V> & ExcludableState
+        >({
+          value,
+          validity: Validity.Valid,
+          exclude: false,
+        });
+      }
+
+      public subscribeToState(
+        cb: (state: FormChildState<V> & ExcludableState) => void,
+      ): Subscription {
+        return this.stateManager.subscribeToState(cb);
+      }
+    }
+
+    const fields = [
+      new ExcludableNeverTransientField('testField', 'test'),
+    ] as const;
+
+    const defaultAdapters = DefaultAdapterFactory.createDefaultAdapters({
+      fields,
+      autoTrim: false,
+    });
+
+    expect(defaultAdapters[0]).toBeInstanceOf(DefaultExcludableAdapter);
+    expect(defaultAdapters[0].name).toEqual(fields[0].name);
+    expect(defaultAdapters[0].state.value).toEqual(fields[0].state.value);
   });
 
   test(`When createDefaultAdapters() is called, it does not return adapters for 

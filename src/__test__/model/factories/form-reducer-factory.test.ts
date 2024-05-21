@@ -5,9 +5,13 @@ import {
   Field,
   FormReducerFactory,
   Group,
+  StateManager,
   StringValidators,
   Validity,
+  type FormChild,
+  type FormChildState,
 } from '../../../model';
+import type { Subscription } from 'rxjs';
 
 describe('FormReducerFactory', () => {
   test(`It returns a FormReducer whose value contains the values of all 
@@ -35,6 +39,45 @@ describe('FormReducerFactory', () => {
       firstName: 'Carl',
       middleName: 'Maria',
       lastName: 'von Weber',
+    });
+  });
+
+  test(`It returns a FormReducer whose value contains the values of all 
+  fields that do not implement Transient or PossiblyTransient.`, () => {
+    class ReadonlyField<T extends string, V> implements FormChild<T, V> {
+      public readonly name: T;
+      private stateManager: StateManager<FormChildState<V>>;
+
+      public get state(): FormChildState<V> {
+        return this.stateManager.state;
+      }
+
+      public constructor(name: T, value: V) {
+        this.name = name;
+        this.stateManager = new StateManager<FormChildState<V>>({
+          value,
+          validity: Validity.Valid,
+        });
+      }
+
+      public subscribeToState(
+        cb: (state: FormChildState<V>) => void,
+      ): Subscription {
+        return this.stateManager.subscribeToState(cb);
+      }
+    }
+
+    const fields = [new ReadonlyField('testField', 'test')] as const;
+
+    const reducer = FormReducerFactory.createFormReducer({
+      fields,
+      customAdapters: [],
+      groups: [],
+      autoTrim: false,
+    });
+
+    expect(reducer.state.value).toStrictEqual({
+      testField: 'test',
     });
   });
 
