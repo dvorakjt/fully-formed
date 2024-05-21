@@ -1,5 +1,5 @@
 import { AbstractForm } from './abstract-form';
-import type { FormChild, Identifiable } from '../interfaces';
+import type { FormChild, Identifiable, PossiblyTransient } from '../interfaces';
 import type { AutoTrim, FormMembers, FormValue } from '../types';
 
 type AbstractSubFormConstructorParams<
@@ -22,7 +22,7 @@ export abstract class AbstractSubForm<
     V extends boolean = false,
   >
   extends AbstractForm<U>
-  implements FormChild<T, FormValue<U>, V>, Identifiable
+  implements FormChild<T, FormValue<U>>, PossiblyTransient<V>, Identifiable
 {
   public readonly name: T;
   public readonly transient: V;

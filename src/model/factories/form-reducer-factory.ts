@@ -23,7 +23,9 @@ export class FormReducerFactory {
       }),
       ...customAdapters,
     ];
-    const transientFields = fields.filter(field => field.transient);
+    const transientFields = fields.filter(
+      field => 'transient' in field && field.transient,
+    );
     return new FormReducer<T>({
       transientFields,
       groups,

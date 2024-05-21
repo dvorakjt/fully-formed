@@ -17,7 +17,7 @@ export class DefaultAdapterFactory {
     autoTrim,
   }: CreateDefaultAdaptersParams): IAdapter[] {
     return fields
-      .filter(field => !field.transient)
+      .filter(field => !('transient' in field) || !field.transient)
       .map(field => {
         if (isExcludable(field)) {
           return new DefaultExcludableAdapter({

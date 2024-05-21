@@ -17,6 +17,7 @@ import type {
   FormState,
   SetExclude,
   Identifiable,
+  PossiblyTransient,
 } from '../interfaces';
 import type { AutoTrim, FormMembers, FormValue } from '../types';
 import type { FormReducer } from '../../reducers';
@@ -46,7 +47,8 @@ export abstract class AbstractExcludableSubForm<
   >
   implements
     IForm<S>,
-    FormChild<T, FormValue<S>, U>,
+    FormChild<T, FormValue<S>>,
+    PossiblyTransient<U>,
     Excludable,
     SetExclude,
     Identifiable

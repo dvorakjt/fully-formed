@@ -1,22 +1,25 @@
 import type { FormMembers } from './form-members.type';
-import type { FormChild } from '../interfaces';
+import type { FormChild, PossiblyTransient } from '../interfaces';
 import type { Excludable, ValueOf } from '../../shared';
 import type { IAdapter } from '../../adapters';
 
-type ExcludableFieldValues<T extends readonly FormChild[]> = {
-  [F in T[number] as F['transient'] extends false ?
-    F extends Excludable ?
-      F['name']
+type NonTransient<T extends FormChild> =
+  T extends PossiblyTransient ?
+    T['transient'] extends false ?
+      T
     : never
+  : T;
+
+type ExcludableFieldValues<T extends readonly FormChild[]> = {
+  [F in T[number] as NonTransient<F> extends never ? never
+  : F extends Excludable ? F['name']
   : never]+?: ValueOf<F>;
 };
 
 type NonExcludableFieldValues<T extends readonly FormChild[]> = {
-  [F in T[number] as F['transient'] extends false ?
-    F extends Excludable ?
-      never
-    : F['name']
-  : never]: ValueOf<F>;
+  [F in T[number] as NonTransient<F> extends never ? never
+  : F extends Excludable ? never
+  : F['name']]: ValueOf<F>;
 };
 
 type ExcludableAdapterValues<T extends readonly IAdapter[]> = {
