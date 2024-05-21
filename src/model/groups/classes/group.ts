@@ -30,6 +30,7 @@ type GroupConstructorParams<
   asyncValidators?: Array<IAsyncValidator<GroupValue<U>>>;
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<GroupValue<U>>>;
   pendingMessage?: string;
+  delayAsyncValidatorExecution?: number;
 };
 
 export class Group<
@@ -60,32 +61,41 @@ export class Group<
     validatorTemplates,
     asyncValidatorTemplates,
     pendingMessage,
+    delayAsyncValidatorExecution,
   }: GroupConstructorParams<T, U>) {
     this.name = name;
+
     this.reducer = new GroupReducer<U>({ members });
+
     this.validatorSuite = new CombinedValidatorSuite<GroupValue<U>>({
       validators,
       asyncValidators,
       validatorTemplates,
       asyncValidatorTemplates,
       pendingMessage,
+      delayAsyncValidatorExecution,
     });
+
     if (this.reducer.state.validity !== Validity.Valid) {
       const initialState: GroupState<U> = {
         ...this.reducer.state,
         messages: [],
         validitySource: GroupValiditySource.Reduction,
       };
+
       this.stateManager = new StateManager<GroupState<U>>(initialState);
     } else {
       const { syncResult, observableResult } = this.validatorSuite.validate(
         this.reducer.state.value,
       );
+
       const initialState: GroupState<U> = {
         ...syncResult,
         validitySource: GroupValiditySource.Validation,
       };
+
       this.stateManager = new StateManager<GroupState<U>>(initialState);
+
       this.validatorSuiteSubscription = observableResult?.subscribe(result => {
         this.state = {
           ...result,
@@ -94,6 +104,7 @@ export class Group<
         };
       });
     }
+
     this.subscribeToReducer();
   }
 
@@ -115,10 +126,12 @@ export class Group<
         const { syncResult, observableResult } = this.validatorSuite.validate(
           state.value,
         );
+
         this.state = {
           ...syncResult,
           validitySource: GroupValiditySource.Validation,
         };
+
         this.validatorSuiteSubscription = observableResult?.subscribe(
           result => {
             this.state = {

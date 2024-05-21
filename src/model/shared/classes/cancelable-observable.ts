@@ -35,11 +35,15 @@ export class CancelableObservable<T> {
     let canceled = false;
     let subscription: Subscription;
 
-    setTimeout(() => {
-      if (!canceled) {
-        subscription = new Observable(this.subscribeFn).subscribe(observer);
-      }
-    }, this.delay);
+    if (this.delay > 0) {
+      setTimeout(() => {
+        if (!canceled) {
+          subscription = new Observable(this.subscribeFn).subscribe(observer);
+        }
+      }, this.delay);
+    } else {
+      subscription = new Observable(this.subscribeFn).subscribe(observer);
+    }
 
     const unsubscribeAndCancel = (): void => {
       canceled = true;
