@@ -3,6 +3,7 @@ import type { FormChild, FormChildState } from './form-child.interface';
 import type { Focusable, FocusableState } from './focusable.interface';
 import type { Modifiable, ModifiableState } from './modifiable.interface';
 import type { SetValue } from './set-value.interface';
+import type { Submittable } from './submittable.interface';
 import type { Identifiable } from './identifiable.interface';
 
 export type FieldState<T = unknown> = FormChildState<T> &
@@ -20,5 +21,6 @@ export interface IField<
       Focusable &
       Modifiable &
       SetValue<U> &
+      Submittable &
       Identifiable
   > {}

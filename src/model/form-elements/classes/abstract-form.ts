@@ -1,8 +1,12 @@
 import { StateManager, type RecordFromNameableArray } from '../../shared';
-import { createRecordFromNameableArray, isResettable } from '../../utils';
+import {
+  createRecordFromNameableArray,
+  isResettable,
+  isSubmittable,
+} from '../../utils';
 import { FormReducerFactory } from '../../factories';
 import type { Subscription } from 'rxjs';
-import type { IForm, FormState, Submittable } from '../interfaces';
+import type { IForm, FormState } from '../interfaces';
 import type { AutoTrim, FormMembers } from '../types';
 import type { FormReducer } from '../../reducers';
 
@@ -60,7 +64,9 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
 
   public setSubmitted(): void {
     for (const field of Object.values(this.fields)) {
-      (field as Submittable).setSubmitted();
+      if (isSubmittable(field)) {
+        field.setSubmitted();
+      }
     }
     this.state = {
       submitted: true,

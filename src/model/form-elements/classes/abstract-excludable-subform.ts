@@ -4,7 +4,11 @@ import {
   type ExcludableState,
   type RecordFromNameableArray,
 } from '../../shared';
-import { createRecordFromNameableArray, isResettable } from '../../utils';
+import {
+  createRecordFromNameableArray,
+  isResettable,
+  isSubmittable,
+} from '../../utils';
 import { FormReducerFactory } from '../../factories';
 import type { Subscription } from 'rxjs';
 import type {
@@ -13,7 +17,6 @@ import type {
   FormState,
   SetExclude,
   Identifiable,
-  Submittable,
 } from '../interfaces';
 import type { AutoTrim, FormMembers, FormValue } from '../types';
 import type { FormReducer } from '../../reducers';
@@ -113,7 +116,9 @@ export abstract class AbstractExcludableSubForm<
 
   public setSubmitted(): void {
     for (const field of Object.values(this.fields)) {
-      (field as Submittable).setSubmitted();
+      if (isSubmittable(field)) {
+        field.setSubmitted();
+      }
     }
     this.state = {
       submitted: true,

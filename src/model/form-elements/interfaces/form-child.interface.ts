@@ -1,13 +1,12 @@
-import type { Merged, Nameable, Validated, ValidatedState } from '../../shared';
+import type { Nameable, Validated, ValidatedState } from '../../shared';
 import type { PossiblyTransient } from './possibly-transient.interface';
-import type { Submittable, SubmittableState } from './submittable.interface';
 
-export type FormChildState<T> = ValidatedState<T> & SubmittableState;
+export type FormChildState<T> = ValidatedState<T>;
 
 export interface FormChild<
   T extends string = string,
   U = unknown,
   V extends boolean = boolean,
-> extends Merged<
-    Nameable<T> & Validated<U> & PossiblyTransient<V> & Submittable
-  > {}
+> extends Nameable<T>,
+    Validated<U>,
+    PossiblyTransient<V> {}
