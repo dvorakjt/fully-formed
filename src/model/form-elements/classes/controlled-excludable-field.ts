@@ -39,6 +39,7 @@ type ControlledExcludableFieldConstructorParams<
   asyncValidators?: Array<IAsyncValidator<S>>;
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<S>>;
   pendingMessage?: string;
+  delayAsyncValidatorExecution?: number;
   excludeByDefault?: boolean;
 };
 
@@ -80,7 +81,7 @@ export class ControlledExcludableField<
       this.validatorSuiteSubscription &&
       this.isValidatedState(dictatedState)
     ) {
-      this.validatorSuiteSubscription.unsubscribe();
+      this.validatorSuiteSubscription.unsubscribeAndCancel();
     }
 
     this.state = dictatedState;

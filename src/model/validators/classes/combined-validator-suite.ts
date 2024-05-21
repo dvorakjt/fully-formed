@@ -5,9 +5,9 @@ import {
   type ValidatedState,
   type MessageBearerState,
 } from '../../shared';
-import type { Observable } from 'rxjs';
-import type { ValidatorTemplate, AsyncValidatorTemplate } from '../types';
 import type { IAsyncValidator, IValidator } from '../interfaces';
+import type { ValidatorTemplate, AsyncValidatorTemplate } from '../types';
+import type { CancelableObservable } from '../../shared/classes/cancelable-observable';
 
 type CombinedValidatorSuiteConstructorParams<T> = {
   validators?: Array<IValidator<T>>;
@@ -15,11 +15,14 @@ type CombinedValidatorSuiteConstructorParams<T> = {
   asyncValidators?: Array<IAsyncValidator<T>>;
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<T>>;
   pendingMessage?: string;
+  delayAsyncValidatorExecution?: number;
 };
 
 type CombinedValidatorSuiteResult<T> = {
   syncResult: ValidatedState<T> & MessageBearerState;
-  observableResult?: Observable<ValidatedState<T> & MessageBearerState>;
+  observableResult?: CancelableObservable<
+    ValidatedState<T> & MessageBearerState
+  >;
 };
 
 export class CombinedValidatorSuite<T> {
@@ -33,6 +36,7 @@ export class CombinedValidatorSuite<T> {
     asyncValidators,
     asyncValidatorTemplates,
     pendingMessage,
+    delayAsyncValidatorExecution,
   }: CombinedValidatorSuiteConstructorParams<T>) {
     this.validatorSuite = new ValidatorSuite<T>({
       validators,
@@ -47,6 +51,7 @@ export class CombinedValidatorSuite<T> {
       this.asyncValidatorSuite = new AsyncValidatorSuite<T>({
         asyncValidators,
         asyncValidatorTemplates,
+        delayAsyncValidatorExecution,
       });
     }
     this.pendingMessage = pendingMessage;

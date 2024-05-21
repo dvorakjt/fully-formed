@@ -36,6 +36,7 @@ type ControlledFieldConstructorParams<
   asyncValidators?: Array<IAsyncValidator<S>>;
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<S>>;
   pendingMessage?: string;
+  delayAsyncValidatorExecution?: number;
 };
 
 export class ControlledField<
@@ -71,7 +72,7 @@ export class ControlledField<
     if (!dictatedState) return;
 
     if (this.validatorSuiteSubscription) {
-      this.validatorSuiteSubscription.unsubscribe();
+      this.validatorSuiteSubscription.unsubscribeAndCancel();
     }
 
     this.state = dictatedState;

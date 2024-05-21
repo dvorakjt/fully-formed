@@ -17,6 +17,7 @@ import { GroupValiditySource } from '../enums';
 import type { Subscription } from 'rxjs';
 import type { IGroup, GroupMember } from '../interfaces';
 import type { GroupState, GroupValue } from '../types';
+import type { CancelableSubscription } from '../../shared';
 
 type GroupConstructorParams<
   T extends string,
@@ -41,7 +42,7 @@ export class Group<
   private reducer: GroupReducer<U>;
   private validatorSuite: CombinedValidatorSuite<GroupValue<U>>;
   private stateManager: StateManager<GroupState<U>>;
-  private validatorSuiteSubscription?: Subscription;
+  private validatorSuiteSubscription?: CancelableSubscription;
 
   public get state(): GroupState<U> {
     return this.stateManager.state;
@@ -102,7 +103,8 @@ export class Group<
 
   private subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
-      this.validatorSuiteSubscription?.unsubscribe();
+      this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
       if (state.validity !== Validity.Valid) {
         this.state = {
           ...state,

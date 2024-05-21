@@ -4,6 +4,7 @@ import {
   type Excludable,
   type ExcludableState,
   type Message,
+  type CancelableSubscription,
 } from '../../shared';
 import {
   CombinedValidatorSuite,
@@ -30,6 +31,7 @@ type ExcludableFieldConstructorParams<
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<S>>;
   pendingMessage?: string;
   excludeByDefault?: boolean;
+  delayAsyncValidatorExecution?: number;
 };
 
 export type ExcludableFieldState<T> = FieldState<T> & ExcludableState;
@@ -44,7 +46,7 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
   protected excludeByDefault: boolean;
   protected validatorSuite: CombinedValidatorSuite<S>;
   protected stateManager: StateManager<ExcludableFieldState<S>>;
-  protected validatorSuiteSubscription?: Subscription;
+  protected validatorSuiteSubscription?: CancelableSubscription;
 
   public get state(): ExcludableFieldState<S> {
     return this.stateManager.state;
@@ -68,6 +70,7 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
     asyncValidatorTemplates,
     pendingMessage,
     excludeByDefault,
+    delayAsyncValidatorExecution,
   }: ExcludableFieldConstructorParams<T, S, U>) {
     this.name = name;
     this.id = id ?? this.name;
@@ -81,6 +84,7 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
       asyncValidators,
       asyncValidatorTemplates,
       pendingMessage,
+      delayAsyncValidatorExecution,
     });
 
     const { syncResult, observableResult } = this.validatorSuite.validate(
@@ -113,7 +117,7 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
   }
 
   public setValue(value: S): void {
-    this.validatorSuiteSubscription?.unsubscribe();
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
 
     const { syncResult, observableResult } =
       this.validatorSuite.validate(value);
@@ -156,9 +160,12 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
   }
 
   public reset(): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
     const { syncResult, observableResult } = this.validatorSuite.validate(
       this.defaultValue,
     );
+
     const initialState: ExcludableFieldState<S> = {
       ...syncResult,
       submitted: false,

@@ -1,3 +1,4 @@
+export type { CancelableSubscription } from './cancelable-subscription';
 export type { Excludable, ExcludableState } from './excludable.interface';
 export type {
   MessageBearer,
