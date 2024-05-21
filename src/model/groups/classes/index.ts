@@ -1,2 +1,1 @@
-export * from './abstract';
-export * from './concrete';
+export { Group } from './group';

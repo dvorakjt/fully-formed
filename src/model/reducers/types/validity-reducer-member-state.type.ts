@@ -1,4 +1,4 @@
-import type { Validity } from '../../state';
+import type { Validity } from '../../shared';
 
 export type ValidityReducerMemberState = {
   validity: Validity;

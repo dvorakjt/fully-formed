@@ -1,2 +1,1 @@
-export * from './classes';
-export * from './functions';
+export { PromiseScheduler } from './promise-scheduler';

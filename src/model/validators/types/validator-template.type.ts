@@ -1,3 +1,3 @@
-import type { ValidatorConstructorArgs } from './validator-constructor-args.type';
+import type { ValidatorConstructorParams } from '../classes/validator';
 
-export type ValidatorTemplate<Value> = ValidatorConstructorArgs<Value>;
+export type ValidatorTemplate<T> = ValidatorConstructorParams<T>;

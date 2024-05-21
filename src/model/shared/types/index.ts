@@ -1,6 +1,8 @@
+export type { ArrayOfStates } from './array-of-states.type';
 export type { Constructor } from './constructor.type';
 export type { DisjointlyNamed } from './disjointly-named.type';
-export type { ExcludableState } from './excludable-state.type';
-export type { InteractableState } from './interactable-state.type';
-export type { NameableObject } from './nameable-object.type';
-export type { UniquelyNamed, OmitIndex } from './uniquely-named.type';
+export type { Merged } from './merged.type';
+export type { Message } from './message.type';
+export type { RecordFromNameableArray } from './record-from-nameable-array.type';
+export type { UniquelyNamed } from './uniquely-named.type';
+export type { ValueOf } from './value-of.type';

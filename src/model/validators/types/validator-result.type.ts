@@ -1,4 +1,4 @@
-import type { Message, Validity } from '../../state';
+import type { Message, Validity } from '../../shared';
 
 export type ValidatorResult = {
   validity: Validity;

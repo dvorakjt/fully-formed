@@ -1,4 +1,3 @@
-import type { AsyncValidatorConstructorArgs } from './async-validator-constructor-args.type';
+import type { AsyncValidatorConstructorParams } from '../classes/async-validator';
 
-export type AsyncValidatorTemplate<Value> =
-  AsyncValidatorConstructorArgs<Value>;
+export type AsyncValidatorTemplate<T> = AsyncValidatorConstructorParams<T>;
