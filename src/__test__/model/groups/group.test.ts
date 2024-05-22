@@ -505,7 +505,6 @@ describe('Group', () => {
     expect(signUpGroup.state.validity).toBe(Validity.Pending);
 
     signUpGroup.subscribeToState(state => {
-      console.log(state);
       expect(state.validity).toBe(Validity.Invalid);
     });
 

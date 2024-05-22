@@ -9,7 +9,7 @@ export function isSubmittable<T>(element: T): element is T & Submittable {
     element.state !== null &&
     'submitted' in element.state &&
     typeof element.state.submitted === 'boolean' &&
-    'setSubmit' in element &&
-    typeof element.setSubmit === 'function'
+    'setSubmitted' in element &&
+    typeof element.setSubmitted === 'function'
   );
 }
