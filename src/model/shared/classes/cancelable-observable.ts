@@ -12,10 +12,7 @@ type Subscribe<T> = (
   subscriber: Subscriber<T>,
 ) => TeardownLogic;
 
-type ObserverOrNext<T> =
-  | Partial<Observer<T>>
-  | ((value: T) => void)
-  | undefined;
+type ObserverOrNext<T> = Partial<Observer<T>> | ((value: T) => void);
 
 export class CancelableObservable<T> {
   private subscribeFn: Subscribe<T>;
@@ -31,7 +28,7 @@ export class CancelableObservable<T> {
     this.delay = delay;
   }
 
-  public subscribe(observer: ObserverOrNext<T>): CancelableSubscription {
+  public subscribe(observer?: ObserverOrNext<T>): CancelableSubscription {
     let canceled = false;
     let subscription: Subscription;
 
