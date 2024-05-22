@@ -1,8 +1,11 @@
-import { Validity, type Nameable, type Stateful } from '../../shared';
-import type { ValidityReducerMemberState } from '../types';
+import { Validity } from '../../shared';
+import type {
+  ValidityReducerMember,
+  ValidityReducerMemberState,
+} from '../types';
 
 type ValidityReducerConstructorParams = {
-  members: ReadonlyArray<Nameable & Stateful<ValidityReducerMemberState>>;
+  members: readonly ValidityReducerMember[];
 };
 
 export class ValidityReducer {
