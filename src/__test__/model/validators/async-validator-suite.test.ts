@@ -1,14 +1,15 @@
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import {
   AsyncValidatorSuite,
   AsyncValidator,
   Validity,
   type AsyncValidatorTemplate,
-  type IAsyncValidator,
 } from '../../../model';
 import {
   AsyncValidatorSuiteContainer,
+  MockAsyncValidator,
   PromiseScheduler,
+  delay,
 } from '../../../test-utils';
 
 describe('AsyncValidatorSuite', () => {
@@ -216,11 +217,7 @@ describe('AsyncValidatorSuite', () => {
 
   test(`The validate method of its async validators is not called if the 
   unsubscribeAndCancel() method of the CancelableSubscription returned by its 
-  own validate method is called before the delay duration has elapsed.`, () => {
-    class MockAsyncValidator<T> implements IAsyncValidator<T> {
-      public validate = vi.fn();
-    }
-
+  own validate method is called before the delay duration has elapsed.`, async () => {
     const asyncValidators = new Array(10).fill(null).map(() => {
       return new MockAsyncValidator<string>();
     });
@@ -233,8 +230,37 @@ describe('AsyncValidatorSuite', () => {
     const subscription = validatorSuite.validate('test').subscribe();
     subscription.unsubscribeAndCancel();
 
+    await delay(1000);
+
     for (const validator of asyncValidators) {
       expect(validator.validate).not.toHaveBeenCalled();
     }
+  });
+
+  test(`The validate methods of its async validators are executed once the 
+  provided delay duration has elapsed.`, async () => {
+    const validatorSuite = new AsyncValidatorSuite<string>({
+      asyncValidators: [
+        new AsyncValidator<string>({
+          predicate: (): Promise<boolean> => Promise.resolve(true),
+        }),
+      ],
+      delayAsyncValidatorExecution: 500,
+    });
+
+    const observable = validatorSuite.validate('test');
+
+    const subscriptionTimestamp = Date.now();
+
+    observable.subscribe(() => {
+      const executionTimestamp = Date.now();
+      const difference = executionTimestamp - subscriptionTimestamp;
+      console.log(
+        `AsyncValidatorSuite executed async validators after ${difference}ms.`,
+      );
+      expect(difference).toBeGreaterThanOrEqual(500);
+    });
+
+    await delay(1000);
   });
 });

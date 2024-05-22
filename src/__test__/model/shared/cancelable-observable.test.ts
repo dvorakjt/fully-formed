@@ -10,7 +10,7 @@ describe('CancelableObservable', () => {
   });
 
   test(`It returns an observable that is executed after the provided delay 
-  duration.`, () => {
+  duration.`, async () => {
     const cancelableObservable = new CancelableObservable<number>(
       subscriber => {
         const executionTimestamp = Date.now();
@@ -23,15 +23,20 @@ describe('CancelableObservable', () => {
     const subscriptionTimestamp = Date.now();
 
     cancelableObservable.subscribe(executionTimestamp => {
-      console.log(executionTimestamp - subscriptionTimestamp);
-      expect(executionTimestamp - subscriptionTimestamp).toBeGreaterThanOrEqual(
-        500,
+      const difference = executionTimestamp - subscriptionTimestamp;
+
+      console.log(
+        `CancelableObservable executed subscribe after ${difference}ms.`,
       );
+
+      expect(difference).toBeGreaterThanOrEqual(500);
     });
+
+    await delay(1000);
   });
 
-  test(`If the subscription returned by subscribe before the delay duration has 
-  elapsed, the subscribe function is not called.`, async () => {
+  test(`If the subscription returned by subscribe is calnceled before the delay 
+  duration has elapsed, the subscribe function is not called.`, async () => {
     const subscribe = vi.fn();
     const cancelableObservable = new CancelableObservable(subscribe, 500);
     const subscription = cancelableObservable.subscribe();
