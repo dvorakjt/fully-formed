@@ -2,7 +2,8 @@ import { describe, test, expect } from 'vitest';
 import { StringValidators, Validity } from '../../../../model';
 
 describe('StringValidators.includesLower()', () => {
-  test('It returns a validator that determines whether a string contains a lowercase letter, and, if so, returns a valid result.', () => {
+  test(`It returns a validator that determines whether a string contains a 
+  lowercase letter, and, if so, returns a valid result.`, () => {
     const includesLower = StringValidators.includesLower();
     for (let i = 0; i < 26; i++) {
       const char = String.fromCharCode('a'.charCodeAt(0) + i);
@@ -19,7 +20,8 @@ describe('StringValidators.includesLower()', () => {
     }
   });
 
-  test('It returns a validator that determines whether a string contains a lowercase letter, and, if not, returns an invalid result. ', () => {
+  test(`It returns a validator that determines whether a string contains a 
+  lowercase letter, and, if not, returns an invalid result.`, () => {
     const includesLower = StringValidators.includesLower();
     expect(includesLower.validate('').validity).toBe(Validity.Invalid);
     expect(includesLower.validate('ABDEF12345!@#$%_ ').validity).toBe(
@@ -27,7 +29,8 @@ describe('StringValidators.includesLower()', () => {
     );
   });
 
-  test('If a valid message was provided, that message is returned as part of a valid result.', () => {
+  test(`If a valid message was provided, that message is returned as part of a 
+  valid result.`, () => {
     const validMessage = 'The provided string includes a lowercase letter.';
     const includesLower = StringValidators.includesLower({ validMessage });
     expect(includesLower.validate('a').message).toStrictEqual({
@@ -36,7 +39,8 @@ describe('StringValidators.includesLower()', () => {
     });
   });
 
-  test('If an invalid message was provided, that message is returned as part of an invalid result.', () => {
+  test(`If an invalid message was provided, that message is returned as part of 
+  an invalid result.`, () => {
     const invalidMessage =
       'The provided string must include a lowercase letter.';
     const includesLower = StringValidators.includesLower({ invalidMessage });

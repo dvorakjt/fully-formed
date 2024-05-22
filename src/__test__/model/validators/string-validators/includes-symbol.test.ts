@@ -2,7 +2,8 @@ import { describe, test, expect } from 'vitest';
 import { StringValidators, Validity } from '../../../../model';
 
 describe('StringValidators.includesSymbol()', () => {
-  test('It returns a validator that determines whether a string contains a symbol, and, if so, returns a valid result.', () => {
+  test(`It returns a validator that determines whether a string contains a 
+  symbol, and if so, returns a valid result.`, () => {
     const symbols = '!"#$%&\'()*+,-./\\:;<=>?@[]^_`{|}~';
     const includesSymbol = StringValidators.includesSymbol();
     for (let i = 0; i < symbols.length; i++) {
@@ -21,7 +22,9 @@ describe('StringValidators.includesSymbol()', () => {
       );
     }
   });
-  test('It returns a validator that determines whether a string contains a symbol, and, if not, returns an invalid result. ', () => {
+
+  test(`It returns a validator that determines whether a string contains a 
+  symbol, and if not, returns an invalid result.`, () => {
     const includesSymbol = StringValidators.includesSymbol();
     expect(includesSymbol.validate('').validity).toBe(Validity.Invalid);
     expect(includesSymbol.validate('abcdefABCDEF012345').validity).toBe(
@@ -29,7 +32,8 @@ describe('StringValidators.includesSymbol()', () => {
     );
   });
 
-  test('If a valid message was provided, that message is returned as part of a valid result.', () => {
+  test(`If a valid message was provided, that message is returned as part of a 
+  valid result.`, () => {
     const validMessage = 'The provided string contains a symbol.';
     const includesSymbol = StringValidators.includesSymbol({ validMessage });
     expect(includesSymbol.validate('!').message).toStrictEqual({
@@ -38,7 +42,8 @@ describe('StringValidators.includesSymbol()', () => {
     });
   });
 
-  test('If an invalid message was provided, that message is returned as part of an invalid result.', () => {
+  test(`If an invalid message was provided, that message is returned as part of 
+  an invalid result.`, () => {
     const invalidMessage = 'The provided value must contain a symbol.';
     const includesSymbol = StringValidators.includesSymbol({ invalidMessage });
     expect(includesSymbol.validate('').message).toStrictEqual({
