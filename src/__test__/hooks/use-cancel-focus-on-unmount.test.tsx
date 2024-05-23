@@ -16,7 +16,6 @@ import { useKeyboardNavigation } from '../../test-utils';
 describe('useCancelFocusOnUnmount()', () => {
   afterEach(cleanup);
 
-  // Sanity check
   test(`If omitted, if a focused element unmounts without its blur() method 
   having been called, the cancelFocus() method of the corresponding field is 
   not called.`, async () => {
