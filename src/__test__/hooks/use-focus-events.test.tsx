@@ -68,4 +68,31 @@ describe('useFocusEvents()', () => {
     await waitFor(() => expect(screen.queryByTestId(inputId)).toBeNull());
     expect(field.state.isInFocus).toBe(false);
   });
+
+  test(`When it is called and its result is spread into the props of an element, 
+  the field it received as an argument becomes focused when that element is 
+  focused and is blurred when that element is blurred.`, async () => {
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+    });
+
+    const user = userEvent.setup();
+    const inputId = 'input';
+
+    function Input(): React.JSX.Element {
+      return <input {...useFocusEvents(field)} data-testid={inputId} />;
+    }
+
+    render(<Input />);
+
+    const input = screen.getByTestId(inputId);
+    await user.click(input);
+    expect(field.state.isInFocus).toBe(true);
+    expect(field.state.hasBeenBlurred).toBe(false);
+
+    input.blur();
+    expect(field.state.isInFocus).toBe(false);
+    expect(field.state.hasBeenBlurred).toBe(true);
+  });
 });

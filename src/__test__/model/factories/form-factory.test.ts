@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest';
 import {
   FormFactory,
-  AbstractFormTemplate,
-  AbstractSubFormTemplate,
+  FormTemplate,
+  SubFormTemplate,
   AbstractForm,
   Field,
   Group,
@@ -15,11 +15,11 @@ import {
 describe('FormFactory', () => {
   test(`It returns a constructor for a subclass of AbstractForm when 
   createForm() is called.`, () => {
-    class FormTemplate extends AbstractFormTemplate {
+    class Template extends FormTemplate {
       public readonly fields = [];
     }
 
-    const Form = FormFactory.createForm(FormTemplate);
+    const Form = FormFactory.createForm(Template);
     const instance = new Form();
 
     expect(instance).toBeInstanceOf(AbstractForm);
@@ -27,7 +27,7 @@ describe('FormFactory', () => {
 
   test(`When createForm() is called, the fields of the form that is returned 
   are the fields that were provided in the template.`, () => {
-    class FormTemplate extends AbstractFormTemplate {
+    class Template extends FormTemplate {
       public readonly fields = [
         new Field({
           name: 'firstName',
@@ -40,7 +40,7 @@ describe('FormFactory', () => {
       ] as const;
     }
 
-    const Form = FormFactory.createForm(FormTemplate);
+    const Form = FormFactory.createForm(Template);
     const instance = new Form();
 
     expect(instance.fields.firstName).toBeInstanceOf(Field);
@@ -49,7 +49,7 @@ describe('FormFactory', () => {
 
   test(`When createForm() is called, the groups of the form that is returned
   are the groups that were provided in the template.`, () => {
-    class FormTemplate extends AbstractFormTemplate {
+    class Template extends FormTemplate {
       public readonly fields = [
         new Field({
           name: 'firstName',
@@ -81,7 +81,7 @@ describe('FormFactory', () => {
       ] as const;
     }
 
-    const Form = FormFactory.createForm(FormTemplate);
+    const Form = FormFactory.createForm(Template);
     const instance = new Form();
 
     expect(instance.groups.fullName).toBeInstanceOf(Group);
@@ -91,7 +91,7 @@ describe('FormFactory', () => {
   test(`When createForm() is called, the parameters of the template constructor 
   that is provided become the parameters of the constructor that is 
   returned.`, () => {
-    class GenericTemplate<T extends string> extends AbstractFormTemplate {
+    class GenericTemplate<T extends string> extends FormTemplate {
       public readonly fields: [Field<T, string, false>];
 
       public constructor(fieldName: T) {
@@ -115,12 +115,12 @@ describe('FormFactory', () => {
 
   test(`It returns an instance of AbstractSubForm when createSubForm() is
   called.`, () => {
-    class SubFormTemplate extends AbstractSubFormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'subForm';
       public readonly fields = [];
     }
 
-    const SubForm = FormFactory.createSubForm(SubFormTemplate);
+    const SubForm = FormFactory.createSubForm(Template);
     const instance = new SubForm();
 
     expect(instance).toBeInstanceOf(AbstractSubForm);
@@ -128,7 +128,7 @@ describe('FormFactory', () => {
 
   test(`When createSubForm() is called, the fields of the form that is returned 
   are the fields that were provided in the template.`, () => {
-    class SubFormTemplate extends AbstractSubFormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'subForm';
       public readonly fields = [
         new Field({
@@ -142,7 +142,7 @@ describe('FormFactory', () => {
       ] as const;
     }
 
-    const SubForm = FormFactory.createSubForm(SubFormTemplate);
+    const SubForm = FormFactory.createSubForm(Template);
     const instance = new SubForm();
 
     expect(instance.fields.firstName).toBeInstanceOf(Field);
@@ -151,7 +151,7 @@ describe('FormFactory', () => {
 
   test(`When createSubForm() is called, the groups of the form that is returned
   are the groups that were provided in the template.`, () => {
-    class SubFormTemplate extends AbstractSubFormTemplate {
+    class Template extends SubFormTemplate {
       public readonly name = 'subForm';
       public readonly fields = [
         new Field({
@@ -184,7 +184,7 @@ describe('FormFactory', () => {
       ] as const;
     }
 
-    const SubForm = FormFactory.createSubForm(SubFormTemplate);
+    const SubForm = FormFactory.createSubForm(Template);
     const instance = new SubForm();
 
     expect(instance.groups.fullName).toBeInstanceOf(Group);
@@ -197,7 +197,7 @@ describe('FormFactory', () => {
     class GenericSubFormTemplate<
       T extends string,
       V extends string,
-    > extends AbstractSubFormTemplate {
+    > extends SubFormTemplate {
       public readonly name: T;
       public readonly fields: [Field<V, string, false>];
 
@@ -226,7 +226,7 @@ describe('FormFactory', () => {
   the TransientTemplate interface, the resulting form's transient property is 
   set accordingly.`, () => {
     class TransientSubFormTemplate
-      extends AbstractSubFormTemplate
+      extends SubFormTemplate
       implements TransientTemplate<true>
     {
       public readonly name = 'transientSubForm';
@@ -242,7 +242,7 @@ describe('FormFactory', () => {
 
   test(`It returns an instact of AbstractExcludableSubForm when
   createExcludableSubForm() is called.`, () => {
-    class ExcludableSubFormTemplate extends AbstractSubFormTemplate {
+    class ExcludableSubFormTemplate extends SubFormTemplate {
       public readonly name = 'excludableSubForm';
       public readonly fields = [];
     }
@@ -257,7 +257,7 @@ describe('FormFactory', () => {
 
   test(`When createExcludableSubForm() is called, the fields of the form that 
   is returned are the fields that were provided in the template.`, () => {
-    class ExcludableSubFormTemplate extends AbstractSubFormTemplate {
+    class ExcludableSubFormTemplate extends SubFormTemplate {
       public readonly name = 'excludableSubForm';
       public readonly fields = [
         new Field({
@@ -282,7 +282,7 @@ describe('FormFactory', () => {
 
   test(`When createExcludableSubForm() is called, the groups of the form that is 
   returned are the groups that were provided in the template.`, () => {
-    class ExcludableSubFormTemplate extends AbstractSubFormTemplate {
+    class ExcludableSubFormTemplate extends SubFormTemplate {
       public readonly name = 'excludableSubForm';
       public readonly fields = [
         new Field({
@@ -330,7 +330,7 @@ describe('FormFactory', () => {
     class GenericExcludableSubFormTemplate<
       T extends string,
       V extends string,
-    > extends AbstractSubFormTemplate {
+    > extends SubFormTemplate {
       public readonly name: T;
       public readonly fields: [Field<V, string, false>];
 
@@ -364,7 +364,7 @@ describe('FormFactory', () => {
   implements the TransientTemplate interface, the resulting form's transient 
   property is set accordingly.`, () => {
     class TransientExcludableSubFormTemplate
-      extends AbstractSubFormTemplate
+      extends SubFormTemplate
       implements TransientTemplate<true>
     {
       public readonly name = 'transientExcludableSubForm';
@@ -384,7 +384,7 @@ describe('FormFactory', () => {
   implements the ExcludableTemplate interface, the resulting form's 
   excludeByDefault property is set accordingly.`, () => {
     class ExcludableSubFormTemplate
-      extends AbstractSubFormTemplate
+      extends SubFormTemplate
       implements ExcludableTemplate
     {
       public readonly name = 'excludableSubForm';

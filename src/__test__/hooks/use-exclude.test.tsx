@@ -9,7 +9,8 @@ describe('useExclude()', () => {
   afterEach(cleanup);
 
   test(`It returns a React state variable of type boolean whose value is 
-  updated when the state of the entity it received changes.`, async () => {
+  updated when the state.exclude property of the entity it received is 
+  toggled.`, async () => {
     const field = new ExcludableField({
       name: 'testField',
       defaultValue: '',

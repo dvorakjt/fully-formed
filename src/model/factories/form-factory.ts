@@ -4,8 +4,8 @@ import {
   AbstractExcludableSubForm,
 } from '../form-elements';
 import type {
-  AbstractFormTemplate,
-  AbstractSubFormTemplate,
+  FormTemplate,
+  SubFormTemplate,
   TransientTemplate,
 } from '../templates';
 import type { Constructor } from '../shared';
@@ -14,10 +14,9 @@ type TransienceFromTemplate<T> =
   T extends TransientTemplate<boolean> ? T['transient'] : false;
 
 export class FormFactory {
-  public static createForm<
-    Args extends unknown[],
-    T extends AbstractFormTemplate,
-  >(Template: Constructor<Args, T>): Constructor<Args, AbstractForm<T>> {
+  public static createForm<Args extends unknown[], T extends FormTemplate>(
+    Template: Constructor<Args, T>,
+  ): Constructor<Args, AbstractForm<T>> {
     return class extends AbstractForm<T> {
       public constructor(...args: Args) {
         super(new Template(...args));
@@ -27,7 +26,7 @@ export class FormFactory {
 
   public static createSubForm<
     Args extends unknown[],
-    T extends AbstractSubFormTemplate,
+    T extends SubFormTemplate,
   >(
     Template: Constructor<Args, T>,
   ): Constructor<
@@ -47,7 +46,7 @@ export class FormFactory {
 
   public static createExcludableSubForm<
     Args extends unknown[],
-    T extends AbstractSubFormTemplate,
+    T extends SubFormTemplate,
   >(
     Template: Constructor<Args, T>,
   ): Constructor<
