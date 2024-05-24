@@ -1,9 +1,9 @@
 import { describe, test, expect, vi } from 'vitest';
 import {
+  SubFormTemplate,
   ExcludableField,
   Field,
   FormFactory,
-  FormTemplate,
   Adapter,
   ExcludableAdapter,
   StringValidators,
@@ -11,21 +11,32 @@ import {
   Group,
   GroupValiditySource,
   AsyncValidator,
-  SubFormTemplate,
   type ExcludableAdaptFnReturnType,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
-describe('AbstractForm', () => {
+describe('AbstractSubForm', () => {
+  test('Its id defaults to its name.', () => {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
+      public readonly fields = [];
+    }
+    const TestForm = FormFactory.createSubForm(Template);
+    const instance = new TestForm();
+    expect(instance.name).toBe('TestForm');
+    expect(instance.id).toBe(instance.name);
+  });
+
   test('Its value consists of all included, non-transient fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'firstName', defaultValue: 'Georg' }),
         new ExcludableField({ name: 'middleName', defaultValue: 'Christoph' }),
         new Field({ name: 'lastName', defaultValue: 'Bach' }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       firstName: 'Georg',
@@ -35,7 +46,8 @@ describe('AbstractForm', () => {
   });
 
   test('Its value does not include any transient fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'password', defaultValue: '' }),
         new Field({
@@ -45,7 +57,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       password: '',
@@ -53,7 +65,8 @@ describe('AbstractForm', () => {
   });
 
   test('Its value does not include the values of any excluded fields.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'primaryEmail', defaultValue: 'user@example.com' }),
         new ExcludableField({
@@ -63,7 +76,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       primaryEmail: 'user@example.com',
@@ -71,7 +84,8 @@ describe('AbstractForm', () => {
   });
 
   test('Its value includes the values of any included user-defined adapters.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'birthYear', defaultValue: '1990', transient: true }),
       ];
@@ -85,7 +99,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       age: 34,
@@ -93,7 +107,8 @@ describe('AbstractForm', () => {
   });
 
   test('Its value does not include the values of any excluded adapters.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
         new ExcludableField({
@@ -120,7 +135,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       firstName: '',
@@ -129,7 +144,8 @@ describe('AbstractForm', () => {
   });
 
   test('If any included fields are invalid, its validity is invalid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({
           name: 'requiredField',
@@ -138,13 +154,14 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
   });
 
   test('If any groups are invalid, its validity is invalid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
         new Field({ name: 'confirmPassword', defaultValue: '' }),
@@ -163,7 +180,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.groups.passwordGroup.state.validity).toBe(Validity.Invalid);
     expect(instance.groups.passwordGroup.state.validitySource).toBe(
@@ -180,7 +197,8 @@ describe('AbstractForm', () => {
         return promiseScheduler.createScheduledPromise(value.length > 0);
       },
     });
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({
           name: 'pendingField',
@@ -190,7 +208,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Pending);
   });
@@ -198,7 +216,8 @@ describe('AbstractForm', () => {
   test(`If there is at least one pending group and no invalid fields or groups, 
   its validity is pending.`, () => {
     const promiseScheduler = new PromiseScheduler();
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'AddressForm';
       public fields = <const>[
         new Field({ name: 'streetAddress', defaultValue: '1726 Locust St.' }),
         new Field({ name: 'city', defaultValue: 'Philadelphia' }),
@@ -231,7 +250,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.groups.addressGroup.state.validity).toBe(Validity.Pending);
     expect(instance.groups.addressGroup.state.validitySource).toBe(
@@ -241,7 +260,8 @@ describe('AbstractForm', () => {
   });
 
   test('If all fields and groups are valid, its validity is valid.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({
           name: 'password',
@@ -268,19 +288,20 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Valid);
   });
 
-  test('When the value of one of its fields changes, its value is updated.', () => {
-    class Template extends FormTemplate {
+  test('When the value of one of its form elements changes, its value is updated.', () => {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public readonly fields = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
         new Field({ name: 'lastName', defaultValue: '' }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
 
     expect(instance.state.value).toStrictEqual({
@@ -302,7 +323,8 @@ describe('AbstractForm', () => {
   });
 
   test('When the value of one of its adapters changes, its value is updated.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public readonly fields = <const>[
         new Field({
           name: 'firstName',
@@ -331,7 +353,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.value).toStrictEqual({
       fullName: '',
@@ -348,8 +370,9 @@ describe('AbstractForm', () => {
     });
   });
 
-  test('When the validity of one of its fields changes, its validity is updated.', () => {
-    class Template extends FormTemplate {
+  test('When the validity of one of its form elements changes, its validity is updated.', () => {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public readonly fields = <const>[
         new Field({
           name: 'requiredField',
@@ -358,7 +381,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
 
@@ -366,9 +389,9 @@ describe('AbstractForm', () => {
     expect(instance.state.validity).toBe(Validity.Valid);
   });
 
-  test(`When the validity of one of its groups changes, its validity is 
-  updated.`, () => {
-    class Template extends FormTemplate {
+  test('When the validity of one of its groups changes, its validity is updated.', () => {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'password', defaultValue: 'password' }),
         new Field({ name: 'confirmPassword', defaultValue: '' }),
@@ -387,7 +410,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state.validity).toBe(Validity.Invalid);
 
@@ -399,10 +422,11 @@ describe('AbstractForm', () => {
 
   test(`When setSubmitted() is called, its state.submitted property becomes 
   true.`, () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'subForm';
       public readonly fields = [];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
 
     instance.setSubmitted();
@@ -411,45 +435,46 @@ describe('AbstractForm', () => {
 
   test(`When setSubmitted() is called, setSubmitted() is called on all of its 
   fields that implement Submittable.`, () => {
-    class SubTemplate extends SubFormTemplate {
-      public readonly name = 'subForm';
+    class InnerSubFormTemplate extends SubFormTemplate {
+      public readonly name = 'innerSubForm';
       public readonly fields = <const>[
         new Field({
-          name: 'subFormField1',
+          name: 'innerSubFormField1',
           defaultValue: '',
         }),
         new Field({
-          name: 'subFormField2',
+          name: 'innerSubFormField2',
           defaultValue: '',
         }),
       ];
     }
 
-    const SubForm = FormFactory.createSubForm(SubTemplate);
+    const InnerSubForm = FormFactory.createSubForm(InnerSubFormTemplate);
 
-    class Template extends FormTemplate {
+    class OuterSubFormTemplate extends SubFormTemplate {
+      public readonly name = 'outerSubForm';
       public readonly fields = <const>[
         new Field({
-          name: 'field1',
+          name: 'outerSubFormField1',
           defaultValue: '',
         }),
         new Field({
-          name: 'field2',
+          name: 'outerSubFormField2',
           defaultValue: '',
         }),
-        new SubForm(),
+        new InnerSubForm(),
       ];
     }
 
-    const Form = FormFactory.createForm(Template);
-    const instance = new Form();
+    const OuterSubForm = FormFactory.createSubForm(OuterSubFormTemplate);
+    const instance = new OuterSubForm();
     expect(instance.state.submitted).toBe(false);
 
     for (const field of Object.values(instance.fields)) {
       expect(field.state.submitted).toBe(false);
     }
 
-    for (const field of Object.values(instance.fields.subForm.fields)) {
+    for (const field of Object.values(instance.fields.innerSubForm.fields)) {
       expect(field.state.submitted).toBe(false);
     }
 
@@ -460,16 +485,17 @@ describe('AbstractForm', () => {
       expect(field.state.submitted).toBe(true);
     }
 
-    for (const field of Object.values(instance.fields.subForm.fields)) {
+    for (const field of Object.values(instance.fields.innerSubForm.fields)) {
       expect(field.state.submitted).toBe(true);
     }
   });
 
   test('When reset() is called, submitted is set to false.', () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public readonly fields = [];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
 
     instance.setSubmitted();
@@ -481,7 +507,8 @@ describe('AbstractForm', () => {
 
   test(`When reset() is called, reset is called on all of its fields that 
   implement Resettable.`, () => {
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public fields = <const>[
         new Field({ name: 'firstName', defaultValue: '' }),
         new Field({ name: 'middleName', defaultValue: '' }),
@@ -489,7 +516,7 @@ describe('AbstractForm', () => {
         new Field({ name: 'age', defaultValue: 0 }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
 
     const spies = Object.values(instance.fields).map(field => {
@@ -534,7 +561,8 @@ describe('AbstractForm', () => {
         );
       },
     });
-    class Template extends FormTemplate {
+    class Template extends SubFormTemplate {
+      public readonly name = 'TestForm';
       public readonly fields = <const>[
         new Field({
           name: 'email',
@@ -545,7 +573,7 @@ describe('AbstractForm', () => {
         }),
       ];
     }
-    const TestForm = FormFactory.createForm(Template);
+    const TestForm = FormFactory.createSubForm(Template);
     const instance = new TestForm();
     expect(instance.state).toStrictEqual({
       value: {
