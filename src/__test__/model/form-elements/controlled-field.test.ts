@@ -259,8 +259,8 @@ describe('ControlledField', () => {
     ]);
   });
 
-  test(`When its controlFn is called, pending async validators are 
-  unsubscribed from.`, () => {
+  test(`When its controlFn is called and it returns a state object, pending 
+  async validators are unsubscribed from.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
     const controller = new Field({

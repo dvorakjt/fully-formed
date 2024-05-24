@@ -88,11 +88,8 @@ export class ControlledExcludableField<
   }
 
   private isValidatedState(
-    state: unknown,
+    state: ControlledState<S>,
   ): state is ValidatedState<S> & MessageBearerState {
-    if (!state) return false;
-    if (typeof state !== 'object') return false;
-
     return 'value' in state && 'validity' in state && 'messages' in state;
   }
 }
