@@ -4,7 +4,7 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useMultiPipe, useValue } from '../../hooks';
 import { Field, Group, StringValidators, Validity } from '../../model';
-import { Utils } from '../../model';
+import { ValidityUtils } from '../../model';
 
 describe('useMultiPipe()', () => {
   afterEach(cleanup);
@@ -41,7 +41,7 @@ describe('useMultiPipe()', () => {
       const validity = useMultiPipe(
         [confirmPassword, passwordGroup],
         states => {
-          return Utils.reduceStatesToValidity(states, {
+          return ValidityUtils.reduceStatesToValidity(states, {
             pruneUnvalidatedGroupStates: true,
           });
         },

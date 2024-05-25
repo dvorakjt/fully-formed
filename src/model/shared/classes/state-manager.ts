@@ -1,4 +1,5 @@
 import { Subject, type Subscription } from 'rxjs';
+import clone from 'just-clone';
 import type { Stateful } from '../interfaces';
 
 export class StateManager<T> implements Stateful<T> {
@@ -11,7 +12,11 @@ export class StateManager<T> implements Stateful<T> {
   }
 
   public get state(): T {
-    return JSON.parse(JSON.stringify(this._state));
+    if (this.isObject(this._state)) {
+      return clone(this._state);
+    }
+
+    return this._state;
   }
 
   public constructor(state: T) {
@@ -20,5 +25,9 @@ export class StateManager<T> implements Stateful<T> {
 
   public subscribeToState(cb: (state: T) => void): Subscription {
     return this.stateChanges.subscribe(cb);
+  }
+
+  private isObject<T>(thing: T): thing is T & object {
+    return thing && typeof thing === 'object';
   }
 }

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import {
   GroupValiditySource,
-  Utils,
+  ValidityUtils,
   Validity,
   type InteractiveState,
 } from '../../../model';
@@ -15,7 +15,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isPristine(state)).toBe(false);
+    expect(ValidityUtils.isPristine(state)).toBe(false);
   });
 
   test(`Utils.isPristine() returns false when the hasBeenBlurred property of the 
@@ -26,7 +26,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isPristine(state)).toBe(false);
+    expect(ValidityUtils.isPristine(state)).toBe(false);
   });
 
   test(`Utils.isPristine() returns false when the hasBeenModified property of 
@@ -37,7 +37,7 @@ describe('Utils', () => {
       hasBeenModified: true,
       submitted: false,
     };
-    expect(Utils.isPristine(state)).toBe(false);
+    expect(ValidityUtils.isPristine(state)).toBe(false);
   });
 
   test(`Utils.isPristine() returns false when the submitted property of the 
@@ -48,7 +48,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: true,
     };
-    expect(Utils.isPristine(state)).toBe(false);
+    expect(ValidityUtils.isPristine(state)).toBe(false);
   });
 
   test(`Utils.isPristine() returns true when the state it receives is 
@@ -59,7 +59,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isPristine(state)).toBe(true);
+    expect(ValidityUtils.isPristine(state)).toBe(true);
   });
 
   test(`Utils.isClean() returns false when the hasBeenBlurred property of the 
@@ -70,7 +70,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isClean(state)).toBe(false);
+    expect(ValidityUtils.isClean(state)).toBe(false);
   });
 
   test(`Utils.isClean() returns false when the hasBeenModified property of the 
@@ -81,7 +81,7 @@ describe('Utils', () => {
       hasBeenModified: true,
       submitted: false,
     };
-    expect(Utils.isClean(state)).toBe(false);
+    expect(ValidityUtils.isClean(state)).toBe(false);
   });
 
   test(`Utils.isClean() returns false when the submitted property of the state 
@@ -92,7 +92,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: true,
     };
-    expect(Utils.isClean(state)).toBe(false);
+    expect(ValidityUtils.isClean(state)).toBe(false);
   });
 
   test(`Utils.isClean() returns true when the state it receives is clean.`, () => {
@@ -102,7 +102,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isClean(state)).toBe(true);
+    expect(ValidityUtils.isClean(state)).toBe(true);
   });
 
   test(`Utils.isClean() returns true when the state it receives is 
@@ -113,7 +113,7 @@ describe('Utils', () => {
       hasBeenModified: false,
       submitted: false,
     };
-    expect(Utils.isClean(state)).toBe(true);
+    expect(ValidityUtils.isClean(state)).toBe(true);
   });
 
   test(`Utils.reduceStatesToValidity() returns Validity.Invalid if any of the 
@@ -133,7 +133,7 @@ describe('Utils', () => {
       },
     ];
 
-    expect(Utils.reduceStatesToValidity(states)).toBe(Validity.Invalid);
+    expect(ValidityUtils.reduceStatesToValidity(states)).toBe(Validity.Invalid);
   });
 
   test(`Utils.reduceStatesToValidity() returns Validity.Pending if any of the 
@@ -149,7 +149,7 @@ describe('Utils', () => {
       },
     ];
 
-    expect(Utils.reduceStatesToValidity(states)).toBe(Validity.Pending);
+    expect(ValidityUtils.reduceStatesToValidity(states)).toBe(Validity.Pending);
   });
 
   test(`Utils.reduceStatesToValidity() returns Validity.Valid if all of the 
@@ -161,12 +161,12 @@ describe('Utils', () => {
       },
     ];
 
-    expect(Utils.reduceStatesToValidity(states)).toBe(Validity.Valid);
+    expect(ValidityUtils.reduceStatesToValidity(states)).toBe(Validity.Valid);
   });
 
   test(`Utils.reduceStatesToValidity() returns Validity.Valid if it receives 
   an empty array.`, () => {
-    expect(Utils.reduceStatesToValidity([])).toBe(Validity.Valid);
+    expect(ValidityUtils.reduceStatesToValidity([])).toBe(Validity.Valid);
   });
 
   test(`Utils.reduceStatesToValidity() removes states with a validitySource of 
@@ -187,7 +187,7 @@ describe('Utils', () => {
     ];
 
     expect(
-      Utils.reduceStatesToValidity(states, {
+      ValidityUtils.reduceStatesToValidity(states, {
         pruneUnvalidatedGroupStates: true,
       }),
     ).toBe(Validity.Valid);

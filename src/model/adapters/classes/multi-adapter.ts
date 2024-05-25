@@ -27,7 +27,7 @@ type MultiAdapterConstructorParams<
 
 export class MultiAdapter<
   T extends string,
-  U extends readonly MultiAdapterSource[],
+  const U extends readonly MultiAdapterSource[],
   V,
 > implements IAdapter<T, V>
 {
