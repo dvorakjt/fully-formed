@@ -14,10 +14,11 @@ import {
   type UniquelyNamed,
 } from '../../shared';
 import { GroupValiditySource } from '../enums';
+import { deepEquals } from '../../utils';
 import type { Subscription } from 'rxjs';
 import type { IGroup, GroupMember } from '../interfaces';
 import type { GroupState, GroupValue } from '../types';
-import type { CancelableSubscription } from '../../shared';
+import type { CancelableSubscription, ValidatedState } from '../../shared';
 
 type GroupConstructorParams<
   T extends string,
@@ -114,15 +115,15 @@ export class Group<
 
   private subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
-      this.validatorSuiteSubscription?.unsubscribeAndCancel();
-
       if (state.validity !== Validity.Valid) {
+        this.validatorSuiteSubscription?.unsubscribeAndCancel();
         this.state = {
           ...state,
           messages: [],
           validitySource: GroupValiditySource.Reduction,
         };
-      } else {
+      } else if (this.becameValidOrValueChanged(state)) {
+        this.validatorSuiteSubscription?.unsubscribeAndCancel();
         const { syncResult, observableResult } = this.validatorSuite.validate(
           state.value,
         );
@@ -147,5 +148,18 @@ export class Group<
 
   private getNonPendingMessages(): Message[] {
     return this.state.messages.filter(m => m.validity !== Validity.Pending);
+  }
+
+  private becameValidOrValueChanged(
+    newState: ValidatedState<GroupValue<U>>,
+  ): boolean {
+    return this.becameValid() || !deepEquals(this.state.value, newState.value);
+  }
+
+  private becameValid(): boolean {
+    return (
+      this.state.validity !== Validity.Valid &&
+      this.state.validitySource === GroupValiditySource.Reduction
+    );
   }
 }

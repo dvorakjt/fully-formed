@@ -11,7 +11,7 @@ export class StateManager<T> implements Stateful<T> {
   }
 
   public get state(): T {
-    return this._state;
+    return JSON.parse(JSON.stringify(this._state));
   }
 
   public constructor(state: T) {
