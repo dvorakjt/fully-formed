@@ -1,4 +1,4 @@
-![banner](https://github.com/dvorakjt/fully-formed/blob/main/banner.png)
+﻿![banner](https://github.com/dvorakjt/fully-formed/blob/main/banner.png)
 
 # Fully Formed
 
@@ -53,22 +53,24 @@ First, we need to define the data model for our form. We do this by extending th
 
 `FormTemplate` is an abstract class that provides certain useful defaults for properties that might not always be customized by developers, but at minimum, requires that an array of fields be provided. Let's extend the FormTemplate class:
 
-    import { FormTemplate, Field, StringValidators } from 'fully-formed';
+<pre>
+import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
-    class SignUpTemplate extends FormTemplate {
-      public readonly fields = [
-        new Field({
-          name : 'email',
-          defaultValue : '',
-          validators : [
-            StringValidators.email({
-              invalidMessage : 'Please enter a valid email address.',
-              trimBeforeValidation : true
-            })
-          ]
-        })
-      ] as const;
-    }
+class SignUpTemplate extends FormTemplate {
+  public readonly fields = [
+    new Field({
+      name: 'email',
+      defaultValue: '',
+      validators: [
+        StringValidators.email({
+          invalidMessage: 'Please enter a valid email address.',
+          trimBeforeValidation: true,
+        }),
+      ],
+    }),
+  ] as const;
+}
+</pre>
 
 Great! We now have a template for a form with one field! We imported the `Field` class to create this field, and the `StringValidators` class to add a validator to the field indicating that it must be an email address. `StringValidators` provides lots of convenient methods that create validator instances with pre-defined predicates for common string validation operations. Note that the library exports the `EmailRegExp` class used internally by this validator. If you are using a full stack TypeScript framework, this makes it easy to apply the same validation to email addresses in both the frontend and backend.
 
@@ -76,89 +78,89 @@ Great! We now have a template for a form with one field! We imported the `Field`
 
 The particular validator we will be instantiating here returns an object containing the validity of a value it examines, together with the message we provided if that value is not valid. Additionally, before validating the value, it will trim it, because we set `trimBeforeValidation` to true. This setting is useful because you can very easily tell your form that you would like it to auto-trim certain fields:
 
-    import { FormTemplate, Field, StringValidators } from 'fully-formed';
+<pre>
+import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
-    class SignUpTemplate extends FormTemplate {
-      public readonly fields = [
-        new Field({
-          name : 'email',
-          defaultValue : '',
-          validators : [
-            StringValidators.email({
-              invalidMessage : 'Please enter a valid email address.',
-              trimBeforeValidation : true
-            })
-          ]
-        })
-      ] as const;
+class SignUpTemplate extends FormTemplate {
+  public readonly fields = [
+    new Field({
+      name: 'email',
+      defaultValue: '',
+      validators: [
+        StringValidators.email({
+          invalidMessage: 'Please enter a valid email address.',
+          trimBeforeValidation: true,
+        }),
+      ],
+    }),
+  ] as const;
 
-      // here we are instructing our form to automatically trim the email field before
-      // including its value in the object representing the value of the form.
-      public readonly autoTrim = {
-        include : [
-    	  'email'
-        ]
-      }
-    }
+  // here we are instructing our form to automatically trim the email field before
+  // including its value in the object representing the value of the form.
+  public readonly autoTrim = {
+    include: ['email'],
+  };
+}
+</pre>
 
 `autoTrim` can also be a boolean, in which case it will affect all non-transient (more on transience later!), string-type fields, or an object with an `exclude` property containing an array of field names, in which case it will affect all non-transient, string-type fields, _except_ those specified in the array.
 
 Since this is a sign up form, let's add password and confirm password fields.
 
-    import { FormTemplate, Field, StringValidators } from 'fully-formed';
+<pre>
+import { FormTemplate, Field, StringValidators } from 'fully-formed';
 
-    class SignUpTemplate extends FormTemplate {
-      public readonly fields = [
-        new Field({
-          name : 'email',
-          defaultValue : '',
-          validators : [
-            StringValidators.email({
-              invalidMessage : 'Please enter a valid email address.',
-              trimBeforeValidation : true
-            })
-          ]
+class SignUpTemplate extends FormTemplate {
+  public readonly fields = [
+    new Field({
+      name: 'email',
+      defaultValue: '',
+      validators: [
+        StringValidators.email({
+          invalidMessage: 'Please enter a valid email address.',
+          trimBeforeValidation: true,
         }),
-        new Field({
-          name : 'password',
-          defaultValue : '',
-          validators : [
-            StringValidators.includesLower({
-              invalidMessage : 'Password must include a lowercase letter.',
-              validMessage : 'Password includes a lowercase letter.'
-            }),
-            StringValidators.includesUpper({
-              invalidMessage : 'Password must include an uppercase letter.',
-              validMessage : 'Password includes an uppercase letter.'
-            }),
-            StringValidators.includesDigit({
-              invalidMessage : 'Password must include a digit.',
-              validMessage : 'Password includes a digit.'
-            }),
-            StringValidators.includesSymbol({
-    	      invalidMessage : 'Password must include a symbol.',
-    	      validMessage : 'Password includes a symbol.'
-            })
-          ]
+      ],
+    }),
+    new Field({
+      name: 'password',
+      defaultValue: '',
+      validators: [
+        StringValidators.includesLower({
+          invalidMessage: 'Password must include a lowercase letter.',
+          validMessage: 'Password includes a lowercase letter.',
         }),
-        new Field({
-          name : 'confirmPassword',
-          defaultValue : '',
-          validators : [
-            StringValidators.required({
-              invalidMessage : 'Please re-enter your password.'
-            })
-          ],
-          transient : true
-        })
-      ] as const;
+        StringValidators.includesUpper({
+          invalidMessage: 'Password must include an uppercase letter.',
+          validMessage: 'Password includes an uppercase letter.',
+        }),
+        StringValidators.includesDigit({
+          invalidMessage: 'Password must include a digit.',
+          validMessage: 'Password includes a digit.',
+        }),
+        StringValidators.includesSymbol({
+          invalidMessage: 'Password must include a symbol.',
+          validMessage: 'Password includes a symbol.',
+        }),
+      ],
+    }),
+    new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      validators: [
+        StringValidators.required({
+          invalidMessage: 'Please re-enter your password.',
+        }),
+      ],
+      transient: true,
+    }),
+  ] as const;
 
-      public readonly autoTrim = {
-        include : [
-    	  'email'
-        ]
-      }
-    }
+  public readonly autoTrim = {
+    include: ['email'],
+  };
+}
+</pre>
 
 You'll notice that we set `transient` to `true` in the object provided to the constructor of our confirm password field. Transient fields are not included in the value of a form, but they do contribute to the form's overall validity.
 
@@ -166,79 +168,76 @@ You'll also notice that we applied several validators to the password and confir
 
 Groups allow you to group together fields (or even other groups) in order to validate members' values as a unit. Let's create a group that will check if password and confirm password share the same value.
 
-    import {
-      FormTemplate,
-      Field,
-      StringValidators,
-      Group
-    } from 'fully-formed';
+<pre>
+import { FormTemplate, Field, StringValidators, Group } from 'fully-formed';
 
-    class SignUpTemplate extends FormTemplate {
-      public readonly fields = [
-        new Field({
-          name : 'email',
-          defaultValue : '',
-          validators : [
-            StringValidators.email({
-              invalidMessage : 'Please enter a valid email address.',
-              trimBeforeValidation : true
-            })
-          ]
+class SignUpTemplate extends FormTemplate {
+  public readonly fields = [
+    new Field({
+      name: 'email',
+      defaultValue: '',
+      validators: [
+        StringValidators.email({
+          invalidMessage: 'Please enter a valid email address.',
+          trimBeforeValidation: true,
         }),
-        new Field({
-          name : 'password',
-          defaultValue : '',
-          validators : [
-            StringValidators.includesLower({
-              invalidMessage : 'Password must include a lowercase letter.',
-              validMessage : 'Password includes a lowercase letter.'
-            }),
-            StringValidators.includesUpper({
-              invalidMessage : 'Password must include an uppercase letter.',
-              validMessage : 'Password includes an uppercase letter.'
-            }),
-            StringValidators.includesDigit({
-              invalidMessage : 'Password must include a digit.',
-              validMessage : 'Password includes a digit.'
-            }),
-            StringValidators.includesSymbol({
-    	      invalidMessage : 'Password must include a symbol.',
-    	      validMessage : 'Password includes a symbol.'
-            })
-          ]
+      ],
+    }),
+    new Field({
+      name: 'password',
+      defaultValue: '',
+      validators: [
+        StringValidators.includesLower({
+          invalidMessage: 'Password must include a lowercase letter.',
+          validMessage: 'Password includes a lowercase letter.',
         }),
-        new Field({
-          name : 'confirmPassword',
-          defaultValue : '',
-          validators : [
-            StringValidators.required({
-              invalidMessage : 'Please re-enter your password.'
-            })
-          ],
-          transient : true
-        })
-      ] as const;
+        StringValidators.includesUpper({
+          invalidMessage: 'Password must include an uppercase letter.',
+          validMessage: 'Password includes an uppercase letter.',
+        }),
+        StringValidators.includesDigit({
+          invalidMessage: 'Password must include a digit.',
+          validMessage: 'Password includes a digit.',
+        }),
+        StringValidators.includesSymbol({
+          invalidMessage: 'Password must include a symbol.',
+          validMessage: 'Password includes a symbol.',
+        }),
+      ],
+    }),
+    new Field({
+      name: 'confirmPassword',
+      defaultValue: '',
+      validators: [
+        StringValidators.required({
+          invalidMessage: 'Please re-enter your password.',
+        }),
+      ],
+      transient: true,
+    }),
+  ] as const;
 
-      public readonly groups = [
-        new Group({
-          name : 'passwordGroup',
-          members : [this.formElements[1], this.formElements[2]],
-          validatorTemplates : [
-            {
-              predicate : ({ password, confirmPassword }) => password === confirmPassword,
-              invalidMessage : 'Please ensure that the re-entered password matches the password',
-              validMessage : 'The passwords match!'
-            }
-          ]
-        })
-      ] as const;
+  public readonly groups = [
+    new Group({
+      name: 'passwordGroup',
+      members: [this.fields[1], this.fields[2]],
+      validatorTemplates: [
+        {
+          predicate: ({ password, confirmPassword }) =&gt;
+            password === confirmPassword,
+          invalidMessage:
+            'Please ensure that the re-entered password matches the password',
+          validMessage: 'The passwords match!',
+        },
+      ],
+    }),
+  ] as const;
 
-      public readonly autoTrim = {
-        include : [
-    	  'email'
-        ]
-      }
-    }
+  public readonly autoTrim = {
+    include: ['email'],
+  };
+}
+</pre>
 
 **Like fields, the names of groups must be unique!**
 
@@ -248,13 +247,15 @@ Next, let's use this template to create a subclass of `AbstractForm` that we can
 
 First, we need to import the `FormFactory` class. Let's update the import statement at the top of the file:
 
-    import {
-      FormTemplate,
-      Field,
-      StringValidators,
-      Group,
-      FormFactory
-    } from 'fully-formed';
+<pre>
+import {
+  FormTemplate,
+  Field,
+  StringValidators,
+  Group,
+  FormFactory,
+} from 'fully-formed';
+</pre>
 
 Then, at the end of the file, add this line:
 
@@ -272,34 +273,36 @@ The library offers many hooks that allow you to interact with your form data and
 
 A very simple hook that takes in an instance of a form and returns that instance. The same instance will be returned across re-renders. This is the bridge between your form data and the UI. Here, we use it with our SignUpForm:
 
-    import React, { type FormEventHandler } from 'react';
-    import { useForm, ValidityUtils } from 'fully-formed';
-    import { SignUpForm } from './signup-form';
+<pre>
+import React, { type FormEventHandler } from 'react';
+import { useForm, ValidityUtils } from 'fully-formed';
+import { SignUpForm } from './signup-form';
 
-    export function SignUpPage(): React.JSX.Element {
-      const signUpForm = useForm(new SignUpForm());
+export function SignUpPage(): React.JSX.Element {
+  const signUpForm = useForm(new SignUpForm());
 
-      const onSubmit: FormEventHandler = e => {
-        e.preventDefault();
+  const onSubmit: FormEventHandler = e =&gt; {
+    e.preventDefault();
 
-    	// this will cause the submitted property of the state of the form
-    	// and its fields to become true
-    	signUpForm.setSubmitted();
+    // this will cause the submitted property of the state of the form
+    // and its fields to become true
+    signUpForm.setSubmitted();
 
-        if (!ValidityUtils.isValid(signUpForm)) {
-          // show error message, focus on first invalid field, etc.
-          return;
-        }
-
-        // form is valid, so submit it to the server here...
-      };
-
-      return (
-        <form onSubmit={onSubmit}>
-          <button type="submit">Submit</button>
-        </form>
-      );
+    if (!ValidityUtils.isValid(signUpForm)) {
+      // show error message, focus on first invalid field, etc.
+      return;
     }
+
+    // form is valid, so submit it to the server here...
+  };
+
+  return (
+    &lt;form onSubmit={onSubmit}&gt;
+      &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</pre>
 
 Note that the validity of the form is always known. ValidityUtils just provides a convenient method of checking this so you don't have to write `signUpForm.state.validity === Validity.Valid` every time. `ValidityUtils.isValid` (and the corresponding methods for `Validity.Invalid` and `Validity.Pending`) can also directly accept the state of a form or field, or just a value of type `Validity`.
 
@@ -311,25 +314,27 @@ Once the user changes the value of the input element, the `hasBeenModified` prop
 
 Here, we use it to create an input for the email field of our SignUpForm:
 
-    import React from 'react';
-    import { useForm, useUserInput } from 'fully-formed';
-    import { SignUpForm } from './signup-form';
+<pre>
+import React from 'react';
+import { useForm, useUserInput } from 'fully-formed';
+import { SignUpForm } from './signup-form';
 
-    export function SignUpPage(): React.JSX.Element {
-      const signUpForm = useForm(new SignUpForm());
+export function SignUpPage(): React.JSX.Element {
+  const signUpForm = useForm(new SignUpForm());
 
-      return (
-        <form>
-          <label htmlFor={signUpForm.fields.email.id}>Email</label>
-          <input
-            name={signUpForm.fields.email.name}
-            id={signUpForm.fields.email.id}
-            {...useUserInput(signUpForm.fields.email)}
-            type="email"
-          />
-        </form>
-      );
-    }
+  return (
+    &lt;form&gt;
+      &lt;label htmlFor={signUpForm.fields.email.id}&gt;Email&lt;/label&gt;
+      &lt;input
+        name={signUpForm.fields.email.name}
+        id={signUpForm.fields.email.id}
+        {...useUserInput(signUpForm.fields.email)}
+        type="email"
+      /&gt;
+    &lt;/form&gt;
+  );
+}
+</pre>
 
 ### useFocusEvents()
 
@@ -339,26 +344,28 @@ Additionally, this hook handles a very specific edge case in which the user navi
 
 This hook is particularly useful for creating things like floating labels. Like `useUserInput()`, it is intended to be spread into the props of an html element:
 
-    import React from 'react';
-    import { useForm, useUserInput, useFocusEvents } from 'fully-formed';
-    import { SignUpForm } from './signup-form';
+<pre>
+import React from 'react';
+import { useForm, useUserInput, useFocusEvents } from 'fully-formed';
+import { SignUpForm } from './signup-form';
 
-    export function SignUpPage(): React.JSX.Element {
-      const signUpForm = useForm(new SignUpForm());
+export function SignUpPage(): React.JSX.Element {
+  const signUpForm = useForm(new SignUpForm());
 
-      return (
-        <form>
-          <label htmlFor={signUpForm.fields.email.id}>Email</label>
-          <input
-            name={signUpForm.fields.email.name}
-            id={signUpForm.fields.email.id}
-            {...useUserInput(signUpForm.fields.email)}
-            {...useFocusEvents(signUpForm.fields.email)}
-            type="email"
-          />
-        </form>
-      );
-    }
+  return (
+    &lt;form&gt;
+      &lt;label htmlFor={signUpForm.fields.email.id}&gt;Email&lt;/label&gt;
+      &lt;input
+        name={signUpForm.fields.email.name}
+        id={signUpForm.fields.email.id}
+        {...useUserInput(signUpForm.fields.email)}
+        {...useFocusEvents(signUpForm.fields.email)}
+        type="email"
+      /&gt;
+    &lt;/form&gt;
+  );
+}
+</pre>
 
 ### useMessages()
 
@@ -368,42 +375,45 @@ This hook accepts any number of `MessageBearers`, usually fields or groups and o
 
 `usePipe()` and `useMultiPipe()` allow you to listen to the state of a form, field, or group (or an array of those elements, respectively), and produce a new value based on that state. This value is returned as a React state variable and will be updated whenever the state of the form(s)/field(s)/group(s) provided as its first argument changes. Here, we use `usePipe()` to create a reusable input component whose appearance changes depending on its validity:
 
-    import React from 'react';
-    import {
-      usePipe,
-      useUserInput,
-      useFocusEvents,
-      type FieldOfType
-    } from 'fully-formed';
-    import styles from './styles.module.css';
+<pre>
+import React from 'react';
+import {
+  usePipe,
+  useUserInput,
+  useFocusEvents,
+  type FieldOfType,
+} from 'fully-formed';
+import styles from './styles.module.css';
 
-    interface InputProps {
-      field : FieldOfType<string>;
-      type : string;
+interface InputProps {
+  field: FieldOfType&lt;string&gt;;
+  type: string;
+}
+
+export function Input({ field, type }: InputProps): React.JSX.Element {
+  const className = usePipe(field, state =&gt; {
+    // first, check if the user has interacted with the field and if not,
+    // return styles.pristine
+    if (!(state.hasBeenBlurred || state.hasBeenModified || state.submitted)) {
+      return styles.pristine;
     }
 
-    export function Input({ field, type} : InputProps) : React.JSX.Element {
-      const className = usePipe(field, state => {
-        // first, check if the user has interacted with the field
-        if(!(state.hasBeenBlurred || state.hasBeenModified || state.submitted)) {
-          return styles.pristine;
-        }
+    // otherwise, style the field according to its validity
+    return styles[state.validity];
+  });
 
-    	  // otherwise, style the field according to its validity
-    	  return styles[state.validity];
-      });
-
-      return (
-        <input
-          name={field.name}
-          id={field.id}
-          {...useUserInput(field)}
-          {...useFocusEvents{field)}
-          className={className}
-          type={type}
-        />
-      );
-    }
+  return (
+    &lt;input
+      name={field.name}
+      id={field.id}
+      {...useUserInput(field)}
+      {...useFocusEvents(field)}
+      className={className}
+      type={type}
+    /&gt;
+  );
+}
+</pre>
 
 ## Creating Custom Validators
 
@@ -417,16 +427,18 @@ Any entity that accepts validators also accepts validator templates. Using valid
 
 You can create a reusable validator with the `Validator` class. For example:
 
-    import { Validator } from 'fully-formed';
+<pre>
+import { Validator } from 'fully-formed';
 
-    const containsNoWhiteSpace = new Validator<string>({
-      //predicate is required. Must be a function that returns a boolean value
-      predicate : value => !(/\s/.test(value)),
+const containsNoWhiteSpace = new Validator&lt;string&gt;({
+  //predicate is required. Must be a function that returns a boolean value
+  predicate: value =&gt; !/\s/.test(value),
 
-      //messages are optional
-      invalidMessage : 'The field must contain no whitespace.',
-      validMessage : 'The field contains no whitespace.'
-    });
+  //messages are optional
+  invalidMessage: 'The field must contain no whitespace.',
+  validMessage: 'The field contains no whitespace.',
+});
+</pre>
 
 You could also create a function that returns such a validator, enabling you to define certain aspects of it in advance (like the predicate), but allows for other properties to be customized per instance. In fact, this is exactly how the `StringValidators` class works.
 
@@ -446,38 +458,35 @@ Sometimes the fields that you include in your form to make it convenient for use
 
 Here is an example in which we adapt a string-type field so that the value included in the form becomes a number:
 
-    import {
-      FormTemplate,
-      Field,
-      Adapter,
-      FormFactory
-    } from 'fully-formed';
+<pre>
+import { FormTemplate, Field, Adapter, FormFactory } from 'fully-formed';
 
-    class ExampleTemplate extends FormTemplate {
-      public readonly fields = [
-        new Field({
-          name : 'age',
-          defaultValue : '',
-          validatorTemplates : [
-            {
-              predicate : value => !!value.length && Number.isNaN(Number(value)),
-              invalidMessage : 'Please enter a valid number.'
-            }
-          ],
-          transient : true
-        })
-      ] as const;
+class ExampleTemplate extends FormTemplate {
+  public readonly fields = [
+    new Field({
+      name: 'age',
+      defaultValue: '',
+      validatorTemplates: [
+        {
+          predicate: value =&gt; !!value.length && Number.isNaN(Number(value)),
+          invalidMessage: 'Please enter a valid number.',
+        },
+      ],
+      transient: true,
+    }),
+  ] as const;
 
-      public readonly adapters = [
-        new Adapter({
-          name : 'age',
-          source : this.formElements[0],
-          adaptFn : ({ value }) => Number(value)
-        })
-      ] as const;
-    }
+  public readonly adapters = [
+    new Adapter({
+      name: 'age',
+      source: this.fields[0],
+      adaptFn: ({ value }) =&gt; Number(value),
+    }),
+  ] as const;
+}
 
-    export const ExampleForm = FormFactory.createForm(ExampleTemplate);
+export const ExampleForm = FormFactory.createForm(ExampleTemplate);
+</pre>
 
 ## Sub-Forms
 
@@ -497,63 +506,65 @@ The `adaptFn` for an excludable adapter is the mechanism by which it is included
 
 One field may control another. This is useful if certain information collected from the user can be used to anticipate the value of another field, simplifying the experience of completing the form for the user. Below is an example of the creation of a controlled field:
 
-    import {
-      FormTemplate,
-      Field,
-      ControlledField,
-      FormFactory,
-      ValidityUtils,
-      type NonTransientField
-    } from 'fully-formed';
+<pre>
+import {
+  FormTemplate,
+  Field,
+  ControlledField,
+  FormFactory,
+  ValidityUtils,
+  type NonTransientField,
+} from 'fully-formed';
 
-    // some function that converts a ZIP code to a US state
-    import { zipToState } from './zip-to-state.ts';
+// some function that converts a ZIP code to a US state
+import { zipToState } from './zip-to-state.ts';
 
-    class AddressTemplate extends FormTemplate {
-      public readonly fields: [
-        NonTransientField<'zip', string>,
-        NonTransientField<'state', string>
-      ];
+class AddressTemplate extends FormTemplate {
+  public readonly fields: [
+    NonTransientField&lt;'zip', string&gt;,
+    NonTransientField&lt;'state', string&gt;,
+  ];
 
-      public constructor() {
-        super();
-        const zip = new Field({
-          name: 'zip',
-          defaultValue: '',
-          validatorTemplates : [
-            {
-              predicate: value => /\d{5}/.test(value),
-              invalidMessage: 'Please enter a 5 digit zip code.'
-            }
-          ]
-        });
-        this.fields = [
-          zip,
-          new Field({
-            name: 'state',
-            controller: zip,
-            initFn: ({ value, validity }) => {
-              if(!ValidityUtils.isValid(validity)) {
-                return 'AL';
-              }
+  public constructor() {
+    super();
+    const zip = new Field({
+      name: 'zip',
+      defaultValue: '',
+      validatorTemplates: [
+        {
+          predicate: value =&gt; /\d{5}/.test(value),
+          invalidMessage: 'Please enter a 5 digit zip code.',
+        },
+      ],
+    });
+    this.fields = [
+      zip,
+      new ControlledField({
+        name: 'state',
+        controller: zip,
+        initFn: ({ value, validity }) =&gt; {
+          if (!ValidityUtils.isValid(validity)) {
+            return 'AL';
+          }
 
-    		  return zipToState(value);
-            },
-            controlFn : ({ value, validity, didPropertyChange }) => {
-              // don't change the controlled field if the value didn't change or
-              // the zip code field is not valid
-              if(!didPropertyChange('value') || !ValidityUtils.isValid(validity)) {
-                return;
-              }
+          return zipToState(value);
+        },
+        controlFn: ({ value, validity, didPropertyChange }) =&gt; {
+          // don't change the controlled field if the value didn't change or
+          // the zip code field is not valid
+          if (!didPropertyChange('value') || !ValidityUtils.isValid(validity)) {
+            return;
+          }
 
-    		  return zipToState(value);
-            }
-          })
-        ];
-      }
-    }
+          return zipToState(value);
+        },
+      }),
+    ];
+  }
+}
 
-    export const AddressForm = FormFactory.createForm(AddressTemplate);
+export const AddressForm = FormFactory.createForm(AddressTemplate);
+</pre>
 
 You'll notice that in this example, we've made use of the template's constructor. This is a powerful pattern: the constructor for your template essentially becomes the constructor for the form created with that template. Any parameters expected by your template will be expected by the resultant form class created by the `FormFactory`, even so far as generic type parameters!
 
