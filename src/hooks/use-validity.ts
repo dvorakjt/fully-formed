@@ -1,17 +1,6 @@
-import { useState, useEffect } from 'react';
-import type { Stateful, State, Validity } from '../model';
+import { usePipe } from './use-pipe';
+import type { Validated, Validity } from '../model';
 
-export function useValidity<T extends Stateful<State<unknown>>>(
-  validatedEntity: T,
-): Validity {
-  const [validity, setValidity] = useState(validatedEntity.state.validity);
-
-  useEffect(() => {
-    const subscription = validatedEntity.subscribeToState(newState => {
-      setValidity(newState.validity);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  return validity;
+export function useValidity<T extends Validated<unknown>>(entity: T): Validity {
+  return usePipe<T, Validity>(entity, state => state.validity);
 }

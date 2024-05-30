@@ -1,2 +1,2 @@
-export * from './classes';
-export * from './types';
+export { FormFactory } from './form-factory';
+export { FormReducerFactory } from './form-reducer-factory';

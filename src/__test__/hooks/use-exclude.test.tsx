@@ -1,99 +1,44 @@
 import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
-import { render, cleanup, waitFor } from '@testing-library/react';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  FormTemplate,
-  ExcludableField,
-  Field,
-  FormFactory,
-  type AbstractField,
-  type AbstractExcludableField,
-  type ControlledExcludableFieldState,
-} from '../../model';
-import { FFInput } from '../../components';
-import { useExclude, useFieldState } from '../../hooks';
+import { useExclude } from '../../hooks';
+import { ExcludableField } from '../../model';
 
 describe('useExclude()', () => {
   afterEach(cleanup);
 
-  test(`It returns a boolean value indicating whether or not an Excludable 
-  form element is excluded.`, async () => {
-    class Template extends FormTemplate {
-      public readonly formElements: [
-        AbstractField<'changedName', boolean, false>,
-        AbstractExcludableField<'previousName', string, false>,
-      ];
-
-      public constructor() {
-        super();
-        const changedName = new Field({
-          name: 'changedName',
-          defaultValue: false,
-        });
-        this.formElements = [
-          changedName,
-          new ExcludableField({
-            name: 'previousName',
-            defaultValue: '',
-            controlledBy: {
-              controllers: [changedName],
-              controlFn: ([
-                { value },
-              ]): ControlledExcludableFieldState<string> => {
-                return {
-                  exclude: !value,
-                };
-              },
-            },
-          }),
-        ];
-      }
-    }
-
-    const Form = FormFactory.createForm(Template);
-    const form = new Form();
+  test(`It returns a React state variable of type boolean whose value is 
+  updated when the state.exclude property of the entity it received is 
+  toggled.`, async () => {
+    const field = new ExcludableField({
+      name: 'testField',
+      defaultValue: '',
+    });
 
     function TestComponent(): React.JSX.Element {
-      const changedNameState = useFieldState(form.formElements.changedName);
-      const exclude = useExclude(form.formElements.previousName);
+      const exclude = useExclude(field);
 
       return (
-        <>
-          <input
-            name="changedName"
-            id="changedName"
-            type="checkbox"
-            checked={changedNameState.value}
-            onChange={e => {
-              form.formElements.changedName.setValue(e.target.checked);
-            }}
-          />
-          {!exclude && (
-            <FFInput
-              form={form}
-              field={form.formElements.previousName}
-              type="text"
-              disabledWhenExcluded={true}
-            />
-          )}
-        </>
+        <input
+          type="checkbox"
+          checked={exclude}
+          onChange={e => {
+            field.setExclude(e.target.checked);
+          }}
+          data-testid="checkbox"
+        />
       );
     }
 
     const user = userEvent.setup();
+
     render(<TestComponent />);
 
-    expect(document.getElementById(form.formElements.previousName.id)).toBe(
-      null,
-    );
+    const input = screen.getByTestId('checkbox') as HTMLInputElement;
+    expect(input.checked).toBe(false);
 
-    const changedName = document.getElementById('changedName')!;
-    await user.click(changedName);
-    await waitFor(() =>
-      expect(
-        document.getElementById(form.formElements.previousName.id),
-      ).not.toBe(null),
-    );
+    await user.click(input);
+    await waitFor(() => expect(input.checked).toBe(true));
   });
 });

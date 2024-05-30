@@ -1,7 +1,9 @@
-export type { Identifiable } from './identifiable.interface';
-export type { Interactable } from './interactable.interface';
+export type { CancelableSubscription } from './cancelable-subscription.interface';
+export type { Excludable, ExcludableState } from './excludable.interface';
+export type {
+  MessageBearer,
+  MessageBearerState,
+} from './message-bearer.interface';
 export type { Nameable } from './nameable.interface';
-export type { Excludable } from './excludable.interface';
-export type { PossiblyTransient } from './possibly-transient.interface';
-export type { Resettable } from './resettable.interface';
-export type { Stateful } from './stateful.interface';
+export type { Stateful, StateWithChanges } from './stateful.interface';
+export type { Validated, ValidatedState } from './validated.interface';

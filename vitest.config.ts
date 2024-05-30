@@ -7,17 +7,15 @@ export default defineConfig({
     environment: 'jsdom',
     watch: false,
     coverage: {
+      provider: 'v8',
       enabled: true,
       thresholds: {
         100: true,
       },
       exclude: [
         'src/__test__/**',
-        'src/stories/**',
-        '.storybook',
         '**/index.ts',
         '**/*.config.ts',
-        '**/abstract-*.ts',
         '**/*.interface.ts',
         '**/*.type.ts',
         '**/*.enum.ts',

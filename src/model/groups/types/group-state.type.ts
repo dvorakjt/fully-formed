@@ -1,10 +1,10 @@
-import type { StateWithMessages } from '../../state';
-import type { GroupValiditySource } from '../enums';
-import type { GroupMembers } from './group-members.type';
+import type { ValidatedState, MessageBearerState } from '../../shared';
 import type { GroupValue } from './group-value.type';
+import type { GroupMember } from '../interfaces';
+import type { GroupValiditySource } from '../enums';
 
-export type GroupState<Members extends GroupMembers> = StateWithMessages<
-  GroupValue<Members>
-> & {
-  validitySource: GroupValiditySource;
-};
+export type GroupState<Members extends readonly GroupMember[] = GroupMember[]> =
+  ValidatedState<GroupValue<Members>> &
+    MessageBearerState & {
+      validitySource: GroupValiditySource;
+    };

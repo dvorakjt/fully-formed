@@ -1,32 +1,46 @@
 import React from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useValidity, useValue } from '../../hooks';
 import { Field, StringValidators, Validity } from '../../model';
-import { useValidity } from '../../hooks';
 
 describe('useValidity()', () => {
   afterEach(cleanup);
 
-  test(`It returns the validity of an instance of a class that implements 
-  Stateful<State>. The value it returns is updated when the validity of that 
-  instance changes.`, async () => {
-    const field = new Field({
-      name: 'testField',
+  test(`It returns a React state variable of type Validity which is updated 
+  when the validity of the entity it received changes.`, async () => {
+    const requiredField = new Field({
+      name: 'requiredField',
       defaultValue: '',
       validators: [StringValidators.required()],
     });
 
-    function TestComponent(): React.JSX.Element {
-      const validity = useValidity(field);
+    const inputId = 'input';
 
-      return <p data-testid="validity">{validity}</p>;
+    function Input(): React.JSX.Element {
+      return (
+        <input
+          data-testid={inputId}
+          data-validity={useValidity(requiredField)}
+          value={useValue(requiredField)}
+          onChange={e => {
+            requiredField.setValue(e.target.value);
+          }}
+        />
+      );
     }
 
-    render(<TestComponent />);
-    const validity = screen.queryByTestId('validity');
-    expect(validity?.textContent).toBe(Validity.Invalid);
+    const user = userEvent.setup();
+    render(<Input />);
 
-    field.setValue('test');
-    await waitFor(() => expect(validity?.textContent).toBe(Validity.Valid));
+    const input = screen.getByTestId(inputId);
+    expect(input.getAttribute('data-validity')).toBe(Validity.Invalid);
+
+    await user.click(input);
+    await user.type(input, 'test');
+    waitFor(() => {
+      expect(input.getAttribute('data-validity')).toBe(Validity.Valid);
+    });
   });
 });
