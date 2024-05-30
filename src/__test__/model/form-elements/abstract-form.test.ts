@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, test, expect, vi } from 'vitest';
 import {
   ExcludableField,
@@ -12,7 +13,7 @@ import {
   GroupValiditySource,
   AsyncValidator,
   SubFormTemplate,
-  type ExcludableAdaptFnReturnType,
+  type ValidatedState,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
@@ -108,10 +109,7 @@ describe('AbstractForm', () => {
         new ExcludableAdapter({
           name: 'middleInitial',
           source: this.fields[1],
-          adaptFn: ({
-            value,
-            exclude,
-          }): ExcludableAdaptFnReturnType<string> => {
+          adaptFn: ({ value, exclude }) => {
             return {
               value: value.length > 0 ? value[0].toUpperCase() : '',
               exclude,
@@ -553,6 +551,7 @@ describe('AbstractForm', () => {
       },
       validity: Validity.Invalid,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     let counter = 0;
@@ -564,6 +563,7 @@ describe('AbstractForm', () => {
           },
           validity: Validity.Pending,
           submitted: false,
+          didPropertyChange: expect.any(Function),
         });
       } else {
         expect(state).toStrictEqual({
@@ -572,6 +572,7 @@ describe('AbstractForm', () => {
           },
           validity: Validity.Valid,
           submitted: false,
+          didPropertyChange: expect.any(Function),
         });
       }
       counter++;
@@ -579,5 +580,84 @@ describe('AbstractForm', () => {
 
     instance.fields.email.setValue('user@example.com');
     promiseScheduler.resolveAll();
+  });
+
+  test(`When its value changes, didPropertyChange() returns true when called 
+  with 'value.'`, () => {
+    class Template extends FormTemplate {
+      public readonly fields = [
+        new Field({
+          name: 'field',
+          defaultValue: '',
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    const instance = new Form();
+
+    expect(instance.state.didPropertyChange('value')).toBe(false);
+
+    instance.fields.field.setValue('test');
+
+    expect(instance.state.didPropertyChange('value')).toBe(true);
+  });
+
+  test(`Test when its validity changes, didPropertyChange() returns true when 
+  called with 'validity.'`, () => {
+    class Template extends FormTemplate {
+      public readonly fields = [
+        new Field({
+          name: 'requiredField',
+          defaultValue: '',
+          validators: [StringValidators.required()],
+        }),
+      ] as const;
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    const instance = new Form();
+
+    expect(instance.state.didPropertyChange('validity')).toBe(false);
+
+    instance.fields.requiredField.setValue('test');
+
+    expect(instance.state.didPropertyChange('validity')).toBe(true);
+  });
+
+  test(`When its submitted property changes, didPropertyChange() returns true 
+  when called with 'submitted.'`, () => {
+    class Template extends FormTemplate {
+      public readonly fields = [];
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    const instance = new Form();
+
+    expect(instance.state.didPropertyChange('submitted')).toBe(false);
+
+    instance.setSubmitted();
+
+    expect(instance.state.didPropertyChange('submitted')).toBe(true);
+  });
+
+  test(`When didPropertyChange() is called with a property that does not exist 
+  on its state object, it returns false.`, () => {
+    class Template extends FormTemplate {
+      public readonly fields = [];
+    }
+
+    const Form = FormFactory.createForm(Template);
+
+    const instance = new Form();
+
+    expect(
+      instance.state.didPropertyChange(
+        'unknown property' as keyof ValidatedState,
+      ),
+    ).toBe(false);
   });
 });

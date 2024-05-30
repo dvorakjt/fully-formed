@@ -6,26 +6,26 @@ import type { IGroup } from '../../groups';
 import type { IAdapter } from '../../adapters';
 
 type FormValidityReducerConstructorParams = {
+  nonTransientFieldsAndAdapters: ReadonlyArray<FormChild | IAdapter>;
   transientFields: readonly FormChild[];
   groups: readonly IGroup[];
-  adapters: readonly IAdapter[];
 };
 
 export class FormValidityReducer {
-  private adapterReducer: ValidityReducer;
+  private nonTransientFieldsAndAdaptersReducer: ValidityReducer;
   private transientElementReducer: ValidityReducer;
   private groupReducer: ValidityReducer;
 
   public get validity(): Validity {
     if (
-      this.adapterReducer.validity === Validity.Invalid ||
+      this.nonTransientFieldsAndAdaptersReducer.validity === Validity.Invalid ||
       this.transientElementReducer.validity === Validity.Invalid ||
       this.groupReducer.validity === Validity.Invalid
     ) {
       return Validity.Invalid;
     }
     if (
-      this.adapterReducer.validity === Validity.Pending ||
+      this.nonTransientFieldsAndAdaptersReducer.validity === Validity.Pending ||
       this.transientElementReducer.validity === Validity.Pending ||
       this.groupReducer.validity === Validity.Pending
     ) {
@@ -35,35 +35,42 @@ export class FormValidityReducer {
   }
 
   public constructor({
+    nonTransientFieldsAndAdapters,
     transientFields,
     groups,
-    adapters,
   }: FormValidityReducerConstructorParams) {
-    this.adapterReducer = new ValidityReducer({ members: adapters });
+    this.nonTransientFieldsAndAdaptersReducer = new ValidityReducer({
+      members: nonTransientFieldsAndAdapters,
+    });
+
     this.transientElementReducer = new ValidityReducer({
       members: transientFields,
     });
+
     this.groupReducer = new ValidityReducer({ members: groups });
   }
 
-  public processAdapterStateUpdate(
-    adapterName: string,
+  public processNonTransientFieldOrAdapterStateUpdate(
+    name: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.adapterReducer.processMemberStateUpdate(adapterName, state);
+    this.nonTransientFieldsAndAdaptersReducer.processMemberStateUpdate(
+      name,
+      state,
+    );
   }
 
   public processTransientElementStateUpdate(
-    elementName: string,
+    name: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.transientElementReducer.processMemberStateUpdate(elementName, state);
+    this.transientElementReducer.processMemberStateUpdate(name, state);
   }
 
   public processGroupStateUpdate(
-    groupName: string,
+    name: string,
     state: ValidityReducerMemberState,
   ): void {
-    this.groupReducer.processMemberStateUpdate(groupName, state);
+    this.groupReducer.processMemberStateUpdate(name, state);
   }
 }

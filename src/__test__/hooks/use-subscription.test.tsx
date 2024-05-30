@@ -10,7 +10,7 @@ describe('useSubscription()', () => {
 
   test(`It returns a React state variable that updates when the state of the 
   entity it received changes.`, async () => {
-    const entity = new StateManager(0);
+    const entity = new StateManager({ count: 0 });
 
     const counterId = 'counter';
 
@@ -19,10 +19,10 @@ describe('useSubscription()', () => {
 
       return (
         <>
-          <div data-testid={counterId}>{state}</div>
+          <div data-testid={counterId}>{state.count}</div>
           <button
             onClick={() => {
-              entity.state = entity.state + 1;
+              entity.updateProperties({ count: entity.state.count + 1 });
             }}
           >
             Increment

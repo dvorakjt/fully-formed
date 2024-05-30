@@ -1,14 +1,22 @@
 export function deepEquals(a: unknown, b: unknown): boolean {
+  if (typeof a === 'function') {
+    return typeof b === 'function' && a.toString() === b.toString();
+  }
+
+  if (a instanceof Date) {
+    return b instanceof Date && a.getTime() === b.getTime();
+  }
+
+  if (a instanceof RegExp) {
+    return b instanceof RegExp && a.toString() === b.toString();
+  }
+
   if (Array.isArray(a)) {
     return Array.isArray(b) && deepEqualsArray(a, b);
   }
 
   if (isObject(a) && isObject(b)) {
     return deepEqualsObject(a, b);
-  }
-
-  if (typeof a === 'function' && typeof b === 'function') {
-    return a.toString() === b.toString();
   }
 
   return a === b;

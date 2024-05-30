@@ -1,16 +1,10 @@
-import {
-  StateManager,
-  type Excludable,
-  type ExcludableState,
-  type RecordFromNameableArray,
-} from '../../shared';
+import { Subject, type Subscription } from 'rxjs';
 import {
   createRecordFromNameableArray,
   isResettable,
   isSubmittable,
 } from '../../utils';
 import { FormReducerFactory } from '../../factories';
-import type { Subscription } from 'rxjs';
 import type {
   IForm,
   FormChild,
@@ -20,7 +14,14 @@ import type {
   PossiblyTransient,
 } from '../interfaces';
 import type { AutoTrim, FormMembers, FormValue } from '../types';
+import type {
+  StateWithChanges,
+  Excludable,
+  ExcludableState,
+  RecordFromNameableArray,
+} from '../../shared';
 import type { FormReducer } from '../../reducers';
+import clone from 'just-clone';
 
 type AbstractExcludableSubFormConstructorParams<
   T extends string,
@@ -58,18 +59,34 @@ export abstract class AbstractExcludableSubForm<
   public readonly groups: RecordFromNameableArray<S['groups']>;
   public readonly transient: U;
   public readonly id: string;
-  private stateManager: StateManager<ExcludableSubFormState<S>>;
+  private stateChanges = new Subject<
+    StateWithChanges<ExcludableSubFormState<S>>
+  >();
   private reducer: FormReducer<S>;
   private excludeByDefault: boolean;
+  private _state: ExcludableSubFormState<S>;
+  private valueChanged = false;
+  private validityChanged = false;
+  private submittedChanged = false;
+  private excludeChanged = false;
 
-  public get state(): ExcludableSubFormState<S> {
-    return this.stateManager.state;
-  }
-
-  private set state(state: Partial<ExcludableSubFormState<S>>) {
-    this.stateManager.state = {
-      ...this.state,
-      ...state,
+  public get state(): StateWithChanges<ExcludableSubFormState<S>> {
+    return {
+      ...this._state,
+      didPropertyChange: (prop: keyof ExcludableSubFormState<S>): boolean => {
+        switch (prop) {
+          case 'value':
+            return this.valueChanged;
+          case 'validity':
+            return this.validityChanged;
+          case 'exclude':
+            return this.excludeChanged;
+          case 'submitted':
+            return this.submittedChanged;
+          default:
+            return false;
+        }
+      },
     };
   }
 
@@ -92,28 +109,38 @@ export abstract class AbstractExcludableSubForm<
 
     this.reducer = FormReducerFactory.createFormReducer<S>({
       fields,
+      adapters,
       groups,
-      customAdapters: adapters,
       autoTrim,
     });
 
-    this.stateManager = new StateManager<ExcludableSubFormState<S>>({
-      ...this.reducer.state,
-      submitted: false,
+    this._state = {
+      ...clone(this.reducer.state),
       exclude: this.excludeByDefault,
-    });
+      submitted: false,
+    };
 
     this.subscribeToReducer();
   }
 
   public subscribeToState(
-    cb: (state: ExcludableSubFormState<S>) => void,
+    cb: (state: StateWithChanges<ExcludableSubFormState<S>>) => void,
   ): Subscription {
-    return this.stateManager.subscribeToState(cb);
+    return this.stateChanges.subscribe(cb);
   }
 
   public setExclude(exclude: boolean): void {
-    this.state = { exclude };
+    this.excludeChanged = this._state.exclude !== exclude;
+    this.valueChanged = false;
+    this.validityChanged = false;
+    this.submittedChanged = false;
+
+    this._state = {
+      ...this._state,
+      exclude,
+    };
+
+    this.stateChanges.next(this.state);
   }
 
   public setSubmitted(): void {
@@ -122,18 +149,35 @@ export abstract class AbstractExcludableSubForm<
         field.setSubmitted();
       }
     }
-    this.state = {
+
+    this.submittedChanged = !this._state.submitted;
+    this.valueChanged = false;
+    this.validityChanged = false;
+    this.excludeChanged = false;
+
+    this._state = {
+      ...this._state,
       submitted: true,
     };
+
+    this.stateChanges.next(this.state);
   }
 
   public reset(): void {
-    this.resetSelf();
-    this.resetFields();
-  }
+    this.excludeChanged = this._state.exclude !== this.excludeByDefault;
+    this.submittedChanged = !!this._state.submitted;
+    this.valueChanged = false;
+    this.validityChanged = false;
 
-  private resetSelf(): void {
-    this.state = { submitted: false, exclude: this.excludeByDefault };
+    this._state = {
+      ...this.state,
+      submitted: false,
+      exclude: this.excludeByDefault,
+    };
+
+    this.stateChanges.next(this.state);
+
+    this.resetFields();
   }
 
   private resetFields(): void {
@@ -146,10 +190,19 @@ export abstract class AbstractExcludableSubForm<
 
   private subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
-      this.state = {
-        ...state,
-        exclude: this.state.exclude,
+      this.valueChanged = state.didPropertyChange('value');
+      this.validityChanged = state.didPropertyChange('validity');
+      this.submittedChanged = false;
+      this.excludeChanged = false;
+
+      this._state = {
+        value: this.valueChanged ? clone(state.value) : this.state.value,
+        validity: state.validity,
+        submitted: this.state.submitted,
+        exclude: this._state.exclude,
       };
+
+      this.stateChanges.next(this.state);
     });
   }
 }

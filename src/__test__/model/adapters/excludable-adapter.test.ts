@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, test, expect } from 'vitest';
 import {
   ExcludableAdapter,
   ExcludableField,
   StringValidators,
   Validity,
-  type ExcludableAdaptFnReturnType,
 } from '../../../model';
 
 describe('ExcludableAdapter', () => {
@@ -18,7 +18,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -37,7 +37,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -58,7 +58,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -77,7 +77,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -100,7 +100,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -124,7 +124,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -147,7 +147,7 @@ describe('ExcludableAdapter', () => {
     const adapter = new ExcludableAdapter({
       name: 'testAdapter',
       source,
-      adaptFn: (sourceState): ExcludableAdaptFnReturnType<string> => {
+      adaptFn: sourceState => {
         return {
           value: sourceState.value.toUpperCase(),
           exclude: sourceState.exclude,
@@ -160,6 +160,7 @@ describe('ExcludableAdapter', () => {
         value: updatedValue.toUpperCase(),
         validity: Validity.Valid,
         exclude: false,
+        didPropertyChange: expect.any(Function),
       });
     });
     source.setValue(updatedValue);

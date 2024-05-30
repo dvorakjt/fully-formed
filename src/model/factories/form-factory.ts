@@ -2,6 +2,7 @@ import {
   AbstractForm,
   AbstractSubForm,
   AbstractExcludableSubForm,
+  type AllowedFormMembers,
 } from '../form-elements';
 import type {
   FormTemplate,
@@ -14,9 +15,10 @@ type TransienceFromTemplate<T> =
   T extends TransientTemplate<boolean> ? T['transient'] : false;
 
 export class FormFactory {
-  public static createForm<Args extends unknown[], T extends FormTemplate>(
-    Template: Constructor<Args, T>,
-  ): Constructor<Args, AbstractForm<T>> {
+  public static createForm<
+    Args extends unknown[],
+    T extends FormTemplate & AllowedFormMembers<T>,
+  >(Template: Constructor<Args, T>): Constructor<Args, AbstractForm<T>> {
     return class extends AbstractForm<T> {
       public constructor(...args: Args) {
         super(new Template(...args));
@@ -26,7 +28,7 @@ export class FormFactory {
 
   public static createSubForm<
     Args extends unknown[],
-    T extends SubFormTemplate,
+    T extends SubFormTemplate & AllowedFormMembers<T>,
   >(
     Template: Constructor<Args, T>,
   ): Constructor<
@@ -46,7 +48,7 @@ export class FormFactory {
 
   public static createExcludableSubForm<
     Args extends unknown[],
-    T extends SubFormTemplate,
+    T extends SubFormTemplate & AllowedFormMembers<T>,
   >(
     Template: Constructor<Args, T>,
   ): Constructor<

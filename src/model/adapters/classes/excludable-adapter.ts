@@ -1,17 +1,22 @@
 import {
   StateManager,
+  type StateWithChanges,
   type Excludable,
   type Validated,
-  type ExcludableState,
   type ValidatedState,
+  type ExcludableState,
 } from '../../shared';
 import type { Subscription } from 'rxjs';
 import type { IAdapter } from '../interfaces';
-import type { ExcludableAdaptFnReturnType } from '../types';
+
+type AdaptFnReturnType<T> = {
+  value: T;
+  exclude: boolean;
+};
 
 type ExcludableAdaptFn<T extends Validated<unknown>, U> = (
   sourceState: T['state'],
-) => ExcludableAdaptFnReturnType<U>;
+) => AdaptFnReturnType<U>;
 
 type ExcludableAdapterConstructorParams<
   T extends string,
@@ -23,8 +28,6 @@ type ExcludableAdapterConstructorParams<
   adaptFn: ExcludableAdaptFn<U, V>;
 };
 
-type ExcludableAdapterState<T> = ValidatedState<T> & ExcludableState;
-
 export class ExcludableAdapter<
     T extends string,
     U extends Validated<unknown>,
@@ -35,14 +38,10 @@ export class ExcludableAdapter<
   public readonly name: T;
   private source: U;
   private adaptFn: ExcludableAdaptFn<U, V>;
-  private stateManager: StateManager<ExcludableAdapterState<V>>;
+  private stateManager: StateManager<ValidatedState<V> & ExcludableState>;
 
-  public get state(): ExcludableAdapterState<V> {
+  public get state(): StateWithChanges<ValidatedState<V> & ExcludableState> {
     return this.stateManager.state;
-  }
-
-  private set state(state: ExcludableAdapterState<V>) {
-    this.stateManager.state = state;
   }
 
   public constructor({
@@ -53,31 +52,27 @@ export class ExcludableAdapter<
     this.name = name;
     this.source = source;
     this.adaptFn = adaptFn;
-    this.stateManager = new StateManager<ExcludableAdapterState<V>>(
-      this.getInitialState(),
-    );
+
+    this.stateManager = new StateManager<ValidatedState<V> & ExcludableState>({
+      ...this.adaptFn(this.source.state),
+      validity: this.source.state.validity,
+    });
+
     this.subscribeToSource();
   }
 
   public subscribeToState(
-    cb: (state: ExcludableAdapterState<V>) => void,
+    cb: (state: StateWithChanges<ValidatedState<V> & ExcludableState>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
 
-  private getInitialState(): ExcludableAdapterState<V> {
-    return {
-      ...this.adaptFn(this.source.state),
-      validity: this.source.state.validity,
-    };
-  }
-
   private subscribeToSource(): void {
     this.source.subscribeToState(state => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...this.adaptFn(state),
         validity: state.validity,
-      };
+      });
     });
   }
 }

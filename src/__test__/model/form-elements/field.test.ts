@@ -40,6 +40,7 @@ describe('Field', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -76,11 +77,12 @@ describe('Field', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`After instantiation, if async validators have been passed into its 
-  constructor and sync validators return a valid result, its validity is set to 
+  test(`After instantiation, if async validators have been passed into its
+  constructor and sync validators return a valid result, its validity is set to
   Validity.Pending until the async validators return.`, () => {
     const field = new Field({
       name: 'testField',
@@ -92,8 +94,8 @@ describe('Field', () => {
     expect(field.state.validity).toBe(Validity.Pending);
   });
 
-  test(`After instantiation, if both async validators and a pending message were 
-  passed into the constructor and sync validators return a valid result, the 
+  test(`After instantiation, if both async validators and a pending message were
+  passed into the constructor and sync validators return a valid result, the
   messages property of the state of the Field includes the pending message.`, () => {
     const pendingMessage = 'Performing async validation...';
     const field = new Field({
@@ -112,8 +114,8 @@ describe('Field', () => {
     ]);
   });
 
-  test(`After instantiation, if async validators were passed into its 
-  constructor, the value, validity and messages properties of the field are 
+  test(`After instantiation, if async validators were passed into its
+  constructor, the value, validity and messages properties of the field are
   set according to the results of those validators once they resolve.`, () => {
     const validMessage = 'The provided value includes an uppercase letter.';
     const asyncIncludesUpperWithValidMessage = new AsyncValidator<string>({
@@ -142,12 +144,13 @@ describe('Field', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
 
-  test(`After instantiation, if both async validators and a pending message 
-  were passed into the constructor, the pending message is removed from the 
+  test(`After instantiation, if both async validators and a pending message
+  were passed into the constructor, the pending message is removed from the
   Field's state.messages array when the async validators resolve.`, () => {
     const pendingMessage = 'Performing async validation...';
     const syncValidMessage = 'The provided value is not an empty string.';
@@ -197,19 +200,19 @@ describe('Field', () => {
     });
   });
 
-  test(`After instantiation, the isInFocus property of the its state is set to 
+  test(`After instantiation, the isInFocus property of the its state is set to
   false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.isInFocus).toBe(false);
   });
 
-  test(`After instantiation, the hasBeenBlurred property of its state is set to 
+  test(`After instantiation, the hasBeenBlurred property of its state is set to
   false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.hasBeenBlurred).toBe(false);
   });
 
-  test(`After instantiation, the hasBeenModified property of the state of the 
+  test(`After instantiation, the hasBeenModified property of the state of the
   field is set to false by default.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.hasBeenModified).toBe(false);
@@ -222,7 +225,7 @@ describe('Field', () => {
     expect(field.state.value).toBe(updatedValue);
   });
 
-  test(`When setValue() is called, the hasBeenModified property of its state is 
+  test(`When setValue() is called, the hasBeenModified property of its state is
   set to true.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.hasBeenModified).toBe(false);
@@ -230,8 +233,8 @@ describe('Field', () => {
     expect(field.state.hasBeenModified).toBe(true);
   });
 
-  test(`When setValue() is called, if no async validators were passed into its 
-  constructor, its validity and messages properties are set according to the 
+  test(`When setValue() is called, if no async validators were passed into its
+  constructor, its validity and messages properties are set according to the
   results of any sync validators passed it received.`, () => {
     const defaultValue = '';
     const invalidMessage = 'testField must not be an empty string.';
@@ -254,6 +257,7 @@ describe('Field', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
     const updatedValue = 'test';
     field.setValue(updatedValue);
@@ -270,12 +274,13 @@ describe('Field', () => {
       isInFocus: false,
       hasBeenBlurred: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`When setValue() is called, if async validators were passed into its 
-  constructor but its sync validators returned an invalid result, its validity 
-  and messages properties are set according to the results of the sync 
+  test(`When setValue() is called, if async validators were passed into its
+  constructor but its sync validators returned an invalid result, its validity
+  and messages properties are set according to the results of the sync
   validators.`, () => {
     const invalidMessage = 'testField must not be an empty string.';
 
@@ -303,11 +308,12 @@ describe('Field', () => {
       isInFocus: false,
       hasBeenBlurred: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`When setValue() is called, if async validators have been passed into its 
-  constructor and sync validators return a valid result, its validity is set to 
+  test(`When setValue() is called, if async validators have been passed into its
+  constructor and sync validators return a valid result, its validity is set to
   Validity.Pending until the async validators return.`, () => {
     const field = new Field({
       name: 'testField',
@@ -320,9 +326,9 @@ describe('Field', () => {
     expect(field.state.validity).toBe(Validity.Pending);
   });
 
-  test(`When setValue() is called, if both async validators and a pending 
-  message were passed into the constructor and sync validators return a valid 
-  result, the messages property of the state of the Field includes the 
+  test(`When setValue() is called, if both async validators and a pending
+  message were passed into the constructor and sync validators return a valid
+  result, the messages property of the state of the Field includes the
   pending message.`, () => {
     const pendingMessage = 'Performing async validation...';
 
@@ -344,8 +350,8 @@ describe('Field', () => {
     ]);
   });
 
-  test(`When setValue() is called, if async validators have been passed into its 
-  constructor, the value, validity and messages properties of the field are set 
+  test(`When setValue() is called, if async validators have been passed into its
+  constructor, the value, validity and messages properties of the field are set
   according to the results of those validators once they resolve.`, () => {
     const invalidMessage = 'testField must contain an uppercase letter.';
 
@@ -381,12 +387,13 @@ describe('Field', () => {
         isInFocus: false,
         hasBeenBlurred: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
 
-  test(`When setValue() is called, if both async validators and a pending 
-  message were passed into the constructor, the pending message is removed from 
+  test(`When setValue() is called, if both async validators and a pending
+  message were passed into the constructor, the pending message is removed from
   the Field state's messages array when the async validators resolve.`, () => {
     const pendingMessage = 'Performing async validation...';
 
@@ -412,7 +419,7 @@ describe('Field', () => {
     });
   });
 
-  test(`When setValue() is called while there are still pending async 
+  test(`When setValue() is called while there are still pending async
   validators, the results of those validators are ignored.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
@@ -448,6 +455,7 @@ describe('Field', () => {
         isInFocus: false,
         hasBeenBlurred: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
 
@@ -456,7 +464,7 @@ describe('Field', () => {
     promiseScheduler.resolveAll();
   });
 
-  test(`When validator templates were passed into its constructor, those 
+  test(`When validator templates were passed into its constructor, those
   templates are used to instantiate validators.`, () => {
     const defaultValue = 'test';
 
@@ -499,6 +507,7 @@ describe('Field', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     const updatedValue = defaultValue.toUpperCase();
@@ -521,10 +530,11 @@ describe('Field', () => {
       isInFocus: false,
       hasBeenBlurred: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`When async validator templates were passed into its constructor, those 
+  test(`When async validator templates were passed into its constructor, those
   templates are used to instantiate AsyncValidators.`, () => {
     const asyncRequiredTemplate: AsyncValidatorTemplate<string> = {
       predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
@@ -568,11 +578,12 @@ describe('Field', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
 
-  test(`When focus() is called, the isInFocus property of its state is set to 
+  test(`When focus() is called, the isInFocus property of its state is set to
   true.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.isInFocus).toBe(false);
@@ -590,7 +601,7 @@ describe('Field', () => {
     expect(field.state.hasBeenBlurred).toBe(true);
   });
 
-  test(`When blur() is called, the isInFocus property of its state is set to 
+  test(`When blur() is called, the isInFocus property of its state is set to
   false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     field.focus();
@@ -600,7 +611,7 @@ describe('Field', () => {
     expect(field.state.isInFocus).toBe(false);
   });
 
-  test(`When cancelFocus() is called, the isInFocus property of its state is 
+  test(`When cancelFocus() is called, the isInFocus property of its state is
   set to false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     field.focus();
@@ -610,7 +621,7 @@ describe('Field', () => {
     expect(field.state.isInFocus).toBe(false);
   });
 
-  test(`When setSubmitted() is called, the submitted property of its state 
+  test(`When setSubmitted() is called, the submitted property of its state
   becomes true.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.submitted).toBe(false);
@@ -619,7 +630,7 @@ describe('Field', () => {
     expect(field.state.submitted).toBe(true);
   });
 
-  test(`When reset() is called, its value is set to the default value passed 
+  test(`When reset() is called, its value is set to the default value passed
   into its constructor.`, () => {
     const defaultValue = '';
     const field = new Field({ name: 'testField', defaultValue });
@@ -630,8 +641,8 @@ describe('Field', () => {
     expect(field.state.value).toBe(defaultValue);
   });
 
-  test(`When reset() is called, if no async validators were passed into its 
-  constructor, its validity and messages properties are set according to the 
+  test(`When reset() is called, if no async validators were passed into its
+  constructor, its validity and messages properties are set according to the
   results of any sync validators it received.`, () => {
     const validMessage = 'testField is valid.';
     const invalidMessage = 'testField is required.';
@@ -658,6 +669,7 @@ describe('Field', () => {
       isInFocus: false,
       hasBeenBlurred: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     field.reset();
@@ -675,12 +687,13 @@ describe('Field', () => {
       isInFocus: false,
       hasBeenBlurred: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`When reset() is called, if async validators were passed into its 
-  constructor but its sync validators return an invalid result, its validity and 
-  messages properties are set according to the results of the sync 
+  test(`When reset() is called, if async validators were passed into its
+  constructor but its sync validators return an invalid result, its validity and
+  messages properties are set according to the results of the sync
   validators.`, () => {
     const defaultValue = '';
     const invalidMessage = 'testField must not be an empty string.';
@@ -709,11 +722,12 @@ describe('Field', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`When reset() is called, if async validators have been passed into its 
-  constructor and sync validators return a valid result, its validity is set to 
+  test(`When reset() is called, if async validators have been passed into its
+  constructor and sync validators return a valid result, its validity is set to
   Validity.Pending until the async validators return.`, () => {
     const field = new Field({
       name: 'testField',
@@ -728,8 +742,8 @@ describe('Field', () => {
     expect(field.state.validity).toBe(Validity.Pending);
   });
 
-  test(`When reset() is called, if both async validators and a pending message 
-  were passed into the constructor and sync validators return a valid result, 
+  test(`When reset() is called, if both async validators and a pending message
+  were passed into the constructor and sync validators return a valid result,
   the messages property of it state includes the pending message.`, () => {
     const pendingMessage = 'Performing async validation...';
 
@@ -755,8 +769,8 @@ describe('Field', () => {
     ]);
   });
 
-  test(`When reset() is called, if async validators have been passed into the 
-  constructor, the value, validity and messages properties of the field are 
+  test(`When reset() is called, if async validators have been passed into the
+  constructor, the value, validity and messages properties of the field are
   set according to the results of those validators once they resolve.`, () => {
     const validMessage = 'The provided value includes an uppercase letter.';
 
@@ -793,12 +807,13 @@ describe('Field', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
 
-  test(`When reset() is called, if both async validators and a pending message 
-  were passed into the constructor, the pending message is removed from its 
+  test(`When reset() is called, if both async validators and a pending message
+  were passed into the constructor, the pending message is removed from its
   state.messages array when the async validators resolve.`, () => {
     const pendingMessage = 'Performing async validation...';
     const syncValidMessage = 'The provided value is not an empty string.';
@@ -851,7 +866,7 @@ describe('Field', () => {
     });
   });
 
-  test(`When reset() is called, the hasBeenBlurred property of the state of the 
+  test(`When reset() is called, the hasBeenBlurred property of the state of the
   Field is set to false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     expect(field.state.hasBeenBlurred).toBe(false);
@@ -863,7 +878,7 @@ describe('Field', () => {
     expect(field.state.hasBeenBlurred).toBe(false);
   });
 
-  test(`When reset() is called, the submitted property of its state is set to 
+  test(`When reset() is called, the submitted property of its state is set to
   false.`, () => {
     const field = new Field({ name: 'testField', defaultValue: '' });
     field.setSubmitted();
@@ -871,5 +886,28 @@ describe('Field', () => {
 
     field.reset();
     expect(field.state.submitted).toBe(false);
+  });
+
+  test(`When state.didPropertyChange() is called, it returns a list of 
+  properties that were changed in that state update.`, () => {
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      validators: [
+        StringValidators.required({
+          invalidMessage: 'Field is required.',
+        }),
+      ],
+    });
+
+    field.setValue('test');
+    expect(field.state.didPropertyChange('value')).toBe(true);
+    expect(field.state.didPropertyChange('validity')).toBe(true);
+    expect(field.state.didPropertyChange('messages')).toBe(true);
+    expect(field.state.didPropertyChange('hasBeenBlurred')).toBe(false);
+
+    field.focus();
+    expect(field.state.didPropertyChange('isInFocus')).toBe(true);
+    expect(field.state.didPropertyChange('value')).toBe(false);
   });
 });

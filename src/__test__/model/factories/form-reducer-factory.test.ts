@@ -10,6 +10,7 @@ import {
   Validity,
   type FormChild,
   type FormChildState,
+  type StateWithChanges,
 } from '../../../model';
 import type { Subscription } from 'rxjs';
 
@@ -30,7 +31,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups: [],
       autoTrim: false,
     });
@@ -48,7 +49,7 @@ describe('FormReducerFactory', () => {
       public readonly name: T;
       private stateManager: StateManager<FormChildState<V>>;
 
-      public get state(): FormChildState<V> {
+      public get state(): StateWithChanges<FormChildState<V>> {
         return this.stateManager.state;
       }
 
@@ -61,7 +62,7 @@ describe('FormReducerFactory', () => {
       }
 
       public subscribeToState(
-        cb: (state: FormChildState<V>) => void,
+        cb: (state: StateWithChanges<FormChildState<V>>) => void,
       ): Subscription {
         return this.stateManager.subscribeToState(cb);
       }
@@ -71,7 +72,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups: [],
       autoTrim: false,
     });
@@ -100,7 +101,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups: [],
       autoTrim: false,
     });
@@ -131,7 +132,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: adapters,
+      adapters: adapters,
       groups: [],
       autoTrim: false,
     });
@@ -158,7 +159,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups: [],
       autoTrim: false,
     });
@@ -194,7 +195,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups,
       autoTrim: false,
     });
@@ -216,7 +217,7 @@ describe('FormReducerFactory', () => {
 
     const reducer = FormReducerFactory.createFormReducer<Members>({
       fields,
-      customAdapters: [],
+      adapters: [],
       groups: [],
       autoTrim: {
         include: ['autoTrimmed'],

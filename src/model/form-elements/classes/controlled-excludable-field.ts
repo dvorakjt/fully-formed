@@ -1,9 +1,12 @@
-import { ExcludableField, type ExcludableFieldState } from './excludable-field';
+import { StateManager, Validity } from '../../shared';
+import { CombinedValidatorSuite } from '../../validators';
+import type { ExcludableFieldState } from './excludable-field';
 import type {
   Stateful,
-  ValidatedState,
-  MessageBearerState,
-  ExcludableState,
+  StateWithChanges,
+  Excludable,
+  CancelableSubscription,
+  Message,
 } from '../../shared';
 import type {
   IValidator,
@@ -11,16 +14,24 @@ import type {
   IAsyncValidator,
   AsyncValidatorTemplate,
 } from '../../validators';
+import type { IField, SetExclude } from '../interfaces';
+import type { Subscription } from 'rxjs';
 
-type ControlledState<T> =
-  | (ValidatedState<T> & MessageBearerState & ExcludableState)
-  | (ValidatedState<T> & MessageBearerState)
-  | ExcludableState;
+type ControlFnReturnType<T> =
+  | { value: T; exclude: boolean }
+  | { value: T }
+  | { exclude: boolean }
+  | undefined
+  | void;
+
+type InitFn<T extends Stateful, V> = (controllerState: T['state']) => {
+  value: V;
+  exclude: boolean;
+};
 
 type ControlFn<T extends Stateful, V> = (
   controllerState: T['state'],
-  ownState: ExcludableFieldState<V>,
-) => ControlledState<V> | void;
+) => ControlFnReturnType<V>;
 
 type ControlledExcludableFieldConstructorParams<
   T extends string,
@@ -29,8 +40,8 @@ type ControlledExcludableFieldConstructorParams<
   V extends boolean,
 > = {
   name: T;
-  defaultValue: S;
   controller: U;
+  initFn: InitFn<U, S>;
   controlFn: ControlFn<U, S>;
   id?: string;
   transient?: V;
@@ -40,56 +51,206 @@ type ControlledExcludableFieldConstructorParams<
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<S>>;
   pendingMessage?: string;
   delayAsyncValidatorExecution?: number;
-  excludeByDefault?: boolean;
 };
 
 export class ControlledExcludableField<
-  T extends string,
-  S,
-  U extends Stateful,
-  V extends boolean = false,
-> extends ExcludableField<T, S, V> {
+    T extends string,
+    S,
+    U extends Stateful,
+    V extends boolean = false,
+  >
+  implements IField<T, S, V>, Excludable, SetExclude
+{
+  public readonly name: T;
+  public readonly id: string;
+  public readonly transient: V;
   private controller: U;
+  private initFn: InitFn<U, S>;
   private controlFn: ControlFn<U, S>;
+  private validatorSuite: CombinedValidatorSuite<S>;
+  private stateManager: StateManager<ExcludableFieldState<S>>;
+  private validatorSuiteSubscription?: CancelableSubscription;
 
-  public constructor(
-    params: ControlledExcludableFieldConstructorParams<T, S, U, V>,
-  ) {
-    super(params);
-    this.controller = params.controller;
-    this.controlFn = params.controlFn;
-    this.applyControlFn(this.controller.state);
+  public get state(): StateWithChanges<ExcludableFieldState<S>> {
+    return this.stateManager.state;
+  }
+
+  public constructor({
+    name,
+    controller,
+    initFn,
+    controlFn,
+    id,
+    transient,
+    validators,
+    validatorTemplates,
+    asyncValidators,
+    asyncValidatorTemplates,
+    pendingMessage,
+    delayAsyncValidatorExecution,
+  }: ControlledExcludableFieldConstructorParams<T, S, U, V>) {
+    this.name = name;
+    this.id = id ?? this.name;
+    this.transient = !!transient as V;
+
+    this.controller = controller;
+    this.initFn = initFn;
+    this.controlFn = controlFn;
+
+    this.validatorSuite = new CombinedValidatorSuite({
+      validators,
+      validatorTemplates,
+      asyncValidators,
+      asyncValidatorTemplates,
+      pendingMessage,
+      delayAsyncValidatorExecution,
+    });
+
+    const { value, exclude } = this.initFn(this.controller.state);
+
+    const { syncResult, observableResult } =
+      this.validatorSuite.validate(value);
+
+    const initialState = {
+      ...syncResult,
+      exclude,
+      isInFocus: false,
+      hasBeenBlurred: false,
+      hasBeenModified: false,
+      submitted: false,
+    };
+
+    this.stateManager = new StateManager(initialState);
+
+    this.validatorSuiteSubscription = observableResult?.subscribe(result => {
+      this.stateManager.updateProperties({
+        ...result,
+        messages: [...this.getNonPendingMessages(), ...result.messages],
+      });
+    });
+
     this.subscribeToController();
   }
 
+  public subscribeToState(
+    cb: (state: StateWithChanges<ExcludableFieldState<S>>) => void,
+  ): Subscription {
+    return this.stateManager.subscribeToState(cb);
+  }
+
+  public setValue(value: S): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
+    const { syncResult, observableResult } =
+      this.validatorSuite.validate(value);
+
+    this.stateManager.updateProperties({
+      ...syncResult,
+      hasBeenModified: true,
+    });
+
+    this.validatorSuiteSubscription = observableResult?.subscribe(result => {
+      this.stateManager.updateProperties({
+        ...result,
+        messages: [...this.getNonPendingMessages(), ...result.messages],
+      });
+    });
+  }
+
+  public setExclude(exclude: boolean): void {
+    this.stateManager.updateProperties({ exclude });
+  }
+
+  public focus(): void {
+    this.stateManager.updateProperties({
+      isInFocus: true,
+    });
+  }
+
+  public blur(): void {
+    this.stateManager.updateProperties({
+      isInFocus: false,
+      hasBeenBlurred: true,
+    });
+  }
+
+  public cancelFocus(): void {
+    this.stateManager.updateProperties({
+      isInFocus: false,
+    });
+  }
+
+  public setSubmitted(): void {
+    this.stateManager.updateProperties({ submitted: true });
+  }
+
   public reset(): void {
-    super.reset();
-    this.applyControlFn(this.controller.state);
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
+    const { value, exclude } = this.initFn(this.controller.state);
+
+    const { syncResult, observableResult } =
+      this.validatorSuite.validate(value);
+
+    const initialState = {
+      ...syncResult,
+      exclude,
+      isInFocus: this.state.isInFocus,
+      hasBeenBlurred: false,
+      hasBeenModified: false,
+      submitted: false,
+    };
+
+    this.stateManager.updateProperties(initialState);
+
+    this.validatorSuiteSubscription = observableResult?.subscribe(result => {
+      this.stateManager.updateProperties({
+        ...result,
+        messages: [...this.getNonPendingMessages(), ...result.messages],
+      });
+    });
   }
 
   private subscribeToController(): void {
     this.controller.subscribeToState(state => {
-      this.applyControlFn(state);
+      const controlFnResult = this.controlFn(state);
+
+      if (!controlFnResult) return;
+
+      if ('value' in controlFnResult) {
+        this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
+        const { syncResult, observableResult } = this.validatorSuite.validate(
+          controlFnResult.value,
+        );
+
+        this.stateManager.updateProperties({
+          ...syncResult,
+          exclude:
+            'exclude' in controlFnResult ?
+              controlFnResult.exclude
+            : this.state.exclude,
+        });
+
+        this.validatorSuiteSubscription = observableResult?.subscribe(
+          result => {
+            this.stateManager.updateProperties({
+              ...result,
+              messages: [...this.getNonPendingMessages(), ...result.messages],
+            });
+          },
+        );
+      } else {
+        this.stateManager.updateProperties({
+          exclude: controlFnResult.exclude,
+        });
+      }
     });
   }
 
-  private applyControlFn(controllerState: U['state']): void {
-    const dictatedState = this.controlFn(controllerState, this.state);
-    if (!dictatedState) return;
-
-    if (
-      this.validatorSuiteSubscription &&
-      this.isValidatedState(dictatedState)
-    ) {
-      this.validatorSuiteSubscription.unsubscribeAndCancel();
-    }
-
-    this.state = dictatedState;
-  }
-
-  private isValidatedState(
-    state: ControlledState<S>,
-  ): state is ValidatedState<S> & MessageBearerState {
-    return 'value' in state && 'validity' in state && 'messages' in state;
+  private getNonPendingMessages(): Message[] {
+    return this.state.messages.filter(
+      message => message.validity !== Validity.Pending,
+    );
   }
 }

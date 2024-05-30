@@ -1,11 +1,12 @@
-import { StateManager, type RecordFromNameableArray } from '../../shared';
+import { Subject, type Subscription } from 'rxjs';
+import clone from 'just-clone';
 import {
   createRecordFromNameableArray,
   isResettable,
   isSubmittable,
 } from '../../utils';
 import { FormReducerFactory } from '../../factories';
-import type { Subscription } from 'rxjs';
+import type { StateWithChanges, RecordFromNameableArray } from '../../shared';
 import type { IForm, FormState } from '../interfaces';
 import type { AutoTrim, FormMembers } from '../types';
 import type { FormReducer } from '../../reducers';
@@ -20,17 +21,28 @@ type AbstractFormConstructorParams<T extends FormMembers> = {
 export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
   public readonly fields: RecordFromNameableArray<T['fields']>;
   public readonly groups: RecordFromNameableArray<T['groups']>;
-  private stateManager: StateManager<FormState<T>>;
+  private stateChanges = new Subject<StateWithChanges<FormState<T>>>();
   private reducer: FormReducer<T>;
+  private _state: FormState<T>;
+  private valueChanged = false;
+  private validityChanged = false;
+  private submittedChanged = false;
 
-  public get state(): FormState<T> {
-    return this.stateManager.state;
-  }
-
-  private set state(state: Partial<FormState<T>>) {
-    this.stateManager.state = {
-      ...this.state,
-      ...state,
+  public get state(): StateWithChanges<FormState<T>> {
+    return {
+      ...this._state,
+      didPropertyChange: (prop: keyof FormState): boolean => {
+        switch (prop) {
+          case 'value':
+            return this.valueChanged;
+          case 'validity':
+            return this.validityChanged;
+          case 'submitted':
+            return this.submittedChanged;
+          default:
+            return false;
+        }
+      },
     };
   }
 
@@ -45,21 +57,23 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
 
     this.reducer = FormReducerFactory.createFormReducer<T>({
       fields,
-      customAdapters: adapters,
+      adapters,
       groups,
       autoTrim,
     });
 
-    this.stateManager = new StateManager<FormState<T>>({
-      ...this.reducer.state,
+    this._state = {
+      ...clone(this.reducer.state),
       submitted: false,
-    });
+    };
 
     this.subscribeToReducer();
   }
 
-  public subscribeToState(cb: (state: FormState<T>) => void): Subscription {
-    return this.stateManager.subscribeToState(cb);
+  public subscribeToState(
+    cb: (state: StateWithChanges<FormState<T>>) => void,
+  ): Subscription {
+    return this.stateChanges.subscribe(cb);
   }
 
   public setSubmitted(): void {
@@ -68,20 +82,32 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
         field.setSubmitted();
       }
     }
-    this.state = {
+
+    this.submittedChanged = !this._state.submitted;
+    this.valueChanged = false;
+    this.validityChanged = false;
+
+    this._state = {
+      ...this.state,
       submitted: true,
     };
+
+    this.stateChanges.next(this.state);
   }
 
   public reset(): void {
-    this.resetSelf();
-    this.resetFields();
-  }
+    this.submittedChanged = this._state.submitted;
+    this.valueChanged = false;
+    this.validityChanged = false;
 
-  private resetSelf(): void {
-    this.state = {
+    this._state = {
+      ...this.state,
       submitted: false,
     };
+
+    this.stateChanges.next(this.state);
+
+    this.resetFields();
   }
 
   private resetFields(): void {
@@ -94,9 +120,17 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
 
   private subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
-      this.state = {
-        ...state,
+      this.valueChanged = state.didPropertyChange('value');
+      this.validityChanged = state.didPropertyChange('validity');
+      this.submittedChanged = false;
+
+      this._state = {
+        value: this.valueChanged ? clone(state.value) : this.state.value,
+        validity: state.validity,
+        submitted: this.state.submitted,
       };
+
+      this.stateChanges.next(this.state);
     });
   }
 }

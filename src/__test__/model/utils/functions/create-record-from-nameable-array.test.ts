@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { createRecordFromNameableArray } from '../../../model';
+import { createRecordFromNameableArray } from '../../../../model';
 
 describe('createRecordFromNameableArray()', () => {
   test(`It returns an object whose keys are the names of the items of the 

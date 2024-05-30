@@ -1,33 +1,55 @@
 import { Subject, type Subscription } from 'rxjs';
-import clone from 'just-clone';
-import type { Stateful } from '../interfaces';
+import { deepEquals } from '../../utils';
+import type { Stateful, StateWithChanges } from '../interfaces';
 
-export class StateManager<T> implements Stateful<T> {
+export class StateManager<T extends object>
+  implements Stateful<StateWithChanges<T>>
+{
   private _state: T;
-  private stateChanges: Subject<T> = new Subject<T>();
+  private _changes: Set<keyof T>;
+  private stateChanges: Subject<StateWithChanges<T>> = new Subject<
+    StateWithChanges<T>
+  >();
 
-  public set state(state: T) {
+  public get state(): StateWithChanges<T> {
+    return {
+      ...this._state,
+      didPropertyChange: (prop: keyof T) => this._changes.has(prop),
+    };
+  }
+
+  private set state(state: T) {
     this._state = state;
     this.stateChanges.next(this.state);
   }
 
-  public get state(): T {
-    if (this.isObject(this._state)) {
-      return clone(this._state);
-    }
-
-    return this._state;
+  public constructor(initialState: T) {
+    this._changes = new Set<keyof T>();
+    this._state = {
+      ...initialState,
+    };
   }
 
-  public constructor(state: T) {
-    this._state = state;
-  }
-
-  public subscribeToState(cb: (state: T) => void): Subscription {
+  public subscribeToState(
+    cb: (state: StateWithChanges<T>) => void,
+  ): Subscription {
     return this.stateChanges.subscribe(cb);
   }
 
-  private isObject<T>(thing: T): thing is T & object {
-    return thing && typeof thing === 'object';
+  public updateProperties(props: Partial<T>): void {
+    const changes = new Set<string>();
+
+    for (const key of Object.keys(props)) {
+      if (!deepEquals(props[key as keyof T], this._state[key as keyof T])) {
+        changes.add(key);
+      }
+    }
+
+    this._changes = changes as Set<keyof T>;
+
+    this.state = {
+      ...this._state,
+      ...props,
+    };
   }
 }

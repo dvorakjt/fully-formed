@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { isExcludable } from '../../../model';
+import { isExcludable } from '../../../../model';
 
 describe('isExcludable', () => {
   const nonObjects = [

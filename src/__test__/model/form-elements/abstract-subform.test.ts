@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, test, expect, vi } from 'vitest';
 import {
   SubFormTemplate,
@@ -11,7 +12,6 @@ import {
   Group,
   GroupValiditySource,
   AsyncValidator,
-  type ExcludableAdaptFnReturnType,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
@@ -123,10 +123,7 @@ describe('AbstractSubForm', () => {
         new ExcludableAdapter({
           name: 'middleInitial',
           source: this.fields[1],
-          adaptFn: ({
-            value,
-            exclude,
-          }): ExcludableAdaptFnReturnType<string> => {
+          adaptFn: ({ value, exclude }) => {
             return {
               value: value.length > 0 ? value[0].toUpperCase() : '',
               exclude,
@@ -581,6 +578,7 @@ describe('AbstractSubForm', () => {
       },
       validity: Validity.Invalid,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     let counter = 0;
@@ -592,6 +590,7 @@ describe('AbstractSubForm', () => {
           },
           validity: Validity.Pending,
           submitted: false,
+          didPropertyChange: expect.any(Function),
         });
       } else {
         expect(state).toStrictEqual({
@@ -600,6 +599,7 @@ describe('AbstractSubForm', () => {
           },
           validity: Validity.Valid,
           submitted: false,
+          didPropertyChange: expect.any(Function),
         });
       }
       counter++;

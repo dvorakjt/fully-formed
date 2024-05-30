@@ -7,8 +7,8 @@ import {
   type AsyncValidatorTemplate,
 } from '../../validators';
 import type { Subscription } from 'rxjs';
-import type { IField, FieldState, Resettable } from '../interfaces';
-import type { CancelableSubscription } from '../../shared';
+import type { FieldState, IField } from '../interfaces';
+import type { CancelableSubscription, StateWithChanges } from '../../shared';
 
 type FieldConstructorParams<T extends string, S, U extends boolean> = {
   name: T;
@@ -24,25 +24,18 @@ type FieldConstructorParams<T extends string, S, U extends boolean> = {
 };
 
 export class Field<T extends string, S, U extends boolean = false>
-  implements IField<T, S, U>, Resettable
+  implements IField<T, S, U>
 {
   public readonly name: T;
   public readonly id: string;
   public readonly transient: U;
-  protected defaultValue: S;
-  protected validatorSuite: CombinedValidatorSuite<S>;
-  protected stateManager: StateManager<FieldState<S>>;
-  protected validatorSuiteSubscription?: CancelableSubscription;
+  private defaultValue: S;
+  private validatorSuite: CombinedValidatorSuite<S>;
+  private stateManager: StateManager<FieldState<S>>;
+  private validatorSuiteSubscription?: CancelableSubscription;
 
-  public get state(): FieldState<S> {
+  public get state(): StateWithChanges<FieldState<S>> {
     return this.stateManager.state;
-  }
-
-  protected set state(state: Partial<FieldState<S>>) {
-    this.stateManager.state = {
-      ...this.state,
-      ...state,
-    };
   }
 
   public constructor({
@@ -86,10 +79,10 @@ export class Field<T extends string, S, U extends boolean = false>
     this.stateManager = new StateManager<FieldState<S>>(initialState);
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+      });
     });
   }
 
@@ -99,41 +92,46 @@ export class Field<T extends string, S, U extends boolean = false>
     const { syncResult, observableResult } =
       this.validatorSuite.validate(value);
 
-    this.state = { ...syncResult, hasBeenModified: true };
+    this.stateManager.updateProperties({
+      ...syncResult,
+      hasBeenModified: true,
+    });
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+      });
     });
   }
 
-  public subscribeToState(cb: (state: FieldState<S>) => void): Subscription {
+  public subscribeToState(
+    cb: (state: StateWithChanges<FieldState<S>>) => void,
+  ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
 
   public focus(): void {
-    this.state = {
+    this.stateManager.updateProperties({
       isInFocus: true,
-    };
+    });
   }
 
   public blur(): void {
-    this.state = {
+    this.stateManager.updateProperties({
       isInFocus: false,
       hasBeenBlurred: true,
-    };
+    });
   }
 
   public cancelFocus(): void {
-    this.state = {
+    this.stateManager.updateProperties({
       isInFocus: false,
-    };
+    });
   }
 
   public setSubmitted(): void {
-    this.state = { submitted: true };
+    this.stateManager.updateProperties({ submitted: true });
   }
 
   public reset(): void {
@@ -151,13 +149,13 @@ export class Field<T extends string, S, U extends boolean = false>
       hasBeenModified: false,
     };
 
-    this.state = initialState;
+    this.stateManager.updateProperties(initialState);
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+      });
     });
   }
 

@@ -10,7 +10,8 @@ import {
 import { PromiseScheduler } from '../../../test-utils';
 
 describe('GroupReducer', () => {
-  test('Its value defaults to an object containing the values of its members.', () => {
+  test(`Its value defaults to an object containing the values of its 
+  members.`, () => {
     const firstName = new Field({
       name: 'firstName',
       defaultValue: 'Mieczyslaw',
@@ -42,7 +43,8 @@ describe('GroupReducer', () => {
     });
   });
 
-  test('Its validity defaults to Validity.Valid if all included members are valid.', () => {
+  test(`Its validity defaults to Validity.Valid if all included members are 
+  valid.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
     const previousName = new ExcludableField({
@@ -110,7 +112,8 @@ describe('GroupReducer', () => {
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
   });
 
-  test('When the value of one of its members changes, its value is updated.', () => {
+  test(`When the value of one of its members changes, its value is 
+  updated.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
     const nameGroupReducer = new GroupReducer({
@@ -128,7 +131,8 @@ describe('GroupReducer', () => {
     });
   });
 
-  test('When the exclude property of one of its members changes, its value is updated.', () => {
+  test(`When the exclude property of one of its members changes, its value is 
+  updated.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: 'Pete' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Fountain' });
     const previousName = new ExcludableField({
@@ -157,13 +161,87 @@ describe('GroupReducer', () => {
     });
   });
 
-  test('When the validity of one of its members changes, its validity is updated.', () => {
+  test(`When its value changes, didPropertyChange() returns true when called 
+  with 'value.'`, () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: '' });
+    const lastName = new Field({ name: 'lastName', defaultValue: '' });
+    const previousName = new ExcludableField({
+      name: 'previousName',
+      defaultValue: '',
+      excludeByDefault: true,
+    });
+
+    const nameGroupReducer = new GroupReducer({
+      members: [firstName, lastName, previousName],
+    });
+
+    firstName.setValue('Pete');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+    expect(nameGroupReducer.state.didPropertyChange('validity')).toBe(false);
+
+    lastName.setValue('Fountain');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+    expect(nameGroupReducer.state.didPropertyChange('validity')).toBe(false);
+
+    previousName.setExclude(false);
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+    expect(nameGroupReducer.state.didPropertyChange('validity')).toBe(false);
+
+    previousName.setValue('Pierre');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+    expect(nameGroupReducer.state.didPropertyChange('validity')).toBe(false);
+  });
+
+  test(`When the value of an already excluded member changes,
+  didPropertyChange() returns false when called with 'value.'`, () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: '' });
+    const lastName = new Field({ name: 'lastName', defaultValue: '' });
+    const previousName = new ExcludableField({
+      name: 'previousName',
+      defaultValue: '',
+      excludeByDefault: true,
+    });
+
+    const nameGroupReducer = new GroupReducer({
+      members: [firstName, lastName, previousName],
+    });
+
+    firstName.setValue('Pete');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+
+    lastName.setValue('Fountain');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(true);
+
+    // here, previous name is still excluded
+    previousName.setValue('Pierre');
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(false);
+  });
+
+  test(`When one of its members emits a state updated, didPropertyChange()
+  returns false if that state update did not change the member's value or
+  exclude properties.`, () => {
+    const firstName = new Field({ name: 'firstName', defaultValue: '' });
+    const lastName = new Field({ name: 'lastName', defaultValue: '' });
+
+    const nameGroupReducer = new GroupReducer({
+      members: [firstName, lastName],
+    });
+
+    firstName.focus();
+
+    expect(nameGroupReducer.state.didPropertyChange('value')).toBe(false);
+  });
+
+  test(`When the validity of one of its members changes, its validity is 
+  updated.`, () => {
     const promiseScheduler = new PromiseScheduler();
+
     const asyncIncludesUpper = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> => {
         return promiseScheduler.createScheduledPromise(/[A-Z]/.test(value));
       },
     });
+
     const asyncValidatedField = new Field({
       name: 'asyncValidatedField',
       defaultValue: '',
@@ -171,13 +249,18 @@ describe('GroupReducer', () => {
       asyncValidators: [asyncIncludesUpper],
       delayAsyncValidatorExecution: 0,
     });
+
     const validField = new Field({ name: 'validField', defaultValue: '' });
+
     const groupReducer = new GroupReducer({
       members: [asyncValidatedField, validField],
     });
+
     expect(groupReducer.state.validity).toBe(Validity.Invalid);
+
     asyncValidatedField.setValue('HELLO');
     expect(groupReducer.state.validity).toBe(Validity.Pending);
+
     groupReducer.subscribeToState(state => {
       if (state.value.asyncValidatedField === 'HELLO') {
         expect(state.validity).toBe(Validity.Valid);
@@ -185,11 +268,13 @@ describe('GroupReducer', () => {
         expect(state.validity).toBe(Validity.Invalid);
       }
     });
+
     promiseScheduler.resolveAll();
     asyncValidatedField.setValue('');
   });
 
-  test('When the exclude property of one of its members changes, its validity is updated.', () => {
+  test(`When the exclude property of one of its members changes, its validity is 
+  updated.`, () => {
     const excludableRequiredField = new ExcludableField({
       name: 'excludableRequiredField',
       defaultValue: '',
@@ -207,7 +292,43 @@ describe('GroupReducer', () => {
     expect(groupReducer.state.validity).toBe(Validity.Valid);
   });
 
-  test('When the state of one of its members changes, it emits a state update to subscribers.', () => {
+  test(`When its validity changes, didPropertyChange() returns true when called 
+  with 'validity.`, () => {
+    const promiseScheduler = new PromiseScheduler();
+
+    const asyncIncludesUpper = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(/[A-Z]/.test(value));
+      },
+    });
+
+    const asyncValidatedField = new Field({
+      name: 'asyncValidatedField',
+      defaultValue: 'A',
+      validators: [],
+      asyncValidators: [asyncIncludesUpper],
+      delayAsyncValidatorExecution: 0,
+    });
+
+    const validField = new Field({ name: 'validField', defaultValue: '' });
+
+    const groupReducer = new GroupReducer({
+      members: [asyncValidatedField, validField],
+    });
+
+    expect(groupReducer.state.validity).toBe(Validity.Pending);
+    expect(groupReducer.state.didPropertyChange('validity')).toBe(false);
+
+    groupReducer.subscribeToState(state => {
+      expect(state.validity).toBe(Validity.Valid);
+      expect(state.didPropertyChange('validity')).toBe(true);
+    });
+
+    promiseScheduler.resolveAll();
+  });
+
+  test(`When the state of one of its members changes, it emits a state update to 
+  subscribers.`, () => {
     const subscribe = vi.fn();
     const firstName = new Field({ name: 'firstName', defaultValue: 'Johann' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Strauss' });
@@ -222,6 +343,7 @@ describe('GroupReducer', () => {
         lastName: 'Strauss',
       },
       validity: Validity.Valid,
+      didPropertyChange: expect.any(Function),
     });
   });
 });

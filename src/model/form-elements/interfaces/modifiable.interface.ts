@@ -1,7 +1,7 @@
+import type { Stateful } from '../../shared';
+
 export type ModifiableState = {
   hasBeenModified: boolean;
 };
 
-export interface Modifiable {
-  state: ModifiableState;
-}
+export interface Modifiable extends Stateful<ModifiableState> {}

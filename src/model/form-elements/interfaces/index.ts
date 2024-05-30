@@ -3,7 +3,6 @@ export type { FormChild, FormChildState } from './form-child.interface';
 export type { IForm, FormState } from './i-form.interface';
 export type { Identifiable } from './identifiable.interface';
 export type { IField, FieldState } from './i-field.interface';
-export type { Interactive, InteractiveState } from './interactive.interface';
 export type { Modifiable, ModifiableState } from './modifiable.interface';
 export type { NonTransientField } from './non-transient-field.interface';
 export type { PossiblyTransient } from './possibly-transient.interface';

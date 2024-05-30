@@ -41,6 +41,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -78,6 +79,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -150,6 +152,7 @@ describe('ExcludableField', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
@@ -291,6 +294,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     const updatedValue = 'test';
@@ -310,6 +314,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: true,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -344,6 +349,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: true,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -422,6 +428,7 @@ describe('ExcludableField', () => {
         hasBeenBlurred: false,
         hasBeenModified: true,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
@@ -489,6 +496,7 @@ describe('ExcludableField', () => {
         hasBeenBlurred: false,
         hasBeenModified: true,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
 
@@ -551,6 +559,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
 
     const updatedValue = defaultValue.toUpperCase();
@@ -574,6 +583,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: true,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -622,6 +632,7 @@ describe('ExcludableField', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });
@@ -713,6 +724,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: true,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
     field.reset();
     expect(field.state).toStrictEqual({
@@ -729,6 +741,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -764,6 +777,7 @@ describe('ExcludableField', () => {
       hasBeenBlurred: false,
       hasBeenModified: false,
       submitted: false,
+      didPropertyChange: expect.any(Function),
     });
   });
 
@@ -847,6 +861,7 @@ describe('ExcludableField', () => {
         hasBeenBlurred: false,
         hasBeenModified: false,
         submitted: false,
+        didPropertyChange: expect.any(Function),
       });
     });
   });

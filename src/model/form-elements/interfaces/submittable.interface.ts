@@ -1,4 +1,4 @@
-import type { Stateful } from '../../shared/interfaces/stateful.interface';
+import type { Stateful } from '../../shared';
 
 export type SubmittableState = {
   submitted: boolean;

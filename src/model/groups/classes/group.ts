@@ -1,3 +1,4 @@
+import { Subject, type Subscription } from 'rxjs';
 import {
   CombinedValidatorSuite,
   type AsyncValidatorTemplate,
@@ -7,7 +8,6 @@ import {
 } from '../../validators';
 import { GroupReducer } from '../../reducers';
 import {
-  StateManager,
   Validity,
   type MessageBearer,
   type Message,
@@ -15,10 +15,15 @@ import {
 } from '../../shared';
 import { GroupValiditySource } from '../enums';
 import { deepEquals } from '../../utils';
-import type { Subscription } from 'rxjs';
 import type { IGroup, GroupMember } from '../interfaces';
 import type { GroupState, GroupValue } from '../types';
-import type { CancelableSubscription, ValidatedState } from '../../shared';
+import type {
+  CancelableSubscription,
+  MessageBearerState,
+  StateWithChanges,
+  ValidatedState,
+} from '../../shared';
+import clone from 'just-clone';
 
 type GroupConstructorParams<
   T extends string,
@@ -43,15 +48,32 @@ export class Group<
   public readonly name: T;
   private reducer: GroupReducer<U>;
   private validatorSuite: CombinedValidatorSuite<GroupValue<U>>;
-  private stateManager: StateManager<GroupState<U>>;
   private validatorSuiteSubscription?: CancelableSubscription;
+  private _state: GroupState<U>;
+  private valueChanged = false;
+  private validityChanged = false;
+  private validitySourceChanged = false;
+  private messagesChanged = false;
+  private stateChanges = new Subject<StateWithChanges<GroupState<U>>>();
 
-  public get state(): GroupState<U> {
-    return this.stateManager.state;
-  }
-
-  private set state(state: GroupState<U>) {
-    this.stateManager.state = state;
+  public get state(): StateWithChanges<GroupState<U>> {
+    return {
+      ...this._state,
+      didPropertyChange: (prop: keyof GroupState): boolean => {
+        switch (prop) {
+          case 'value':
+            return this.valueChanged;
+          case 'validity':
+            return this.validityChanged;
+          case 'validitySource':
+            return this.validitySourceChanged;
+          case 'messages':
+            return this.messagesChanged;
+          default:
+            return false;
+        }
+      },
+    };
   }
 
   public constructor({
@@ -79,15 +101,15 @@ export class Group<
 
     if (this.reducer.state.validity !== Validity.Valid) {
       const initialState: GroupState<U> = {
-        ...this.reducer.state,
+        ...clone(this.reducer.state),
         messages: [],
         validitySource: GroupValiditySource.Reduction,
       };
 
-      this.stateManager = new StateManager<GroupState<U>>(initialState);
+      this._state = initialState;
     } else {
       const { syncResult, observableResult } = this.validatorSuite.validate(
-        this.reducer.state.value,
+        clone(this.reducer.state.value),
       );
 
       const initialState: GroupState<U> = {
@@ -95,51 +117,89 @@ export class Group<
         validitySource: GroupValiditySource.Validation,
       };
 
-      this.stateManager = new StateManager<GroupState<U>>(initialState);
+      this._state = initialState;
 
       this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-        this.state = {
-          ...result,
-          messages: [...this.getNonPendingMessages(), ...result.messages],
-          validitySource: GroupValiditySource.Validation,
-        };
+        this.processAsyncValidatorSuiteResult(result);
       });
     }
 
     this.subscribeToReducer();
   }
 
-  public subscribeToState(cb: (state: GroupState<U>) => void): Subscription {
-    return this.stateManager.subscribeToState(cb);
+  public subscribeToState(
+    cb: (state: StateWithChanges<GroupState<U>>) => void,
+  ): Subscription {
+    return this.stateChanges.subscribe(cb);
+  }
+
+  private setState(state: GroupState<U>): void {
+    this._state = state;
+    this.stateChanges.next(this.state);
+  }
+
+  private processAsyncValidatorSuiteResult(
+    result: ValidatedState<GroupValue<U>> & MessageBearerState,
+  ): void {
+    this.valueChanged = false;
+    this.validityChanged = true;
+    this.validitySourceChanged = false;
+
+    const newMessages = [...this.getNonPendingMessages(), ...result.messages];
+    this.messagesChanged = !deepEquals(this._state.messages, newMessages);
+
+    this.setState({
+      ...result,
+      messages: newMessages,
+      validitySource: GroupValiditySource.Validation,
+    });
   }
 
   private subscribeToReducer(): void {
-    this.reducer.subscribeToState(state => {
-      if (state.validity !== Validity.Valid) {
+    this.reducer.subscribeToState(reducerState => {
+      if (reducerState.validity !== Validity.Valid) {
         this.validatorSuiteSubscription?.unsubscribeAndCancel();
-        this.state = {
-          ...state,
+
+        this.valueChanged = reducerState.didPropertyChange('value');
+        this.validityChanged = reducerState.validity !== this._state.validity;
+        this.validitySourceChanged =
+          this._state.validitySource === GroupValiditySource.Validation;
+        this.messagesChanged = this._state.messages.length > 0;
+
+        this.setState({
+          value:
+            this.valueChanged ? clone(reducerState.value) : this.state.value,
+          validity: reducerState.validity,
           messages: [],
           validitySource: GroupValiditySource.Reduction,
-        };
-      } else if (this.becameValidOrValueChanged(state)) {
+        });
+      } else if (
+        reducerState.didPropertyChange('validity') ||
+        reducerState.didPropertyChange('value')
+      ) {
         this.validatorSuiteSubscription?.unsubscribeAndCancel();
+
         const { syncResult, observableResult } = this.validatorSuite.validate(
-          state.value,
+          reducerState.value,
         );
 
-        this.state = {
+        this.valueChanged = reducerState.didPropertyChange('value');
+        this.validityChanged = reducerState.validity !== this._state.validity;
+        this.validitySourceChanged =
+          this._state.validitySource === GroupValiditySource.Reduction;
+        this.messagesChanged = !deepEquals(
+          syncResult.messages,
+          this._state.messages,
+        );
+
+        this.setState({
           ...syncResult,
           validitySource: GroupValiditySource.Validation,
-        };
+        });
 
         this.validatorSuiteSubscription = observableResult?.subscribe(
           result => {
-            this.state = {
-              ...result,
-              messages: [...this.getNonPendingMessages(), ...result.messages],
-              validitySource: GroupValiditySource.Validation,
-            };
+            this.processAsyncValidatorSuiteResult(result);
           },
         );
       }
@@ -148,18 +208,5 @@ export class Group<
 
   private getNonPendingMessages(): Message[] {
     return this.state.messages.filter(m => m.validity !== Validity.Pending);
-  }
-
-  private becameValidOrValueChanged(
-    newState: ValidatedState<GroupValue<U>>,
-  ): boolean {
-    return this.becameValid() || !deepEquals(this.state.value, newState.value);
-  }
-
-  private becameValid(): boolean {
-    return (
-      this.state.validity !== Validity.Valid &&
-      this.state.validitySource === GroupValiditySource.Reduction
-    );
   }
 }

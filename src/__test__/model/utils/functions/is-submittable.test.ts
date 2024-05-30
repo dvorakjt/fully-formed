@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { isSubmittable } from '../../../model';
+import { isSubmittable } from '../../../../model';
 
 describe('isSubmittable', () => {
   const nonObjects = [

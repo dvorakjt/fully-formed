@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { describe, test, expect } from 'vitest';
 import {
   Group,
@@ -8,12 +9,12 @@ import {
   GroupValiditySource,
   AsyncValidator,
   Validator,
+  type GroupState,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
-//TODO : need to test messages and that pending validators are ignored when the value is updated
 describe('Group', () => {
-  test(`Its value is initialized to an object containing the names and values of 
+  test(`Its value is initialized to an object containing the names and values of
   its members.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: 'John' });
     const lastName = new Field({ name: 'lastName', defaultValue: 'Cage' });
@@ -70,8 +71,8 @@ describe('Group', () => {
     });
   });
 
-  test(`If no validators, asyncValidators, validatorTemplates or 
-  asyncValidatorTemplates were provided to its constructor, it is valid when all 
+  test(`If no validators, asyncValidators, validatorTemplates or
+  asyncValidatorTemplates were provided to its constructor, it is valid when all
   members are valid.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
 
@@ -92,7 +93,7 @@ describe('Group', () => {
     expect(fullName.state.validity).toBe(Validity.Valid);
   });
 
-  test(`If the reduced validity of its members is invalid, its validity is 
+  test(`If the reduced validity of its members is invalid, its validity is
   invalid.`, () => {
     const invalidField = new Field({
       name: 'invalidField',
@@ -110,7 +111,7 @@ describe('Group', () => {
     expect(group.state.validity).toBe(Validity.Invalid);
   });
 
-  test(`If the reduced validity of its members is invalid, its validity source 
+  test(`If the reduced validity of its members is invalid, its validity source
   is reduction.`, () => {
     const invalidField = new Field({
       name: 'invalidField',
@@ -128,7 +129,7 @@ describe('Group', () => {
     expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
   });
 
-  test(`If the reduced validity of its members is pending, its validity is 
+  test(`If the reduced validity of its members is pending, its validity is
   pending.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
@@ -155,7 +156,7 @@ describe('Group', () => {
     expect(group.state.validity).toBe(Validity.Pending);
   });
 
-  test(`If the reduced validity of its members is pending, its validity source 
+  test(`If the reduced validity of its members is pending, its validity source
   is reduction.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
@@ -182,7 +183,7 @@ describe('Group', () => {
     expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
   });
 
-  test(`If all its included members are valid, its validity source is 
+  test(`If all its included members are valid, its validity source is
   validation.`, () => {
     const firstName = new Field({ name: 'firstName', defaultValue: '' });
     const lastName = new Field({ name: 'lastName', defaultValue: '' });
@@ -226,7 +227,7 @@ describe('Group', () => {
     expect(contactInfoGroup.state.validity).toBe(Validity.Invalid);
   });
 
-  test(`If its validators return a valid result and no asyncValidators were 
+  test(`If its validators return a valid result and no asyncValidators were
   provided to its constructor, its validity is valid.`, () => {
     const primaryEmail = new Field({
       name: 'primaryEmail',
@@ -247,8 +248,8 @@ describe('Group', () => {
     expect(contactInfoGroup.state.validity).toBe(Validity.Valid);
   });
 
-  test(`If its validators return a valid result and asyncValidators were 
-  provided to its constructor, its validity is pending until those 
+  test(`If its validators return a valid result and asyncValidators were
+  provided to its constructor, its validity is pending until those
   asyncValidators return.`, () => {
     type SignUpGroupValue = {
       email: string;
@@ -408,7 +409,7 @@ describe('Group', () => {
     promiseScheduler.resolveAll();
   });
 
-  test(`If validator templates were provided to its constructor, validators are 
+  test(`If validator templates were provided to its constructor, validators are
   created and applied to its value.`, () => {
     const email = new Field({
       name: 'email',
@@ -453,6 +454,7 @@ describe('Group', () => {
         },
       ],
       validitySource: GroupValiditySource.Validation,
+      didPropertyChange: expect.any(Function),
     });
 
     confirmPassword.setValue(password.state.value);
@@ -471,10 +473,11 @@ describe('Group', () => {
         },
       ],
       validitySource: GroupValiditySource.Validation,
+      didPropertyChange: expect.any(Function),
     });
   });
 
-  test(`If async validator templates were provided to its constructor, async 
+  test(`If async validator templates were provided to its constructor, async
   validators are created and applied to its value.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
@@ -545,13 +548,14 @@ describe('Group', () => {
         validity: Validity.Invalid,
         validitySource: GroupValiditySource.Validation,
         messages: [],
+        didPropertyChange: expect.any(Function),
       });
     });
 
     promiseScheduler.resolveAll();
   });
 
-  test(`When one of its included members becomes invalid, its validity becomes 
+  test(`When one of its included members becomes invalid, its validity becomes
   invalid.`, () => {
     const requiredField = new Field({
       name: 'requiredField',
@@ -576,7 +580,7 @@ describe('Group', () => {
     expect(group.state.validity).toBe(Validity.Invalid);
   });
 
-  test(`When one of its included members becomes pending and all other included 
+  test(`When one of its included members becomes pending and all other included
   members are valid, its validity becomes pending.`, () => {
     const promiseScheduler = new PromiseScheduler();
 
@@ -612,7 +616,7 @@ describe('Group', () => {
     promiseScheduler.resolveAll();
   });
 
-  test(`When one of its members becomes invalid or pending, its messages array 
+  test(`When one of its members becomes invalid or pending, its messages array
   is emptied.`, () => {
     const password = new Field({
       name: 'password',
@@ -652,7 +656,7 @@ describe('Group', () => {
     expect(passwordGroup.state.messages).toStrictEqual([]);
   });
 
-  test(`When one of its members becomes invalid or pending, its validity source 
+  test(`When one of its members becomes invalid or pending, its validity source
   becomes reduction.`, () => {
     const requiredField = new Field({
       name: 'requiredField',
@@ -675,5 +679,222 @@ describe('Group', () => {
     requiredField.setValue('');
 
     expect(group.state.validitySource).toBe(GroupValiditySource.Reduction);
+  });
+
+  test(`When its value changes, didPropertyChange() returns true when called 
+  with 'value.'`, () => {
+    const firstName = new Field({
+      name: 'firstName',
+      defaultValue: 'John',
+    });
+
+    const lastName = new Field({
+      name: 'lastName',
+      defaultValue: 'Adams',
+    });
+
+    const nameGroup = new Group({
+      name: 'nameGroup',
+      members: [firstName, lastName],
+    });
+
+    expect(nameGroup.state.didPropertyChange('value')).toBe(false);
+
+    lastName.setValue('Williams');
+
+    expect(nameGroup.state.didPropertyChange('value')).toBe(true);
+  });
+
+  test(`When its validity changes, didPropertyChange() returns true when called 
+  with 'validity.'`, async () => {
+    const promiseScheduler = new PromiseScheduler();
+    const unavailableEmailAddresses = ['user@example.com'];
+
+    const email = new Field({
+      name: 'email',
+      defaultValue: 'user@example.com',
+      asyncValidators: [
+        new AsyncValidator<string>({
+          predicate: value =>
+            promiseScheduler.createScheduledPromise(
+              !unavailableEmailAddresses.includes(value),
+            ),
+        }),
+      ],
+      delayAsyncValidatorExecution: 0,
+    });
+
+    const username = new Field({
+      name: 'username',
+      defaultValue: 'user',
+    });
+
+    const emailAndUsername = new Group({
+      name: 'emailAndUsername',
+      members: [email, username],
+    });
+
+    emailAndUsername.subscribeToState(state => {
+      expect(state.didPropertyChange('validity')).toBe(true);
+    });
+
+    promiseScheduler.resolveAll();
+  });
+
+  test(`When its validitySource changes, didPropertyChange() returns true when
+  called with 'validitySource.'`, () => {
+    const requiredField = new Field({
+      name: 'requiredField',
+      defaultValue: 'test',
+      validators: [StringValidators.required()],
+    });
+
+    const group = new Group({
+      name: '',
+      members: [requiredField],
+      validatorTemplates: [
+        {
+          predicate: () => false,
+        },
+      ],
+    });
+
+    expect(group.state.didPropertyChange('validitySource')).toBe(false);
+
+    requiredField.setValue('');
+
+    expect(group.state.didPropertyChange('validitySource')).toBe(true);
+  });
+
+  test(`When its messages change, didPropertyChange() returns true when called
+  with 'messages.'`, () => {
+    const email = new Field({
+      name: 'email',
+      defaultValue: 'user@example.com',
+    });
+
+    const confirmEmail = new Field({
+      name: 'confirmEmail',
+      defaultValue: '',
+    });
+
+    const emailGroup = new Group({
+      name: 'emailGroup',
+      members: [email, confirmEmail],
+      validatorTemplates: [
+        {
+          predicate: ({ email, confirmEmail }) => confirmEmail === email,
+          invalidMessage: 'Please ensure the email addresses match.',
+          validMessage: 'The email addresses match.',
+        },
+      ],
+    });
+
+    expect(emailGroup.state.didPropertyChange('messages')).toBe(false);
+
+    confirmEmail.setValue('user@example.com');
+
+    expect(emailGroup.state.didPropertyChange('messages')).toBe(true);
+  });
+
+  test(`When didPropertyChange() is called with a property that doesn't exist 
+  in GroupState, it returns false.`, () => {
+    const email = new Field({
+      name: 'email',
+      defaultValue: 'user@example.com',
+    });
+
+    const confirmEmail = new Field({
+      name: 'confirmEmail',
+      defaultValue: '',
+    });
+
+    const emailGroup = new Group({
+      name: 'emailGroup',
+      members: [email, confirmEmail],
+    });
+
+    expect(
+      emailGroup.state.didPropertyChange(
+        'unknown property' as keyof GroupState,
+      ),
+    ).toBe(false);
+  });
+
+  test(`When a member's state updates without its value, exclude, or validity 
+  property changing, didPropertyChange() returns false regardless of the 
+  argument it receives.`, () => {
+    const field = new Field({
+      name: '',
+      defaultValue: '',
+    });
+
+    const group = new Group({
+      name: '',
+      members: [field],
+    });
+
+    field.focus();
+
+    expect(group.state.didPropertyChange('value')).toBe(false);
+    expect(group.state.didPropertyChange('validity')).toBe(false);
+    expect(group.state.didPropertyChange('validitySource')).toBe(false);
+    expect(group.state.didPropertyChange('messages')).toBe(false);
+  });
+
+  test(`When a member's validity becomes invalid or pending, any running 
+  async validators are terminated.`, () => {
+    const promiseScheduler = new PromiseScheduler();
+
+    const fields = [
+      new Field({
+        name: 'email',
+        defaultValue: 'user@example.com',
+        validators: [StringValidators.required()],
+      }),
+      new Field({
+        name: 'displayName',
+        defaultValue: 'user',
+        validators: [StringValidators.required()],
+      }),
+    ];
+
+    const unavailableEmailAddresses: string[] = [];
+    const unavailableDisplayNames: string[] = [];
+
+    const emailAndDisplayName = new Group({
+      name: 'emailAndDisplayName',
+      members: fields,
+      asyncValidatorTemplates: [
+        {
+          predicate: ({ email, displayName }) => {
+            return promiseScheduler.createScheduledPromise(
+              !unavailableEmailAddresses.includes(email) &&
+                !unavailableDisplayNames.includes(displayName),
+            );
+          },
+          invalidMessage: 'Email address or display name is unavailable.',
+          validMessage: 'Email address and display name are available!',
+        },
+      ],
+      delayAsyncValidatorExecution: 0,
+    });
+
+    emailAndDisplayName.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: {
+          email: 'user@example.com',
+          displayName: '',
+        },
+        validity: Validity.Invalid,
+        messages: [],
+        validitySource: GroupValiditySource.Reduction,
+        didPropertyChange: expect.any(Function),
+      });
+    });
+
+    fields[1].setValue('');
+
+    promiseScheduler.resolveAll();
   });
 });

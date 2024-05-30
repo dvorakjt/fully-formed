@@ -41,8 +41,8 @@ describe('useMultiPipe()', () => {
       const validity = useMultiPipe(
         [confirmPassword, passwordGroup],
         states => {
-          return ValidityUtils.reduceStatesToValidity(states, {
-            pruneUnvalidatedGroupStates: true,
+          return ValidityUtils.minValidity(states, {
+            pruneUnvalidatedGroups: true,
           });
         },
       );

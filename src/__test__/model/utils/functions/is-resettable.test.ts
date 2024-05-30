@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { isResettable } from '../../../model';
+import { isResettable } from '../../../../model';
 
 describe('isResettable()', () => {
   test('It returns false if the value it receives is not an object.', () => {

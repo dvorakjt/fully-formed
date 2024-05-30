@@ -5,6 +5,7 @@ import {
   type ExcludableState,
   type Message,
   type CancelableSubscription,
+  type StateWithChanges,
 } from '../../shared';
 import {
   CombinedValidatorSuite,
@@ -14,7 +15,7 @@ import {
   type AsyncValidatorTemplate,
 } from '../../validators';
 import type { Subscription } from 'rxjs';
-import type { IField, SetExclude, Resettable, FieldState } from '../interfaces';
+import type { IField, SetExclude, FieldState } from '../interfaces';
 
 type ExcludableFieldConstructorParams<
   T extends string,
@@ -37,26 +38,19 @@ type ExcludableFieldConstructorParams<
 export type ExcludableFieldState<T> = FieldState<T> & ExcludableState;
 
 export class ExcludableField<T extends string, S, U extends boolean = false>
-  implements IField<T, S, U>, Excludable, SetExclude, Resettable
+  implements IField<T, S, U>, Excludable, SetExclude
 {
   public readonly name: T;
   public readonly id: string;
   public readonly transient: U;
-  protected defaultValue: S;
-  protected excludeByDefault: boolean;
-  protected validatorSuite: CombinedValidatorSuite<S>;
-  protected stateManager: StateManager<ExcludableFieldState<S>>;
-  protected validatorSuiteSubscription?: CancelableSubscription;
+  private defaultValue: S;
+  private excludeByDefault: boolean;
+  private validatorSuite: CombinedValidatorSuite<S>;
+  private stateManager: StateManager<ExcludableFieldState<S>>;
+  private validatorSuiteSubscription?: CancelableSubscription;
 
-  public get state(): ExcludableFieldState<S> {
+  public get state(): StateWithChanges<ExcludableFieldState<S>> {
     return this.stateManager.state;
-  }
-
-  protected set state(state: Partial<ExcludableFieldState<S>>) {
-    this.stateManager.state = {
-      ...this.state,
-      ...state,
-    };
   }
 
   public constructor({
@@ -103,15 +97,16 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
     this.stateManager = new StateManager<ExcludableFieldState<S>>(initialState);
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+        hasBeenModified: false,
+      });
     });
   }
 
   public subscribeToState(
-    cb: (state: ExcludableFieldState<S>) => void,
+    cb: (state: StateWithChanges<ExcludableFieldState<S>>) => void,
   ): Subscription {
     return this.stateManager.subscribeToState(cb);
   }
@@ -122,41 +117,41 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
     const { syncResult, observableResult } =
       this.validatorSuite.validate(value);
 
-    this.state = { ...syncResult, hasBeenModified: true };
+    this.stateManager.updateProperties({
+      ...syncResult,
+      hasBeenModified: true,
+    });
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+        hasBeenModified: true,
+      });
     });
   }
 
   public setExclude(exclude: boolean): void {
-    this.state = { exclude };
+    this.stateManager.updateProperties({ exclude });
   }
 
   public setSubmitted(): void {
-    this.state = { submitted: true };
+    this.stateManager.updateProperties({ submitted: true });
   }
 
   public focus(): void {
-    this.state = {
-      isInFocus: true,
-    };
+    this.stateManager.updateProperties({ isInFocus: true });
   }
 
   public blur(): void {
-    this.state = {
+    this.stateManager.updateProperties({
       isInFocus: false,
       hasBeenBlurred: true,
-    };
+    });
   }
 
   public cancelFocus(): void {
-    this.state = {
-      isInFocus: false,
-    };
+    this.stateManager.updateProperties({ isInFocus: false });
   }
 
   public reset(): void {
@@ -175,13 +170,14 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
       exclude: this.excludeByDefault,
     };
 
-    this.state = initialState;
+    this.stateManager.updateProperties(initialState);
 
     this.validatorSuiteSubscription = observableResult?.subscribe(result => {
-      this.state = {
+      this.stateManager.updateProperties({
         ...result,
         messages: [...this.getNonPendingMessages(), ...result.messages],
-      };
+        hasBeenModified: false,
+      });
     });
   }
 

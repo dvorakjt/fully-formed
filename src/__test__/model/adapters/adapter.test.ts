@@ -84,6 +84,7 @@ describe('Adapter', () => {
       expect(state).toStrictEqual({
         value: updatedValue.toUpperCase(),
         validity: Validity.Valid,
+        didPropertyChange: expect.any(Function),
       });
     });
     source.setValue(updatedValue);

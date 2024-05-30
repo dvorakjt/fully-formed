@@ -1,5 +1,5 @@
 import { Validator } from './validator';
-import { EmailRegExp } from '../../shared';
+import { EmailRegExp } from './email-regexp';
 import type { IValidator } from '../interfaces';
 import type { Predicate } from '../types';
 
@@ -34,7 +34,7 @@ export class StringValidators {
     args?: ValidatorMessages & TrimBeforeValidation,
   ): IValidator<string> {
     const predicate: Predicate<string> = value => {
-      return StringValidators.EMAIL_REGEXP.test(
+      return this.EMAIL_REGEXP.test(
         args?.trimBeforeValidation ? value.trim() : value,
       );
     };

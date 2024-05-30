@@ -1,8 +1,8 @@
 import type {
-  Merged,
   Validated,
   ValidatedState,
   RecordFromNameableArray,
+  Merged,
 } from '../../shared';
 import type { FormMembers, FormValue } from '../types';
 import type { Submittable, SubmittableState } from './submittable.interface';
