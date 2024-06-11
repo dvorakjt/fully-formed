@@ -6,18 +6,16 @@ type MultiEntityTransformFn<T extends readonly Stateful[], V> = (
 ) => V;
 
 /**
- * Accepts an array of instances of classes that implement {@link Stateful} and
- * a `transformFn`, and returns a React state variable whose value is the result
- * of calling the `transformFn` with the states of those entities. If the
- * state(s) of any of those entities change, the function will be called again
- * and the returned React state variable will be updated.
+ * Accepts an array of {@link Stateful} entities and a `transformFn`. Calls the
+ * `transformFn` with the states of those entities and returns the result as a
+ * React state variable. The value of this variable is updated whenever the
+ * state of any of the entities changes.
  *
- * @param entities - An array of instances of classes that implement
- * {@link Stateful} whose states will be subscribed to and passed into the
- * `transformFn`.
+ * @param entities - An array of {@link Stateful} entities whose states will be
+ * subscribed to and passed into the `transformFn`.
  *
- * @param transformFn - A function that takes in the states of the entities
- * passed to this hook and produces a value.
+ * @param transformFn - A function that takes in the states of the provided
+ * entities and produces a value.
  *
  * @returns A React state variable whose value is the result of calling the
  * `transformFn` with the states of the provided entities.
