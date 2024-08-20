@@ -11,10 +11,12 @@ type ValidityReducerConstructorParams = {
 export class ValidityReducer {
   private invalidIncludedMemberNames: Set<string> = new Set<string>();
   private pendingIncludedMemberNames: Set<string> = new Set<string>();
+  private cautionedIncludedMemberNames: Set<string> = new Set<string>();
 
   public get validity(): Validity {
     if (this.invalidIncludedMemberNames.size) return Validity.Invalid;
     if (this.pendingIncludedMemberNames.size) return Validity.Pending;
+    if (this.cautionedIncludedMemberNames.size) return Validity.Caution;
     return Validity.Valid;
   }
 
@@ -31,10 +33,17 @@ export class ValidityReducer {
     } else {
       this.invalidIncludedMemberNames.delete(memberName);
     }
+
     if (state.validity === Validity.Pending && !state.exclude) {
       this.pendingIncludedMemberNames.add(memberName);
     } else {
       this.pendingIncludedMemberNames.delete(memberName);
+    }
+
+    if (state.validity === Validity.Caution && !state.exclude) {
+      this.cautionedIncludedMemberNames.add(memberName);
+    } else {
+      this.cautionedIncludedMemberNames.delete(memberName);
     }
   }
 }
