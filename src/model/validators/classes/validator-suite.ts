@@ -6,6 +6,7 @@ import {
 import { Validator } from './validator';
 import type { IValidator } from '../interfaces';
 import type { ValidatorTemplate } from '../types';
+import { ValidityUtils } from '../../utils';
 
 type ValidatorSuiteConstructorParams<T> = {
   validators?: Array<IValidator<T>>;
@@ -34,7 +35,13 @@ export class ValidatorSuite<T> {
       const result = validator.validate(value);
       if (result.validity === Validity.Invalid) {
         suiteResult.validity = Validity.Invalid;
+      } else if (
+        result.validity === Validity.Caution &&
+        !ValidityUtils.isInvalid(suiteResult)
+      ) {
+        suiteResult.validity = Validity.Caution;
       }
+
       if (result.message) {
         suiteResult.messages.push(result.message);
       }

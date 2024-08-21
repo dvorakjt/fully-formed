@@ -8,6 +8,7 @@ import {
 import type { IAsyncValidator } from '../interfaces';
 import type { AsyncValidatorTemplate } from '../types';
 import { CancelableObservable } from '../../shared/classes/cancelable-observable';
+import { ValidityUtils } from '../../utils';
 
 type AsyncValidatorSuiteConstructorParams<T> = {
   asyncValidators?: Array<IAsyncValidator<T>>;
@@ -34,14 +35,17 @@ export class AsyncValidatorSuite<T> {
     this.validators = asyncValidators.concat(
       asyncValidatorTemplates.map(template => new AsyncValidator<T>(template)),
     );
+
     this.validatorSubscriptions = new Array<Subscription>(
       this.validators.length,
     );
+
     this.delayAsyncValidatorExecution = delayAsyncValidatorExecution;
   }
 
   public validate(
     value: T,
+    defaultToCaution: boolean,
   ): CancelableObservable<ValidatedState<T> & MessageBearerState> {
     this.unsubscribeAll();
 
@@ -50,17 +54,19 @@ export class AsyncValidatorSuite<T> {
         if (!this.validators.length) {
           subscriber.next({
             value,
-            validity: Validity.Valid,
+            validity: defaultToCaution ? Validity.Caution : Validity.Valid,
             messages: [],
           });
           subscriber.complete();
         } else {
           const suiteResult: ValidatedState<T> & MessageBearerState = {
             value,
-            validity: Validity.Valid,
+            validity: defaultToCaution ? Validity.Caution : Validity.Valid,
             messages: [],
           };
+
           let completedValidators = 0;
+
           this.validators.forEach((validator, index) => {
             this.validatorSubscriptions[index] = from(
               validator.validate(value),
@@ -68,10 +74,17 @@ export class AsyncValidatorSuite<T> {
               completedValidators++;
               if (result.validity === Validity.Invalid) {
                 suiteResult.validity = Validity.Invalid;
+              } else if (
+                result.validity === Validity.Caution &&
+                !ValidityUtils.isInvalid(suiteResult)
+              ) {
+                suiteResult.validity = Validity.Caution;
               }
+
               if (result.message) {
                 suiteResult.messages.push(result.message);
               }
+
               if (completedValidators === this.validators.length) {
                 subscriber.next(suiteResult);
                 subscriber.complete();

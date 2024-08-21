@@ -26,14 +26,9 @@ With Fully Formed, fields can control other fields, groups of fields can be crea
 
 In addition to providing the tools to structure your form data and define what makes it valid, Fully Formed provides numerous hooks for interacting with this data, controlling the UI, etc. This allows you to create any visual design you can imagine by declaratively describing how the form data controls this design.
 
-## What's New in Version 1
+## What's New in Version 1.1.0
 
-- Components have been completely removed and replaced with hooks. Components were too opaque for the nature of the project, which is designed to be as flexible and transparent as possible while still taking care of as much as possible for the developer. A collection of hooks provides greater flexibility and transparency, and has helped reduce the size of the package by over half from version 0. With these hooks, it is trivial to build components that interact with the library to perfectly convey your design team's vision.
-- Composability: It is now possible to create your own field classes and use them inside your form so long as they implement a certain minimal interface. They can also implement other interfaces defined by the library in order to interact with the form in various ways.
-- It is now possible to delay the execution of async validators. The field's validity still becomes pending immediately, but the async validators will not execute if the user modifies the field within that time period. This saves many API calls while still providing the experience of real-time field validation.
-- Each state update now includes a method that enables you to check what properties of state changed in that update. This allows for fine-grained control over changes to controlled fields, and more.
-- Utils have been simplified in order to provide only the functionality that can be expected to be common across many projects.
-- Terminology has been simplified where possible.
+- Validity can now be "Caution." `Validity.Caution` can be used to display a warning message in the event that a field coult not be verified, but is not necessarily invalid. For example, if all of the components of an address could not be confirmed by an address validation API, the developer could use this validity to highlight the fields that were not recognized by the API. The address still may be valid, so the developer can use this to indicate the user that they should double-check specific fields without preventing them from proceeding. Other use cases could include a password strength validator: `Validity.Caution` could be used to indicate a medium-strength password. In general, the property exists so that users' attention can be drawn to specific elements without indicating that they are definitively invalid.
 
 ## Requirements
 
@@ -304,7 +299,7 @@ export function SignUpPage(): React.JSX.Element {
 }
 </pre>
 
-Note that the validity of the form is always known. ValidityUtils just provides a convenient method of checking this so you don't have to write `signUpForm.state.validity === Validity.Valid` every time. `ValidityUtils.isValid` (and the corresponding methods for `Validity.Invalid` and `Validity.Pending`) can also directly accept the state of a form or field, or just a value of type `Validity`.
+Note that the validity of the form is always known. ValidityUtils just provides a convenient method of checking this so you don't have to write `signUpForm.state.validity === Validity.Valid` every time. `ValidityUtils.isValid` (and the corresponding methods for `Validity.Invalid`, `Validity.Pending` and `Validity.Caution`) can also directly accept the state of a form or field, or just a value of type `Validity`.
 
 ### useUserInput()
 
@@ -444,7 +439,7 @@ You could also create a function that returns such a validator, enabling you to 
 
 ### 3. Implementing IValidator
 
-If you wish for even finer grained control over the output of your validator (for instance, creating a validator that can output different messages based on more than just the result of a predicate), you may want to simply create a class that implements the `IValidator` interface.
+If you wish for even finer grained control over the output of your validator (for instance, creating a validator that can output different messages based on more than just the result of a predicate), you may want to simply create a class that implements the `IValidator` interface. At the present moment, this is the only means by which a validator can return `Validity.Caution`.
 
 ## Async Validators
 
