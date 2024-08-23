@@ -522,6 +522,7 @@ class AddressTemplate extends FormTemplate {
 
   public constructor() {
     super();
+    
     const zip = new Field({
       name: 'zip',
       defaultValue: '',
@@ -532,6 +533,7 @@ class AddressTemplate extends FormTemplate {
         },
       ],
     });
+
     this.fields = [
       zip,
       new ControlledField({

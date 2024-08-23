@@ -24,7 +24,6 @@ export class ValidityUtils {
     entityStateOrValidity: EntityStateOrValidity,
   ): boolean {
     const validity = this.toValidity(entityStateOrValidity);
-    console.log(validity);
     return validity === Validity.Valid || validity === Validity.Caution;
   }
 
