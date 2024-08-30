@@ -157,6 +157,14 @@ export class ControlledExcludableField<
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public setExclude(exclude: boolean): void {
     this.stateManager.updateProperties({ exclude });
   }

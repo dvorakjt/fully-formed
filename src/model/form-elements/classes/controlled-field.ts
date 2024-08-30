@@ -135,6 +135,14 @@ export class ControlledField<
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public subscribeToState(
     cb: (state: StateWithChanges<FieldState<S>>) => void,
   ): Subscription {

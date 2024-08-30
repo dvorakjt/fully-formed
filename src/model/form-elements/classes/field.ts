@@ -105,6 +105,14 @@ export class Field<T extends string, S, U extends boolean = false>
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public subscribeToState(
     cb: (state: StateWithChanges<FieldState<S>>) => void,
   ): Subscription {
