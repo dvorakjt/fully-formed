@@ -21,12 +21,12 @@ type AbstractFormConstructorParams<T extends FormMembers> = {
 export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
   public readonly fields: RecordFromNameableArray<T['fields']>;
   public readonly groups: RecordFromNameableArray<T['groups']>;
-  private stateChanges = new Subject<StateWithChanges<FormState<T>>>();
-  private reducer: FormReducer<T>;
-  private _state: FormState<T>;
-  private valueChanged = false;
-  private validityChanged = false;
-  private submittedChanged = false;
+  protected stateChanges = new Subject<StateWithChanges<FormState<T>>>();
+  protected reducer: FormReducer<T>;
+  protected _state: FormState<T>;
+  protected valueChanged = false;
+  protected validityChanged = false;
+  protected submittedChanged = false;
 
   public get state(): StateWithChanges<FormState<T>> {
     return {
@@ -110,7 +110,7 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
     this.resetFields();
   }
 
-  private resetFields(): void {
+  protected resetFields(): void {
     for (const field of Object.values(this.fields)) {
       if (isResettable(field)) {
         field.reset();
@@ -118,7 +118,7 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
     }
   }
 
-  private subscribeToReducer(): void {
+  protected subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
       this.valueChanged = state.didPropertyChange('value');
       this.validityChanged = state.didPropertyChange('validity');

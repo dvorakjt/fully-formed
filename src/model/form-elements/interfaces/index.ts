@@ -1,3 +1,4 @@
+export type { FieldOfType } from './field-of-type.interface';
 export type { Focusable, FocusableState } from './focusable.interface';
 export type { FormChild, FormChildState } from './form-child.interface';
 export type { IForm, FormState } from './i-form.interface';
@@ -9,7 +10,7 @@ export type { PossiblyTransient } from './possibly-transient.interface';
 export type { Resettable } from './resettable.interface';
 export type { SetExclude } from './set-exclude.interface';
 export type { SetValue } from './set-value.interface';
+export type { SetValidityAndMessages } from './set-validity-and-messages';
 export type { Submittable, SubmittableState } from './submittable.interface';
 export type { Transient } from './transient.interface';
 export type { TransientField } from './transient-field.interface';
-export type { FieldOfType } from './field-of-type.interface';
