@@ -9,6 +9,7 @@ import type { FormChildState } from './form-child.interface';
 import type { Focusable, FocusableState } from './focusable.interface';
 import type { Modifiable, ModifiableState } from './modifiable.interface';
 import type { SetValue } from './set-value.interface';
+import type { SetValidityAndMessages } from './set-validity-and-messages';
 import type { Submittable, SubmittableState } from './submittable.interface';
 import type { Identifiable } from './identifiable.interface';
 import type { PossiblyTransient } from './possibly-transient.interface';
@@ -33,6 +34,7 @@ export interface IField<
       Modifiable &
       Submittable &
       SetValue<U> &
+      SetValidityAndMessages &
       Identifiable &
       Resettable
   > {}
