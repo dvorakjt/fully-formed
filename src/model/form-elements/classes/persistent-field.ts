@@ -17,11 +17,14 @@ export class PersistentField<
   public constructor(params: PersistentFieldConstructorParams<T, U, V>) {
     let defaultValue = params.defaultValue;
     const key = createPersistenceKey(params.key);
-    const storedState = sessionStorage.getItem(key);
 
-    if (storedState !== null) {
-      const parsedState = JSON.parse(storedState);
-      defaultValue = parsedState.value;
+    if (typeof window !== 'undefined') {
+      const storedState = sessionStorage.getItem(key);
+
+      if (storedState !== null) {
+        const parsedState = JSON.parse(storedState);
+        defaultValue = parsedState.value;
+      }
     }
 
     super({

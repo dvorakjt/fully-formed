@@ -25,11 +25,14 @@ export class PersistentControlledExcludableField<
   ) {
     let initFn = params.initFn;
     const key = createPersistenceKey(params.key);
-    const storedState = sessionStorage.getItem(key);
 
-    if (storedState !== null) {
-      const parsedState = JSON.parse(storedState);
-      initFn = (): { value: S; exclude: boolean } => parsedState;
+    if (typeof window !== 'undefined') {
+      const storedState = sessionStorage.getItem(key);
+
+      if (storedState !== null) {
+        const parsedState = JSON.parse(storedState);
+        initFn = (): { value: S; exclude: boolean } => parsedState;
+      }
     }
 
     super({

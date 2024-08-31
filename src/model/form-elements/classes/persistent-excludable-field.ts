@@ -24,12 +24,15 @@ export class PersistentExcludableField<
     let excludeByDefault = params.excludeByDefault;
 
     const key = createPersistenceKey(params.key);
-    const storedState = sessionStorage.getItem(key);
 
-    if (storedState !== null) {
-      const parsedState = JSON.parse(storedState);
-      defaultValue = parsedState.value;
-      excludeByDefault = parsedState.exclude;
+    if (typeof window !== 'undefined') {
+      const storedState = sessionStorage.getItem(key);
+
+      if (storedState !== null) {
+        const parsedState = JSON.parse(storedState);
+        defaultValue = parsedState.value;
+        excludeByDefault = parsedState.exclude;
+      }
     }
 
     super({

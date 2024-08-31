@@ -25,12 +25,15 @@ export class PersistentControlledField<
   ) {
     let initFn = params.initFn;
     const key = createPersistenceKey(params.key);
-    const storedState = sessionStorage.getItem(key);
 
-    if (storedState !== null) {
-      const parsedState = JSON.parse(storedState);
-      const storedValue = parsedState.value as S;
-      initFn = (): S => storedValue;
+    if (typeof window !== 'undefined') {
+      const storedState = sessionStorage.getItem(key);
+
+      if (storedState !== null) {
+        const parsedState = JSON.parse(storedState);
+        const storedValue = parsedState.value as S;
+        initFn = (): S => storedValue;
+      }
     }
 
     super({
