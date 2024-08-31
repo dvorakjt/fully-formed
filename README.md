@@ -26,9 +26,10 @@ With Fully Formed, fields can control other fields, groups of fields can be crea
 
 In addition to providing the tools to structure your form data and define what makes it valid, Fully Formed provides numerous hooks for interacting with this data, controlling the UI, etc. This allows you to create any visual design you can imagine by declaratively describing how the form data controls this design.
 
-## What's New in Version 1.1.0
+## What's New in Version 1.2.0
 
-- Validity can now be "Caution." `Validity.Caution` can be used to display a warning message in the event that a field coult not be verified, but is not necessarily invalid. For example, if all of the components of an address could not be confirmed by an address validation API, the developer could use this validity to highlight the fields that were not recognized by the API. The address still may be valid, so the developer can use this to indicate the user that they should double-check specific fields without preventing them from proceeding. Other use cases could include a password strength validator: `Validity.Caution` could be used to indicate a medium-strength password. In general, the property exists so that users' attention can be drawn to specific elements without indicating that they are definitively invalid.
+- Persistent fields have been introduced. Persistent fields leverage session storage to ensure that when the page is refreshed by the user, form data is not erased. This feature can be helpful for longer forms that
+  might be tedious for the user to recomplete.
 
 ## Requirements
 
