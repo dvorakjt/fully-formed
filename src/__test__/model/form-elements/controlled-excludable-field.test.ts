@@ -856,4 +856,93 @@ describe('ControlledExcludableField', () => {
 
     promiseScheduler.resolveAll();
   });
+
+  test(`Calling setValidityAndMessages updates the field's validity and
+  messages.`, () => {
+    const controller = new ExcludableField({
+      name: 'controller',
+      defaultValue: '',
+    });
+
+    const controlled = new ControlledExcludableField({
+      name: 'controlled',
+      controller,
+      initFn: ({ value, exclude }) => ({ value, exclude }),
+      controlFn: ({ value, exclude }) => ({ value, exclude }),
+    });
+
+    expect(controlled.state.validity).toBe(Validity.Valid);
+    expect(controlled.state.messages).toStrictEqual([]);
+
+    controlled.setValidityAndMessages(Validity.Caution, [
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    expect(controlled.state.validity).toBe(Validity.Caution);
+    expect(controlled.state.messages).toStrictEqual([
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+  });
+
+  test(`Pending async validators are unsubscribed from when setValidityAndMessages
+  is called.`, () => {
+    const promiseScheduler = new PromiseScheduler();
+
+    const controller = new ExcludableField({
+      name: 'controller',
+      defaultValue: '',
+    });
+
+    const controlled = new ControlledExcludableField({
+      name: 'controlled',
+      controller,
+      initFn: ({ value, exclude }) => ({ value, exclude }),
+      controlFn: ({ value, exclude }) => ({ value, exclude }),
+      asyncValidators: [
+        new AsyncValidator<string>({
+          predicate: value =>
+            promiseScheduler.createScheduledPromise(/[A-Z]/.test(value)),
+          validMessage: 'Field contains an uppercase letter.',
+          invalidMessage: 'Field must contain an uppercase letter.',
+        }),
+      ],
+      pendingMessage: 'Validating field...',
+      delayAsyncValidatorExecution: 0,
+    });
+
+    controlled.setValue('A');
+
+    expect(controlled.state.value).toBe('A');
+    expect(controlled.state.validity).toBe(Validity.Pending);
+    expect(controlled.state.messages).toStrictEqual([
+      {
+        text: 'Validating field...',
+        validity: Validity.Pending,
+      },
+    ]);
+
+    controlled.setValidityAndMessages(Validity.Caution, []);
+
+    controlled.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: '',
+        validity: Validity.Caution,
+        messages: [],
+        exclude: false,
+        isInFocus: false,
+        hasBeenBlurred: false,
+        hasBeenModified: false,
+        submitted: false,
+        didPropertyChange: expect.any(Function),
+      });
+    });
+
+    promiseScheduler.resolveAll();
+  });
 });
