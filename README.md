@@ -28,8 +28,8 @@ In addition to providing the tools to structure your form data and define what m
 
 ## What's New in Version 1.2.0
 
-- Persistent fields have been introduced. Persistent fields leverage session storage to ensure that when the page is refreshed by the user, form data is not erased. This feature can be helpful for longer forms that
-  might be tedious for the user to recomplete.
+- Persistent fields have been introduced. Persistent fields leverage session storage to ensure that when the page is refreshed by the user, form data is not erased. This feature can be helpful for longer forms that might be tedious for the user to recomplete.
+- Fields now have a `setValidityAndMessages` method, enabling some validation to be performed upon submitting the form.
 
 ## Requirements
 
@@ -565,6 +565,42 @@ export const AddressForm = FormFactory.createForm(AddressTemplate);
 </pre>
 
 You'll notice that in this example, we've made use of the template's constructor. This is a powerful pattern: the constructor for your template essentially becomes the constructor for the form created with that template. Any parameters expected by your template will be expected by the resultant form class created by the `FormFactory`, even so far as generic type parameters!
+
+## Persistent Fields
+
+### Creating Persistent Fields
+
+Each of the field types now has a corresponding persistent version which uses session storage to persist the value of the field. For longer forms, this can help improve UX should the user refresh or otherwise navigate away from the page (within the same tab). `AbstractExcludableSubForm` also has a persistent variety, created with the `createPersistentExcludableSubForm` method of the `FormFactory` class and a `PersistentExcludableSubFormTemplate`.
+
+Persistent fields accept the same options (save for the required `key` option) as their non-persistent counterparts and expose the same external interfaces, making them drop-in-replacements for their non-persistent counterparts within your application. Persistent fields require a `key`, which should be unique within your application. This key is used to persist the field's value (and `exclude` property for excludable fields) to session storage.
+
+Here is an example of creating an persistent field:
+
+```
+import { PersistentField } from 'fully-formed';
+
+const myPersistentField = new PersistentField({
+	name: 'myPersistentField',
+	key: 'myForm.myPersistentField',
+	defaultValue: ''
+});
+```
+
+The `defaultValue` option is used when no value has yet been stored in session storage and when the `reset()` method of the field is called.
+
+### Cleaning Up
+
+It is advisable to clean up persistent fields in certain situations, such as when a user logs out. This library provides two utility functions that can be used for this purpose: `clearAllPersistentFormElements` and `clearPersistentFormElementsByKey`. The first clears all persistent form element data from session storage (without modifying other data stored in session storage). The second accepts an array of keys and clears those specific fields.
+
+### With Next.js
+
+Because persistent fields rely on session storage, components that display their values, validities, messages, etc. will cause hydration errors in Next.js. Fortunately, there are several measures that can be taken to prevent these errors. A few of these options are:
+
+- Rendering the components dynamically using the `next/dynamic` module and `{ ssr : false }`.
+- Rendering the components on the client with a `useEffect` hook.
+- Setting `suppressHydrationWarning` to true on affected components.
+
+Please see this link for more information: https://nextjs.org/docs/messages/react-hydration-error
 
 ## Compatibility
 
