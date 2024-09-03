@@ -1,6 +1,7 @@
 import { Subject, type Subscription } from 'rxjs';
 import {
   createRecordFromNameableArray,
+  isExcludable,
   isResettable,
   isSubmittable,
 } from '../../utils';
@@ -145,7 +146,10 @@ export abstract class AbstractExcludableSubForm<
 
   public setSubmitted(): void {
     for (const field of Object.values(this.fields)) {
-      if (isSubmittable(field)) {
+      if (
+        isSubmittable(field) &&
+        (!isExcludable(field) || !field.state.exclude)
+      ) {
         field.setSubmitted();
       }
     }

@@ -4,6 +4,7 @@ import {
   createRecordFromNameableArray,
   isResettable,
   isSubmittable,
+  isExcludable,
 } from '../../utils';
 import { FormReducerFactory } from '../../factories';
 import type { StateWithChanges, RecordFromNameableArray } from '../../shared';
@@ -78,7 +79,10 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
 
   public setSubmitted(): void {
     for (const field of Object.values(this.fields)) {
-      if (isSubmittable(field)) {
+      if (
+        isSubmittable(field) &&
+        (!isExcludable(field) || !field.state.exclude)
+      ) {
         field.setSubmitted();
       }
     }
