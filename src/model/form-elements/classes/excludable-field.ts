@@ -17,7 +17,7 @@ import {
 import type { Subscription } from 'rxjs';
 import type { IField, SetExclude, FieldState } from '../interfaces';
 
-type ExcludableFieldConstructorParams<
+export type ExcludableFieldConstructorParams<
   T extends string,
   S,
   U extends boolean = false,
@@ -43,11 +43,11 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
   public readonly name: T;
   public readonly id: string;
   public readonly transient: U;
-  private defaultValue: S;
-  private excludeByDefault: boolean;
-  private validatorSuite: CombinedValidatorSuite<S>;
-  private stateManager: StateManager<ExcludableFieldState<S>>;
-  private validatorSuiteSubscription?: CancelableSubscription;
+  protected defaultValue: S;
+  protected excludeByDefault: boolean;
+  protected validatorSuite: CombinedValidatorSuite<S>;
+  protected stateManager: StateManager<ExcludableFieldState<S>>;
+  protected validatorSuiteSubscription?: CancelableSubscription;
 
   public get state(): StateWithChanges<ExcludableFieldState<S>> {
     return this.stateManager.state;
@@ -131,6 +131,14 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public setExclude(exclude: boolean): void {
     this.stateManager.updateProperties({ exclude });
   }
@@ -181,7 +189,7 @@ export class ExcludableField<T extends string, S, U extends boolean = false>
     });
   }
 
-  private getNonPendingMessages(): Message[] {
+  protected getNonPendingMessages(): Message[] {
     return this.state.messages.filter(
       message => message.validity !== Validity.Pending,
     );

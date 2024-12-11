@@ -10,7 +10,7 @@ import type { Subscription } from 'rxjs';
 import type { FieldState, IField } from '../interfaces';
 import type { CancelableSubscription, StateWithChanges } from '../../shared';
 
-type FieldConstructorParams<T extends string, S, U extends boolean> = {
+export type FieldConstructorParams<T extends string, S, U extends boolean> = {
   name: T;
   defaultValue: S;
   id?: string;
@@ -29,10 +29,10 @@ export class Field<T extends string, S, U extends boolean = false>
   public readonly name: T;
   public readonly id: string;
   public readonly transient: U;
-  private defaultValue: S;
-  private validatorSuite: CombinedValidatorSuite<S>;
-  private stateManager: StateManager<FieldState<S>>;
-  private validatorSuiteSubscription?: CancelableSubscription;
+  protected defaultValue: S;
+  protected validatorSuite: CombinedValidatorSuite<S>;
+  protected stateManager: StateManager<FieldState<S>>;
+  protected validatorSuiteSubscription?: CancelableSubscription;
 
   public get state(): StateWithChanges<FieldState<S>> {
     return this.stateManager.state;
@@ -105,6 +105,14 @@ export class Field<T extends string, S, U extends boolean = false>
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public subscribeToState(
     cb: (state: StateWithChanges<FieldState<S>>) => void,
   ): Subscription {
@@ -159,7 +167,7 @@ export class Field<T extends string, S, U extends boolean = false>
     });
   }
 
-  private getNonPendingMessages(): Message[] {
+  protected getNonPendingMessages(): Message[] {
     return this.state.messages.filter(
       message => message.validity !== Validity.Pending,
     );

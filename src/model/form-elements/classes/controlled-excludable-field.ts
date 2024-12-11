@@ -33,7 +33,7 @@ type ControlFn<T extends Stateful, V> = (
   controllerState: T['state'],
 ) => ControlFnReturnType<V>;
 
-type ControlledExcludableFieldConstructorParams<
+export type ControlledExcludableFieldConstructorParams<
   T extends string,
   S,
   U extends Stateful,
@@ -64,12 +64,12 @@ export class ControlledExcludableField<
   public readonly name: T;
   public readonly id: string;
   public readonly transient: V;
-  private controller: U;
-  private initFn: InitFn<U, S>;
-  private controlFn: ControlFn<U, S>;
-  private validatorSuite: CombinedValidatorSuite<S>;
-  private stateManager: StateManager<ExcludableFieldState<S>>;
-  private validatorSuiteSubscription?: CancelableSubscription;
+  protected controller: U;
+  protected initFn: InitFn<U, S>;
+  protected controlFn: ControlFn<U, S>;
+  protected validatorSuite: CombinedValidatorSuite<S>;
+  protected stateManager: StateManager<ExcludableFieldState<S>>;
+  protected validatorSuiteSubscription?: CancelableSubscription;
 
   public get state(): StateWithChanges<ExcludableFieldState<S>> {
     return this.stateManager.state;
@@ -157,6 +157,14 @@ export class ControlledExcludableField<
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public setExclude(exclude: boolean): void {
     this.stateManager.updateProperties({ exclude });
   }
@@ -211,7 +219,7 @@ export class ControlledExcludableField<
     });
   }
 
-  private subscribeToController(): void {
+  protected subscribeToController(): void {
     this.controller.subscribeToState(state => {
       const controlFnResult = this.controlFn(state);
 
@@ -248,7 +256,7 @@ export class ControlledExcludableField<
     });
   }
 
-  private getNonPendingMessages(): Message[] {
+  protected getNonPendingMessages(): Message[] {
     return this.state.messages.filter(
       message => message.validity !== Validity.Pending,
     );

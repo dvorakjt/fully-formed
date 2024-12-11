@@ -1,6 +1,7 @@
 import { Subject, type Subscription } from 'rxjs';
 import {
   createRecordFromNameableArray,
+  isExcludable,
   isResettable,
   isSubmittable,
 } from '../../utils';
@@ -23,7 +24,7 @@ import type {
 import type { FormReducer } from '../../reducers';
 import clone from 'just-clone';
 
-type AbstractExcludableSubFormConstructorParams<
+export type AbstractExcludableSubFormConstructorParams<
   T extends string,
   S extends FormMembers,
   U extends boolean,
@@ -59,16 +60,16 @@ export abstract class AbstractExcludableSubForm<
   public readonly groups: RecordFromNameableArray<S['groups']>;
   public readonly transient: U;
   public readonly id: string;
-  private stateChanges = new Subject<
+  protected stateChanges = new Subject<
     StateWithChanges<ExcludableSubFormState<S>>
   >();
-  private reducer: FormReducer<S>;
-  private excludeByDefault: boolean;
-  private _state: ExcludableSubFormState<S>;
-  private valueChanged = false;
-  private validityChanged = false;
-  private submittedChanged = false;
-  private excludeChanged = false;
+  protected reducer: FormReducer<S>;
+  protected excludeByDefault: boolean;
+  protected _state: ExcludableSubFormState<S>;
+  protected valueChanged = false;
+  protected validityChanged = false;
+  protected submittedChanged = false;
+  protected excludeChanged = false;
 
   public get state(): StateWithChanges<ExcludableSubFormState<S>> {
     return {
@@ -145,7 +146,10 @@ export abstract class AbstractExcludableSubForm<
 
   public setSubmitted(): void {
     for (const field of Object.values(this.fields)) {
-      if (isSubmittable(field)) {
+      if (
+        isSubmittable(field) &&
+        (!isExcludable(field) || !field.state.exclude)
+      ) {
         field.setSubmitted();
       }
     }
@@ -180,7 +184,7 @@ export abstract class AbstractExcludableSubForm<
     this.resetFields();
   }
 
-  private resetFields(): void {
+  protected resetFields(): void {
     for (const field of Object.values(this.fields)) {
       if (isResettable(field)) {
         field.reset();
@@ -188,7 +192,7 @@ export abstract class AbstractExcludableSubForm<
     }
   }
 
-  private subscribeToReducer(): void {
+  protected subscribeToReducer(): void {
     this.reducer.subscribeToState(state => {
       this.valueChanged = state.didPropertyChange('value');
       this.validityChanged = state.didPropertyChange('validity');

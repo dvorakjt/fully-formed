@@ -13,6 +13,20 @@ export class ValidityUtils {
     return validity === Validity.Valid;
   }
 
+  public static isCaution(
+    entityStateOrValidity: EntityStateOrValidity,
+  ): boolean {
+    const validity = this.toValidity(entityStateOrValidity);
+    return validity === Validity.Caution;
+  }
+
+  public static isValidOrCaution(
+    entityStateOrValidity: EntityStateOrValidity,
+  ): boolean {
+    const validity = this.toValidity(entityStateOrValidity);
+    return validity === Validity.Valid || validity === Validity.Caution;
+  }
+
   public static isPending(
     entityStateOrValidity: EntityStateOrValidity,
   ): boolean {
@@ -34,6 +48,7 @@ export class ValidityUtils {
     opts?: MinValidityOpts,
   ): Validity {
     let pendingSeen = false;
+    let cautionSeen = false;
 
     for (const entityStateOrValidity of entitiesStatesOrValidities) {
       if (
@@ -44,9 +59,14 @@ export class ValidityUtils {
 
       if (this.isInvalid(entityStateOrValidity)) return Validity.Invalid;
       if (this.isPending(entityStateOrValidity)) pendingSeen = true;
+      if (this.isCaution(entityStateOrValidity)) cautionSeen = true;
     }
 
-    return pendingSeen ? Validity.Pending : Validity.Valid;
+    return (
+      pendingSeen ? Validity.Pending
+      : cautionSeen ? Validity.Caution
+      : Validity.Valid
+    );
   }
 
   private static toValidity(

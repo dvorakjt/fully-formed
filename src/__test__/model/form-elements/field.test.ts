@@ -910,4 +910,74 @@ describe('Field', () => {
     expect(field.state.didPropertyChange('isInFocus')).toBe(true);
     expect(field.state.didPropertyChange('value')).toBe(false);
   });
+
+  test(`Calling setValidityAndMessages updates the field's validity and 
+  messages.`, () => {
+    const field = new Field({
+      name: 'streetAddress',
+      defaultValue: '',
+    });
+
+    expect(field.state.validity).toBe(Validity.Valid);
+    expect(field.state.messages).toStrictEqual([]);
+
+    field.setValidityAndMessages(Validity.Caution, [
+      {
+        text: 'Could not confirm this field.',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    expect(field.state.validity).toBe(Validity.Caution);
+    expect(field.state.messages).toStrictEqual([
+      {
+        text: 'Could not confirm this field.',
+        validity: Validity.Caution,
+      },
+    ]);
+  });
+
+  test(`Pending async validators are unsubscribed from when setValidityAndMessages 
+  is called.`, () => {
+    const promiseScheduler = new PromiseScheduler();
+
+    const scheduledAsyncIncludesUpper = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(/[A-Z]/.test(value));
+      },
+    });
+
+    const field = new Field({
+      name: 'testField',
+      defaultValue: '',
+      asyncValidators: [scheduledAsyncIncludesUpper],
+      pendingMessage: 'Validating field...',
+      delayAsyncValidatorExecution: 0,
+    });
+
+    expect(field.state.validity).toBe(Validity.Pending);
+    expect(field.state.messages).toStrictEqual([
+      {
+        text: 'Validating field...',
+        validity: Validity.Pending,
+      },
+    ]);
+
+    field.subscribeToState(state => {
+      expect(state).toStrictEqual({
+        value: '',
+        validity: Validity.Caution,
+        messages: [],
+        hasBeenModified: false,
+        isInFocus: false,
+        hasBeenBlurred: false,
+        submitted: false,
+        didPropertyChange: expect.any(Function),
+      });
+    });
+
+    field.setValidityAndMessages(Validity.Caution);
+
+    promiseScheduler.resolveAll();
+  });
 });

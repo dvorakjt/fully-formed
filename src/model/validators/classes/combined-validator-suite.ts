@@ -8,6 +8,7 @@ import {
 import type { IAsyncValidator, IValidator } from '../interfaces';
 import type { ValidatorTemplate, AsyncValidatorTemplate } from '../types';
 import type { CancelableObservable } from '../../shared/classes/cancelable-observable';
+import { ValidityUtils } from '../../utils';
 
 type CombinedValidatorSuiteConstructorParams<T> = {
   validators?: Array<IValidator<T>>;
@@ -42,6 +43,7 @@ export class CombinedValidatorSuite<T> {
       validators,
       validatorTemplates,
     });
+
     if (
       this.shouldCreateAsyncValidatorSuite(
         asyncValidators,
@@ -54,18 +56,20 @@ export class CombinedValidatorSuite<T> {
         delayAsyncValidatorExecution,
       });
     }
+
     this.pendingMessage = pendingMessage;
   }
 
   public validate(value: T): CombinedValidatorSuiteResult<T> {
     const syncResult = this.validatorSuite.validate(value);
 
-    if (syncResult.validity !== Validity.Valid || !this.asyncValidatorSuite) {
+    if (ValidityUtils.isInvalid(syncResult) || !this.asyncValidatorSuite) {
       return {
         syncResult,
       };
     }
 
+    const syncValidatorsReturnedCaution = ValidityUtils.isCaution(syncResult);
     syncResult.validity = Validity.Pending;
 
     if (this.pendingMessage) {
@@ -77,7 +81,10 @@ export class CombinedValidatorSuite<T> {
 
     return {
       syncResult,
-      observableResult: this.asyncValidatorSuite.validate(value),
+      observableResult: this.asyncValidatorSuite.validate(
+        value,
+        syncValidatorsReturnedCaution,
+      ),
     };
   }
 

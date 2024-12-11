@@ -30,9 +30,9 @@ export class AsyncValidatorSuiteContainer<T> {
    *
    * @param value - The value to be validated.
    */
-  public validate(value: T): void {
+  public validate(value: T, defaultToCaution: boolean): void {
     this.asyncValidatorSuite
-      .validate(value)
+      .validate(value, defaultToCaution)
       .subscribe(result => this.subject.next(result));
   }
 

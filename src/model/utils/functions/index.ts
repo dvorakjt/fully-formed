@@ -1,4 +1,7 @@
 export { applyAutoTrim } from './apply-auto-trim';
+export { clearAllPersistentFormElements } from './clear-all-persistent-form-elements';
+export { clearPersistentFormElementsByKey } from './clear-persistent-form-elements-by-key';
+export { createPersistenceKey } from './create-persistence-key';
 export { createRecordFromNameableArray } from './create-record-from-nameable-array';
 export { deepEquals } from './deep-equals';
 export { isExcludable } from './is-excludable';

@@ -11,6 +11,7 @@ import {
   PromiseScheduler,
   delay,
 } from '../../../test-utils';
+import type { IAsyncValidator, ValidatorResult } from '../../../model';
 
 describe('AsyncValidatorSuite', () => {
   test(`When validate() is called and the returned Observable emits a 
@@ -19,7 +20,7 @@ describe('AsyncValidatorSuite', () => {
       delayAsyncValidatorExecution: 0,
     });
     const value = 'test';
-    validatorSuite.validate(value).subscribe(result => {
+    validatorSuite.validate(value, false).subscribe(result => {
       expect(result.value).toBe(value);
     });
   });
@@ -31,10 +32,26 @@ describe('AsyncValidatorSuite', () => {
       delayAsyncValidatorExecution: 0,
     });
     const value = 'test';
-    validatorSuite.validate(value).subscribe(result => {
+    validatorSuite.validate(value, false).subscribe(result => {
       expect(result).toStrictEqual({
         value,
         validity: Validity.Valid,
+        messages: [],
+      });
+    });
+  });
+
+  test(`When validate() is called and the suite contains no validators, but 
+  defaultToCaution is true, a result with a validity of Validity.Caution is 
+  emitted.`, () => {
+    const validatorSuite = new AsyncValidatorSuite<string>({
+      delayAsyncValidatorExecution: 0,
+    });
+    const value = 'test';
+    validatorSuite.validate(value, true).subscribe(result => {
+      expect(result).toStrictEqual({
+        value,
+        validity: Validity.Caution,
         messages: [],
       });
     });
@@ -46,17 +63,42 @@ describe('AsyncValidatorSuite', () => {
     const asyncRequired = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
     });
+
     const asyncIncludesUpper = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> =>
         Promise.resolve(/[A-Z]/.test(value)),
     });
+
     new AsyncValidatorSuite<string>({
       asyncValidators: [asyncRequired, asyncIncludesUpper],
       delayAsyncValidatorExecution: 0,
     })
-      .validate('A')
+      .validate('A', false)
       .subscribe(result => {
         expect(result.validity).toBe(Validity.Valid);
+      });
+  });
+
+  test(`When validate() is called and all validators have returned a result with 
+  a validity property of Validity.Valid but defaultToCaution is true, the 
+  returned Observable emits a ValidatorSuiteResult with a validity property of 
+  Validity.Caution.`, () => {
+    const asyncRequired = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
+    });
+
+    const asyncIncludesUpper = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> =>
+        Promise.resolve(/[A-Z]/.test(value)),
+    });
+
+    new AsyncValidatorSuite<string>({
+      asyncValidators: [asyncRequired, asyncIncludesUpper],
+      delayAsyncValidatorExecution: 0,
+    })
+      .validate('A', true)
+      .subscribe(result => {
+        expect(result.validity).toBe(Validity.Caution);
       });
   });
 
@@ -66,17 +108,61 @@ describe('AsyncValidatorSuite', () => {
     const asyncRequired = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
     });
+
+    class NumberRecommended implements IAsyncValidator<string> {
+      public validate(value: string): Promise<ValidatorResult> {
+        return Promise.resolve({
+          validity: /\d/.test(value) ? Validity.Valid : Validity.Caution,
+        });
+      }
+    }
+
     const asyncIncludesUpper = new AsyncValidator<string>({
       predicate: (value): Promise<boolean> =>
         Promise.resolve(/[A-Z]/.test(value)),
     });
+
     new AsyncValidatorSuite<string>({
-      asyncValidators: [asyncRequired, asyncIncludesUpper],
+      asyncValidators: [
+        asyncRequired,
+        new NumberRecommended(),
+        asyncIncludesUpper,
+      ],
       delayAsyncValidatorExecution: 0,
     })
-      .validate('a')
+      .validate('a', false)
       .subscribe(result => {
         expect(result.validity).toBe(Validity.Invalid);
+      });
+  });
+
+  test(`When validate() is called and at least one validator has returned a 
+  result with a validity property of Validity.Caution, but none have returned a 
+  result with a validity property of Validity.Invald, the returned Observable 
+  emits a ValidatorSuiteResult with a validity property of Validity.Caution.`, () => {
+    const asyncRequired = new AsyncValidator<string>({
+      predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
+    });
+
+    class StreetAddressValidator implements IAsyncValidator<string> {
+      public validate(): Promise<ValidatorResult> {
+        return Promise.resolve({
+          validity: Validity.Caution,
+          message: {
+            text: 'We could not confirm the street address.',
+            validity: Validity.Caution,
+          },
+        });
+      }
+    }
+
+    new AsyncValidatorSuite<string>({
+      asyncValidators: [asyncRequired, new StreetAddressValidator()],
+      delayAsyncValidatorExecution: 0,
+    })
+      .validate('a', false)
+      .subscribe(result => {
+        expect(result.validity).toBe(Validity.Caution);
       });
   });
 
@@ -99,7 +185,7 @@ describe('AsyncValidatorSuite', () => {
       asyncValidators: [asyncRequired, asyncIncludesUpper],
       delayAsyncValidatorExecution: 0,
     })
-      .validate('a')
+      .validate('a', false)
       .subscribe(result => {
         expect(result.messages).toStrictEqual([
           {
@@ -121,20 +207,23 @@ describe('AsyncValidatorSuite', () => {
       predicate: (value): Promise<boolean> => Promise.resolve(value.length > 0),
       validMessage: 'The provided value is not an empty string.',
     };
+
     const asyncIncludesUpperTemplate: AsyncValidatorTemplate<string> = {
       predicate: (value): Promise<boolean> =>
         Promise.resolve(/[A-Z]/.test(value)),
       invalidMessage:
         'The provided value does not include an uppercase letter.',
     };
+
     const validatorSuite = new AsyncValidatorSuite<string>({
       asyncValidatorTemplates: [
         asyncRequiredTemplate,
         asyncIncludesUpperTemplate,
       ],
     });
+
     const value = 'a';
-    validatorSuite.validate(value).subscribe(result => {
+    validatorSuite.validate(value, false).subscribe(result => {
       expect(result).toStrictEqual({
         value,
         validity: Validity.Invalid,
@@ -208,7 +297,7 @@ describe('AsyncValidatorSuite', () => {
     });
 
     for (const value of values) {
-      validatorSuiteContainer.validate(value);
+      validatorSuiteContainer.validate(value, false);
     }
 
     // Resolve the promises in order.
@@ -227,7 +316,7 @@ describe('AsyncValidatorSuite', () => {
       delayAsyncValidatorExecution: 500,
     });
 
-    const subscription = validatorSuite.validate('test').subscribe();
+    const subscription = validatorSuite.validate('test', false).subscribe();
     subscription.unsubscribeAndCancel();
 
     await delay(1000);
@@ -248,7 +337,7 @@ describe('AsyncValidatorSuite', () => {
       delayAsyncValidatorExecution: 500,
     });
 
-    const observable = validatorSuite.validate('test');
+    const observable = validatorSuite.validate('test', false);
 
     const subscriptionTimestamp = Date.now();
 

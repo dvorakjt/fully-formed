@@ -14,6 +14,7 @@ import {
   AsyncValidator,
   SubFormTemplate,
   type ValidatedState,
+  type ExcludableTemplate,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
@@ -408,7 +409,7 @@ describe('AbstractForm', () => {
   });
 
   test(`When setSubmitted() is called, setSubmitted() is called on all of its 
-  fields that implement Submittable.`, () => {
+  included fields that implement Submittable.`, () => {
     class SubTemplate extends SubFormTemplate {
       public readonly name = 'subForm';
       public readonly fields = <const>[
@@ -460,6 +461,55 @@ describe('AbstractForm', () => {
 
     for (const field of Object.values(instance.fields.subForm.fields)) {
       expect(field.state.submitted).toBe(true);
+    }
+  });
+
+  test(`When setSubmitted() is called, setSubmitted() is called not called on 
+  excluded fields.`, () => {
+    class SubTemplate extends SubFormTemplate implements ExcludableTemplate {
+      public readonly name = 'excludedSubform';
+      public readonly fields = <const>[
+        new Field({
+          name: 'subFormField1',
+          defaultValue: '',
+        }),
+        new Field({
+          name: 'subFormField2',
+          defaultValue: '',
+        }),
+      ];
+      public readonly excludeByDefault = true;
+    }
+
+    const ExcludedSubForm = FormFactory.createExcludableSubForm(SubTemplate);
+
+    class Template extends FormTemplate {
+      public readonly fields = <const>[
+        new ExcludableField({
+          name: 'excludedField',
+          defaultValue: '',
+          excludeByDefault: true,
+        }),
+        new ExcludableField({
+          name: 'includedExcludableField',
+          defaultValue: '',
+          excludeByDefault: false,
+        }),
+        new ExcludedSubForm(),
+      ];
+    }
+
+    const Form = FormFactory.createForm(Template);
+    const instance = new Form();
+
+    instance.setSubmitted();
+    expect(instance.state.submitted).toBe(true);
+    expect(instance.fields.excludedField.state.submitted).toBe(false);
+    expect(instance.fields.includedExcludableField.state.submitted).toBe(true);
+
+    expect(instance.fields.excludedSubform.state.submitted).toBe(false);
+    for (const field of Object.values(instance.fields.excludedSubform.fields)) {
+      expect(field.state.submitted).toBe(false);
     }
   });
 

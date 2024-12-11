@@ -26,14 +26,10 @@ With Fully Formed, fields can control other fields, groups of fields can be crea
 
 In addition to providing the tools to structure your form data and define what makes it valid, Fully Formed provides numerous hooks for interacting with this data, controlling the UI, etc. This allows you to create any visual design you can imagine by declaratively describing how the form data controls this design.
 
-## What's New in Version 1
+## What's New in Version 1.2.0
 
-- Components have been completely removed and replaced with hooks. Components were too opaque for the nature of the project, which is designed to be as flexible and transparent as possible while still taking care of as much as possible for the developer. A collection of hooks provides greater flexibility and transparency, and has helped reduce the size of the package by over half from version 0. With these hooks, it is trivial to build components that interact with the library to perfectly convey your design team's vision.
-- Composability: It is now possible to create your own field classes and use them inside your form so long as they implement a certain minimal interface. They can also implement other interfaces defined by the library in order to interact with the form in various ways.
-- It is now possible to delay the execution of async validators. The field's validity still becomes pending immediately, but the async validators will not execute if the user modifies the field within that time period. This saves many API calls while still providing the experience of real-time field validation.
-- Each state update now includes a method that enables you to check what properties of state changed in that update. This allows for fine-grained control over changes to controlled fields, and more.
-- Utils have been simplified in order to provide only the functionality that can be expected to be common across many projects.
-- Terminology has been simplified where possible.
+- Persistent fields have been introduced. Persistent fields leverage session storage to ensure that when the page is refreshed by the user, form data is not erased. This feature can be helpful for longer forms that might be tedious for the user to recomplete.
+- Fields now have a `setValidityAndMessages` method, enabling some validation to be performed upon submitting the form.
 
 ## Requirements
 
@@ -304,7 +300,7 @@ export function SignUpPage(): React.JSX.Element {
 }
 </pre>
 
-Note that the validity of the form is always known. ValidityUtils just provides a convenient method of checking this so you don't have to write `signUpForm.state.validity === Validity.Valid` every time. `ValidityUtils.isValid` (and the corresponding methods for `Validity.Invalid` and `Validity.Pending`) can also directly accept the state of a form or field, or just a value of type `Validity`.
+Note that the validity of the form is always known. ValidityUtils just provides a convenient method of checking this so you don't have to write `signUpForm.state.validity === Validity.Valid` every time. `ValidityUtils.isValid` (and the corresponding methods for `Validity.Invalid`, `Validity.Pending` and `Validity.Caution`) can also directly accept the state of a form or field, or just a value of type `Validity`.
 
 ### useUserInput()
 
@@ -444,7 +440,7 @@ You could also create a function that returns such a validator, enabling you to 
 
 ### 3. Implementing IValidator
 
-If you wish for even finer grained control over the output of your validator (for instance, creating a validator that can output different messages based on more than just the result of a predicate), you may want to simply create a class that implements the `IValidator` interface.
+If you wish for even finer grained control over the output of your validator (for instance, creating a validator that can output different messages based on more than just the result of a predicate), you may want to simply create a class that implements the `IValidator` interface. At the present moment, this is the only means by which a validator can return `Validity.Caution`.
 
 ## Async Validators
 
@@ -527,6 +523,7 @@ class AddressTemplate extends FormTemplate {
 
   public constructor() {
     super();
+    
     const zip = new Field({
       name: 'zip',
       defaultValue: '',
@@ -537,6 +534,7 @@ class AddressTemplate extends FormTemplate {
         },
       ],
     });
+
     this.fields = [
       zip,
       new ControlledField({
@@ -567,6 +565,42 @@ export const AddressForm = FormFactory.createForm(AddressTemplate);
 </pre>
 
 You'll notice that in this example, we've made use of the template's constructor. This is a powerful pattern: the constructor for your template essentially becomes the constructor for the form created with that template. Any parameters expected by your template will be expected by the resultant form class created by the `FormFactory`, even so far as generic type parameters!
+
+## Persistent Fields
+
+### Creating Persistent Fields
+
+Each of the field types now has a corresponding persistent version which uses session storage to persist the value of the field. For longer forms, this can help improve UX should the user refresh or otherwise navigate away from the page (within the same tab). `AbstractExcludableSubForm` also has a persistent variety, created with the `createPersistentExcludableSubForm` method of the `FormFactory` class and a `PersistentExcludableSubFormTemplate`.
+
+Persistent fields accept the same options (save for the required `key` option) as their non-persistent counterparts and expose the same external interfaces, making them drop-in-replacements for their non-persistent counterparts within your application. Persistent fields require a `key`, which should be unique within your application. This key is used to persist the field's value (and `exclude` property for excludable fields) to session storage.
+
+Here is an example of creating an persistent field:
+
+```
+import { PersistentField } from 'fully-formed';
+
+const myPersistentField = new PersistentField({
+	name: 'myPersistentField',
+	key: 'myForm.myPersistentField',
+	defaultValue: ''
+});
+```
+
+The `defaultValue` option is used when no value has yet been stored in session storage and when the `reset()` method of the field is called.
+
+### Cleaning Up
+
+It is advisable to clean up persistent fields in certain situations, such as when a user logs out. This library provides two utility functions that can be used for this purpose: `clearAllPersistentFormElements` and `clearPersistentFormElementsByKey`. The first clears all persistent form element data from session storage (without modifying other data stored in session storage). The second accepts an array of keys and clears those specific fields.
+
+### With Next.js
+
+Because persistent fields rely on session storage, components that display their values, validities, messages, etc. will cause hydration errors in Next.js. Fortunately, there are several measures that can be taken to prevent these errors. A few of these options are:
+
+- Rendering the components dynamically using the `next/dynamic` module and `{ ssr : false }`.
+- Rendering the components on the client with a `useEffect` hook.
+- Setting `suppressHydrationWarning` to true on affected components.
+
+Please see this link for more information: https://nextjs.org/docs/messages/react-hydration-error
 
 ## Compatibility
 

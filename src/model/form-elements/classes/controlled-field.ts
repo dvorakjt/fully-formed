@@ -21,7 +21,7 @@ type ControlFn<T extends Stateful, V> = (
   controllerState: T['state'],
 ) => V | undefined | void;
 
-type ControlledFieldConstructorParams<
+export type ControlledFieldConstructorParams<
   T extends string,
   S,
   U extends Stateful,
@@ -51,12 +51,12 @@ export class ControlledField<
   public readonly name: T;
   public readonly id: string;
   public readonly transient: V;
-  private validatorSuite: CombinedValidatorSuite<S>;
-  private stateManager: StateManager<FieldState<S>>;
-  private validatorSuiteSubscription?: CancelableSubscription;
-  private controller: U;
-  private initFn: InitFn<U, S>;
-  private controlFn: ControlFn<U, S>;
+  protected validatorSuite: CombinedValidatorSuite<S>;
+  protected stateManager: StateManager<FieldState<S>>;
+  protected validatorSuiteSubscription?: CancelableSubscription;
+  protected controller: U;
+  protected initFn: InitFn<U, S>;
+  protected controlFn: ControlFn<U, S>;
 
   public get state(): StateWithChanges<FieldState<S>> {
     return this.stateManager.state;
@@ -135,6 +135,14 @@ export class ControlledField<
     });
   }
 
+  public setValidityAndMessages(
+    validity: Validity,
+    messages: Message[] = [],
+  ): void {
+    this.validatorSuiteSubscription?.unsubscribeAndCancel();
+    this.stateManager.updateProperties({ validity, messages });
+  }
+
   public subscribeToState(
     cb: (state: StateWithChanges<FieldState<S>>) => void,
   ): Subscription {
@@ -192,13 +200,13 @@ export class ControlledField<
     });
   }
 
-  private getNonPendingMessages(): Message[] {
+  protected getNonPendingMessages(): Message[] {
     return this.state.messages.filter(
       message => message.validity !== Validity.Pending,
     );
   }
 
-  private subscribeToController(): void {
+  protected subscribeToController(): void {
     this.controller.subscribeToState(state => {
       const value = this.controlFn(state);
 

@@ -2,10 +2,12 @@ import {
   AbstractForm,
   AbstractSubForm,
   AbstractExcludableSubForm,
+  AbstractPersistentExcludableSubForm,
   type AllowedFormMembers,
 } from '../form-elements';
 import type {
   FormTemplate,
+  PersistentExcludableSubFormTemplate,
   SubFormTemplate,
   TransientTemplate,
 } from '../templates';
@@ -56,6 +58,26 @@ export class FormFactory {
     AbstractExcludableSubForm<T['name'], T, TransienceFromTemplate<T>>
   > {
     return class extends AbstractExcludableSubForm<
+      T['name'],
+      T,
+      TransienceFromTemplate<T>
+    > {
+      public constructor(...args: Args) {
+        super(new Template(...args));
+      }
+    };
+  }
+
+  public static createPersistentExcludableSubForm<
+    Args extends unknown[],
+    T extends PersistentExcludableSubFormTemplate & AllowedFormMembers<T>,
+  >(
+    Template: Constructor<Args, T>,
+  ): Constructor<
+    Args,
+    AbstractPersistentExcludableSubForm<T['name'], T, TransienceFromTemplate<T>>
+  > {
+    return class extends AbstractPersistentExcludableSubForm<
       T['name'],
       T,
       TransienceFromTemplate<T>

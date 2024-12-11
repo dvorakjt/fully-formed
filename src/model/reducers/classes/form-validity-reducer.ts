@@ -1,9 +1,10 @@
 import { ValidityReducer } from './validity-reducer';
-import { Validity } from '../../shared';
+import type { Validity } from '../../shared';
 import type { ValidityReducerMemberState } from '../types';
 import type { FormChild } from '../../form-elements';
 import type { IGroup } from '../../groups';
 import type { IAdapter } from '../../adapters';
+import { ValidityUtils } from '../../utils';
 
 type FormValidityReducerConstructorParams = {
   nonTransientFieldsAndAdapters: ReadonlyArray<FormChild | IAdapter>;
@@ -17,21 +18,11 @@ export class FormValidityReducer {
   private groupReducer: ValidityReducer;
 
   public get validity(): Validity {
-    if (
-      this.nonTransientFieldsAndAdaptersReducer.validity === Validity.Invalid ||
-      this.transientElementReducer.validity === Validity.Invalid ||
-      this.groupReducer.validity === Validity.Invalid
-    ) {
-      return Validity.Invalid;
-    }
-    if (
-      this.nonTransientFieldsAndAdaptersReducer.validity === Validity.Pending ||
-      this.transientElementReducer.validity === Validity.Pending ||
-      this.groupReducer.validity === Validity.Pending
-    ) {
-      return Validity.Pending;
-    }
-    return Validity.Valid;
+    return ValidityUtils.minValidity([
+      this.nonTransientFieldsAndAdaptersReducer.validity,
+      this.transientElementReducer.validity,
+      this.groupReducer.validity,
+    ]);
   }
 
   public constructor({

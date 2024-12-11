@@ -499,4 +499,19 @@ describe('ControlledField', () => {
 
     expect(complement.state.isInFocus).toBe(true);
   });
+
+  test(`Calling setValidityAndMessages updates the field's validity and 
+  messages.`, () => {
+    const expectedMessages = [
+      {
+        text: 'Order now! Stock is limited.',
+        validity: Validity.Caution,
+      },
+    ];
+
+    complement.setValidityAndMessages(Validity.Caution, expectedMessages);
+
+    expect(complement.state.validity).toBe(Validity.Caution);
+    expect(complement.state.messages).toStrictEqual(expectedMessages);
+  });
 });
