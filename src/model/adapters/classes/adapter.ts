@@ -6,6 +6,8 @@ import {
 } from '../../shared';
 import type { Subscription } from 'rxjs';
 import type { IAdapter } from '../interfaces';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Field } from '../../form-elements';
 
 /**
  * A function that receives the state of an instance of a class that implements
@@ -48,9 +50,8 @@ type AdapterConstructorParams<
 };
 
 /**
- * Produces a new value from that of a source. This class can be used to
- * transform the value of a field, group, or other form element into a new value
- * to be included in the value of a form.
+ * Transforms the state of a field, group, or other form element into a value
+ * which will be included in the value of the parent form.
  *
  * @example
  * ```
