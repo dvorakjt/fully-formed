@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import type { Stateful, ArrayOfStates } from '../model';
 
+/**
+ * A function provided to {@link useMultiPipe} which is called when the state of
+ * any watched entities changes to produce a new value derived from their
+ * states.
+ */
 type MultiEntityTransformFn<T extends readonly Stateful[], V> = (
   states: ArrayOfStates<T>,
 ) => V;

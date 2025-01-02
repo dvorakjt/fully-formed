@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import type { Stateful } from '../model';
 
+/**
+ * A function provided to {@link usePipe} that is called when the state of the
+ * watched entity changes, producing a new value.
+ */
 type TransformFn<T extends Stateful, V> = (state: T['state']) => V;
 
 /**

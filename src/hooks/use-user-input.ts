@@ -2,6 +2,10 @@ import { useValue } from '.';
 import type { ChangeEventHandler } from 'react';
 import type { Validated, SetValue, ValueOf } from '../model';
 
+/**
+ * An object returned by {@link useUserInput} that can be passed into the props
+ * of an `<input />` element, causing it to become a controlled input.
+ */
 type UserInputProps<T extends Validated<string> & SetValue<string>> = {
   value: ValueOf<T>;
   onChange: ChangeEventHandler<
