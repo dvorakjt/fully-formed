@@ -23,7 +23,8 @@ export type ValidatorConstructorParams<T> = {
 };
 
 /**
- * Exposes a validate method which can be used to determine the validity of a certain type of value.
+ * Exposes a validate method which can be used to determine the validity of a
+ * certain type of value.
  *
  * @typeParam T - The type of value which can be validated.
  */
@@ -42,6 +43,11 @@ export class Validator<T> implements IValidator<T> {
     this.validMessage = validMessage;
   }
 
+  /**
+   * Validates a value of type `T` and returns a {@link ValidatorResult}.
+   *
+   * @param value - The value to validate.
+   */
   public validate(value: T): ValidatorResult {
     const result: ValidatorResult = {
       validity: this.predicate(value) ? Validity.Valid : Validity.Invalid,

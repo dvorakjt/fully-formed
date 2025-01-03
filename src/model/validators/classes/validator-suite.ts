@@ -21,8 +21,8 @@ type ValidatorSuiteConstructorParams<T> = {
    */
   validators?: Array<IValidator<T>>;
   /**
-   * An array of {@link ValidatorTemplate}s (optional). Validators will be instantiated
-   * with the provided templates.
+   * An array of {@link ValidatorTemplate}s (optional). {@link Validator}s will
+   * be instantiated with the provided templates.
    */
   validatorTemplates?: Array<ValidatorTemplate<T>>;
 };
@@ -32,6 +32,8 @@ type ValidatorSuiteConstructorParams<T> = {
  * collection of synchronous validators and returns an object containing the
  * value itself, the validity of the least valid validator, and an array
  * containing the messages returned by all the validators in the suite.
+ *
+ * @typeParam T - The type of value the suite will be able to validate.
  */
 export class ValidatorSuite<T> {
   private validators: Array<IValidator<T>>;

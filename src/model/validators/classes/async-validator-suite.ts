@@ -10,17 +10,45 @@ import type { AsyncValidatorTemplate } from '../types';
 import { CancelableObservable } from '../../shared/classes/cancelable-observable';
 import { ValidityUtils } from '../../utils';
 
+/**
+ * A configuration object expected by the constructor of an
+ * {@link AsyncValidatorSuite}.
+ *
+ * @typeParam T - The type of value the validator suite will be able to validate.
+ */
 type AsyncValidatorSuiteConstructorParams<T> = {
+  /**
+   * An array of {@link IAsyncValidator}s (optional).
+   */
   asyncValidators?: Array<IAsyncValidator<T>>;
+  /**
+   * An array of {@link AsyncValidatorTemplate}s (optional).
+   * {@link AsyncValidator}s will be instantiated with the provided templates.
+   */
   asyncValidatorTemplates?: Array<AsyncValidatorTemplate<T>>;
+  /**
+   * A duration in milliseconds by which the execution of async validators
+   * should be delayed. Async validators will not fire until this duration has
+   * elapsed, reducing the number of asynchronous operations triggered while the
+   * user is still editing the corresponding field.
+   *
+   * @remarks
+   * The primary use case for this is to reduce the number of API calls made by
+   * async validators that reach out to some external service.
+   *
+   * The default is 500 milliseconds.
+   */
   delayAsyncValidatorExecution?: number;
 };
 
 /**
- * @remarks
- * `delayBeforeValidation` allows you to delay the execution of the validators by
- * a duration in milliseconds. This enables you to reduce API calls and other
- * asynchronous operations made while the user is typing.
+ * Exposes a `validate` method that validates a given value against a
+ * collection of asynchronous validators and returns a
+ * {@link CancelableObservable} that emits an object containing the value itself,
+ * the validity of the least valid validator, and an array containing the
+ * messages returned by all the validators in the suite.
+ *
+ * @typeParam T - The type of value the suite will be able to validate.
  */
 export class AsyncValidatorSuite<T> {
   private validators: Array<IAsyncValidator<T>>;
@@ -43,6 +71,16 @@ export class AsyncValidatorSuite<T> {
     this.delayAsyncValidatorExecution = delayAsyncValidatorExecution;
   }
 
+  /**
+   * Validates the given value against a collection of asynchronous validators
+   * and returns a {@link CancelableObservable} that emits an object containing
+   * the value itself, the validity of the least valid validator, and an array
+   * containing the messages returned by all the validators in the suite.
+   *
+   * @param value - The value to be validated.
+   * @returns A {@link CancelableObservable} of type
+   * {@link ValidatedState} `&` {@link MessageBearerState}.
+   */
   public validate(
     value: T,
     defaultToCaution: boolean,
