@@ -10,7 +10,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Field } from '../../model';
-import { useFocusEvents } from '../../hooks';
+import { useCancelFocusOnUnmount } from '../../hooks';
 import { useKeyboardNavigation } from '../../test-utils';
 
 describe('useCancelFocusOnUnmount()', () => {
@@ -99,9 +99,10 @@ describe('useCancelFocusOnUnmount()', () => {
     const inputId = 'input';
 
     function Input(): React.JSX.Element {
+      useCancelFocusOnUnmount(field);
+
       return (
         <input
-          {...useFocusEvents(field)}
           data-testid={inputId}
           onFocus={() => field.focus()}
           onBlur={() => field.blur()}
