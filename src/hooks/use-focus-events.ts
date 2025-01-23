@@ -1,4 +1,4 @@
-import { useCancelFocusOnUnmount } from '.';
+import { useCancelFocusOnUnmount } from './use-cancel-focus-on-unmount';
 import type { FocusEventHandler } from 'react';
 import type { Focusable } from '../model';
 
