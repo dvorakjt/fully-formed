@@ -7,7 +7,7 @@ export default defineConfig({
     environment: 'jsdom',
     watch: false,
     coverage: {
-      provider: 'v8',
+      provider: 'istanbul',
       enabled: true,
       thresholds: {
         100: true,
