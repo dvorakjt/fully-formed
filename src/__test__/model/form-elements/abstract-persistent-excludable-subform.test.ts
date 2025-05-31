@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from 'vitest';
+import { describe, test, expect, afterEach, vi } from 'vitest';
 import {
   FormFactory,
   PersistentExcludableSubFormTemplate,
@@ -116,5 +116,22 @@ describe('AbstractPersistentExcludableSubForm', () => {
 
     form.reset();
     expect(form.state.exclude).toBe(excludeByDefault);
+  });
+
+  test(`sessionStorage is not accessed in the constructor if window is 
+  undefined.`, () => {
+    const temp = window;
+    window = undefined as any;
+    const spy = vi.spyOn(sessionStorage, 'setItem');
+    const Form = FormFactory.createPersistentExcludableSubForm(
+      class FormTemplate extends PersistentExcludableSubFormTemplate {
+        public readonly name = '';
+        public readonly key = '';
+        public readonly fields = [];
+      },
+    );
+    new Form();
+    expect(spy).not.toHaveBeenCalled();
+    window = temp;
   });
 });

@@ -14,6 +14,8 @@ import {
   AsyncValidator,
   type ExcludableTemplate,
   type ValidatedState,
+  FormChild,
+  AutoTrim,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
