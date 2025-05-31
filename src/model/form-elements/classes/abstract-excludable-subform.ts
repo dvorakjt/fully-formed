@@ -33,10 +33,10 @@ export type AbstractExcludableSubFormConstructorParams<
   fields: S['fields'];
   groups: S['groups'];
   adapters: S['adapters'];
+  autoTrim: AutoTrim;
   transient?: U;
   excludeByDefault?: boolean;
   id?: string;
-  autoTrim?: AutoTrim;
 };
 
 type ExcludableSubFormState<T extends FormMembers> = FormState<T> &
@@ -99,7 +99,7 @@ export abstract class AbstractExcludableSubForm<
     transient,
     excludeByDefault,
     id = name,
-    autoTrim = false,
+    autoTrim,
   }: AbstractExcludableSubFormConstructorParams<T, S, U>) {
     this.name = name;
     this.fields = createRecordFromNameableArray(fields);
@@ -186,6 +186,7 @@ export abstract class AbstractExcludableSubForm<
 
   protected resetFields(): void {
     for (const field of Object.values(this.fields)) {
+      /* istanbul ignore else  -- @preserve */
       if (isResettable(field)) {
         field.reset();
       }

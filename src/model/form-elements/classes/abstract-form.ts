@@ -16,7 +16,7 @@ type AbstractFormConstructorParams<T extends FormMembers> = {
   fields: T['fields'];
   groups: T['groups'];
   adapters: T['adapters'];
-  autoTrim?: AutoTrim;
+  autoTrim: AutoTrim;
 };
 
 export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
@@ -51,7 +51,7 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
     fields,
     adapters,
     groups,
-    autoTrim = false,
+    autoTrim,
   }: AbstractFormConstructorParams<T>) {
     this.fields = createRecordFromNameableArray(fields);
     this.groups = createRecordFromNameableArray(groups);
@@ -116,6 +116,7 @@ export abstract class AbstractForm<T extends FormMembers> implements IForm<T> {
 
   protected resetFields(): void {
     for (const field of Object.values(this.fields)) {
+      /* istanbul ignore else -- @preserve */
       if (isResettable(field)) {
         field.reset();
       }

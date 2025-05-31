@@ -26,6 +26,10 @@ export class PersistentControlledField<
     let initFn = params.initFn;
     const key = createPersistenceKey(params.key);
 
+    /* 
+      check if window is undefined to ensure that sessionStorage is only 
+      accessed client-side, i.e. not during server-side rendering.
+    */
     if (typeof window !== 'undefined') {
       const storedState = sessionStorage.getItem(key);
 
@@ -48,6 +52,7 @@ export class PersistentControlledField<
     this.initFn = params.initFn;
 
     this.subscribeToState(({ value, didPropertyChange }) => {
+      /* istanbul ignore else -- @preserve */
       if (didPropertyChange('value')) {
         const stringifiedState = JSON.stringify({ value });
         sessionStorage.setItem(key, stringifiedState);

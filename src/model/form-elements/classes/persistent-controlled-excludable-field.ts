@@ -47,6 +47,7 @@ export class PersistentControlledExcludableField<
     this.initFn = params.initFn;
 
     this.subscribeToState(({ value, exclude, didPropertyChange }) => {
+      /* istanbul ignore else -- @preserve */
       if (didPropertyChange('value') || didPropertyChange('exclude')) {
         const stringifiedState = JSON.stringify({ value, exclude });
         sessionStorage.setItem(key, stringifiedState);

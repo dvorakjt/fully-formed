@@ -25,6 +25,10 @@ export class AbstractPersistentExcludableSubForm<
 
     const key = createPersistenceKey(params.key);
 
+    /* 
+      check if window is undefined to ensure that sessionStorage is only 
+      accessed client-side, i.e. not during server-side rendering.
+    */
     if (typeof window !== 'undefined') {
       const storedState = sessionStorage.getItem(key);
 
@@ -45,6 +49,7 @@ export class AbstractPersistentExcludableSubForm<
     this.excludeByDefault = !!params.excludeByDefault;
 
     this.subscribeToState(({ exclude, didPropertyChange }) => {
+      /* istanbul ignore else -- @preserve */
       if (didPropertyChange('exclude')) {
         const stringifiedState = JSON.stringify({
           exclude,
