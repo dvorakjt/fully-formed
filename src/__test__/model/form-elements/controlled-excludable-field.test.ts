@@ -945,4 +945,37 @@ describe('ControlledExcludableField', () => {
 
     promiseScheduler.resolveAll();
   });
+
+  test(`setValidityAndMessages sets messages to an empty array if no messages 
+  are passed to the method.`, () => {
+    const controller = new ExcludableField({
+      name: 'controller',
+      defaultValue: '',
+    });
+
+    const controlled = new ControlledExcludableField({
+      name: 'controlled',
+      controller,
+      initFn: ({ value, exclude }) => ({ value, exclude }),
+      controlFn: ({ value, exclude }) => ({ value, exclude }),
+    });
+
+    controlled.setValidityAndMessages(Validity.Caution, [
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    expect(controlled.state.messages).toStrictEqual([
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    controlled.setValidityAndMessages(Validity.Valid);
+    expect(controlled.state.validity).toBe(Validity.Valid);
+    expect(controlled.state.messages).toStrictEqual([]);
+  });
 });

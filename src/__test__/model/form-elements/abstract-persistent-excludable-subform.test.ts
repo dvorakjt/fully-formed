@@ -122,7 +122,12 @@ describe('AbstractPersistentExcludableSubForm', () => {
   undefined.`, () => {
     const temp = window;
     window = undefined as any;
-    const spy = vi.spyOn(sessionStorage, 'setItem');
+    /* 
+      Here, the prototype of sessionStorage must be spied on to actually 
+      check whether or not the getItem method was called because of the way
+      the storage APIs are implemented in jsdom.
+    */
+    const spy = vi.spyOn(Object.getPrototypeOf(sessionStorage), 'getItem');
     const Form = FormFactory.createPersistentExcludableSubForm(
       class FormTemplate extends PersistentExcludableSubFormTemplate {
         public readonly name = '';
@@ -133,5 +138,6 @@ describe('AbstractPersistentExcludableSubForm', () => {
     new Form();
     expect(spy).not.toHaveBeenCalled();
     window = temp;
+    spy.mockRestore();
   });
 });

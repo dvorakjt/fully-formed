@@ -11,9 +11,9 @@ type AbstractSubFormConstructorParams<
   fields: U['fields'];
   groups: U['groups'];
   adapters: U['adapters'];
+  autoTrim: AutoTrim;
   transient?: V;
   id?: string;
-  autoTrim?: AutoTrim;
 };
 
 export abstract class AbstractSubForm<
@@ -33,9 +33,9 @@ export abstract class AbstractSubForm<
     fields,
     adapters,
     groups,
+    autoTrim,
     transient,
     id = name,
-    autoTrim = false,
   }: AbstractSubFormConstructorParams<T, U, V>) {
     super({
       fields,

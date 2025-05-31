@@ -514,4 +514,37 @@ describe('ControlledField', () => {
     expect(complement.state.validity).toBe(Validity.Caution);
     expect(complement.state.messages).toStrictEqual(expectedMessages);
   });
+
+  test(`setValidityAndMessages sets messages to an empty array if no messages 
+    are passed to the method.`, () => {
+    const controller = new Field({
+      name: 'controller',
+      defaultValue: '',
+    });
+
+    const controlled = new ControlledField({
+      name: 'controlled',
+      controller,
+      initFn: ({ value }) => ({ value }),
+      controlFn: ({ value }) => ({ value }),
+    });
+
+    controlled.setValidityAndMessages(Validity.Caution, [
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    expect(controlled.state.messages).toStrictEqual([
+      {
+        text: 'Caution message',
+        validity: Validity.Caution,
+      },
+    ]);
+
+    controlled.setValidityAndMessages(Validity.Valid);
+    expect(controlled.state.validity).toBe(Validity.Valid);
+    expect(controlled.state.messages).toStrictEqual([]);
+  });
 });
