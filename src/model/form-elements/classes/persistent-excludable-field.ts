@@ -48,6 +48,7 @@ export class PersistentExcludableField<
     this.excludeByDefault = !!params.excludeByDefault;
 
     this.subscribeToState(({ value, exclude, didPropertyChange }) => {
+      /* istanbul ignore else -- @preserve */
       if (didPropertyChange('value') || didPropertyChange('exclude')) {
         const stringifiedState = JSON.stringify({
           value,

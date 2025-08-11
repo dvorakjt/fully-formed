@@ -409,6 +409,71 @@ describe('Group', () => {
     promiseScheduler.resolveAll();
   });
 
+  test(`Messages with a validity of Validity.Pending are removed from its 
+  messages array when all async validators have returned.`, () => {
+    type SignUpGroupValue = {
+      email: string;
+      password: string;
+      confirmPassword: string;
+    };
+
+    const passwordsMatch = new Validator<SignUpGroupValue>({
+      predicate: (value): boolean => {
+        return value.password === value.confirmPassword;
+      },
+    });
+
+    const promiseScheduler = new PromiseScheduler();
+
+    const existingUsers = new Set<string>(['user@example.com']);
+
+    const emailAvailable = new AsyncValidator<SignUpGroupValue>({
+      predicate: (value): Promise<boolean> => {
+        return promiseScheduler.createScheduledPromise(
+          !existingUsers.has(value.email),
+        );
+      },
+    });
+
+    const email = new Field({
+      name: 'email',
+      defaultValue: 'new-user@example.com',
+    });
+
+    const password = new Field({ name: 'password', defaultValue: 'password' });
+
+    const confirmPassword = new Field({
+      name: 'confirmPassword',
+      defaultValue: 'password',
+      transient: true,
+    });
+
+    const pendingMessage = 'Checking email address availability...';
+
+    const signUpGroup = new Group({
+      name: 'signUpGroup',
+      members: [email, password, confirmPassword],
+      validators: [passwordsMatch],
+      asyncValidators: [emailAvailable],
+      delayAsyncValidatorExecution: 0,
+      pendingMessage,
+    });
+
+    expect(signUpGroup.state.messages).toContainEqual({
+      text: pendingMessage,
+      validity: Validity.Pending,
+    });
+
+    signUpGroup.subscribeToState(state => {
+      expect(state.messages).not.toContainEqual({
+        text: pendingMessage,
+        validity: Validity.Pending,
+      });
+    });
+
+    promiseScheduler.resolveAll();
+  });
+
   test(`If validator templates were provided to its constructor, validators are
   created and applied to its value.`, () => {
     const email = new Field({

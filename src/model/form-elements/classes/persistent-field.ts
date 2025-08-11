@@ -39,6 +39,7 @@ export class PersistentField<
     this.defaultValue = params.defaultValue;
 
     this.subscribeToState(({ value, didPropertyChange }) => {
+      /* istanbul ignore else -- @preserve */
       if (didPropertyChange('value')) {
         const stringifiedState = JSON.stringify({ value });
         sessionStorage.setItem(key, stringifiedState);

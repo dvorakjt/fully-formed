@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from 'vitest';
+import { describe, test, expect, afterEach, vi } from 'vitest';
 import {
   clearAllPersistentFormElements,
   createPersistenceKey,
@@ -120,5 +120,38 @@ describe('PersistentControlledField', () => {
 
     field.reset();
     expect(field.state.value).toBe('J');
+  });
+
+  test(`sessionStorage is not accessed in the constructor if window is 
+  undefined.`, () => {
+    const temp = window;
+    window = undefined as any;
+    /* 
+      Here, the prototype of sessionStorage must be spied on to actually 
+      check whether or not the getItem method was called because of the way
+      the storage APIs are implemented in jsdom.
+    */
+    const spy = vi.spyOn(Object.getPrototypeOf(sessionStorage), 'getItem');
+
+    const controller = new Field({
+      name: 'firstName',
+      defaultValue: 'John',
+    });
+
+    new PersistentControlledField({
+      name: 'firstInitial',
+      key: 'firstInitial',
+      controller,
+      initFn: (controllerState): string => {
+        return controllerState.value ? controllerState.value[0] : '';
+      },
+      controlFn: (controllerState): string => {
+        return controllerState.value ? controllerState.value[0] : '';
+      },
+    });
+
+    expect(spy).not.toHaveBeenCalled();
+    window = temp;
+    spy.mockRestore();
   });
 });

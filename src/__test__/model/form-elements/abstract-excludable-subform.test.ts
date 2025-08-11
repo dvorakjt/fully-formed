@@ -14,6 +14,8 @@ import {
   AsyncValidator,
   type ExcludableTemplate,
   type ValidatedState,
+  FormChild,
+  AutoTrim,
 } from '../../../model';
 import { PromiseScheduler } from '../../../test-utils';
 
@@ -499,6 +501,54 @@ describe('Form', () => {
 
     for (const field of Object.values(instance.fields.innerSubForm.fields)) {
       expect(field.state.submitted).toBe(true);
+    }
+  });
+
+  test('When setSubmitted() is called, excluded fields are not submitted.', () => {
+    class InnerSubFormTemplate extends SubFormTemplate {
+      public readonly name = 'innerSubForm';
+      public readonly fields = <const>[
+        new Field({
+          name: 'innerSubFormField1',
+          defaultValue: '',
+        }),
+        new Field({
+          name: 'innerSubFormField2',
+          defaultValue: '',
+        }),
+      ];
+      public readonly excludeByDefault = true;
+    }
+
+    const InnerSubForm =
+      FormFactory.createExcludableSubForm(InnerSubFormTemplate);
+
+    class OuterSubFormTemplate extends SubFormTemplate {
+      public readonly name = 'outerSubForm';
+      public readonly fields = <const>[
+        new ExcludableField({
+          name: 'outerSubFormField',
+          defaultValue: '',
+          excludeByDefault: true,
+        }),
+        new InnerSubForm(),
+      ];
+    }
+
+    const OuterSubForm =
+      FormFactory.createExcludableSubForm(OuterSubFormTemplate);
+    const instance = new OuterSubForm();
+    expect(instance.state.submitted).toBe(false);
+
+    instance.setSubmitted();
+    expect(instance.state.submitted).toBe(true);
+
+    for (const field of Object.values(instance.fields)) {
+      expect(field.state.submitted).toBe(false);
+    }
+
+    for (const field of Object.values(instance.fields.innerSubForm.fields)) {
+      expect(field.state.submitted).toBe(false);
     }
   });
 
